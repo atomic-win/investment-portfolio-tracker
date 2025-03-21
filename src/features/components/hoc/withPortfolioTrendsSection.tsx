@@ -65,7 +65,7 @@ export default function withPortfolioTrendsSection<
 					...acc,
 					[portfolio.id]: {
 						label: labelFn(portfolio),
-						color: `hsl(var(--chart-${i + 1}))`,
+						color: `var(--chart-${i + 1})`,
 					},
 				}),
 				{}
@@ -77,7 +77,9 @@ export default function withPortfolioTrendsSection<
 		return (
 			<Tabs
 				value={activeTrendType}
-				onValueChange={(value) => handleTabChange(value as TrendType)}>
+				onValueChange={(value: TrendType) =>
+					handleTabChange(value as TrendType)
+				}>
 				<TabsList className='grid w-full grid-cols-4'>
 					<TabsTrigger value={TrendType.InvestedValue}>
 						{displayTrendType(TrendType.InvestedValue)}

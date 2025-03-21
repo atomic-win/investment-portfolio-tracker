@@ -25,7 +25,7 @@ export default function PortfolioCharts<TPortfolio extends Portfolio>({
 				...acc,
 				[portfolio.id]: {
 					label: labelFn(portfolio),
-					color: `hsl(var(--chart-${i + 1}))`,
+					color: `var(--chart-${i + 1})`,
 				},
 			}),
 			{}
