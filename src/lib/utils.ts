@@ -18,3 +18,19 @@ export function calculateLocaleOptions(ipDataLocales: string[]) {
 	supportedLocales.sort((a, b) => b.length - a.length);
 	return supportedLocales;
 }
+
+export function displayCurrencyAmountText(
+	locale: string,
+	currency: string,
+	amount: number,
+	notation: 'standard' | 'compact',
+	maximumFractionDigits: number
+) {
+	return Intl.NumberFormat(locale, {
+		style: 'currency',
+		currency,
+		currencyDisplay: 'symbol',
+		maximumFractionDigits,
+		notation,
+	}).format(amount);
+}
