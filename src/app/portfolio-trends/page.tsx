@@ -48,10 +48,7 @@ export default function Page() {
 		<>
 			<title>Portfolio Trends</title>
 			<SidebarTriggerWithBreadcrumb
-				breadcrumbs={[
-					{ title: 'Investments', href: '#' },
-					{ title: 'Portfolio Trends', href: '/investments/portfolio-trends' },
-				]}
+				breadcrumbs={[{ title: 'Portfolio Trends', href: '/portfolio-trends' }]}
 			/>
 			<div className='container mx-auto p-2'>
 				<div className='grid grid-cols-3 gap-4'>

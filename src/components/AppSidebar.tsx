@@ -1,11 +1,10 @@
-import { DollarSignIcon, Send } from 'lucide-react';
+import { DollarSignIcon } from 'lucide-react';
 
 import {
 	Sidebar,
 	SidebarContent,
 	SidebarFooter,
 	SidebarGroup,
-	SidebarGroupContent,
 	SidebarHeader,
 	SidebarMenu,
 	SidebarMenuButton,
@@ -48,30 +47,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 					<SidebarMenu>
 						{data.map((item) => (
 							<SidebarMenuItem key={item.title}>
-								<SidebarMenuButton className='font-medium'>
-									<a href={item.url}>{item.title}</a>
+								<SidebarMenuButton className='font-medium' asChild>
+									<Link href={item.url}>{item.title}</Link>
 								</SidebarMenuButton>
 							</SidebarMenuItem>
 						))}
 					</SidebarMenu>
 				</SidebarGroup>
 				<SettingsSidebarGroup />
-				<SidebarGroup className='mt-8'>
-					<SidebarGroupContent>
-						<SidebarMenu>
-							<SidebarMenuItem>
-								<SidebarMenuButton asChild size='sm'>
-									<a target='_blank' href='https://forms.gle/hkvX3nzQcsBVn4xp7'>
-										<Send />
-										<span>Feedback</span>
-									</a>
-								</SidebarMenuButton>
-							</SidebarMenuItem>
-						</SidebarMenu>
-					</SidebarGroupContent>
-				</SidebarGroup>
 			</SidebarContent>
-			<SidebarFooter>
+			<SidebarFooter className='mt-8'>
 				<SidebarMenu>
 					<SidebarMenuItem>
 						<AccountMenu />
