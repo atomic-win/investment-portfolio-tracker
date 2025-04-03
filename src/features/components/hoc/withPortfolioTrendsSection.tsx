@@ -240,8 +240,7 @@ function TrendsChart<TPortfolio extends Portfolio>({
 															.color,
 												}}
 											/>
-											{chartConfig[name as keyof typeof chartConfig]?.label ||
-												name}
+											{chartConfig[name as keyof typeof chartConfig]!.label}
 											<div className='ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground'>
 												{yAxisFormat(value as number)}
 											</div>
