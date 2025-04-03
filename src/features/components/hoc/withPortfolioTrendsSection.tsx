@@ -233,12 +233,12 @@ function TrendsChart<TPortfolio extends Portfolio>({
 												</div>
 											)}
 											<div
-												className='h-2.5 w-2.5 shrink-0 rounded-[2px] bg-[--color-bg]'
-												style={
-													{
-														'--color-bg': `var(--color-${name})`,
-													} as React.CSSProperties
-												}
+												className='h-2.5 w-2.5 shrink-0 rounded-[2px]'
+												style={{
+													backgroundColor:
+														chartConfig[name as keyof typeof chartConfig]!
+															.color,
+												}}
 											/>
 											{chartConfig[name as keyof typeof chartConfig]?.label ||
 												name}
