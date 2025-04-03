@@ -21,6 +21,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { displayInstrumentType } from '@/features/lib/utils';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { SlidersHorizontalIcon } from 'lucide-react';
 
 const schema = z.object({
 	instrumentTypes: z.array(z.nativeEnum(InstrumentType)),
@@ -85,7 +86,12 @@ export default function InvestmentsFilterForm({
 		<Card className='mx-auto my-2 p-2 rounded-lg shadow-md'>
 			<CardHeader className='flex items-center gap-4 space-y-0 border-b py-2 pt-4 sm:flex-row'>
 				<div className='grid text-center sm:text-left w-full gap-2'>
-					<CardTitle>Investments Filter</CardTitle>
+					<CardTitle>
+						<div className='flex items-center '>
+							<SlidersHorizontalIcon className='h-4 w-4' />
+							<span className='ml-2'>Filters</span>
+						</div>
+					</CardTitle>
 					<CardDescription>
 						Apply filters for portfolio calculation
 					</CardDescription>
