@@ -6,11 +6,13 @@ import InvestmentsFilterForm from '@/features/components/InvestmentsFilterForm';
 import {
 	AssetPortfolio,
 	InstrumentPortfolio,
+	InstrumentType,
 	InstrumentTypePortfolio,
 	OverallPortfolio,
 } from '@/features/lib/types';
 import withPortfolioTrendsSection from '@/features/components/hoc/withPortfolioTrendsSection';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
+import { displayInstrumentType } from '@/features/lib/utils';
 
 export default function Page() {
 	const PortfolioTrendsOverallSection =
@@ -20,7 +22,8 @@ export default function Page() {
 
 	const PortfolioTrendsPerInstrumentTypeSection =
 		withPortfolioTrendsSection<InstrumentTypePortfolio>({
-			labelFn: (portfolio) => portfolio.id,
+			labelFn: (portfolio) =>
+				displayInstrumentType(portfolio.id as InstrumentType),
 		});
 
 	const PortfolioTrendsPerInstrumentSection =
