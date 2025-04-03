@@ -77,9 +77,7 @@ export default function withPortfolioTrendsSection<
 		return (
 			<Tabs
 				value={activeTrendType}
-				onValueChange={(value: TrendType) =>
-					handleTabChange(value as TrendType)
-				}>
+				onValueChange={(value) => handleTabChange(value as TrendType)}>
 				<TabsList className='grid w-full grid-cols-4'>
 					<TabsTrigger value={TrendType.InvestedValue}>
 						{displayTrendType(TrendType.InvestedValue)}
