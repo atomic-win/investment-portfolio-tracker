@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { db } from '@/drizzle/db';
 import { UserIdTable, UserTable } from '@/drizzle/schema';
 import { and, eq } from 'drizzle-orm';
+import { getUser } from '@/features/users/db/users';
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
@@ -34,7 +35,7 @@ export async function POST(req: NextRequest) {
 		}
 
 		try {
-			const user = await getUser(payload);
+			const user = await getUserByPayload(payload);
 
 			try {
 				// Create custom JWT
@@ -67,7 +68,7 @@ export async function POST(req: NextRequest) {
 	}
 }
 
-async function getUser(payload: TokenPayload) {
+async function getUserByPayload(payload: TokenPayload) {
 	const identityProviderUser = await db.query.UserIdTable.findFirst({
 		where: and(
 			eq(UserIdTable.identityProvider, 'google'),
@@ -75,27 +76,11 @@ async function getUser(payload: TokenPayload) {
 		),
 	});
 
-	if (!identityProviderUser) {
-		return await createUser(payload);
+	if (identityProviderUser) {
+		return (await getUser(identityProviderUser.userId))!;
 	}
 
-	const user = await db.query.UserTable.findFirst({
-		where: eq(UserTable.id, identityProviderUser.userId),
-	});
-
-	if (user) {
-		return user;
-	}
-
-	return (
-		await db
-			.insert(UserTable)
-			.values({
-				email: payload.email!,
-				fullName: payload.name!,
-			})
-			.returning()
-	)[0];
+	return await createUser(payload)!;
 }
 
 async function createUser(payload: TokenPayload) {
