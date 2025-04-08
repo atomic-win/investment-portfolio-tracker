@@ -1,22 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { updateUserSettings } from '@/features/users/db';
 import { AuthClaims, Currency, Language } from '@/types';
+import { z } from 'zod';
+
+const SettingsSchema = z.object({
+	currency: z.nativeEnum(Currency).optional(),
+	language: z.nativeEnum(Language).optional(),
+});
 
 export default async function handler(req: NextRequest, claims: AuthClaims) {
-	const userId = claims.userId;
+	const userId = claims.id;
 
 	try {
-		const body = (await req.json()) as {
-			currency?: Currency;
-			language?: Language;
-		};
+		const body = await req.json();
 
-		if (!body) {
-			return NextResponse.json('Invalid request body', { status: 400 });
+		const parsedBody = SettingsSchema.safeParse(body);
+
+		if (!parsedBody.success) {
+			return NextResponse.json(
+				{ error: 'Invalid request body', issues: parsedBody.error.errors },
+				{ status: 400 }
+			);
 		}
 
 		await updateUserSettings(userId, {
-			...body,
+			...parsedBody.data,
 			id: userId,
 		});
 

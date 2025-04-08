@@ -15,5 +15,5 @@ export enum Language {
 }
 
 export type AuthClaims = {
-	userId: string;
+	id: string;
 };

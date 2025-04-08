@@ -3,7 +3,7 @@ import { getUser } from '@/features/users/db';
 import { AuthClaims } from '@/types';
 
 export default async function handler(_req: NextRequest, claims: AuthClaims) {
-	const userId = claims.userId;
+	const userId = claims.id;
 
 	console.log('userId', userId);
 

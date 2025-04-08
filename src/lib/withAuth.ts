@@ -27,7 +27,7 @@ export function withAuth(handler: Handler): Handler {
 				encoder.encode(SECRET_KEY)
 			);
 
-			const userId = decoded.payload.userId;
+			const userId = decoded.payload.id;
 
 			if (!userId) {
 				return NextResponse.json('Unauthorized', { status: 401 });

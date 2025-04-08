@@ -3,7 +3,7 @@ import { AuthClaims } from '@/types';
 import { NextRequest, NextResponse } from 'next/server';
 
 export default async function handler(_req: NextRequest, claims: AuthClaims) {
-	const userId = claims.userId;
+	const userId = claims.id;
 
 	try {
 		const userSettings = await getUserSettings(userId);
