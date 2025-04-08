@@ -1,12 +1,13 @@
 // middleware.ts
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import jwt from 'jsonwebtoken';
+import { jwtVerify } from 'jose';
 
 const SECRET_KEY = process.env.JWT_SECRET as string;
+const encoder = new TextEncoder();
 const EXCLUDE_PATHS = ['/api/auth/'];
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
 	// Skip middleware for excluded paths
 	if (EXCLUDE_PATHS.some((path) => request.nextUrl.pathname.startsWith(path))) {
 		return NextResponse.next();
@@ -21,11 +22,13 @@ export function middleware(request: NextRequest) {
 	}
 
 	try {
-		const decoded = jwt.verify(token, SECRET_KEY);
+		const decoded = await jwtVerify<{
+			id: string;
+		}>(token, encoder.encode(SECRET_KEY));
 
 		// You can forward the user info via headers
 		const requestHeaders = new Headers(request.headers);
-		requestHeaders.set('x-user-id', (decoded as { id: string }).id);
+		requestHeaders.set('x-user-id', decoded.payload.id);
 
 		return NextResponse.next({
 			request: {

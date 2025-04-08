@@ -12,7 +12,10 @@ export async function GET(req: NextRequest) {
 
 	try {
 		const user = await db
-			.select()
+			.select({
+				id: UserTable.id,
+				name: UserTable.fullName,
+			})
 			.from(UserTable)
 			.where(eq(UserTable.id, userId))
 			.get();
