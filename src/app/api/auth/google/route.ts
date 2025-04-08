@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import { db } from '@/drizzle/db';
 import { UserIdTable, UserTable } from '@/drizzle/schema';
 import { and, eq } from 'drizzle-orm';
-import { getUser } from '@/features/users/db/users';
+import { getUserById } from '@/features/users/db/users';
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
@@ -77,7 +77,7 @@ async function getUserByPayload(payload: TokenPayload) {
 	});
 
 	if (identityProviderUser) {
-		return (await getUser(identityProviderUser.userId))!;
+		return (await getUserById(identityProviderUser.userId))!;
 	}
 
 	return await createUser(payload)!;

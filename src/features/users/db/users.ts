@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm';
 import { cacheTag } from 'next/dist/server/use-cache/cache-tag';
 import { getUserTag } from './cache/users';
 
-export async function getUser(userId: string) {
+export async function getUserById(userId: string) {
 	'use cache';
 
 	cacheTag(getUserTag(userId));
