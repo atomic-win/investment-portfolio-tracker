@@ -13,3 +13,7 @@ export enum Language {
 	EN_US = 'en-US',
 	EN_IN = 'en-IN',
 }
+
+export type AuthClaims = {
+	userId: string;
+};
