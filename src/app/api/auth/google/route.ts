@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { OAuth2Client, TokenPayload } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
 import { db } from '@/drizzle/db';
-import { UserIdTable, UserTable } from '@/drizzle/schema';
+import { UserIdTable, UserSettingTable, UserTable } from '@/drizzle/schema';
 import { and, eq } from 'drizzle-orm';
-import { getUserById } from '@/features/users/db/users';
+import { getUser } from '@/features/users/db';
+import { IdentityProvider } from '@/types';
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
@@ -71,13 +72,13 @@ export async function POST(req: NextRequest) {
 async function getUserByPayload(payload: TokenPayload) {
 	const identityProviderUser = await db.query.UserIdTable.findFirst({
 		where: and(
-			eq(UserIdTable.identityProvider, 'google'),
+			eq(UserIdTable.identityProvider, IdentityProvider.Google),
 			eq(UserIdTable.id, payload.sub)
 		),
 	});
 
 	if (identityProviderUser) {
-		return (await getUserById(identityProviderUser.userId))!;
+		return (await getUser(identityProviderUser.userId))!;
 	}
 
 	return await createUser(payload)!;
@@ -99,8 +100,15 @@ async function createUser(payload: TokenPayload) {
 			.insert(UserIdTable)
 			.values({
 				id: payload.sub,
-				identityProvider: 'google',
+				identityProvider: IdentityProvider.Google,
 				userId: user.id,
+			})
+			.returning();
+
+		await tx
+			.insert(UserSettingTable)
+			.values({
+				id: user.id,
 			})
 			.returning();
 

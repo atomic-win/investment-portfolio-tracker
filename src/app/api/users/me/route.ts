@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getUserById } from '@/features/users/db/users';
+import { getUser } from '@/features/users/db';
 
 export async function GET(req: NextRequest) {
 	const userId = req.headers.get('x-user-id');
@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
 	}
 
 	try {
-		const user = await getUserById(userId);
+		const user = await getUser(userId);
 
 		if (!user) {
 			return NextResponse.json('User not found', { status: 404 });
