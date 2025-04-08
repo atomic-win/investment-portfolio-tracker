@@ -33,18 +33,34 @@ export async function POST(req: NextRequest) {
 			);
 		}
 
-		const user = await getUser(payload);
+		try {
+			const user = await getUser(payload);
 
-		// Create custom JWT
-		const customJwt = jwt.sign(
-			{
-				id: user.id,
-			},
-			JWT_SECRET,
-			{ expiresIn: '7d' }
-		);
+			try {
+				// Create custom JWT
+				const customJwt = jwt.sign(
+					{
+						id: user.id,
+					},
+					JWT_SECRET,
+					{ expiresIn: '7d' }
+				);
 
-		return NextResponse.json({ token: customJwt });
+				return NextResponse.json({ token: customJwt });
+			} catch (error) {
+				console.error('JWT creation failed:', error);
+				return NextResponse.json(
+					{ error: 'Failed to create JWT' },
+					{ status: 500 }
+				);
+			}
+		} catch (error) {
+			console.error('User retrieval failed:', error);
+			return NextResponse.json(
+				{ error: 'Failed to retrieve user' },
+				{ status: 500 }
+			);
+		}
 	} catch (error) {
 		console.error('Token verification failed:', error);
 		return NextResponse.json({ error: 'Invalid ID token' }, { status: 401 });
