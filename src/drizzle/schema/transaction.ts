@@ -1,7 +1,7 @@
-import { index, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { check, index, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { createdAt, id, updatedAt } from '../schemaHelpers';
 import { TransactionType } from '@/types';
-import { relations } from 'drizzle-orm';
+import { relations, sql } from 'drizzle-orm';
 import { AssetItemTable } from './assetItem';
 
 export const TransactionTable = sqliteTable(
@@ -10,16 +10,18 @@ export const TransactionTable = sqliteTable(
 		id,
 		date: text('date').notNull(),
 		name: text('name').notNull(),
-		type: text('type').notNull().$type<TransactionType>(),
 		assetItemId: text('asset_item_id').references(() => AssetItemTable.id, {
 			onDelete: 'cascade',
 		}),
+		type: text('type').notNull().$type<TransactionType>(),
+		units: real('units').notNull(),
 		createdAt,
 		updatedAt,
 	},
 	(table) => [
 		index('transaction_date_idx').on(table.date),
 		index('asset_item_id_idx').on(table.assetItemId),
+		check('units_positive_check', sql`${table.units} > 0`),
 	]
 );
 
