@@ -39,6 +39,7 @@ CREATE INDEX `asset_external_id_idx` ON `asset_ids` (`external_id`);--> statemen
 CREATE TABLE `assets` (
 	`id` text PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,
+	`class` text NOT NULL,
 	`type` text NOT NULL,
 	`currency` text NOT NULL,
 	`created_at` text NOT NULL,

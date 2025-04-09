@@ -9,11 +9,11 @@ const encoder = new TextEncoder();
 type Handler<TParams> = (
 	req: NextRequest,
 	claims: AuthClaims,
-	ctx: { params: TParams }
+	ctx: { params: Promise<TParams> }
 ) => Promise<NextResponse> | NextResponse;
 
 export function withAuth<TParams>(handler: Handler<TParams>) {
-	return async (request: NextRequest, ctx: { params: TParams }) => {
+	return async (request: NextRequest, ctx: { params: Promise<TParams> }) => {
 		const token =
 			request.cookies.get('token')?.value ||
 			request.headers.get('Authorization')?.replace('Bearer ', '');

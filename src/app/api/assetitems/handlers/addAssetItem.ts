@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { AssetType, AuthClaims, Currency } from '@/types';
+import { AssetClass, AssetType, AuthClaims, Currency } from '@/types';
 import { z } from 'zod';
 import {
 	addAsset,
@@ -13,6 +13,7 @@ import { searchSymbol } from '@/services/stocks/stockApiService';
 const AssetItemSchema = z
 	.object({
 		name: z.string().min(3).max(50),
+		class: z.nativeEnum(AssetClass).optional(),
 		type: z.nativeEnum(AssetType),
 		externalId: z.string().optional(),
 		currency: z
@@ -23,15 +24,22 @@ const AssetItemSchema = z
 			.optional(),
 	})
 	.superRefine((data, ctx) => {
-		if (
-			(data.type === AssetType.MutualFunds || data.type === AssetType.Stocks) &&
-			data.currency
-		) {
-			ctx.addIssue({
-				code: z.ZodIssueCode.custom,
-				message: 'Currency should not be provided for Mutual Funds or Stocks',
-				path: ['currency'],
-			});
+		if (data.type === AssetType.MutualFunds || data.type === AssetType.Stocks) {
+			if (data.currency) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: 'Currency should not be provided for Mutual Funds or Stocks',
+					path: ['currency'],
+				});
+			}
+
+			if (data.class) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: 'Class should not be provided for Mutual Funds or Stocks',
+					path: ['class'],
+				});
+			}
 		}
 
 		if (data.type === AssetType.MutualFunds) {
@@ -69,16 +77,22 @@ const AssetItemSchema = z
 			return;
 		}
 
-		if (
-			data.type !== AssetType.MutualFunds &&
-			data.type !== AssetType.Stocks &&
-			!!!data.currency
-		) {
-			ctx.addIssue({
-				code: z.ZodIssueCode.custom,
-				message: 'Currency is required',
-				path: ['currency'],
-			});
+		if (data.type !== AssetType.MutualFunds && data.type !== AssetType.Stocks) {
+			if (!!!data.currency) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: 'Currency is required',
+					path: ['currency'],
+				});
+			}
+
+			if (!!!data.class) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: 'Class is required',
+					path: ['class'],
+				});
+			}
 		}
 	});
 
@@ -118,6 +132,7 @@ export default async function handler(req: NextRequest, claims: AuthClaims) {
 		return addDebtAssetItem({
 			userId,
 			name,
+			assetClass: parsedBody.data.class!,
 			type,
 			currency: currency!,
 		});
@@ -167,6 +182,12 @@ export async function addMutualFundAssetItem({
 
 	const newAsset = await addAsset({
 		name: mfApiResponse.meta.scheme_name,
+		class:
+			mfApiResponse.meta.scheme_name.toLowerCase().includes('debt') ||
+			mfApiResponse.meta.scheme_type.toLowerCase().includes('debt') ||
+			mfApiResponse.meta.scheme_category.toLowerCase().includes('debt')
+				? AssetClass.Debt
+				: AssetClass.Equity,
 		type: AssetType.MutualFunds,
 		currency: Currency.INR,
 	});
@@ -222,6 +243,7 @@ export async function addStockAssetItem({
 
 	const newAsset = await addAsset({
 		name: bestMatch.name,
+		class: AssetClass.Equity,
 		type: AssetType.Stocks,
 		currency: z.nativeEnum(Currency).parse(bestMatch.currency),
 	});
@@ -245,11 +267,13 @@ export async function addStockAssetItem({
 export async function addDebtAssetItem({
 	userId,
 	name,
+	assetClass,
 	type,
 	currency,
 }: {
 	userId: string;
 	name: string;
+	assetClass: AssetClass;
 	type: AssetType;
 	currency: Currency;
 }) {
@@ -265,7 +289,8 @@ export async function addDebtAssetItem({
 	}
 
 	const newAsset = await addAsset({
-		name,
+		name: type,
+		class: assetClass,
 		type,
 		currency: Currency.Unknown,
 	});

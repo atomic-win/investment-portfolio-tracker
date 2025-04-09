@@ -5,12 +5,18 @@ import { getAssetItem } from '@/features/assetItems/db';
 export default async function handler(
 	_req: NextRequest,
 	claims: AuthClaims,
-	ctx: { params: { assetItemId: string } }
+	ctx: { params: Promise<{ assetItemId: string }> }
 ) {
 	const userId = claims.id;
+	const { assetItemId } = await ctx.params;
 
 	try {
-		const assetItem = getAssetItem(userId, ctx.params.assetItemId);
+		const assetItem = await getAssetItem(userId, assetItemId);
+
+		if (!assetItem) {
+			return NextResponse.json('Asset item not found', { status: 404 });
+		}
+
 		return NextResponse.json(assetItem);
 	} catch (error) {
 		console.error('Error fetching user:', error);
