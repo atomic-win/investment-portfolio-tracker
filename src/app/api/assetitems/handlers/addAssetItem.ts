@@ -23,11 +23,11 @@ const AssetItemSchema = z
 	.superRefine((data, ctx) => {
 		if (
 			(data.type === AssetType.MutualFunds || data.type === AssetType.Stocks) &&
-			!!!data.currency
+			data.currency
 		) {
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
-				message: 'Currency is not required for Mutual Funds and Stocks',
+				message: 'Currency should not be provided for Mutual Funds or Stocks',
 				path: ['currency'],
 			});
 		}
@@ -40,7 +40,7 @@ const AssetItemSchema = z
 					path: ['externalId'],
 				});
 			} else {
-				const schemeCode = z
+				const schemeCode = z.coerce
 					.number()
 					.int()
 					.min(100000)
