@@ -5,8 +5,11 @@ import {
 	addAsset,
 	addAssetId,
 	addAssetItem,
+	addAssetRates,
 	getAssetId,
 } from '@/features/assetItems/db';
+import { getMutualFund } from '@/services/mutualFundsApi/mfApiClient';
+import { DateTime } from 'luxon';
 
 const AssetItemSchema = z
 	.object({
@@ -95,31 +98,28 @@ export default async function handler(req: NextRequest, claims: AuthClaims) {
 
 		const { name, type, externalId, currency } = parsedBody.data;
 
-		switch (type) {
-			case AssetType.MutualFunds:
-				addMutualFundAssetItem({
-					userId,
-					name,
-					schemeCode: Number(externalId),
-				});
-				break;
-			case AssetType.Stocks:
-				addStockAssetItem({
-					userId,
-					name,
-					symbol: externalId!,
-				});
-				break;
-			default:
-				addDebtAssetItem({
-					userId,
-					name,
-					type,
-					currency: currency!,
-				});
+		if (type === AssetType.MutualFunds) {
+			return addMutualFundAssetItem({
+				userId,
+				name,
+				schemeCode: Number(externalId),
+			});
 		}
 
-		return new NextResponse(null, { status: 201 });
+		if (type === AssetType.Stocks) {
+			return addStockAssetItem({
+				userId,
+				name,
+				symbol: externalId!,
+			});
+		}
+
+		return addDebtAssetItem({
+			userId,
+			name,
+			type,
+			currency: currency!,
+		});
 	} catch (error) {
 		console.error('Error while adding asset item:', error);
 		return NextResponse.json('Internal server error', { status: 500 });
@@ -134,7 +134,55 @@ export async function addMutualFundAssetItem({
 	userId: string;
 	name: string;
 	schemeCode: number;
-}) {}
+}) {
+	const assetId = await getAssetId(
+		AssetType.MutualFunds,
+		schemeCode.toString()
+	);
+
+	if (assetId) {
+		await addAssetItem({
+			userId,
+			name,
+			assetId,
+			currency: Currency.Unknown,
+		});
+	}
+
+	const mfApiResponse = await getMutualFund(schemeCode);
+
+	if (
+		!mfApiResponse ||
+		mfApiResponse.status !== 'SUCCESS' ||
+		!mfApiResponse.meta.scheme_name
+	) {
+		return NextResponse.json(
+			{ error: 'Invalid Mutual Fund data' },
+			{ status: 400 }
+		);
+	}
+
+	const newAsset = await addAsset({
+		name: mfApiResponse.meta.scheme_name,
+		type: AssetType.MutualFunds,
+		currency: Currency.INR,
+	});
+
+	await addAssetId({
+		type: AssetType.MutualFunds,
+		externalId: schemeCode.toString(),
+		assetId: newAsset.id,
+	});
+
+	await addAssetItem({
+		userId,
+		name,
+		assetId: newAsset.id,
+		currency: Currency.Unknown,
+	});
+
+	return new NextResponse(null, { status: 201 });
+}
 
 export async function addStockAssetItem({
 	userId,
@@ -144,7 +192,9 @@ export async function addStockAssetItem({
 	userId: string;
 	name: string;
 	symbol: string;
-}) {}
+}) {
+	return new NextResponse(null, { status: 201 });
+}
 
 export async function addDebtAssetItem({
 	userId,
@@ -186,4 +236,6 @@ export async function addDebtAssetItem({
 		assetId: newAsset.id,
 		currency,
 	});
+
+	return new NextResponse(null, { status: 201 });
 }

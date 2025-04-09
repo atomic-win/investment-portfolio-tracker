@@ -1,5 +1,10 @@
 import { db } from '@/drizzle/db';
-import { AssetIdTable, AssetItemTable, AssetTable } from '@/drizzle/schema';
+import {
+	AssetIdTable,
+	AssetItemTable,
+	AssetRateTable,
+	AssetTable,
+} from '@/drizzle/schema';
 import { AssetType } from '@/types';
 import { and, eq } from 'drizzle-orm';
 
@@ -29,4 +34,10 @@ export async function addAsset(data: typeof AssetTable.$inferInsert) {
 
 export async function addAssetItem(data: typeof AssetItemTable.$inferInsert) {
 	return await db.insert(AssetItemTable).values(data).returning().get();
+}
+
+export async function addAssetRates(
+	data: (typeof AssetRateTable.$inferInsert)[]
+) {
+	return await db.insert(AssetRateTable).values(data).returning().get();
 }
