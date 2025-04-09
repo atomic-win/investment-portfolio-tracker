@@ -28,6 +28,22 @@ export async function getAsset(id: string) {
 	return await db.select().from(AssetTable).where(eq(AssetTable.id, id)).get();
 }
 
+export async function getAllAssetItems(userId: string) {
+	return await db
+		.select()
+		.from(AssetItemTable)
+		.where(eq(AssetItemTable.userId, userId))
+		.all();
+}
+
+export async function getAssetItem(userId: string, id: string) {
+	return await db
+		.select()
+		.from(AssetItemTable)
+		.where(and(eq(AssetItemTable.userId, userId), eq(AssetItemTable.id, id)))
+		.get();
+}
+
 export async function addAssetId(data: typeof AssetIdTable.$inferInsert) {
 	return await db.insert(AssetIdTable).values(data).returning().get();
 }

@@ -15,9 +15,11 @@ export const AssetItemTable = sqliteTable('asset_items', {
 		.references(() => UserTable.id, {
 			onDelete: 'cascade',
 		}),
-	assetId: text('asset_id').references(() => AssetTable.id, {
-		onDelete: 'restrict',
-	}),
+	assetId: text('asset_id')
+		.notNull()
+		.references(() => AssetTable.id, {
+			onDelete: 'restrict',
+		}),
 	createdAt,
 	updatedAt,
 });

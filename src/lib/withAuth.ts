@@ -6,13 +6,14 @@ import { NextRequest, NextResponse } from 'next/server';
 const SECRET_KEY = process.env.JWT_SECRET as string;
 const encoder = new TextEncoder();
 
-type Handler = (
+type Handler<TParams> = (
 	req: NextRequest,
-	claims: AuthClaims
+	claims: AuthClaims,
+	ctx: { params: TParams }
 ) => Promise<NextResponse> | NextResponse;
 
-export function withAuth(handler: Handler): Handler {
-	return async (request: NextRequest) => {
+export function withAuth<TParams>(handler: Handler<TParams>) {
+	return async (request: NextRequest, ctx: { params: TParams }) => {
 		const token =
 			request.cookies.get('token')?.value ||
 			request.headers.get('Authorization')?.replace('Bearer ', '');
@@ -39,7 +40,7 @@ export function withAuth(handler: Handler): Handler {
 				return NextResponse.json('User not found', { status: 404 });
 			}
 
-			return handler(request, decoded.payload);
+			return handler(request, decoded.payload, ctx);
 		} catch (err) {
 			console.error('JWT verification failed:', err);
 			return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
