@@ -5,11 +5,10 @@ import {
 	addAsset,
 	addAssetId,
 	addAssetItem,
-	addAssetRates,
 	getAssetId,
 } from '@/features/assetItems/db';
-import { getMutualFund } from '@/services/mutualFundsApi/mfApiClient';
-import { DateTime } from 'luxon';
+import { getMutualFund } from '@/services/mutualFunds/mfApiService';
+import { searchSymbol } from '@/services/stocks/stockApiService';
 
 const AssetItemSchema = z
 	.object({
@@ -58,8 +57,6 @@ const AssetItemSchema = z
 					});
 				}
 			}
-
-			return;
 		}
 
 		if (data.type === AssetType.Stocks && !data.externalId) {
@@ -72,7 +69,11 @@ const AssetItemSchema = z
 			return;
 		}
 
-		if (!data.currency) {
+		if (
+			data.type !== AssetType.MutualFunds &&
+			data.type !== AssetType.Stocks &&
+			!!!data.currency
+		) {
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
 				message: 'Currency is required',
@@ -110,7 +111,7 @@ export default async function handler(req: NextRequest, claims: AuthClaims) {
 			return addStockAssetItem({
 				userId,
 				name,
-				symbol: externalId!,
+				symbol: externalId!.toLowerCase(),
 			});
 		}
 
@@ -147,6 +148,8 @@ export async function addMutualFundAssetItem({
 			assetId,
 			currency: Currency.Unknown,
 		});
+
+		return new NextResponse(null, { status: 201 });
 	}
 
 	const mfApiResponse = await getMutualFund(schemeCode);
@@ -193,6 +196,49 @@ export async function addStockAssetItem({
 	name: string;
 	symbol: string;
 }) {
+	const assetId = await getAssetId(AssetType.Stocks, symbol);
+
+	if (assetId) {
+		await addAssetItem({
+			userId,
+			name,
+			assetId,
+			currency: Currency.Unknown,
+		});
+
+		return new NextResponse(null, { status: 201 });
+	}
+
+	const symbolSearchResults = await searchSymbol(symbol);
+
+	if (!symbolSearchResults || symbolSearchResults.length === 0) {
+		return NextResponse.json(
+			{ error: 'Invalid stock symbol' },
+			{ status: 400 }
+		);
+	}
+
+	const bestMatch = symbolSearchResults[0];
+
+	const newAsset = await addAsset({
+		name: bestMatch.name,
+		type: AssetType.Stocks,
+		currency: z.nativeEnum(Currency).parse(bestMatch.currency),
+	});
+
+	await addAssetId({
+		type: AssetType.Stocks,
+		externalId: symbol,
+		assetId: newAsset.id,
+	});
+
+	await addAssetItem({
+		userId,
+		name,
+		assetId: newAsset.id,
+		currency: Currency.Unknown,
+	});
+
 	return new NextResponse(null, { status: 201 });
 }
 

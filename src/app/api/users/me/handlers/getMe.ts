@@ -5,8 +5,6 @@ import { AuthClaims } from '@/types';
 export default async function handler(_req: NextRequest, claims: AuthClaims) {
 	const userId = claims.id;
 
-	console.log('userId', userId);
-
 	try {
 		const user = await getUser(userId);
 		return NextResponse.json(user);
