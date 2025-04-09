@@ -4,6 +4,7 @@ import {
 	AssetItemTable,
 	AssetRateTable,
 	AssetTable,
+	TransactionTable,
 } from '@/drizzle/schema';
 import { AssetType } from '@/types';
 import assert from 'assert';
@@ -51,6 +52,14 @@ export async function getAssetItem(userId: string, id: string) {
 	return calulateAssetItem(result);
 }
 
+export async function getAllTransactions(assetItemId: string) {
+	return await db
+		.select()
+		.from(TransactionTable)
+		.where(eq(TransactionTable.assetItemId, assetItemId))
+		.all();
+}
+
 export async function getAsset(id: string) {
 	return await db.select().from(AssetTable).where(eq(AssetTable.id, id)).get();
 }
@@ -64,6 +73,12 @@ export async function addAsset(data: typeof AssetTable.$inferInsert) {
 
 export async function addAssetItem(data: typeof AssetItemTable.$inferInsert) {
 	return await db.insert(AssetItemTable).values(data).returning().get();
+}
+
+export async function addTransaction(
+	data: typeof TransactionTable.$inferInsert
+) {
+	return await db.insert(TransactionTable).values(data).returning().get();
 }
 
 export async function addAssetRates(

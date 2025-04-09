@@ -286,6 +286,8 @@ export async function addDebtAssetItem({
 			assetId,
 			currency,
 		});
+
+		return new NextResponse(null, { status: 201 });
 	}
 
 	const newAsset = await addAsset({
