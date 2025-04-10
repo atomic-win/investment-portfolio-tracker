@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AuthClaims } from '@/types';
-import { getAllAssetItems } from '@/features/assetItems/db';
+import { getAllAssetItems } from '@/features/assetItems/server/db';
 
 export default async function handler(_req: NextRequest, claims: AuthClaims) {
 	const userId = claims.id;

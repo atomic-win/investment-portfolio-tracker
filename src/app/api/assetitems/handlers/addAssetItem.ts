@@ -6,7 +6,7 @@ import {
 	addAssetId,
 	addAssetItem,
 	getAssetId,
-} from '@/features/assetItems/db';
+} from '@/features/assetItems/server/db';
 import { getMutualFund } from '@/services/mutualFunds/mfApiService';
 import { searchSymbol } from '@/services/stocks/stockApiService';
 

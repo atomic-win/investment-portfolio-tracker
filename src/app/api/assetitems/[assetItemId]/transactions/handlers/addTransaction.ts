@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AssetType, AuthClaims, TransactionType } from '@/types';
 import { z } from 'zod';
-import { addTransaction, getAssetItem } from '@/features/assetItems/db';
+import { getAssetItem } from '@/features/assetItems/server/db';
 import { DateTime } from 'luxon';
+import { addTransaction } from '@/features/transactions/server/db';
 
 const format = 'yyyy-MM-dd';
 

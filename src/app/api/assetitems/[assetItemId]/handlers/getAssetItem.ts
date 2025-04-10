@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AuthClaims } from '@/types';
-import { getAssetItem } from '@/features/assetItems/db';
+import { getAssetItem } from '@/features/assetItems/server/db';
 
 export default async function handler(
 	_req: NextRequest,
