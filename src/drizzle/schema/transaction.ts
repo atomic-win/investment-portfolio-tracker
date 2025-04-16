@@ -19,7 +19,6 @@ export const TransactionTable = sqliteTable(
 		updatedAt,
 	},
 	(table) => [
-		index('transaction_date_idx').on(table.date),
 		index('asset_item_id_idx').on(table.assetItemId),
 		check('units_positive_check', sql`${table.units} > 0`),
 	]

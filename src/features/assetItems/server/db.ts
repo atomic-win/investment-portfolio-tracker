@@ -91,12 +91,8 @@ function calulateAssetItem(data: {
 	return {
 		id: assetItem.id,
 		name: assetItem.name,
-		assetId: asset.id,
-		assetClass: asset.class,
+		assetClass: assetItem.assetClass,
 		assetType: asset.type,
-		currency:
-			asset.type === AssetType.MutualFunds || asset.type === AssetType.Stocks
-				? asset.currency
-				: assetItem.currency,
+		currency: asset.currency,
 	};
 }

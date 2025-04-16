@@ -1,15 +1,15 @@
 import { sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { createdAt, id, updatedAt } from '../schemaHelpers';
-import { Currency } from '@/types';
 import { relations } from 'drizzle-orm';
 import { AssetTable } from './asset';
 import { TransactionTable } from './transaction';
 import { UserTable } from './user';
+import { AssetClass } from '@/types';
 
 export const AssetItemTable = sqliteTable('asset_items', {
 	id,
 	name: text('name').notNull(),
-	currency: text('currency').notNull().$type<Currency>(),
+	assetClass: text('asset_class').notNull().$type<AssetClass>(),
 	userId: text('user_id')
 		.notNull()
 		.references(() => UserTable.id, {

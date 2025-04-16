@@ -1,4 +1,4 @@
-import { index, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { AssetType } from '@/types';
 import { AssetTable } from './asset';
 import { relations } from 'drizzle-orm';
@@ -22,8 +22,6 @@ export const AssetIdTable = sqliteTable(
 			name: 'asset_id_pk',
 			columns: [table.type, table.externalId],
 		}),
-		index('asset_type_idx').on(table.type),
-		index('asset_external_id_idx').on(table.externalId),
 	]
 );
 

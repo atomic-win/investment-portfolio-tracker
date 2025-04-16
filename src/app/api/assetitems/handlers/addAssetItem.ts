@@ -129,7 +129,7 @@ export default async function handler(req: NextRequest, claims: AuthClaims) {
 			});
 		}
 
-		return addDebtAssetItem({
+		return addDefaultAssetItem({
 			userId,
 			name,
 			assetClass: parsedBody.data.class!,
@@ -142,7 +142,7 @@ export default async function handler(req: NextRequest, claims: AuthClaims) {
 	}
 }
 
-export async function addMutualFundAssetItem({
+async function addMutualFundAssetItem({
 	userId,
 	name,
 	schemeCode,
@@ -151,22 +151,6 @@ export async function addMutualFundAssetItem({
 	name: string;
 	schemeCode: number;
 }) {
-	const assetId = await getAssetId(
-		AssetType.MutualFunds,
-		schemeCode.toString()
-	);
-
-	if (assetId) {
-		await addAssetItem({
-			userId,
-			name,
-			assetId,
-			currency: Currency.Unknown,
-		});
-
-		return new NextResponse(null, { status: 201 });
-	}
-
 	const mfApiResponse = await getMutualFund(schemeCode);
 
 	if (
@@ -180,17 +164,32 @@ export async function addMutualFundAssetItem({
 		);
 	}
 
+	const assetClass =
+		mfApiResponse.meta.scheme_name.toLowerCase().includes('debt') ||
+		mfApiResponse.meta.scheme_type.toLowerCase().includes('debt') ||
+		mfApiResponse.meta.scheme_category.toLowerCase().includes('debt')
+			? AssetClass.Debt
+			: AssetClass.Equity;
+
 	const newAsset = await addAsset({
 		name: mfApiResponse.meta.scheme_name,
-		class:
-			mfApiResponse.meta.scheme_name.toLowerCase().includes('debt') ||
-			mfApiResponse.meta.scheme_type.toLowerCase().includes('debt') ||
-			mfApiResponse.meta.scheme_category.toLowerCase().includes('debt')
-				? AssetClass.Debt
-				: AssetClass.Equity,
 		type: AssetType.MutualFunds,
 		currency: Currency.INR,
 	});
+
+	const assetId = await getAssetId(
+		AssetType.MutualFunds,
+		schemeCode.toString()
+	);
+
+	if (assetId) {
+		return await addAssetItemAndReturn({
+			userId,
+			name,
+			assetClass,
+			assetId,
+		});
+	}
 
 	await addAssetId({
 		type: AssetType.MutualFunds,
@@ -198,17 +197,15 @@ export async function addMutualFundAssetItem({
 		assetId: newAsset.id,
 	});
 
-	await addAssetItem({
+	return await addAssetItemAndReturn({
 		userId,
 		name,
+		assetClass,
 		assetId: newAsset.id,
-		currency: Currency.Unknown,
 	});
-
-	return new NextResponse(null, { status: 201 });
 }
 
-export async function addStockAssetItem({
+async function addStockAssetItem({
 	userId,
 	name,
 	symbol,
@@ -220,14 +217,12 @@ export async function addStockAssetItem({
 	const assetId = await getAssetId(AssetType.Stocks, symbol);
 
 	if (assetId) {
-		await addAssetItem({
+		return addAssetItemAndReturn({
 			userId,
 			name,
+			assetClass: AssetClass.Equity,
 			assetId,
-			currency: Currency.Unknown,
 		});
-
-		return new NextResponse(null, { status: 201 });
 	}
 
 	const symbolSearchResults = await searchSymbol(symbol);
@@ -243,7 +238,6 @@ export async function addStockAssetItem({
 
 	const newAsset = await addAsset({
 		name: bestMatch.name,
-		class: AssetClass.Equity,
 		type: AssetType.Stocks,
 		currency: z.nativeEnum(Currency).parse(bestMatch.currency),
 	});
@@ -254,17 +248,15 @@ export async function addStockAssetItem({
 		assetId: newAsset.id,
 	});
 
-	await addAssetItem({
+	return await addAssetItemAndReturn({
 		userId,
 		name,
+		assetClass: AssetClass.Equity,
 		assetId: newAsset.id,
-		currency: Currency.Unknown,
 	});
-
-	return new NextResponse(null, { status: 201 });
 }
 
-export async function addDebtAssetItem({
+async function addDefaultAssetItem({
 	userId,
 	name,
 	assetClass,
@@ -277,37 +269,53 @@ export async function addDebtAssetItem({
 	type: AssetType;
 	currency: Currency;
 }) {
-	const assetId = await getAssetId(type, Currency.Unknown);
+	const assetId = await getAssetId(type, currency);
 
 	if (assetId) {
-		await addAssetItem({
+		return addAssetItemAndReturn({
 			userId,
 			name,
+			assetClass,
 			assetId,
-			currency,
 		});
-
-		return new NextResponse(null, { status: 201 });
 	}
 
 	const newAsset = await addAsset({
 		name: type,
-		class: assetClass,
 		type,
-		currency: Currency.Unknown,
+		currency,
 	});
 
 	await addAssetId({
 		type,
-		externalId: Currency.Unknown,
+		externalId: currency,
 		assetId: newAsset.id,
 	});
 
+	return await addAssetItemAndReturn({
+		userId,
+		name,
+		assetClass,
+		assetId: newAsset.id,
+	});
+}
+
+async function addAssetItemAndReturn({
+	userId,
+	name,
+	assetClass,
+	assetId,
+}: {
+	userId: string;
+	name: string;
+	assetClass: AssetClass;
+	assetId: string;
+}) {
 	await addAssetItem({
 		userId,
 		name,
-		assetId: newAsset.id,
-		currency,
+		assetClass,
+		assetId,
 	});
 
 	return new NextResponse(null, { status: 201 });

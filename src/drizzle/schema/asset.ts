@@ -1,6 +1,6 @@
 import { sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { createdAt, id, updatedAt } from '../schemaHelpers';
-import { AssetClass, AssetType, Currency } from '@/types';
+import { AssetType, Currency } from '@/types';
 import { relations } from 'drizzle-orm';
 import { AssetIdTable } from './assetId';
 import { AssetItemTable } from './assetItem';
@@ -10,7 +10,6 @@ import { AssetRateTable } from './assetRates';
 export const AssetTable = sqliteTable('assets', {
 	id,
 	name: text('name').notNull(),
-	class: text('class').notNull().$type<AssetClass>(),
 	type: text('type').notNull().$type<AssetType>(),
 	currency: text('currency').notNull().$type<Currency>(),
 	createdAt,
