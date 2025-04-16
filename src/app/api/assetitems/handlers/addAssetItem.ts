@@ -7,8 +7,8 @@ import {
 	addAssetItem,
 	getAssetId,
 } from '@/features/assetItems/server/db';
-import { getMutualFund } from '@/services/mutualFunds/mfApiService';
-import { searchSymbol } from '@/services/stocks/stockApiService';
+import { getMutualFund } from '@/services/mfApiService';
+import { searchSymbol } from '@/services/stockApiService';
 
 const AssetItemSchema = z
 	.object({

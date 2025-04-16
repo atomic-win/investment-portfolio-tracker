@@ -10,8 +10,8 @@ import { desc, max } from 'drizzle-orm/sql';
 import { AssetType, Currency } from '@/types';
 import { DateTime } from 'luxon';
 import { assert } from 'console';
-import { getMutualFundNav } from '@/services/mutualFunds/mfApiService';
-import { getStockPrices } from '@/services/stocks/stockApiService';
+import { getMutualFundNav } from '@/services/mfApiService';
+import { getStockPrices } from '@/services/stockApiService';
 
 export function getAssetItemRate(
 	assetItemId: string,
