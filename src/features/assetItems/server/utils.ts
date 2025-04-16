@@ -11,6 +11,7 @@ import { AssetType, Currency } from '@/types';
 import { DateTime } from 'luxon';
 import { assert } from 'console';
 import { getMutualFundNav } from '@/services/mutualFunds/mfApiService';
+import { getStockPrices } from '@/services/stocks/stockApiService';
 
 export function getAssetItemRate(
 	assetItemId: string,
@@ -148,6 +149,14 @@ async function refreshMutualFundRates(asset: typeof AssetTable.$inferSelect) {
 	await db.insert(AssetRateTable).values(rates).onConflictDoNothing();
 }
 
-function refreshStockRates(asset: typeof AssetTable.$inferSelect) {
-	assert(false, 'Not implemented yet');
+async function refreshStockRates(asset: typeof AssetTable.$inferSelect) {
+	const stockPrices = await getStockPrices(asset.externalId!);
+
+	const rates = stockPrices.map((rate) => ({
+		date: rate.date,
+		rate: rate.price,
+		id: asset.id,
+	}));
+
+	await db.insert(AssetRateTable).values(rates).onConflictDoNothing();
 }

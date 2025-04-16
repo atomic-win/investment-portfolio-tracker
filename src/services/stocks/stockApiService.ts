@@ -20,6 +20,15 @@ export type SymbolSearchResponse = {
 	matchScore: number;
 };
 
+export type StockPriceResponse = {
+	timestamp: string;
+	open: number;
+	high: number;
+	low: number;
+	close: number;
+	volume: number;
+};
+
 export async function searchSymbol(symbol: string) {
 	const response = await stocksApiClient.get(
 		`/query?apikey=${API_KEY}&datatype=csv&function=SYMBOL_SEARCH&keywords=${symbol}`,
@@ -42,4 +51,25 @@ export async function searchSymbol(symbol: string) {
 	return parsed.data.sort((a, b) => {
 		return b.matchScore - a.matchScore;
 	});
+}
+
+export async function getStockPrices(symbol: string) {
+	const response = await stocksApiClient.get(
+		`/query?apikey=${API_KEY}&datatype=csv&function=TIME_SERIES_DAILY&symbol=${symbol}&outputsize=full`,
+		{ responseType: 'text' }
+	);
+
+	if (response.status !== 200) {
+		throw new Error('Failed to fetch stock data');
+	}
+
+	const parsed = Papa.parse<StockPriceResponse>(response.data, {
+		header: true,
+		skipEmptyLines: true,
+	});
+
+	return parsed.data.map((data) => ({
+		date: data.timestamp,
+		price: data.close,
+	}));
 }
