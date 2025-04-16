@@ -10,9 +10,11 @@ export const TransactionTable = sqliteTable(
 		id,
 		date: text('date').notNull(),
 		name: text('name').notNull(),
-		assetItemId: text('asset_item_id').references(() => AssetItemTable.id, {
-			onDelete: 'cascade',
-		}),
+		assetItemId: text('asset_item_id')
+			.notNull()
+			.references(() => AssetItemTable.id, {
+				onDelete: 'cascade',
+			}),
 		type: text('type').notNull().$type<TransactionType>(),
 		units: real('units').notNull(),
 		createdAt,

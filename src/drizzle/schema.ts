@@ -4,5 +4,6 @@ export * from './schema/userSetting';
 export * from './schema/assetId';
 export * from './schema/asset';
 export * from './schema/assetRates';
+export * from './schema/exchangeRates';
 export * from './schema/assetItem';
 export * from './schema/transaction';
