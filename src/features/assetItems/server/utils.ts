@@ -12,6 +12,7 @@ import { DateTime } from 'luxon';
 import { assert } from 'console';
 import { getMutualFundNav } from '@/services/mfApiService';
 import { getStockPrices } from '@/services/stockApiService';
+import { getExchangeRates } from '@/services/exchangeRateApiService';
 
 export function getAssetItemRate(
 	assetItemId: string,
@@ -121,7 +122,17 @@ async function getAssetRateInOriginalCurrency(
 		.get()!.rate;
 }
 
-function refreshExchangeRates(from: Currency, to: Currency) {}
+async function refreshExchangeRates(from: Currency, to: Currency) {
+	const stockPrices = await getExchangeRates(from, to);
+
+	const rates = stockPrices.map((rate) => ({
+		from,
+		to,
+		...rate,
+	}));
+
+	await db.insert(ExchangeRateTable).values(rates).onConflictDoNothing();
+}
 
 function refreshAssetRates(asset: typeof AssetTable.$inferSelect) {
 	const assetType = asset.type;
