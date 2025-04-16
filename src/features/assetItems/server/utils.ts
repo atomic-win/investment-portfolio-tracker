@@ -10,6 +10,7 @@ import { desc, max } from 'drizzle-orm/sql';
 import { AssetType, Currency } from '@/types';
 import { DateTime } from 'luxon';
 import { assert } from 'console';
+import { getMutualFundNav } from '@/services/mutualFunds/mfApiService';
 
 export function getAssetItemRate(
 	assetItemId: string,
@@ -31,7 +32,7 @@ export function getAssetItemRate(
 	return getAssetRate(asset, currency, date);
 }
 
-function getAssetRate(
+async function getAssetRate(
 	asset: typeof AssetTable.$inferSelect,
 	currency: Currency,
 	date: DateTime
@@ -43,7 +44,7 @@ function getAssetRate(
 	}
 
 	return (
-		getAssetRateInOriginalCurrency(asset, date) *
+		(await getAssetRateInOriginalCurrency(asset, date)) *
 		getExchangeRate(asset.currency, currency, date)
 	);
 }
@@ -84,7 +85,7 @@ function getExchangeRate(from: Currency, to: Currency, date: DateTime) {
 		.get()!.rate;
 }
 
-function getAssetRateInOriginalCurrency(
+async function getAssetRateInOriginalCurrency(
 	asset: typeof AssetTable.$inferSelect,
 	date: DateTime
 ) {
@@ -100,7 +101,7 @@ function getAssetRateInOriginalCurrency(
 		!!!lastUpdatedAt ||
 		DateTime.utc().diff(DateTime.fromISO(lastUpdatedAt)).as('days') > 1
 	) {
-		refreshAssetRates(asset);
+		await refreshAssetRates(asset);
 	}
 
 	return db
@@ -135,8 +136,16 @@ function refreshAssetRates(asset: typeof AssetTable.$inferSelect) {
 	assert(false, 'refreshAssetRates: Unknown asset type');
 }
 
-function refreshMutualFundRates(asset: typeof AssetTable.$inferSelect) {
-	assert(false, 'Not implemented yet');
+async function refreshMutualFundRates(asset: typeof AssetTable.$inferSelect) {
+	const mfApiResponse = await getMutualFundNav(Number(asset.externalId));
+
+	const rates = mfApiResponse!.data!.map((rate) => ({
+		id: asset.id,
+		date: DateTime.fromFormat(rate.date, 'MM-dd-yyyy').toFormat('yyyy-MM-dd'),
+		rate: Number(rate.nav),
+	}));
+
+	await db.insert(AssetRateTable).values(rates).onConflictDoNothing();
 }
 
 function refreshStockRates(asset: typeof AssetTable.$inferSelect) {

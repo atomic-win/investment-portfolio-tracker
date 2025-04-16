@@ -25,3 +25,7 @@ const mfApiClient = axios.create({
 export async function getMutualFund(schemeCode: number) {
 	return (await mfApiClient.get(`mf/${schemeCode}`)).data as MFApiResponse;
 }
+
+export async function getMutualFundNav(schemeCode: number) {
+	return (await mfApiClient.get(`mf/${schemeCode}`)).data as MFApiResponse;
+}

@@ -12,6 +12,7 @@ export const AssetTable = sqliteTable('assets', {
 	name: text('name').notNull(),
 	type: text('type').notNull().$type<AssetType>(),
 	currency: text('currency').notNull().$type<Currency>(),
+	externalId: text('external_id'),
 	createdAt,
 	updatedAt,
 	refreshedAt: text('refreshed_at')
