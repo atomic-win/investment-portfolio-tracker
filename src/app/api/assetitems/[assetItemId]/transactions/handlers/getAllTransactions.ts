@@ -35,14 +35,12 @@ export default async function handler(
 			return NextResponse.json('Asset item not found', { status: 404 });
 		}
 
-		const transactions = await getAllTransactions(assetItemId);
-
-		return NextResponse.json(
-			transactions.map(
-				async (transaction) =>
-					await calculateTransactionApiResponse(transaction, currency)
-			)
+		const transactions = (await getAllTransactions(assetItemId)).map(
+			async (transaction) =>
+				await calculateTransactionApiResponse(transaction, currency)
 		);
+
+		return NextResponse.json(transactions);
 	} catch (error) {
 		console.error('Error fetching user:', error);
 		return NextResponse.json('Internal server error', { status: 500 });

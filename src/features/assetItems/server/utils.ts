@@ -47,11 +47,15 @@ async function getAssetRate(
 
 	return (
 		(await getAssetRateInOriginalCurrency(asset, date)) *
-		getExchangeRate(asset.currency, currency, date)
+		(await getExchangeRate(asset.currency, currency, date))
 	);
 }
 
-function getExchangeRate(from: Currency, to: Currency, date: DateTime) {
+async function getExchangeRate(from: Currency, to: Currency, date: DateTime) {
+	if (from === to) {
+		return 1;
+	}
+
 	const { lastUpdatedAt } = db
 		.select({
 			lastUpdatedAt: max(ExchangeRateTable.updatedAt),
@@ -64,7 +68,7 @@ function getExchangeRate(from: Currency, to: Currency, date: DateTime) {
 		!!!lastUpdatedAt ||
 		DateTime.utc().diff(DateTime.fromISO(lastUpdatedAt)).as('days') > 1
 	) {
-		refreshExchangeRates(from, to);
+		await refreshExchangeRates(from, to);
 	}
 
 	return db

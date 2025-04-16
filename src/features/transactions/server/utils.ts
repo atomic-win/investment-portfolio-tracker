@@ -29,7 +29,8 @@ export async function calculateTransactionAmount(
 	currency: Currency,
 	date: DateTime
 ) {
-	const price = await getAssetItemRate(transaction.assetItemId, currency, date);
-
-	return price * transaction.units;
+	return (
+		(await getAssetItemRate(transaction.assetItemId, currency, date)) *
+		transaction.units
+	);
 }
