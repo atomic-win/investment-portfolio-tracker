@@ -35,9 +35,13 @@ export default async function handler(
 			return NextResponse.json('Asset item not found', { status: 404 });
 		}
 
-		const transactions = (await getAllTransactions(assetItemId)).map(
-			async (transaction) =>
-				await calculateTransactionApiResponse(transaction, currency)
+		const transactions = await Promise.all(
+			(
+				await getAllTransactions(assetItemId)
+			).map(
+				async (transaction) =>
+					await calculateTransactionApiResponse(transaction, currency)
+			)
 		);
 
 		return NextResponse.json(transactions);
