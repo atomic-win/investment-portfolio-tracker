@@ -42,7 +42,7 @@ export async function getAssetItem(userId: string, id: string) {
 		.innerJoin(AssetTable, eq(AssetItemTable.assetId, AssetTable.id));
 
 	if (!result || result.length === 0) {
-		return result;
+		return null;
 	}
 
 	return calulateAssetItem(result[0]);
