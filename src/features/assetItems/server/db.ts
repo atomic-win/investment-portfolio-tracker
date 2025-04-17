@@ -56,7 +56,8 @@ export async function addAssetId(data: typeof AssetIdTable.$inferInsert) {
 }
 
 export async function addAsset(data: typeof AssetTable.$inferInsert) {
-	return await db.insert(AssetTable).values(data).returning();
+	const assets = await db.insert(AssetTable).values(data).returning();
+	return assets[0];
 }
 
 export async function addAssetItem(data: typeof AssetItemTable.$inferInsert) {

@@ -15,7 +15,8 @@ const AssetItemSchema = z
 		name: z.string().min(3).max(50),
 		class: z.nativeEnum(AssetClass).optional(),
 		type: z.nativeEnum(AssetType),
-		externalId: z.string().optional(),
+		schemeCode: z.number().int().min(100000).max(999999).optional(),
+		symbol: z.string().optional(),
 		currency: z
 			.nativeEnum(Currency)
 			.refine((val) => val !== Currency.Unknown, {
@@ -42,36 +43,21 @@ const AssetItemSchema = z
 			}
 		}
 
-		if (data.type === AssetType.MutualFunds) {
-			if (!data.externalId) {
-				ctx.addIssue({
-					code: z.ZodIssueCode.custom,
-					message: 'External ID is required for Mutual Funds',
-					path: ['externalId'],
-				});
-			} else {
-				const schemeCode = z.coerce
-					.number()
-					.int()
-					.min(100000)
-					.max(999999)
-					.safeParse(data.externalId);
-
-				if (!schemeCode.success) {
-					ctx.addIssue({
-						code: z.ZodIssueCode.custom,
-						message: 'External ID must be a 6-digit number',
-						path: ['externalId'],
-					});
-				}
-			}
-		}
-
-		if (data.type === AssetType.Stocks && !data.externalId) {
+		if (data.type === AssetType.MutualFunds && !data.schemeCode) {
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
-				message: 'External ID is required for Stocks',
-				path: ['externalId'],
+				message: 'Scheme Code is required for Mutual Funds',
+				path: ['schemeCode'],
+			});
+
+			return;
+		}
+
+		if (data.type === AssetType.Stocks && !data.symbol) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'Symbol is required for Stocks',
+				path: ['symbol'],
 			});
 
 			return;
@@ -111,13 +97,13 @@ export default async function handler(req: NextRequest, claims: AuthClaims) {
 			);
 		}
 
-		const { name, type, externalId, currency } = parsedBody.data;
+		const { name, type, schemeCode, symbol, currency } = parsedBody.data;
 
 		if (type === AssetType.MutualFunds) {
 			return addMutualFundAssetItem({
 				userId,
 				name,
-				schemeCode: Number(externalId),
+				schemeCode: schemeCode!,
 			});
 		}
 
@@ -125,7 +111,7 @@ export default async function handler(req: NextRequest, claims: AuthClaims) {
 			return addStockAssetItem({
 				userId,
 				name,
-				symbol: externalId!.toLowerCase(),
+				symbol: symbol!.toLowerCase(),
 			});
 		}
 
@@ -174,6 +160,7 @@ async function addMutualFundAssetItem({
 	const newAsset = await addAsset({
 		name: mfApiResponse.meta.scheme_name,
 		type: AssetType.MutualFunds,
+		externalId: schemeCode.toString(),
 		currency: Currency.INR,
 	});
 
@@ -239,6 +226,7 @@ async function addStockAssetItem({
 	const newAsset = await addAsset({
 		name: bestMatch.name,
 		type: AssetType.Stocks,
+		externalId: symbol,
 		currency: z.nativeEnum(Currency).parse(bestMatch.currency),
 	});
 

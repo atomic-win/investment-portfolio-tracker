@@ -163,7 +163,7 @@ async function refreshMutualFundRates(asset: typeof AssetTable.$inferSelect) {
 
 	const rates = mfApiResponse!.data!.map((rate) => ({
 		id: asset.id,
-		date: DateTime.fromFormat(rate.date, 'MM-dd-yyyy').toFormat('yyyy-MM-dd'),
+		date: DateTime.fromFormat(rate.date, 'dd-MM-yyyy').toFormat('yyyy-MM-dd'),
 		rate: Number(rate.nav),
 	}));
 
