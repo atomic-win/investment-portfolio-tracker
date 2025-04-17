@@ -17,8 +17,7 @@ export async function getUser(userId: string) {
 			email: UserTable.email,
 		})
 		.from(UserTable)
-		.where(eq(UserTable.id, userId))
-		.get();
+		.where(eq(UserTable.id, userId));
 }
 
 export async function getUserSettings(userId: string) {
@@ -32,8 +31,7 @@ export async function getUserSettings(userId: string) {
 			language: UserSettingTable.language,
 		})
 		.from(UserSettingTable)
-		.where(eq(UserSettingTable.id, userId))
-		.get();
+		.where(eq(UserSettingTable.id, userId));
 }
 
 export async function updateUserSettings(

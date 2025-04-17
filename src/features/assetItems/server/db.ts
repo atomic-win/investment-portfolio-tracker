@@ -15,14 +15,13 @@ export async function getAssetId(type: AssetType, externalId: string) {
 		.from(AssetIdTable)
 		.where(
 			and(eq(AssetIdTable.type, type), eq(AssetIdTable.externalId, externalId))
-		)
-		.get();
+		);
 
-	if (!assetIdMapping) {
+	if (!assetIdMapping || assetIdMapping.length === 0) {
 		return null;
 	}
 
-	return assetIdMapping.assetId;
+	return assetIdMapping[0].assetId;
 }
 
 export async function getAllAssetItems(userId: string) {
@@ -30,8 +29,7 @@ export async function getAllAssetItems(userId: string) {
 		.select()
 		.from(AssetItemTable)
 		.where(eq(AssetItemTable.userId, userId))
-		.innerJoin(AssetTable, eq(AssetItemTable.assetId, AssetTable.id))
-		.all();
+		.innerJoin(AssetTable, eq(AssetItemTable.assetId, AssetTable.id));
 
 	return result.map(calulateAssetItem);
 }
@@ -41,43 +39,41 @@ export async function getAssetItem(userId: string, id: string) {
 		.select()
 		.from(AssetItemTable)
 		.where(and(eq(AssetItemTable.userId, userId), eq(AssetItemTable.id, id)))
-		.innerJoin(AssetTable, eq(AssetItemTable.assetId, AssetTable.id))
-		.get();
+		.innerJoin(AssetTable, eq(AssetItemTable.assetId, AssetTable.id));
 
-	if (!result) {
+	if (!result || result.length === 0) {
 		return result;
 	}
 
-	return calulateAssetItem(result);
+	return calulateAssetItem(result[0]);
 }
 
 export async function getAsset(id: string) {
-	return await db.select().from(AssetTable).where(eq(AssetTable.id, id)).get();
+	return await db.select().from(AssetTable).where(eq(AssetTable.id, id));
 }
 export async function addAssetId(data: typeof AssetIdTable.$inferInsert) {
-	return await db.insert(AssetIdTable).values(data).returning().get();
+	return await db.insert(AssetIdTable).values(data).returning();
 }
 
 export async function addAsset(data: typeof AssetTable.$inferInsert) {
-	return await db.insert(AssetTable).values(data).returning().get();
+	return await db.insert(AssetTable).values(data).returning();
 }
 
 export async function addAssetItem(data: typeof AssetItemTable.$inferInsert) {
-	return await db.insert(AssetItemTable).values(data).returning().get();
+	return await db.insert(AssetItemTable).values(data).returning();
 }
 
 export async function deleteAssetItem(id: string) {
 	return await db
 		.delete(AssetItemTable)
 		.where(eq(AssetItemTable.id, id))
-		.returning()
-		.get();
+		.returning();
 }
 
 export async function addAssetRates(
 	data: (typeof AssetRateTable.$inferInsert)[]
 ) {
-	return await db.insert(AssetRateTable).values(data).returning().get();
+	return await db.insert(AssetRateTable).values(data).returning();
 }
 
 function calulateAssetItem(data: {

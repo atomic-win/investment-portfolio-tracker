@@ -19,20 +19,18 @@ export async function getTransaction(assetItemId: string, id: string) {
 				eq(TransactionTable.assetItemId, assetItemId),
 				eq(TransactionTable.id, id)
 			)
-		)
-		.get();
+		);
 }
 
 export async function addTransaction(
 	data: typeof TransactionTable.$inferInsert
 ) {
-	return await db.insert(TransactionTable).values(data).returning().get();
+	return await db.insert(TransactionTable).values(data).returning();
 }
 
 export async function deleteTransaction(id: string) {
 	return await db
 		.delete(TransactionTable)
 		.where(eq(TransactionTable.id, id))
-		.returning()
-		.get();
+		.returning();
 }

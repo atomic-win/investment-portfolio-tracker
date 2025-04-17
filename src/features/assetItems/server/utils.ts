@@ -14,24 +14,22 @@ import { getMutualFundNav } from '@/services/mfApiService';
 import { getStockPrices } from '@/services/stockApiService';
 import { getExchangeRates } from '@/services/exchangeRateApiService';
 
-export function getAssetItemRate(
+export async function getAssetItemRate(
 	assetItemId: string,
 	currency: Currency,
 	date: DateTime
 ) {
-	const assetItem = db
+	const assetItem = await db
 		.select()
 		.from(AssetItemTable)
-		.where(eq(AssetItemTable.id, assetItemId))
-		.get()!;
+		.where(eq(AssetItemTable.id, assetItemId));
 
-	const asset = db
+	const asset = await db
 		.select()
 		.from(AssetTable)
-		.where(eq(AssetTable.id, assetItem.assetId))
-		.get()!;
+		.where(eq(AssetTable.id, assetItem[0].assetId));
 
-	return getAssetRate(asset, currency, date);
+	return getAssetRate(asset[0], currency, date);
 }
 
 async function getAssetRate(
@@ -56,22 +54,25 @@ async function getExchangeRate(from: Currency, to: Currency, date: DateTime) {
 		return 1;
 	}
 
-	const { lastUpdatedAt } = db
+	const lastUpdatedAt = await db
 		.select({
 			lastUpdatedAt: max(ExchangeRateTable.updatedAt),
 		})
 		.from(ExchangeRateTable)
-		.where(and(eq(ExchangeRateTable.from, from), eq(ExchangeRateTable.to, to)))
-		.get()!;
+		.where(and(eq(ExchangeRateTable.from, from), eq(ExchangeRateTable.to, to)));
 
 	if (
 		!!!lastUpdatedAt ||
-		DateTime.utc().diff(DateTime.fromISO(lastUpdatedAt)).as('days') > 1
+		lastUpdatedAt.length === 0 ||
+		!!!lastUpdatedAt[0].lastUpdatedAt ||
+		DateTime.utc()
+			.diff(DateTime.fromISO(lastUpdatedAt[0].lastUpdatedAt))
+			.as('days') > 1
 	) {
 		await refreshExchangeRates(from, to);
 	}
 
-	return db
+	const rates = await db
 		.select({
 			rate: ExchangeRateTable.rate,
 		})
@@ -87,30 +88,34 @@ async function getExchangeRate(from: Currency, to: Currency, date: DateTime) {
 			)
 		)
 		.orderBy(desc(ExchangeRateTable.date))
-		.limit(1)
-		.get()!.rate;
+		.limit(1);
+
+	return rates[0].rate;
 }
 
 async function getAssetRateInOriginalCurrency(
 	asset: typeof AssetTable.$inferSelect,
 	date: DateTime
 ) {
-	const { lastUpdatedAt } = db
+	const lastUpdatedAt = await db
 		.select({
 			lastUpdatedAt: max(AssetRateTable.updatedAt),
 		})
 		.from(AssetRateTable)
-		.where(eq(AssetRateTable.id, asset.id))
-		.get()!;
+		.where(eq(AssetRateTable.id, asset.id));
 
 	if (
 		!!!lastUpdatedAt ||
-		DateTime.utc().diff(DateTime.fromISO(lastUpdatedAt)).as('days') > 1
+		lastUpdatedAt.length === 0 ||
+		!!!lastUpdatedAt[0].lastUpdatedAt ||
+		DateTime.utc()
+			.diff(DateTime.fromISO(lastUpdatedAt[0].lastUpdatedAt))
+			.as('days') > 1
 	) {
 		await refreshAssetRates(asset);
 	}
 
-	return db
+	const rates = await db
 		.select({
 			rate: AssetRateTable.rate,
 		})
@@ -122,8 +127,9 @@ async function getAssetRateInOriginalCurrency(
 			)
 		)
 		.orderBy(desc(AssetRateTable.date))
-		.limit(1)
-		.get()!.rate;
+		.limit(1);
+
+	return rates[0].rate;
 }
 
 async function refreshExchangeRates(from: Currency, to: Currency) {
