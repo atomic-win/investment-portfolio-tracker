@@ -23,8 +23,8 @@ export enum AssetClass {
 export enum AssetType {
 	CashAccounts = 'Cash Accounts',
 	FixedDeposits = 'Fixed Deposits',
-	EPF = 'EPF',
-	PPF = 'PPF',
+	EPF = 'Employee Provident Fund',
+	PPF = 'Public Provident Fund',
 	MutualFunds = 'Mutual Funds',
 	Stocks = 'Stocks',
 }
