@@ -13,7 +13,7 @@ import { searchSymbol } from '@/services/stockApiService';
 const AssetItemSchema = z
 	.object({
 		name: z.string().min(3).max(50),
-		class: z.nativeEnum(AssetClass).optional(),
+		assetClass: z.nativeEnum(AssetClass).optional(),
 		type: z.nativeEnum(AssetType),
 		schemeCode: z.number().int().min(100000).max(999999).optional(),
 		symbol: z.string().optional(),
@@ -34,7 +34,7 @@ const AssetItemSchema = z
 				});
 			}
 
-			if (data.class) {
+			if (data.assetClass) {
 				ctx.addIssue({
 					code: z.ZodIssueCode.custom,
 					message: 'Class should not be provided for Mutual Funds or Stocks',
@@ -72,7 +72,7 @@ const AssetItemSchema = z
 				});
 			}
 
-			if (!!!data.class) {
+			if (!!!data.assetClass) {
 				ctx.addIssue({
 					code: z.ZodIssueCode.custom,
 					message: 'Class is required',
@@ -118,7 +118,7 @@ export default async function handler(req: NextRequest, claims: AuthClaims) {
 		return addDefaultAssetItem({
 			userId,
 			name,
-			assetClass: parsedBody.data.class!,
+			assetClass: parsedBody.data.assetClass!,
 			type,
 			currency: currency!,
 		});
