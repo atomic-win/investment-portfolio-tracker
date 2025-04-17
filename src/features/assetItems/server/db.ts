@@ -66,6 +66,14 @@ export async function addAssetItem(data: typeof AssetItemTable.$inferInsert) {
 	return await db.insert(AssetItemTable).values(data).returning().get();
 }
 
+export async function deleteAssetItem(id: string) {
+	return await db
+		.delete(AssetItemTable)
+		.where(eq(AssetItemTable.id, id))
+		.returning()
+		.get();
+}
+
 export async function addAssetRates(
 	data: (typeof AssetRateTable.$inferInsert)[]
 ) {

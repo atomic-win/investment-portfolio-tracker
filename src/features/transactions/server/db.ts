@@ -1,6 +1,6 @@
 import { db } from '@/drizzle/db';
 import { TransactionTable } from '@/drizzle/schema';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 
 export async function getAllTransactions(assetItemId: string) {
 	return await db
@@ -10,8 +10,29 @@ export async function getAllTransactions(assetItemId: string) {
 		.all();
 }
 
+export async function getTransaction(assetItemId: string, id: string) {
+	return await db
+		.select()
+		.from(TransactionTable)
+		.where(
+			and(
+				eq(TransactionTable.assetItemId, assetItemId),
+				eq(TransactionTable.id, id)
+			)
+		)
+		.get();
+}
+
 export async function addTransaction(
 	data: typeof TransactionTable.$inferInsert
 ) {
 	return await db.insert(TransactionTable).values(data).returning().get();
+}
+
+export async function deleteTransaction(id: string) {
+	return await db
+		.delete(TransactionTable)
+		.where(eq(TransactionTable.id, id))
+		.returning()
+		.get();
 }
