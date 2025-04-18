@@ -1,18 +1,16 @@
 import { TransactionTable } from '@/drizzle/schema';
-import { getAssetItemRate } from '@/features/assetItems/server/utils';
-import { Currency } from '@/types';
+import {
+	getAssetItemCurrency,
+	getAssetItemRate,
+	getExchangeRate,
+} from '@/features/assetItems/server/utils';
+import { Currency, TransactionType } from '@/types';
 import { DateTime } from 'luxon';
 
 export async function calculateTransactionApiResponse(
 	transaction: typeof TransactionTable.$inferSelect,
 	currency: Currency
 ) {
-	const amount = await calculateTransactionAmount(
-		transaction,
-		currency,
-		DateTime.fromISO(transaction.date)
-	);
-
 	return {
 		id: transaction.id,
 		date: transaction.date,
@@ -20,17 +18,30 @@ export async function calculateTransactionApiResponse(
 		assetItemId: transaction.assetItemId,
 		type: transaction.type,
 		units: transaction.units,
-		amount,
+		amount: await calculateTransactionAmount(
+			transaction,
+			DateTime.fromISO(transaction.date),
+			currency
+		),
 	};
 }
 
 export async function calculateTransactionAmount(
 	transaction: typeof TransactionTable.$inferSelect,
-	currency: Currency,
-	date: DateTime
+	date: DateTime,
+	currency: Currency
 ) {
+	const assetItemCurrency = await getAssetItemCurrency(transaction.assetItemId);
+
+	const exchangeRate = await getExchangeRate(assetItemCurrency, currency, date);
+
+	if (transaction.type === TransactionType.Dividend) {
+		return exchangeRate * transaction.units;
+	}
+
 	return (
-		(await getAssetItemRate(transaction.assetItemId, currency, date)) *
+		exchangeRate *
+		(await getAssetItemRate(transaction.assetItemId, date)) *
 		transaction.units
 	);
 }

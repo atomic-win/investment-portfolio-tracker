@@ -1,13 +1,19 @@
 import { db } from '@/drizzle/db';
 import { TransactionTable } from '@/drizzle/schema';
-import { and, eq } from 'drizzle-orm';
+import { and, asc, eq, lte } from 'drizzle-orm';
+import { DateTime } from 'luxon';
 
-export async function getAllTransactions(assetItemId: string) {
+export async function getAllTransactions(assetItemId: string, date: DateTime) {
 	return await db
 		.select()
 		.from(TransactionTable)
-		.where(eq(TransactionTable.assetItemId, assetItemId))
-		.all();
+		.where(
+			and(
+				eq(TransactionTable.assetItemId, assetItemId),
+				lte(TransactionTable.date, date.toFormat('yyyy-MM-dd'))
+			)
+		)
+		.orderBy(asc(TransactionTable.date));
 }
 
 export async function getTransaction(assetItemId: string, id: string) {

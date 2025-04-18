@@ -4,6 +4,7 @@ import { getAssetItem } from '@/features/assetItems/server/db';
 import { getAllTransactions } from '@/features/transactions/server/db';
 import { z } from 'zod';
 import { calculateTransactionApiResponse } from '@/features/transactions/server/utils';
+import { DateTime } from 'luxon';
 
 export default async function handler(
 	req: NextRequest,
@@ -37,7 +38,7 @@ export default async function handler(
 
 		const transactions = await Promise.all(
 			(
-				await getAllTransactions(assetItemId)
+				await getAllTransactions(assetItemId, DateTime.utc().plus({ days: 1 }))
 			).map(
 				async (transaction) =>
 					await calculateTransactionApiResponse(transaction, currency)

@@ -6,50 +6,29 @@ import {
 	ExchangeRateTable,
 } from '@/drizzle/schema';
 import { eq, and, gte } from 'drizzle-orm';
-import { desc, max } from 'drizzle-orm/sql';
+import { desc, lte, max } from 'drizzle-orm/sql';
 import { AssetType, Currency } from '@/types';
 import { DateTime } from 'luxon';
-import { assert } from 'console';
 import { getMutualFundNav } from '@/services/mfApiService';
 import { getStockPrices } from '@/services/stockApiService';
 import { getExchangeRates } from '@/services/exchangeRateApiService';
 
-export async function getAssetItemRate(
-	assetItemId: string,
-	currency: Currency,
-	date: DateTime
-) {
-	const assetItem = await db
-		.select()
-		.from(AssetItemTable)
-		.where(eq(AssetItemTable.id, assetItemId));
-
-	const asset = await db
-		.select()
-		.from(AssetTable)
-		.where(eq(AssetTable.id, assetItem[0].assetId));
-
-	return getAssetRate(asset[0], currency, date);
+export async function getAssetItemCurrency(assetItemId: string) {
+	const asset = await getAsset(assetItemId);
+	return asset.currency;
 }
 
-async function getAssetRate(
-	asset: typeof AssetTable.$inferSelect,
-	currency: Currency,
-	date: DateTime
-) {
-	const assetType = asset.type;
+export async function getAssetItemRate(assetItemId: string, date: DateTime) {
+	const asset = await getAsset(assetItemId);
 
-	if (assetType !== AssetType.MutualFunds && assetType !== AssetType.Stocks) {
-		return getExchangeRate(asset.currency, currency, date);
-	}
-
-	return (
-		(await getAssetRateInOriginalCurrency(asset, date)) *
-		(await getExchangeRate(asset.currency, currency, date))
-	);
+	return getAssetRate(asset, date);
 }
 
-async function getExchangeRate(from: Currency, to: Currency, date: DateTime) {
+export async function getExchangeRate(
+	from: Currency,
+	to: Currency,
+	date: DateTime
+) {
 	if (from === to) {
 		return 1;
 	}
@@ -81,6 +60,7 @@ async function getExchangeRate(from: Currency, to: Currency, date: DateTime) {
 			and(
 				eq(ExchangeRateTable.from, from),
 				eq(ExchangeRateTable.to, to),
+				lte(ExchangeRateTable.date, date.toFormat('yyyy-MM-dd')),
 				gte(
 					ExchangeRateTable.date,
 					date.minus({ days: 7 }).toFormat('yyyy-MM-dd')
@@ -93,10 +73,30 @@ async function getExchangeRate(from: Currency, to: Currency, date: DateTime) {
 	return rates[0].rate;
 }
 
-async function getAssetRateInOriginalCurrency(
+async function getAsset(assetItemId: string) {
+	const assetItems = await db
+		.select()
+		.from(AssetItemTable)
+		.where(eq(AssetItemTable.id, assetItemId));
+
+	const assets = await db
+		.select()
+		.from(AssetTable)
+		.where(eq(AssetTable.id, assetItems[0].assetId));
+
+	return assets[0];
+}
+
+async function getAssetRate(
 	asset: typeof AssetTable.$inferSelect,
 	date: DateTime
 ) {
+	const assetType = asset.type;
+
+	if (assetType !== AssetType.MutualFunds && assetType !== AssetType.Stocks) {
+		return 1;
+	}
+
 	const lastUpdatedAt = await db
 		.select({
 			lastUpdatedAt: max(AssetRateTable.updatedAt),
@@ -117,12 +117,14 @@ async function getAssetRateInOriginalCurrency(
 
 	const rates = await db
 		.select({
+			date: AssetRateTable.date,
 			rate: AssetRateTable.rate,
 		})
 		.from(AssetRateTable)
 		.where(
 			and(
 				eq(AssetRateTable.id, asset.id),
+				lte(AssetRateTable.date, date.toFormat('yyyy-MM-dd')),
 				gte(AssetRateTable.date, date.minus({ days: 7 }).toFormat('yyyy-MM-dd'))
 			)
 		)
@@ -132,18 +134,6 @@ async function getAssetRateInOriginalCurrency(
 	return rates[0].rate;
 }
 
-async function refreshExchangeRates(from: Currency, to: Currency) {
-	const stockPrices = await getExchangeRates(from, to);
-
-	const rates = stockPrices.map((rate) => ({
-		from,
-		to,
-		...rate,
-	}));
-
-	await db.insert(ExchangeRateTable).values(rates).onConflictDoNothing();
-}
-
 function refreshAssetRates(asset: typeof AssetTable.$inferSelect) {
 	const assetType = asset.type;
 
@@ -151,11 +141,7 @@ function refreshAssetRates(asset: typeof AssetTable.$inferSelect) {
 		return refreshMutualFundRates(asset);
 	}
 
-	if (assetType === AssetType.Stocks) {
-		return refreshStockRates(asset);
-	}
-
-	assert(false, 'refreshAssetRates: Unknown asset type');
+	return refreshStockRates(asset);
 }
 
 async function refreshMutualFundRates(asset: typeof AssetTable.$inferSelect) {
@@ -167,7 +153,7 @@ async function refreshMutualFundRates(asset: typeof AssetTable.$inferSelect) {
 		rate: Number(rate.nav),
 	}));
 
-	await db.insert(AssetRateTable).values(rates).onConflictDoNothing();
+	return db.insert(AssetRateTable).values(rates).onConflictDoNothing();
 }
 
 async function refreshStockRates(asset: typeof AssetTable.$inferSelect) {
@@ -179,5 +165,17 @@ async function refreshStockRates(asset: typeof AssetTable.$inferSelect) {
 		id: asset.id,
 	}));
 
-	await db.insert(AssetRateTable).values(rates).onConflictDoNothing();
+	return db.insert(AssetRateTable).values(rates).onConflictDoNothing();
+}
+
+async function refreshExchangeRates(from: Currency, to: Currency) {
+	const stockPrices = await getExchangeRates(from, to);
+
+	const rates = stockPrices.map((rate) => ({
+		from,
+		to,
+		...rate,
+	}));
+
+	return db.insert(ExchangeRateTable).values(rates).onConflictDoNothing();
 }
