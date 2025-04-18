@@ -10,14 +10,16 @@ export async function getUser(userId: string) {
 
 	cacheTag(getUserTag(userId));
 
-	return await db
-		.select({
-			id: UserTable.id,
-			fullName: UserTable.fullName,
-			email: UserTable.email,
-		})
-		.from(UserTable)
-		.where(eq(UserTable.id, userId));
+	return (
+		await db
+			.select({
+				id: UserTable.id,
+				fullName: UserTable.fullName,
+				email: UserTable.email,
+			})
+			.from(UserTable)
+			.where(eq(UserTable.id, userId))
+	)[0];
 }
 
 export async function getUserSettings(userId: string) {

@@ -32,31 +32,26 @@ export default function useValuationQueries(
 	);
 
 	return useQueries({
-		queries: queryInputs.map(({ id, assetIds, date }) => ({
+		queries: queryInputs.map(({ id, assetIds: assetItemIds, date }) => ({
 			queryKey: [
-				'investments',
-				'assets',
 				'valuation',
 				{
 					date,
-					assetIds,
+					assetItemIds,
 					currency,
 				},
 			],
 			queryFn: async () => {
-				const response = await primalApiClient.post(
-					'/investments/assets/valuation',
-					{
-						date,
-						assetIds,
-						currency,
-					}
+				const response = await primalApiClient.get(
+					`valuation?${assetItemIds
+						.map((id) => `assetItemId=${id}`)
+						.join('&')}&date=${date}&currency=${currency}`
 				);
 				return response.data as Valuation;
 			},
 			enabled:
 				!!currency &&
-				assetIds.length > 0 &&
+				assetItemIds.length > 0 &&
 				assets.length > 0 &&
 				instruments.length > 0,
 			select: (data: Valuation) =>

@@ -13,7 +13,7 @@ export const usePrimalApiClient = () => {
 	};
 
 	const apiClient = axios.create({
-		baseURL: 'http://localhost:5185/api',
+		baseURL: 'http://localhost:3000/api',
 		headers: headers,
 		validateStatus: () => true,
 	});

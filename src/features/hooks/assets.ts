@@ -6,9 +6,9 @@ export function useAllAssetsQuery() {
 	const primalApiClient = usePrimalApiClient();
 
 	return useQuery({
-		queryKey: ['investments', 'assets', 'all'],
+		queryKey: ['assetitems', 'all'],
 		queryFn: async () => {
-			const response = await primalApiClient.get('/investments/assets');
+			const response = await primalApiClient.get('assetitems');
 			return response.data as Asset[];
 		},
 	});
@@ -19,12 +19,12 @@ export function useDeleteAssetMutation() {
 	const primalApiClient = usePrimalApiClient();
 
 	return useMutation({
-		mutationFn: async (assetId: string) => {
-			await primalApiClient.delete(`investments/assets/${assetId}`);
+		mutationFn: async (assetItemId: string) => {
+			await primalApiClient.delete(`assetitems/${assetItemId}`);
 		},
 		onSettled: () => {
 			queryClient.invalidateQueries({
-				queryKey: ['investments', 'assets', 'all'],
+				queryKey: ['assetitems', 'all'],
 			});
 		},
 	});

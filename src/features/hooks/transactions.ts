@@ -28,11 +28,10 @@ export function useAssetTransactionsQueries(
 	const primalApiClient = usePrimalApiClient();
 
 	return useQueries({
-		queries: (assetIds || []).map((assetId) => ({
+		queries: (assetIds || []).map((assetItemId) => ({
 			queryKey: [
-				'investments',
-				'assets',
-				assetId,
+				'assetitems',
+				assetItemId,
 				'transactions',
 				{
 					currency,
@@ -40,7 +39,7 @@ export function useAssetTransactionsQueries(
 			],
 			queryFn: async () => {
 				const response = await primalApiClient.get(
-					`/investments/assets/${assetId}/transactions?currency=${currency}`
+					`assetitems/${assetItemId}/transactions?currency=${currency}`
 				);
 				const transactions = response.data as Transaction[];
 				return transactions.sort((a, b) => b.date.localeCompare(a.date));
@@ -48,9 +47,9 @@ export function useAssetTransactionsQueries(
 			select: (data: Transaction[]) =>
 				data.map((x) => ({
 					...x,
-					assetId,
+					assetId: assetItemId,
 				})),
-			enabled: !!currency && !!assetId,
+			enabled: !!currency && !!assetItemId,
 		})),
 	});
 }
@@ -62,7 +61,7 @@ export function useDeleteTransactionMutation() {
 	return useMutation({
 		mutationFn: async (request: DeleteTransactionRequest) => {
 			await primalApiClient.delete(
-				`investments/assets/${request.assetId}/transactions/${request.transactionId}`
+				`assetitems/${request.assetId}/transactions/${request.transactionId}`
 			);
 		},
 		onSettled: (_data, _error, request) => onSettled(queryClient, request),
@@ -80,7 +79,7 @@ export function useAddTransactionMutation() {
 			}
 
 			await primalApiClient.post(
-				`/investments/assets/${transaction.assetId}/transactions`,
+				`assetitems/${transaction.assetId}/transactions`,
 				transaction
 			);
 		},
