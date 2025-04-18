@@ -60,7 +60,7 @@ export default async function handler(req: NextRequest, claims: AuthClaims) {
 				async (assetItemId) =>
 					await calculateAssetItemValuation(
 						assetItemId,
-						DateTime.fromISO(evaluationDate),
+						evaluationDate,
 						currency
 					)
 			)
@@ -87,15 +87,22 @@ export default async function handler(req: NextRequest, claims: AuthClaims) {
 
 async function calculateAssetItemValuation(
 	assetItemId: string,
-	evaluationDate: DateTime,
+	evaluationDate: string,
 	currency: Currency
 ) {
-	const transactions = await getAllTransactions(assetItemId, evaluationDate);
+	'use cache';
+
+	const transactions = await getAllTransactions(
+		assetItemId,
+		DateTime.fromISO(evaluationDate)
+	);
 
 	const xirrInputs = await Promise.all(
 		transactions.map(async (transaction) => ({
-			yearDiff: evaluationDate.diff(DateTime.fromISO(transaction.date), 'years')
-				.years,
+			yearDiff: DateTime.fromISO(evaluationDate).diff(
+				DateTime.fromISO(transaction.date),
+				'years'
+			).years,
 			transactionAmount: await calculateXIRRTransactionAmount(
 				transaction,
 				evaluationDate,
@@ -180,7 +187,7 @@ function calculateXIRR(
 
 async function calculateXIRRTransactionAmount(
 	transaction: typeof TransactionTable.$inferSelect,
-	evaluationDate: DateTime,
+	evaluationDate: string,
 	currency: Currency
 ) {
 	switch (transaction.type) {
@@ -208,7 +215,7 @@ async function calculateXIRRTransactionAmount(
 
 async function calculateXIRRBalanceAmount(
 	transaction: typeof TransactionTable.$inferSelect,
-	evaluationDate: DateTime,
+	evaluationDate: string,
 	currency: Currency
 ) {
 	switch (transaction.type) {
@@ -235,7 +242,7 @@ async function calculateXIRRBalanceAmount(
 
 async function calculateInvestedValue(
 	transactions: (typeof TransactionTable.$inferSelect)[],
-	evaluationDate: DateTime,
+	evaluationDate: string,
 	currency: Currency
 ) {
 	let withdrawnCashUnits = transactions
@@ -295,7 +302,7 @@ async function calculateInvestedValue(
 
 async function calculateCurrentValue(
 	transactions: (typeof TransactionTable.$inferSelect)[],
-	evaluationDate: DateTime,
+	evaluationDate: string,
 	currency: Currency
 ) {
 	return (
@@ -333,7 +340,7 @@ async function calculateCurrentValue(
 
 async function calculateInitialAmount(
 	transaction: typeof TransactionTable.$inferSelect,
-	evaluationDate: DateTime,
+	evaluationDate: string,
 	currency: Currency
 ) {
 	if (
@@ -343,16 +350,12 @@ async function calculateInitialAmount(
 		return await calculateCurrentAmount(transaction, evaluationDate, currency);
 	}
 
-	return calculateTransactionAmount(
-		transaction,
-		DateTime.fromISO(transaction.date),
-		currency
-	);
+	return calculateTransactionAmount(transaction, transaction.date, currency);
 }
 
 function calculateCurrentAmount(
 	transaction: typeof TransactionTable.$inferSelect,
-	evaluationDate: DateTime,
+	evaluationDate: string,
 	currency: Currency
 ) {
 	return calculateTransactionAmount(transaction, evaluationDate, currency);

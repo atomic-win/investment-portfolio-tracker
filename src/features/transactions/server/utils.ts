@@ -5,7 +5,6 @@ import {
 	getExchangeRate,
 } from '@/features/assetItems/server/utils';
 import { Currency, TransactionType } from '@/types';
-import { DateTime } from 'luxon';
 
 export async function calculateTransactionApiResponse(
 	transaction: typeof TransactionTable.$inferSelect,
@@ -20,7 +19,7 @@ export async function calculateTransactionApiResponse(
 		units: transaction.units,
 		amount: await calculateTransactionAmount(
 			transaction,
-			DateTime.fromISO(transaction.date),
+			transaction.date,
 			currency
 		),
 	};
@@ -28,16 +27,12 @@ export async function calculateTransactionApiResponse(
 
 export async function calculateTransactionAmount(
 	transaction: typeof TransactionTable.$inferSelect,
-	date: DateTime,
+	date: string,
 	currency: Currency
 ) {
 	const assetItemCurrency = await getAssetItemCurrency(transaction.assetItemId);
 
-	const exchangeRate = await getExchangeRate(
-		assetItemCurrency,
-		currency,
-		date.toISODate()!
-	);
+	const exchangeRate = await getExchangeRate(assetItemCurrency, currency, date);
 
 	if (transaction.type === TransactionType.Dividend) {
 		return exchangeRate * transaction.units;
@@ -45,7 +40,7 @@ export async function calculateTransactionAmount(
 
 	return (
 		exchangeRate *
-		(await getAssetItemRate(transaction.assetItemId, date.toISODate()!)) *
+		(await getAssetItemRate(transaction.assetItemId, date)) *
 		transaction.units
 	);
 }
