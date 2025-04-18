@@ -38,7 +38,10 @@ export default async function handler(
 
 		const transactions = await Promise.all(
 			(
-				await getAllTransactions(assetItemId, DateTime.utc().plus({ days: 1 }))
+				await getAllTransactions(
+					assetItemId,
+					DateTime.utc().plus({ days: 1 }).toISODate()
+				)
 			).map(
 				async (transaction) =>
 					await calculateTransactionApiResponse(transaction, currency)

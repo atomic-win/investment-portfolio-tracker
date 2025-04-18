@@ -1,16 +1,17 @@
+'use server';
 import { db } from '@/drizzle/db';
 import { TransactionTable } from '@/drizzle/schema';
 import { and, asc, eq, lte } from 'drizzle-orm';
-import { DateTime } from 'luxon';
 
-export async function getAllTransactions(assetItemId: string, date: DateTime) {
+export async function getAllTransactions(assetItemId: string, date: string) {
+	'use cache';
 	return await db
 		.select()
 		.from(TransactionTable)
 		.where(
 			and(
 				eq(TransactionTable.assetItemId, assetItemId),
-				lte(TransactionTable.date, date.toFormat('yyyy-MM-dd'))
+				lte(TransactionTable.date, date)
 			)
 		)
 		.orderBy(asc(TransactionTable.date));

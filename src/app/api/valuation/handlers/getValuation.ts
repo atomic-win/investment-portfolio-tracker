@@ -92,10 +92,7 @@ async function calculateAssetItemValuation(
 ) {
 	'use cache';
 
-	const transactions = await getAllTransactions(
-		assetItemId,
-		DateTime.fromISO(evaluationDate)
-	);
+	const transactions = await getAllTransactions(assetItemId, evaluationDate);
 
 	const xirrInputs = await Promise.all(
 		transactions.map(async (transaction) => ({
