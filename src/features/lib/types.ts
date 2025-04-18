@@ -1,5 +1,5 @@
 import { AssetItemTable } from '@/drizzle/schema';
-import { AssetClass, AssetType } from '@/types';
+import { AssetClass, AssetType, TransactionType } from '@/types';
 
 export enum InstrumentType {
 	Unknown = 'Unknown',
@@ -50,18 +50,6 @@ export type AssetItemPortfolio = Portfolio & {
 	assetClass: AssetClass;
 	assetType: AssetType;
 };
-
-export enum TransactionType {
-	Unknown = 'Unknown',
-	Buy = 'Buy',
-	Sell = 'Sell',
-	Deposit = 'Deposit',
-	Withdrawal = 'Withdrawal',
-	Dividend = 'Dividend',
-	Interest = 'Interest',
-	SelfInterest = 'SelfInterest',
-	InterestPenalty = 'InterestPenalty',
-}
 
 export type Transaction = {
 	id: string;

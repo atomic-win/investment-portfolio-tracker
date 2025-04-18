@@ -5,7 +5,8 @@ import {
 	useQueries,
 	useQueryClient,
 } from '@tanstack/react-query';
-import { Transaction, TransactionType } from '@/features/lib/types';
+import { Transaction } from '@/features/lib/types';
+import { TransactionType } from '@/types';
 
 export type AddTransactionRequest = {
 	date: string;
@@ -74,10 +75,6 @@ export function useAddTransactionMutation() {
 
 	return useMutation({
 		mutationFn: async (transaction: AddTransactionRequest) => {
-			if (transaction.type === TransactionType.Unknown) {
-				return;
-			}
-
 			await primalApiClient.post(
 				`assetitems/${transaction.assetId}/transactions`,
 				transaction

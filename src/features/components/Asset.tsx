@@ -1,8 +1,9 @@
+'use client';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { AssetItemPortfolio, Transaction } from '@/features/lib/types';
 import TransactionsTable from '@/features/components/TransactionsTable';
 import { Separator } from '@/components/ui/separator';
-import { displayInstrumentType, displayPercentage } from '@/features/lib/utils';
+import { displayPercentage } from '@/features/lib/utils';
 import React from 'react';
 import CurrencyAmount from '@/components/CurrencyAmount';
 
@@ -18,11 +19,8 @@ export default function Asset({
 			<CardHeader>
 				<div className='grid grid-cols-3 justify-between gap-2'>
 					<InfoLine label='Asset Name' value={asset.assetName} />
-					<InfoLine label='Instrument Name' value={asset.instrumentName} />
-					<InfoLine
-						label='Instrument Type'
-						value={displayInstrumentType(asset.instrumentType)}
-					/>
+					<InfoLine label='Asset Class' value={asset.assetClass} />
+					<InfoLine label='Asset Type' value={asset.assetType} />
 					<InfoLine
 						label='Invested Value'
 						value={<CurrencyAmount amount={asset.investedValue} />}

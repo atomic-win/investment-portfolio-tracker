@@ -1,7 +1,7 @@
+'use client';
 import { AssetItemPortfolio, Transaction } from '@/features/lib/types';
 import { createColumnDef, DataTable } from '@/components/ui/data-table';
 import { ColumnDef } from '@tanstack/react-table';
-import { displayTransactionType } from '@/features/lib/utils';
 import DeleteTransactionDialog from '@/features/components/DeleteTransactionDialog';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -32,7 +32,7 @@ const columns: ColumnDef<TableItem>[] = [
 		accessorKey: 'transactionType',
 		id: 'Transaction Type',
 		headerText: 'Transaction Type',
-		cellTextFn: (item) => displayTransactionType(item.type),
+		cellTextFn: (item) => item.type,
 		align: 'left',
 		enableHiding: false,
 	}),

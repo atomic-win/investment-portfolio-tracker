@@ -1,8 +1,4 @@
-import {
-	AssetItem,
-	PortfolioType,
-	TransactionType,
-} from '@/features/lib/types';
+import { AssetItem, PortfolioType } from '@/features/lib/types';
 
 export function findAssetById(
 	assets: AssetItem[],
@@ -34,28 +30,5 @@ export function displayPortfolioType(portfolioType: PortfolioType): string {
 			return 'Per Asset';
 		default:
 			throw new Error(`Unknown portfolio type: ${portfolioType}`);
-	}
-}
-
-export function displayTransactionType(transactionType: TransactionType) {
-	switch (transactionType) {
-		case TransactionType.Buy:
-			return 'Buy';
-		case TransactionType.Sell:
-			return 'Sell';
-		case TransactionType.Deposit:
-			return 'Deposit';
-		case TransactionType.Withdrawal:
-			return 'Withdrawal';
-		case TransactionType.Dividend:
-			return 'Dividend';
-		case TransactionType.Interest:
-			return 'Interest';
-		case TransactionType.SelfInterest:
-			return 'Self Interest';
-		case TransactionType.InterestPenalty:
-			return 'Interest Penalty';
-		default:
-			throw new Error(`Unknown transaction type: ${transactionType}`);
 	}
 }
