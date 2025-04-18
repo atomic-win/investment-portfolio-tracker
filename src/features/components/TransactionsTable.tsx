@@ -1,4 +1,4 @@
-import { AssetPortfolio, Transaction } from '@/features/lib/types';
+import { AssetItemPortfolio, Transaction } from '@/features/lib/types';
 import { createColumnDef, DataTable } from '@/components/ui/data-table';
 import { ColumnDef } from '@tanstack/react-table';
 import { displayTransactionType } from '@/features/lib/utils';
@@ -9,7 +9,7 @@ import { PlusIcon } from 'lucide-react';
 import CurrencyAmount from '@/components/CurrencyAmount';
 
 type TableItem = Transaction & {
-	asset: AssetPortfolio;
+	asset: AssetItemPortfolio;
 };
 
 const columns: ColumnDef<TableItem>[] = [
@@ -63,7 +63,7 @@ export default function TransactionsTable({
 	asset,
 	transactions,
 }: {
-	asset: AssetPortfolio;
+	asset: AssetItemPortfolio;
 	transactions: Transaction[];
 }) {
 	const items = transactions.map((transaction) => ({

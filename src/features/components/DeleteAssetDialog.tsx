@@ -10,8 +10,8 @@ import {
 	AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { AssetPortfolio } from '@/features/lib/types';
-import { displayInstrumentType, displayPercentage } from '@/features/lib/utils';
+import { AssetItemPortfolio } from '@/features/lib/types';
+import { displayPercentage } from '@/features/lib/utils';
 import { useDeleteAssetMutation } from '@/features/hooks/assets';
 import React from 'react';
 import CurrencyAmount from '@/components/CurrencyAmount';
@@ -19,7 +19,7 @@ import CurrencyAmount from '@/components/CurrencyAmount';
 export default function DeleteAssetDialog({
 	asset,
 }: {
-	asset: AssetPortfolio;
+	asset: AssetItemPortfolio;
 }) {
 	const { mutateAsync: deleteAssetAsync } = useDeleteAssetMutation();
 
@@ -38,11 +38,7 @@ export default function DeleteAssetDialog({
 				</AlertDialogHeader>
 				<div>
 					<InfoLine label='Asset Name' value={asset.assetName} />
-					<InfoLine label='Instrument Name' value={asset.instrumentName} />
-					<InfoLine
-						label='Instrument Type'
-						value={displayInstrumentType(asset.instrumentType)}
-					/>
+					<InfoLine label='Asset Type' value={asset.assetType} />
 					<InfoLine
 						label='Invested Value'
 						value={<CurrencyAmount amount={asset.investedValue} />}

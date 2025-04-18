@@ -1,31 +1,23 @@
 import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
 import { useQueries } from '@tanstack/react-query';
-import {
-	Asset,
-	Instrument,
-	Transaction,
-	Valuation,
-} from '@/features/lib/types';
+import { AssetItem, Transaction, Valuation } from '@/features/lib/types';
 import { DateTime } from 'luxon';
 
 export default function useValuationQueries(
 	currency: string | undefined,
 	assetIds: string[] | undefined,
-	assets: Asset[],
-	instruments: Instrument[],
+	assets: AssetItem[],
 	transactions: Transaction[],
-	idSelector: (asset: Asset, instrument: Instrument) => string,
+	idSelector: (asset: AssetItem) => string,
 	latest: boolean
 ) {
 	const primalApiClient = usePrimalApiClient();
 	assetIds = (assetIds || []).sort();
 	assets = assets || [];
-	instruments = instruments || [];
 
 	const queryInputs = getQueryInputs(
 		assetIds,
 		assets,
-		instruments,
 		transactions,
 		idSelector,
 		latest
@@ -49,11 +41,7 @@ export default function useValuationQueries(
 				);
 				return response.data as Valuation;
 			},
-			enabled:
-				!!currency &&
-				assetItemIds.length > 0 &&
-				assets.length > 0 &&
-				instruments.length > 0,
+			enabled: !!currency && assetItemIds.length > 0 && assets.length > 0,
 			select: (data: Valuation) =>
 				({
 					...data,
@@ -66,19 +54,17 @@ export default function useValuationQueries(
 
 function getQueryInputs(
 	assetIds: string[],
-	assets: Asset[],
-	instruments: Instrument[],
+	assets: AssetItem[],
 	transactions: Transaction[],
-	idSelector: (asset: Asset, instrument: Instrument) => string,
+	idSelector: (asset: AssetItem) => string,
 	latest: boolean
 ): { id: string; assetIds: string[]; date: string }[] {
 	const idToAssetIds = new Map<string, string[]>();
 
 	for (const assetId of assetIds) {
 		const asset = assets.find((x) => x.id === assetId)!;
-		const instrument = instruments.find((x) => x.id === asset.instrumentId)!;
 
-		const id = idSelector(asset, instrument);
+		const id = idSelector(asset);
 
 		if (!idToAssetIds.has(id)) {
 			idToAssetIds.set(id, []);

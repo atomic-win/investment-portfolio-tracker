@@ -1,11 +1,11 @@
 import { createColumnDef, DataTable } from '@/components/ui/data-table';
-import { AssetPortfolio } from '@/features/lib/types';
+import { AssetItemPortfolio } from '@/features/lib/types';
 import { ColumnDef } from '@tanstack/react-table';
-import { displayInstrumentType, displayPercentage } from '@/features/lib/utils';
+import { displayPercentage } from '@/features/lib/utils';
 import DeleteAssetDialog from '@/features/components/DeleteAssetDialog';
 import CurrencyAmount from '@/components/CurrencyAmount';
 
-const columns: ColumnDef<AssetPortfolio>[] = [
+const columns: ColumnDef<AssetItemPortfolio>[] = [
 	createColumnDef({
 		accessorKey: 'asset',
 		headerText: 'Asset',
@@ -15,18 +15,18 @@ const columns: ColumnDef<AssetPortfolio>[] = [
 		enableHiding: false,
 	}),
 	createColumnDef({
-		accessorKey: 'instrumentName',
-		id: 'Instrument Name',
-		headerText: 'Instrument Name',
-		cellTextFn: (data) => data.instrumentName,
+		accessorKey: 'assetClass',
+		id: 'Asset Class',
+		headerText: 'Asset Class',
+		cellTextFn: (data) => data.assetClass,
 		align: 'left',
 	}),
 	createColumnDef({
-		accessorKey: 'instrumentType',
-		id: 'Instrument Type',
-		headerText: 'Instrument Type',
-		cellTextFn: (data) => displayInstrumentType(data.instrumentType),
-		sortingFnCompare: (data) => data.instrumentType,
+		accessorKey: 'assetType',
+		id: 'Asset Type',
+		headerText: 'Asset Type',
+		cellTextFn: (data) => data.assetType,
+		sortingFnCompare: (data) => data.assetType,
 		align: 'left',
 	}),
 	createColumnDef({
@@ -78,7 +78,7 @@ const columns: ColumnDef<AssetPortfolio>[] = [
 export default function AssetsTable({
 	portfolios,
 }: {
-	portfolios: AssetPortfolio[];
+	portfolios: AssetItemPortfolio[];
 }) {
 	return (
 		<div className='mx-auto'>

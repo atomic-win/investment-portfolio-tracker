@@ -1,10 +1,14 @@
 'use client';
 import React from 'react';
-import { Asset, Instrument, InstrumentType } from '@/features/lib/types';
+import { AssetItem, Instrument, InstrumentType } from '@/features/lib/types';
 import { useSearchParams } from 'next/navigation';
 
 export default function withInvestmentsFilter<
-	T extends { assetIds: string[]; assets: Asset[]; instruments: Instrument[] }
+	T extends {
+		assetIds: string[];
+		assets: AssetItem[];
+		instruments: Instrument[];
+	}
 >(Component: React.ComponentType<T>) {
 	return function WithInvestmentsFilter(props: Omit<T, 'assetIds'>) {
 		const { assets, instruments } = props;
@@ -39,7 +43,7 @@ function calculateApplicableAssetIds(
 	filteredInstrumentTypes: InstrumentType[],
 	filteredInstrumentIds: string[],
 	filteredAssetIds: string[],
-	assets: Asset[],
+	assets: AssetItem[],
 	instruments: Instrument[]
 ): string[] {
 	if (filteredAssetIds.length !== 0) {

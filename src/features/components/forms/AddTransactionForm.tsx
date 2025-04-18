@@ -1,7 +1,7 @@
 'use client';
 import { CardContent } from '@/components/ui/card';
 import {
-	AssetPortfolio,
+	AssetItemPortfolio,
 	InstrumentType,
 	TransactionType,
 } from '@/features/lib/types';
@@ -57,7 +57,7 @@ const schema = z.object({
 export default function AddTransactionForm({
 	asset,
 }: {
-	asset: AssetPortfolio;
+	asset: AssetItemPortfolio;
 }) {
 	const { mutateAsync: addTransactionAsync } = useAddTransactionMutation();
 	const router = useRouter();

@@ -7,7 +7,7 @@ import withAssets from '@/features/components/hoc/withAssets';
 import withCurrency from '@/features/components/hoc/withCurrency';
 import withInstruments from '@/features/components/hoc/withInstruments';
 import withTransactions from '@/features/components/hoc/withTransactions';
-import { AssetPortfolio } from '@/features/lib/types';
+import { AssetItemPortfolio } from '@/features/lib/types';
 
 export default function Page({ params }: { params: { assetId: string } }) {
 	const assetId = params.assetId;
@@ -26,7 +26,7 @@ export default function Page({ params }: { params: { assetId: string } }) {
 function AddTransactionFormWrapper({
 	portfolios,
 }: {
-	portfolios: AssetPortfolio[];
+	portfolios: AssetItemPortfolio[];
 }) {
 	const asset = portfolios[0];
 

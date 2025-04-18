@@ -2,7 +2,7 @@ import {
 	InstrumentTypePortfolio,
 	Portfolio,
 	Instrument,
-	Asset,
+	AssetItem,
 	PortfolioType,
 	Transaction,
 } from '@/features/lib/types';
@@ -15,7 +15,7 @@ export function withInstrumentTypePortfolios<
 		props: Omit<T, 'portfolios'> & {
 			currency: string;
 			assetIds: string[];
-			assets: Asset[];
+			assets: AssetItem[];
 			instruments: Instrument[];
 			transactions: Transaction[];
 			latest: boolean;
@@ -40,7 +40,7 @@ export function withInstrumentTypePortfolios<
 }
 
 function calculateInstrumentTypePortfolio(
-	assets: Asset[],
+	assets: AssetItem[],
 	instruments: Instrument[],
 	portfolio: Portfolio
 ): InstrumentTypePortfolio {

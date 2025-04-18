@@ -1,11 +1,11 @@
 import { createColumnDef, DataTable } from '@/components/ui/data-table';
-import { AssetPortfolio } from '@/features/lib/types';
+import { AssetItemPortfolio } from '@/features/lib/types';
 import { ColumnDef } from '@tanstack/react-table';
 import { displayInstrumentType, displayPercentage } from '@/features/lib/utils';
 import PortfolioCharts from '@/features/components/PortfolioCharts';
 import CurrencyAmount from '@/components/CurrencyAmount';
 
-const columns: ColumnDef<AssetPortfolio>[] = [
+const columns: ColumnDef<AssetItemPortfolio>[] = [
 	createColumnDef({
 		accessorKey: 'asset',
 		headerText: 'Asset',
@@ -70,7 +70,7 @@ const columns: ColumnDef<AssetPortfolio>[] = [
 export default function PortfolioPerAssetSection({
 	portfolios,
 }: {
-	portfolios: AssetPortfolio[];
+	portfolios: AssetItemPortfolio[];
 }) {
 	return (
 		<div className='mx-auto'>

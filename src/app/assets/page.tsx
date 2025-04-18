@@ -5,11 +5,10 @@ import AssetsTable from '@/features/components/AssetsTable';
 import { withAssetPortfolios } from '@/features/components/hoc/withAssetPortfolios';
 import withAssets from '@/features/components/hoc/withAssets';
 import withCurrency from '@/features/components/hoc/withCurrency';
-import withInstruments from '@/features/components/hoc/withInstruments';
 
 export default function Page() {
 	const WithLoadedAssetsTable = withAssets(
-		withInstruments(withCurrency(withAssetPortfolios(AssetsTable)))
+		withCurrency(withAssetPortfolios(AssetsTable))
 	);
 
 	return (

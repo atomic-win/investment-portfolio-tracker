@@ -1,25 +1,23 @@
 import {
-	AssetPortfolio,
-	Asset,
-	Instrument,
+	AssetItemPortfolio,
+	AssetItem,
 	Portfolio,
 	PortfolioType,
 	Transaction,
 } from '@/features/lib/types';
-import { findAssetById, findInstrumentById } from '@/features/lib/utils';
+import { findAssetById } from '@/features/lib/utils';
 import { withValuations } from '@/features/components/hoc/withValuations';
 
 export function withAssetPortfolios<
 	T extends {
-		portfolios: AssetPortfolio[];
+		portfolios: AssetItemPortfolio[];
 	}
 >(Component: React.ComponentType<T>) {
 	return function WithAssetPortfolios(
 		props: Omit<T, 'portfolios'> & {
 			currency: string;
 			assetIds: string[];
-			assets: Asset[];
-			instruments: Instrument[];
+			assets: AssetItem[];
 			transactions: Transaction[];
 			latest: boolean;
 		}
@@ -36,7 +34,6 @@ export function withAssetPortfolios<
 						: props.assets.map((asset) => asset.id)
 				}
 				assets={props.assets}
-				instruments={props.instruments}
 				transactions={props.transactions}
 				idSelector={(asset) => asset.id}
 				portfolioFn={calculateAssetPortfolio}
@@ -47,19 +44,16 @@ export function withAssetPortfolios<
 }
 
 function calculateAssetPortfolio(
-	assets: Asset[],
-	instruments: Instrument[],
+	assets: AssetItem[],
 	portfolio: Portfolio
-): AssetPortfolio {
+): AssetItemPortfolio {
 	const asset = findAssetById(assets, portfolio.id)!;
-	const instrument = findInstrumentById(instruments, asset.instrumentId)!;
 
 	return {
 		...portfolio,
 		type: PortfolioType.PerAsset,
 		assetName: asset.name,
-		instrumentId: asset.instrumentId,
-		instrumentType: instrument.type,
-		instrumentName: instrument.name,
+		assetClass: asset.assetClass,
+		assetType: asset.assetType,
 	};
 }

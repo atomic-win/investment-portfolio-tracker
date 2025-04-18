@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { AssetPortfolio, Transaction } from '@/features/lib/types';
+import { AssetItemPortfolio, Transaction } from '@/features/lib/types';
 import TransactionsTable from '@/features/components/TransactionsTable';
 import { Separator } from '@/components/ui/separator';
 import { displayInstrumentType, displayPercentage } from '@/features/lib/utils';
@@ -10,7 +10,7 @@ export default function Asset({
 	asset,
 	transactions,
 }: {
-	asset: AssetPortfolio;
+	asset: AssetItemPortfolio;
 	transactions: Transaction[];
 }) {
 	return (

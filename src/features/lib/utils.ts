@@ -1,19 +1,13 @@
 import {
-	Instrument,
-	InstrumentType,
-	Asset,
+	AssetItem,
 	PortfolioType,
 	TransactionType,
 } from '@/features/lib/types';
 
-export function findInstrumentById(
-	instruments: Instrument[],
+export function findAssetById(
+	assets: AssetItem[],
 	id: string
-): Instrument | undefined {
-	return (instruments || []).find((instrument) => instrument.id === id);
-}
-
-export function findAssetById(assets: Asset[], id: string): Asset | undefined {
+): AssetItem | undefined {
 	return (assets || []).find((asset) => asset.id === id);
 }
 
@@ -26,27 +20,6 @@ export function displayPercentage(percent: number) {
 
 export function displayNumber(number: number) {
 	return Intl.NumberFormat('en-IN').format(number);
-}
-
-export function displayInstrumentType(instrumentType: InstrumentType): string {
-	switch (instrumentType) {
-		case InstrumentType.EmergencyFunds:
-			return 'Emergency Fund';
-		case InstrumentType.CashAccounts:
-			return 'Cash Account';
-		case InstrumentType.FixedDeposits:
-			return 'Fixed Deposit';
-		case InstrumentType.EPF:
-			return 'Employee Provident Fund';
-		case InstrumentType.PPF:
-			return 'Public Provident Fund';
-		case InstrumentType.MutualFunds:
-			return 'Mutual Fund';
-		case InstrumentType.Stocks:
-			return 'Stock';
-		default:
-			return 'Unknown';
-	}
 }
 
 export function displayPortfolioType(portfolioType: PortfolioType): string {

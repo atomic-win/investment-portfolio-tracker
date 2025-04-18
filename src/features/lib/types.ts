@@ -1,3 +1,6 @@
+import { AssetItemTable } from '@/drizzle/schema';
+import { AssetClass, AssetType } from '@/types';
+
 export enum InstrumentType {
 	Unknown = 'Unknown',
 	EmergencyFunds = 'EmergencyFunds',
@@ -17,17 +20,10 @@ export enum PortfolioType {
 	PerAsset = 'PerAsset',
 }
 
-export type Instrument = {
-	id: string;
-	name: string;
-	type: InstrumentType;
-};
-
-export type Asset = {
-	id: string;
-	name: string;
-	instrumentId: string;
-};
+export type AssetItem = Omit<
+	typeof AssetItemTable.$inferSelect,
+	'createdAt' | 'updatedAt' | 'userId' | 'assetId'
+> & { assetType: AssetType };
 
 export type Portfolio = {
 	id: string;
@@ -49,11 +45,10 @@ export type InstrumentPortfolio = Portfolio & {
 	instrumentType: InstrumentType;
 };
 
-export type AssetPortfolio = Portfolio & {
+export type AssetItemPortfolio = Portfolio & {
 	assetName: string;
-	instrumentId: string;
-	instrumentType: InstrumentType;
-	instrumentName: string;
+	assetClass: AssetClass;
+	assetType: AssetType;
 };
 
 export enum TransactionType {

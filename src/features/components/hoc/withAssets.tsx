@@ -1,10 +1,10 @@
 'use client';
 import ErrorComponent from '@/components/ErrorComponent';
 import LoadingComponent from '@/components/LoadingComponent';
-import { Asset } from '@/features/lib/types';
+import { AssetItem } from '@/features/lib/types';
 import { useAllAssetsQuery } from '@/features/hooks/assets';
 
-export default function withAssets<T extends { assets: Asset[] }>(
+export default function withAssets<T extends { assets: AssetItem[] }>(
 	Component: React.ComponentType<T>
 ) {
 	return function WithAssets(props: Omit<T, 'assets'>) {

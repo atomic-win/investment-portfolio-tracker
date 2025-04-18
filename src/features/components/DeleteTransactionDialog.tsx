@@ -10,7 +10,7 @@ import {
 	AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { AssetPortfolio, Transaction } from '@/features/lib/types';
+import { AssetItemPortfolio, Transaction } from '@/features/lib/types';
 import { useDeleteTransactionMutation } from '@/features/hooks/transactions';
 import React from 'react';
 import CurrencyAmount from '@/components/CurrencyAmount';
@@ -19,7 +19,7 @@ export default function DeleteTransactionDialog({
 	asset,
 	transaction,
 }: {
-	asset: AssetPortfolio;
+	asset: AssetItemPortfolio;
 	transaction: Transaction;
 }) {
 	const { mutateAsync: deleteTransactionAsync } =

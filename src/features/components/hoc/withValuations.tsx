@@ -2,8 +2,7 @@ import ErrorComponent from '@/components/ErrorComponent';
 import LoadingComponent from '@/components/LoadingComponent';
 import useValuationQueries from '@/features/hooks/valuation';
 import {
-	Asset,
-	Instrument,
+	AssetItem,
 	Portfolio,
 	PortfolioType,
 	Transaction,
@@ -20,15 +19,10 @@ export function withValuations<
 		props: Omit<T, 'portfolios'> & {
 			currency: string;
 			assetIds: string[];
-			assets: Asset[];
-			instruments: Instrument[];
+			assets: AssetItem[];
 			transactions: Transaction[];
-			idSelector: (asset: Asset, instrument: Instrument) => string;
-			portfolioFn: (
-				assets: Asset[],
-				instruments: Instrument[],
-				portfolio: Portfolio
-			) => TPortfolio;
+			idSelector: (asset: AssetItem) => string;
+			portfolioFn: (assets: AssetItem[], portfolio: Portfolio) => TPortfolio;
 			latest: boolean;
 		}
 	) {
@@ -38,7 +32,6 @@ export function withValuations<
 				? props.assetIds
 				: props.assets.map((asset) => asset.id),
 			props.assets,
-			props.instruments,
 			props.transactions,
 			props.idSelector,
 			props.latest
@@ -57,9 +50,7 @@ export function withValuations<
 				{...(props as unknown as T)}
 				portfolios={calculatePortfolios(
 					valuationQueryResults.map((result) => result.data!)
-				).map((portfolio) =>
-					props.portfolioFn(props.assets, props.instruments, portfolio)
-				)}
+				).map((portfolio) => props.portfolioFn(props.assets, portfolio))}
 			/>
 		);
 	};

@@ -15,7 +15,7 @@ import {
 	FormControl,
 	FormMessage,
 } from '@/components/ui/form';
-import { Asset, Instrument, InstrumentType } from '@/features/lib/types';
+import { AssetItem, Instrument, InstrumentType } from '@/features/lib/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -33,7 +33,7 @@ export default function InvestmentsFilterForm({
 	assets,
 	instruments,
 }: {
-	assets: Asset[];
+	assets: AssetItem[];
 	instruments: Instrument[];
 }) {
 	const searchParams = useSearchParams();

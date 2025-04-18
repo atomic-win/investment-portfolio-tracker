@@ -10,8 +10,8 @@ import {
 	OverallPortfolio,
 	InstrumentTypePortfolio,
 	InstrumentPortfolio,
-	AssetPortfolio,
-	Asset,
+	AssetItemPortfolio,
+	AssetItem,
 	Instrument,
 	PortfolioType,
 	Transaction,
@@ -40,7 +40,7 @@ export default function withPortfolios(
 		portfolios: InstrumentPortfolio[];
 	}>,
 	AssetSection: React.ComponentType<{
-		portfolios: AssetPortfolio[];
+		portfolios: AssetItemPortfolio[];
 	}>
 ) {
 	return function WithPortfolios({ latest }: { latest: boolean }) {
@@ -74,7 +74,7 @@ function Page({
 	AssetSection,
 }: {
 	assetIds: string[];
-	assets: Asset[];
+	assets: AssetItem[];
 	instruments: Instrument[];
 	transactions: Transaction[];
 	latest: boolean;
@@ -88,7 +88,7 @@ function Page({
 		portfolios: InstrumentPortfolio[];
 	}>;
 	AssetSection: React.ComponentType<{
-		portfolios: AssetPortfolio[];
+		portfolios: AssetItemPortfolio[];
 	}>;
 }) {
 	const searchParams = useSearchParams();

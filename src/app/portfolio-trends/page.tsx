@@ -4,7 +4,7 @@ import withInstruments from '@/features/components/hoc/withInstruments';
 import withPortfolios from '@/features/components/hoc/withPortfolios';
 import InvestmentsFilterForm from '@/features/components/InvestmentsFilterForm';
 import {
-	AssetPortfolio,
+	AssetItemPortfolio,
 	InstrumentPortfolio,
 	InstrumentType,
 	InstrumentTypePortfolio,
@@ -32,7 +32,7 @@ export default function Page() {
 		});
 
 	const PortfolioTrendsPerAssetSection =
-		withPortfolioTrendsSection<AssetPortfolio>({
+		withPortfolioTrendsSection<AssetItemPortfolio>({
 			labelFn: (portfolio) => portfolio.assetName,
 		});
 
