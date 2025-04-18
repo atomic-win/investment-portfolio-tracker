@@ -1,3 +1,4 @@
+'use server';
 import { db } from '@/drizzle/db';
 import {
 	AssetItemTable,
@@ -14,21 +15,25 @@ import { getStockPrices } from '@/services/stockApiService';
 import { getExchangeRates } from '@/services/exchangeRateApiService';
 
 export async function getAssetItemCurrency(assetItemId: string) {
+	'use cache';
 	const asset = await getAsset(assetItemId);
 	return asset.currency;
 }
 
-export async function getAssetItemRate(assetItemId: string, date: DateTime) {
-	const asset = await getAsset(assetItemId);
+export async function getAssetItemRate(assetItemId: string, date: string) {
+	'use cache';
 
+	const asset = await getAsset(assetItemId);
 	return getAssetRate(asset, date);
 }
 
 export async function getExchangeRate(
 	from: Currency,
 	to: Currency,
-	date: DateTime
+	date: string
 ) {
+	'use cache';
+
 	if (from === to) {
 		return 1;
 	}
@@ -60,10 +65,10 @@ export async function getExchangeRate(
 			and(
 				eq(ExchangeRateTable.from, from),
 				eq(ExchangeRateTable.to, to),
-				lte(ExchangeRateTable.date, date.toFormat('yyyy-MM-dd')),
+				lte(ExchangeRateTable.date, date),
 				gte(
 					ExchangeRateTable.date,
-					date.minus({ days: 7 }).toFormat('yyyy-MM-dd')
+					DateTime.fromISO(date).minus({ days: 7 }).toFormat('yyyy-MM-dd')
 				)
 			)
 		)
@@ -74,6 +79,8 @@ export async function getExchangeRate(
 }
 
 async function getAsset(assetItemId: string) {
+	'use cache';
+
 	const assetItems = await db
 		.select()
 		.from(AssetItemTable)
@@ -89,8 +96,10 @@ async function getAsset(assetItemId: string) {
 
 async function getAssetRate(
 	asset: typeof AssetTable.$inferSelect,
-	date: DateTime
+	date: string
 ) {
+	'use cache';
+
 	const assetType = asset.type;
 
 	if (assetType !== AssetType.MutualFunds && assetType !== AssetType.Stocks) {
@@ -124,8 +133,11 @@ async function getAssetRate(
 		.where(
 			and(
 				eq(AssetRateTable.id, asset.id),
-				lte(AssetRateTable.date, date.toFormat('yyyy-MM-dd')),
-				gte(AssetRateTable.date, date.minus({ days: 7 }).toFormat('yyyy-MM-dd'))
+				lte(AssetRateTable.date, date),
+				gte(
+					AssetRateTable.date,
+					DateTime.fromISO(date).minus({ days: 7 }).toFormat('yyyy-MM-dd')
+				)
 			)
 		)
 		.orderBy(desc(AssetRateTable.date))

@@ -33,7 +33,11 @@ export async function calculateTransactionAmount(
 ) {
 	const assetItemCurrency = await getAssetItemCurrency(transaction.assetItemId);
 
-	const exchangeRate = await getExchangeRate(assetItemCurrency, currency, date);
+	const exchangeRate = await getExchangeRate(
+		assetItemCurrency,
+		currency,
+		date.toISODate()!
+	);
 
 	if (transaction.type === TransactionType.Dividend) {
 		return exchangeRate * transaction.units;
@@ -41,7 +45,7 @@ export async function calculateTransactionAmount(
 
 	return (
 		exchangeRate *
-		(await getAssetItemRate(transaction.assetItemId, date)) *
+		(await getAssetItemRate(transaction.assetItemId, date.toISODate()!)) *
 		transaction.units
 	);
 }
