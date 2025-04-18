@@ -1,3 +1,4 @@
+'use client';
 import { DollarSignIcon } from 'lucide-react';
 
 import {
