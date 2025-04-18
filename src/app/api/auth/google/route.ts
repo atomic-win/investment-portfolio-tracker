@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
 					{ expiresIn: '7d' }
 				);
 
-				return NextResponse.json({ token: customJwt });
+				return NextResponse.json({ accessToken: customJwt });
 			} catch (error) {
 				console.error('JWT creation failed:', error);
 				return NextResponse.json(
