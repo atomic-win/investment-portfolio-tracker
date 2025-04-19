@@ -43,7 +43,5 @@ function calculateInstrumentPortfolio(
 	return {
 		...portfolio,
 		type: PortfolioType.PerAssetType,
-		id: assets[0].assetType,
-		assetClass: assets[0].assetClass,
 	};
 }

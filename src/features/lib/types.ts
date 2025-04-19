@@ -29,9 +29,7 @@ export type OverallPortfolio = Portfolio;
 
 export type AssetClassPortfolio = Portfolio;
 
-export type AssetTypePortfolio = Portfolio & {
-	assetClass: AssetClass;
-};
+export type AssetTypePortfolio = Portfolio;
 
 export type AssetItemPortfolio = Portfolio & {
 	assetName: string;
