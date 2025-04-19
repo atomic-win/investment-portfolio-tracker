@@ -1,6 +1,6 @@
 import { AssetClassPortfolio } from '@/features/lib/types';
 import { ColumnDef } from '@tanstack/react-table';
-import { displayPercentage } from '@/features/lib/utils';
+import { displayPercentage } from '@/lib/utils';
 import { createColumnDef, DataTable } from '@/components/ui/data-table';
 import PortfolioCharts from '@/features/portfolio/components/PortfolioCharts';
 import CurrencyAmount from '@/components/CurrencyAmount';

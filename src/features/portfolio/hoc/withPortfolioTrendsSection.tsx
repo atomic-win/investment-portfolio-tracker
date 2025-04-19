@@ -10,11 +10,8 @@ import {
 	ChartTooltipContent,
 } from '@/components/ui/chart';
 import { CartesianGrid, XAxis, YAxis, Line, LineChart } from 'recharts';
-import {
-	displayNumber,
-	displayPercentage,
-	displayPortfolioType,
-} from '@/features/lib/utils';
+import { displayNumber, displayPortfolioType } from '@/features/lib/utils';
+import { displayPercentage } from '@/lib/utils';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useCurrencyQuery } from '@/hooks/useCurrencyQuery';
 import { useLocaleQuery } from '@/hooks/useLocaleQuery';

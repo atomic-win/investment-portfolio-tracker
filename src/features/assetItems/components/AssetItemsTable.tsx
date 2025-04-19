@@ -1,7 +1,7 @@
 import { createColumnDef, DataTable } from '@/components/ui/data-table';
 import { AssetItemPortfolio } from '@/features/lib/types';
 import { ColumnDef } from '@tanstack/react-table';
-import { displayPercentage } from '@/features/lib/utils';
+import { displayPercentage } from '@/lib/utils';
 import DeleteAssetItemDialog from '@/features/assetItems/components/DeleteAssetItemDialog';
 import CurrencyAmount from '@/components/CurrencyAmount';
 

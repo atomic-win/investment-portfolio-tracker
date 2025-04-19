@@ -1,12 +1,5 @@
 import { PortfolioType } from '@/features/lib/types';
 
-export function displayPercentage(percent: number) {
-	return Intl.NumberFormat('en-IN', {
-		style: 'percent',
-		maximumFractionDigits: 2,
-	}).format(percent / 100);
-}
-
 export function displayNumber(number: number) {
 	return Intl.NumberFormat('en-IN').format(number);
 }

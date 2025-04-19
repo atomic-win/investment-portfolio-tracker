@@ -34,3 +34,9 @@ export function displayCurrencyAmountText(
 		notation,
 	}).format(amount);
 }
+export function displayPercentage(percent: number) {
+	return Intl.NumberFormat('en-IN', {
+		style: 'percent',
+		maximumFractionDigits: 2,
+	}).format(percent / 100);
+}

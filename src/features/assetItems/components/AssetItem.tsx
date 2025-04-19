@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { AssetItemPortfolio, Transaction } from '@/features/lib/types';
 import TransactionsTable from '@/features/assetItems/components/TransactionsTable';
 import { Separator } from '@/components/ui/separator';
-import { displayPercentage } from '@/features/lib/utils';
+import { displayPercentage } from '@/lib/utils';
 import React from 'react';
 import CurrencyAmount from '@/components/CurrencyAmount';
 
