@@ -1,22 +1,20 @@
 import {
-	AssetClassPortfolio,
+	AssetTypePortfolio,
 	Portfolio,
-	Instrument,
 	AssetItem,
-	PortfolioType,
 	Transaction,
+	PortfolioType,
 } from '@/features/lib/types';
 import { withValuations } from '@/features/components/hoc/withValuations';
 
-export function withInstrumentTypePortfolios<
-	T extends { portfolios: AssetClassPortfolio[] }
+export function withAssetTypePortfolios<
+	T extends { portfolios: AssetTypePortfolio[] }
 >(Component: React.ComponentType<T>) {
-	return function WithInstrumentTypePortfolios(
+	return function WithInstrumentPortfolios(
 		props: Omit<T, 'portfolios'> & {
 			currency: string;
 			assetIds: string[];
 			assets: AssetItem[];
-			instruments: Instrument[];
 			transactions: Transaction[];
 			latest: boolean;
 		}
@@ -29,23 +27,23 @@ export function withInstrumentTypePortfolios<
 				currency={props.currency}
 				assetIds={props.assetIds}
 				assets={props.assets}
-				instruments={props.instruments}
 				transactions={props.transactions}
-				idSelector={(_asset, instrument) => instrument.type}
-				portfolioFn={calculateInstrumentTypePortfolio}
+				idSelector={(assetItem) => assetItem.assetType}
+				portfolioFn={calculateInstrumentPortfolio}
 				latest={props.latest}
 			/>
 		);
 	};
 }
 
-function calculateInstrumentTypePortfolio(
+function calculateInstrumentPortfolio(
 	assets: AssetItem[],
-	instruments: Instrument[],
 	portfolio: Portfolio
-): AssetClassPortfolio {
+): AssetTypePortfolio {
 	return {
 		...portfolio,
-		type: PortfolioType.PerInvestmentInstrumentType,
+		type: PortfolioType.PerAssetType,
+		id: assets[0].assetType,
+		assetClass: assets[0].assetClass,
 	};
 }

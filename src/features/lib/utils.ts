@@ -22,9 +22,9 @@ export function displayPortfolioType(portfolioType: PortfolioType): string {
 	switch (portfolioType) {
 		case PortfolioType.Overall:
 			return 'Overall';
-		case PortfolioType.PerInvestmentInstrumentType:
+		case PortfolioType.PerAssetClass:
 			return 'Per Instrument Type';
-		case PortfolioType.PerInvestmentInstrument:
+		case PortfolioType.PerAssetType:
 			return 'Per Instrument';
 		case PortfolioType.PerAsset:
 			return 'Per Asset';

@@ -12,15 +12,13 @@ import {
 	AssetTypePortfolio,
 	AssetItemPortfolio,
 	AssetItem,
-	Instrument,
 	PortfolioType,
 	Transaction,
 } from '@/features/lib/types';
 import withAssets from '@/features/components/hoc/withAssets';
-import withInstruments from '@/features/components/hoc/withInstruments';
 import { withOverallPortfolios } from '@/features/components/hoc/withOverallPortfolios';
-import { withInstrumentTypePortfolios } from '@/features/components/hoc/withInstrumentTypePortfolios';
-import { withInstrumentPortfolios } from '@/features/components/hoc/withInstrumentPortfolios';
+import { withAssetClassPortfolios } from '@/features/components/hoc/withAssetClassPortfolios';
+import { withAssetTypePortfolios } from '@/features/components/hoc/withAssetTypePortfolios';
 import { withAssetPortfolios } from '@/features/components/hoc/withAssetPortfolios';
 import withInvestmentsFilter from '@/features/components/hoc/withInvestmentsFilter';
 import withCurrency from '@/features/components/hoc/withCurrency';
@@ -45,9 +43,7 @@ export default function withPortfolios(
 ) {
 	return function WithPortfolios({ latest }: { latest: boolean }) {
 		const WithLoadedComponent = withAssets(
-			withInstruments(
-				withInvestmentsFilter(withCurrency(withTransactions(Page)))
-			)
+			withInvestmentsFilter(withCurrency(withTransactions(Page)))
 		);
 
 		return (
@@ -65,7 +61,6 @@ export default function withPortfolios(
 function Page({
 	assetIds,
 	assets,
-	instruments,
 	transactions,
 	latest,
 	OverallSection,
@@ -75,7 +70,6 @@ function Page({
 }: {
 	assetIds: string[];
 	assets: AssetItem[];
-	instruments: Instrument[];
 	transactions: Transaction[];
 	latest: boolean;
 	OverallSection: React.ComponentType<{
@@ -110,11 +104,11 @@ function Page({
 	);
 
 	const WithLoadedInstrumentTypeSection = withCurrency(
-		withInstrumentTypePortfolios(InstrumentTypeSection)
+		withAssetClassPortfolios(InstrumentTypeSection)
 	);
 
 	const WithLoadedInstrumentSection = withCurrency(
-		withInstrumentPortfolios(InstrumentSection)
+		withAssetTypePortfolios(InstrumentSection)
 	);
 
 	const WithLoadedAssetSection = withCurrency(
@@ -131,11 +125,11 @@ function Page({
 						<TabsTrigger value={PortfolioType.Overall}>
 							{displayPortfolioType(PortfolioType.Overall)}
 						</TabsTrigger>
-						<TabsTrigger value={PortfolioType.PerInvestmentInstrumentType}>
-							{displayPortfolioType(PortfolioType.PerInvestmentInstrumentType)}
+						<TabsTrigger value={PortfolioType.PerAssetClass}>
+							{displayPortfolioType(PortfolioType.PerAssetClass)}
 						</TabsTrigger>
-						<TabsTrigger value={PortfolioType.PerInvestmentInstrument}>
-							{displayPortfolioType(PortfolioType.PerInvestmentInstrument)}
+						<TabsTrigger value={PortfolioType.PerAssetType}>
+							{displayPortfolioType(PortfolioType.PerAssetType)}
 						</TabsTrigger>
 						<TabsTrigger value={PortfolioType.PerAsset}>
 							{displayPortfolioType(PortfolioType.PerAsset)}
@@ -148,31 +142,28 @@ function Page({
 						<WithLoadedOverallSection
 							assetIds={assetIds}
 							assets={assets}
-							instruments={instruments}
 							transactions={transactions}
 							latest={latest}
 						/>
 					</PortfolioTabsContent>
 					<PortfolioTabsContent
-						portfolioType={PortfolioType.PerInvestmentInstrumentType}
+						portfolioType={PortfolioType.PerAssetClass}
 						title='Per Instrument Type'
 						description='Stats for each instrument type in the portfolio'>
 						<WithLoadedInstrumentTypeSection
 							assetIds={assetIds}
 							assets={assets}
-							instruments={instruments}
 							transactions={transactions}
 							latest={latest}
 						/>
 					</PortfolioTabsContent>
 					<PortfolioTabsContent
-						portfolioType={PortfolioType.PerInvestmentInstrument}
+						portfolioType={PortfolioType.PerAssetType}
 						title='Per Instrument'
 						description='Stats for each instrument in the portfolio'>
 						<WithLoadedInstrumentSection
 							assetIds={assetIds}
 							assets={assets}
-							instruments={instruments}
 							transactions={transactions}
 							latest={latest}
 						/>
@@ -183,7 +174,6 @@ function Page({
 						description='Stats for each asset in the portfolio'>
 						<WithLoadedAssetSection
 							assetIds={assetIds}
-							instruments={instruments}
 							transactions={transactions}
 							assets={assets}
 							latest={latest}

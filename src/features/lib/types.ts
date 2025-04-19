@@ -15,8 +15,8 @@ export enum InstrumentType {
 export enum PortfolioType {
 	Unknown = 'Unknown',
 	Overall = 'Overall',
-	PerInvestmentInstrumentType = 'PerInvestmentInstrumentType',
-	PerInvestmentInstrument = 'PerInvestmentInstrument',
+	PerAssetClass = 'PerAssetClass',
+	PerAssetType = 'PerAssetType',
 	PerAsset = 'PerAsset',
 }
 

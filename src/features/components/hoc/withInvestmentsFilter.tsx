@@ -1,31 +1,32 @@
 'use client';
 import React from 'react';
-import { AssetItem, Instrument, InstrumentType } from '@/features/lib/types';
+import { AssetItem } from '@/features/lib/types';
 import { useSearchParams } from 'next/navigation';
+import { AssetClass, AssetType } from '@/types';
 
 export default function withInvestmentsFilter<
 	T extends {
 		assetIds: string[];
 		assets: AssetItem[];
-		instruments: Instrument[];
 	}
 >(Component: React.ComponentType<T>) {
 	return function WithInvestmentsFilter(props: Omit<T, 'assetIds'>) {
-		const { assets, instruments } = props;
+		const { assets } = props;
 		const searchParams = useSearchParams();
 
-		const filteredInstrumentTypes = (searchParams.getAll('instrumentTypes') ||
-			[]) as InstrumentType[];
+		const filteredAssetClasses = (searchParams.getAll('assetClass') ||
+			[]) as AssetClass[];
 
-		const filteredInstrumentIds = searchParams.getAll('instrumentIds') || [];
+		const filteredAssetTypes = (searchParams.getAll('assetType') ||
+			[]) as AssetType[];
+
 		const filteredAssetIds = searchParams.getAll('assetIds') || [];
 
 		const applicableAssetIds = calculateApplicableAssetIds(
-			filteredInstrumentTypes,
-			filteredInstrumentIds,
+			filteredAssetClasses,
+			filteredAssetTypes,
 			filteredAssetIds,
-			assets,
-			instruments
+			assets
 		);
 
 		return (
@@ -33,35 +34,31 @@ export default function withInvestmentsFilter<
 				{...(props as T)}
 				assetIds={applicableAssetIds}
 				assets={assets}
-				instruments={instruments}
 			/>
 		);
 	};
 }
 
 function calculateApplicableAssetIds(
-	filteredInstrumentTypes: InstrumentType[],
-	filteredInstrumentIds: string[],
+	filteredAssetClasses: AssetClass[],
+	filteredAssetTypes: AssetType[],
 	filteredAssetIds: string[],
-	assets: AssetItem[],
-	instruments: Instrument[]
+	assets: AssetItem[]
 ): string[] {
 	if (filteredAssetIds.length !== 0) {
 		return filteredAssetIds;
 	}
 
-	const applicableInstrumentIds =
-		filteredInstrumentIds.length !== 0
-			? filteredInstrumentIds
-			: instruments
-					.filter(
-						(instrument) =>
-							filteredInstrumentTypes.length === 0 ||
-							filteredInstrumentTypes.includes(instrument.type)
-					)
-					.map((instrument) => instrument.id);
-
 	return assets
-		.filter((asset) => applicableInstrumentIds.includes(asset.instrumentId))
+		.filter(
+			(asset) =>
+				filteredAssetClasses.length === 0 ||
+				filteredAssetClasses.includes(asset.assetClass)
+		)
+		.filter(
+			(asset) =>
+				filteredAssetTypes.length === 0 ||
+				filteredAssetTypes.includes(asset.assetType)
+		)
 		.map((asset) => asset.id);
 }

@@ -1,7 +1,6 @@
 import {
 	OverallPortfolio,
 	Portfolio,
-	Instrument,
 	AssetItem,
 	PortfolioType,
 	Transaction,
@@ -16,7 +15,6 @@ export function withOverallPortfolios<
 			currency: string;
 			assetIds: string[];
 			assets: AssetItem[];
-			instruments: Instrument[];
 			transactions: Transaction[];
 			latest: boolean;
 		}
@@ -29,7 +27,6 @@ export function withOverallPortfolios<
 				currency={props.currency}
 				assetIds={props.assetIds}
 				assets={props.assets}
-				instruments={props.instruments}
 				transactions={props.transactions}
 				idSelector={() => 'overall'}
 				portfolioFn={calculateOverallPortfolio}
@@ -41,7 +38,6 @@ export function withOverallPortfolios<
 
 function calculateOverallPortfolio(
 	assets: AssetItem[],
-	instruments: Instrument[],
 	portfolio: Portfolio
 ): OverallPortfolio {
 	return {
