@@ -3,10 +3,10 @@ import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcr
 import withAssets from '@/features/components/hoc/withAssets';
 import withPortfolios from '@/features/components/hoc/withPortfolios';
 import InvestmentsFilterForm from '@/features/assetItems/components/InvestmentsFilterForm';
-import PortfolioOverallSection from '@/features/components/PortfolioOverallSection';
-import PortfolioPerAssetSection from '@/features/components/PortfolioPerAssetSection';
-import PortfolioPerAssetTypeSection from '@/features/components/PortfolioPerAssetTypeSection';
-import PortfolioPerAssetClassSection from '@/features/components/PortfolioPerAssetClassSection';
+import PortfolioOverallSection from '@/features/portfolio/components/PortfolioOverallSection';
+import PortfolioPerAssetSection from '@/features/portfolio/components/PortfolioPerAssetSection';
+import PortfolioPerAssetTypeSection from '@/features/portfolio/components/PortfolioPerAssetTypeSection';
+import PortfolioPerAssetClassSection from '@/features/portfolio/components/PortfolioPerAssetClassSection';
 
 export default function Page() {
 	const WithLoadedPortfolio = withPortfolios(

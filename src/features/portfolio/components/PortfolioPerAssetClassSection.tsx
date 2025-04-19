@@ -1,14 +1,14 @@
-import { createColumnDef, DataTable } from '@/components/ui/data-table';
-import { AssetTypePortfolio } from '@/features/lib/types';
+import { AssetClassPortfolio } from '@/features/lib/types';
 import { ColumnDef } from '@tanstack/react-table';
 import { displayPercentage } from '@/features/lib/utils';
-import PortfolioCharts from '@/features/components/PortfolioCharts';
+import { createColumnDef, DataTable } from '@/components/ui/data-table';
+import PortfolioCharts from '@/features/portfolio/components/PortfolioCharts';
 import CurrencyAmount from '@/components/CurrencyAmount';
 
-const columns: ColumnDef<AssetTypePortfolio>[] = [
+const columns: ColumnDef<AssetClassPortfolio>[] = [
 	createColumnDef({
 		accessorKey: 'id',
-		headerText: 'Asset Type',
+		headerText: 'Asset Class',
 		cellTextFn: (data) => data.id,
 		align: 'left',
 		enableHiding: false,
@@ -52,10 +52,10 @@ const columns: ColumnDef<AssetTypePortfolio>[] = [
 	}),
 ];
 
-export default function PortfolioPerAssetTypeSection({
+export default function PortfolioPerAssetClassSection({
 	portfolios,
 }: {
-	portfolios: AssetTypePortfolio[];
+	portfolios: AssetClassPortfolio[];
 }) {
 	return (
 		<div className='mx-auto'>
@@ -72,9 +72,6 @@ export default function PortfolioPerAssetTypeSection({
 						desc: true,
 					},
 				]}
-				initialColumnVisibility={{
-					'Asset Class': false,
-				}}
 			/>
 		</div>
 	);
