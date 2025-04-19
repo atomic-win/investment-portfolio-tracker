@@ -24,7 +24,7 @@ import withInvestmentsFilter from '@/features/portfolio/hoc/withInvestmentsFilte
 import withCurrency from '@/components/hoc/withCurrency';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { displayPortfolioType } from '@/features/lib/utils';
+import { displayPortfolioType } from '@/features/portfolio/lib/utils';
 import withTransactions from '@/features/assetItems/hoc/withTransactions';
 
 export default function withPortfolios(
