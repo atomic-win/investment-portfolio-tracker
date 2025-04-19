@@ -2,7 +2,7 @@
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
 import { Card } from '@/components/ui/card';
 import AddTransactionForm from '@/features/assetItems/components/AddTransactionForm';
-import { withAssetPortfolios } from '@/features/components/hoc/withAssetPortfolios';
+import { withAssetPortfolios } from '@/features/portfolio/hoc/withAssetPortfolios';
 import withAssets from '@/features/components/hoc/withAssets';
 import withCurrency from '@/features/components/hoc/withCurrency';
 import withTransactions from '@/features/components/hoc/withTransactions';
@@ -17,7 +17,9 @@ export default function Page({ params }: { params: { assetItemId: string } }) {
 		)
 	);
 
-	return <WithAddTransactionFormWrapper assetIds={[assetId]} latest={true} />;
+	return (
+		<WithAddTransactionFormWrapper assetItemIds={[assetId]} latest={true} />
+	);
 }
 
 function AddTransactionFormWrapper({

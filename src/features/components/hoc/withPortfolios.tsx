@@ -19,7 +19,7 @@ import withAssets from '@/features/components/hoc/withAssets';
 import { withOverallPortfolios } from '@/features/components/hoc/withOverallPortfolios';
 import { withAssetClassPortfolios } from '@/features/portfolio/hoc/withAssetClassPortfolios';
 import { withAssetTypePortfolios } from '@/features/components/hoc/withAssetTypePortfolios';
-import { withAssetPortfolios } from '@/features/components/hoc/withAssetPortfolios';
+import { withAssetPortfolios } from '@/features/portfolio/hoc/withAssetPortfolios';
 import withInvestmentsFilter from '@/features/components/hoc/withInvestmentsFilter';
 import withCurrency from '@/features/components/hoc/withCurrency';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -173,7 +173,7 @@ function Page({
 						title='Per Asset'
 						description='Stats for each asset in the portfolio'>
 						<WithLoadedAssetSection
-							assetIds={assetIds}
+							assetItemIds={assetIds}
 							transactions={transactions}
 							assets={assets}
 							latest={latest}

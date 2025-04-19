@@ -16,7 +16,7 @@ export function withAssetPortfolios<
 	return function WithAssetPortfolios(
 		props: Omit<T, 'portfolios'> & {
 			currency: string;
-			assetIds: string[];
+			assetItemIds: string[];
 			assetItems: AssetItem[];
 			transactions: Transaction[];
 			latest: boolean;
@@ -29,8 +29,8 @@ export function withAssetPortfolios<
 				{...(props as unknown as T)}
 				currency={props.currency}
 				assetIds={
-					props.assetIds.length > 0
-						? props.assetIds
+					props.assetItemIds.length > 0
+						? props.assetItemIds
 						: props.assetItems.map((assetItem) => assetItem.id)
 				}
 				assetItems={props.assetItems}
