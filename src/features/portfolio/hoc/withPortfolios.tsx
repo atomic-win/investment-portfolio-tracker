@@ -59,8 +59,8 @@ export default function withPortfolios(
 }
 
 function Page({
-	assetIds,
-	assets,
+	assetItemIds,
+	assetItems,
 	transactions,
 	latest,
 	OverallSection,
@@ -68,8 +68,8 @@ function Page({
 	AssetTypeSection,
 	AssetSection,
 }: {
-	assetIds: string[];
-	assets: AssetItem[];
+	assetItemIds: string[];
+	assetItems: AssetItem[];
 	transactions: Transaction[];
 	latest: boolean;
 	OverallSection: React.ComponentType<{
@@ -140,8 +140,8 @@ function Page({
 						title='Overall'
 						description='Stats for the portfolio'>
 						<WithLoadedOverallSection
-							assetItemIds={assetIds}
-							assetItems={assets}
+							assetItemIds={assetItemIds}
+							assetItems={assetItems}
 							transactions={transactions}
 							latest={latest}
 						/>
@@ -151,8 +151,8 @@ function Page({
 						title='Per Asset Class'
 						description='Stats for each asset class in the portfolio'>
 						<WithLoadedAssetClassSection
-							assetItemIds={assetIds}
-							assetItems={assets}
+							assetItemIds={assetItemIds}
+							assetItems={assetItems}
 							transactions={transactions}
 							latest={latest}
 						/>
@@ -162,8 +162,8 @@ function Page({
 						title='Per Asset Type'
 						description='Stats for each asset type in the portfolio'>
 						<WithLoadedAssetTypeSection
-							assetItemIds={assetIds}
-							assetItems={assets}
+							assetItemIds={assetItemIds}
+							assetItems={assetItems}
 							transactions={transactions}
 							latest={latest}
 						/>
@@ -171,11 +171,11 @@ function Page({
 					<PortfolioTabsContent
 						portfolioType={PortfolioType.PerAsset}
 						title='Per Asset'
-						description='Stats for each asset in the portfolio'>
+						description='Stats for each asset item in the portfolio'>
 						<WithLoadedAssetSection
-							assetItemIds={assetIds}
+							assetItemIds={assetItemIds}
 							transactions={transactions}
-							assets={assets}
+							assetItems={assetItems}
 							latest={latest}
 						/>
 					</PortfolioTabsContent>

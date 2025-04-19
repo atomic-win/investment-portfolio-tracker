@@ -1,7 +1,7 @@
 'use client';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
-import withPortfolios from '@/features/components/hoc/withPortfolios';
+import withPortfolios from '@/features/portfolio/hoc/withPortfolios';
 import InvestmentsFilterForm from '@/features/assetItems/components/InvestmentsFilterForm';
 import PortfolioOverallSection from '@/features/portfolio/components/PortfolioOverallSection';
 import PortfolioPerAssetSection from '@/features/portfolio/components/PortfolioPerAssetSection';
