@@ -2,13 +2,13 @@
 import ErrorComponent from '@/components/ErrorComponent';
 import LoadingComponent from '@/components/LoadingComponent';
 import { AssetItem } from '@/features/lib/types';
-import { useAllAssetsQuery } from '@/features/hooks/assets';
+import { useAllAssetItemsQuery } from '@/features/assetItems/hooks/assetItems';
 
 export default function withAssetItems<T extends { assetItems: AssetItem[] }>(
 	Component: React.ComponentType<T>
 ) {
 	return function WithAssets(props: Omit<T, 'assetItems'>) {
-		const { data: assetItems, isFetching, error } = useAllAssetsQuery();
+		const { data: assetItems, isFetching, error } = useAllAssetItemsQuery();
 
 		if (isFetching) {
 			return <LoadingComponent loadingMessage='Fetching asset items' />;

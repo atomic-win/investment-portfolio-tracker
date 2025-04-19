@@ -2,7 +2,7 @@ import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AssetItem } from '@/features/lib/types';
 
-export function useAllAssetsQuery() {
+export function useAllAssetItemsQuery() {
 	const primalApiClient = usePrimalApiClient();
 
 	return useQuery({
@@ -14,7 +14,7 @@ export function useAllAssetsQuery() {
 	});
 }
 
-export function useDeleteAssetMutation() {
+export function useDeleteAssetItemMutation() {
 	const queryClient = useQueryClient();
 	const primalApiClient = usePrimalApiClient();
 

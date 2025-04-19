@@ -12,7 +12,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { AssetItemPortfolio } from '@/features/lib/types';
 import { displayPercentage } from '@/features/lib/utils';
-import { useDeleteAssetMutation } from '@/features/hooks/assets';
+import { useDeleteAssetItemMutation } from '@/features/assetItems/hooks/assetItems';
 import React from 'react';
 import CurrencyAmount from '@/components/CurrencyAmount';
 
@@ -21,7 +21,7 @@ export default function DeleteAssetItemDialog({
 }: {
 	assetItem: AssetItemPortfolio;
 }) {
-	const { mutateAsync: deleteAssetAsync } = useDeleteAssetMutation();
+	const { mutateAsync: deleteAssetAsync } = useDeleteAssetItemMutation();
 
 	return (
 		<AlertDialog>
