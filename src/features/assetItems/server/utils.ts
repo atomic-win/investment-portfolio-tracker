@@ -13,16 +13,18 @@ import { DateTime } from 'luxon';
 import { getMutualFundNav } from '@/services/mfApiService';
 import { getStockPrices } from '@/services/stockApiService';
 import { getExchangeRates } from '@/services/exchangeRateApiService';
+import { cacheLife } from 'next/dist/server/use-cache/cache-life';
 
 export async function getAssetItemCurrency(assetItemId: string) {
 	'use cache';
+	cacheLife('daily');
 	const asset = await getAsset(assetItemId);
 	return asset.currency;
 }
 
 export async function getAssetItemRate(assetItemId: string, date: string) {
 	'use cache';
-
+	cacheLife('daily');
 	const asset = await getAsset(assetItemId);
 	return getAssetRate(asset, date);
 }
@@ -33,6 +35,7 @@ export async function getExchangeRate(
 	date: string
 ) {
 	'use cache';
+	cacheLife('daily');
 
 	if (from === to) {
 		return 1;
@@ -80,6 +83,7 @@ export async function getExchangeRate(
 
 async function getAsset(assetItemId: string) {
 	'use cache';
+	cacheLife('daily');
 
 	const assetItems = await db
 		.select()
@@ -99,6 +103,7 @@ async function getAssetRate(
 	date: string
 ) {
 	'use cache';
+	cacheLife('daily');
 
 	const assetType = asset.type;
 

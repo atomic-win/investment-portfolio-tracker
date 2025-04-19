@@ -4,10 +4,11 @@ import { eq } from 'drizzle-orm';
 import { cacheTag } from 'next/dist/server/use-cache/cache-tag';
 import { getUserSettingsTag, getUserTag } from './cacheTag';
 import { revalidateTag } from 'next/cache';
+import { cacheLife } from 'next/dist/server/use-cache/cache-life';
 
 export async function getUser(userId: string) {
 	'use cache';
-
+	cacheLife('daily');
 	cacheTag(getUserTag(userId));
 
 	return (
@@ -24,7 +25,7 @@ export async function getUser(userId: string) {
 
 export async function getUserSettings(userId: string) {
 	'use cache';
-
+	cacheLife('daily');
 	cacheTag(getUserSettingsTag(userId));
 
 	return (

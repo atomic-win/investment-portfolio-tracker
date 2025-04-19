@@ -2,9 +2,12 @@
 import { db } from '@/drizzle/db';
 import { TransactionTable } from '@/drizzle/schema';
 import { and, asc, eq, lte } from 'drizzle-orm';
+import { cacheLife } from 'next/dist/server/use-cache/cache-life';
 
 export async function getAllTransactions(assetItemId: string, date: string) {
 	'use cache';
+	cacheLife('daily');
+
 	return await db
 		.select()
 		.from(TransactionTable)
