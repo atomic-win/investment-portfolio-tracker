@@ -131,8 +131,8 @@ function Page({
 						<TabsTrigger value={PortfolioType.PerAssetType}>
 							{displayPortfolioType(PortfolioType.PerAssetType)}
 						</TabsTrigger>
-						<TabsTrigger value={PortfolioType.PerAsset}>
-							{displayPortfolioType(PortfolioType.PerAsset)}
+						<TabsTrigger value={PortfolioType.PerAssetItem}>
+							{displayPortfolioType(PortfolioType.PerAssetItem)}
 						</TabsTrigger>
 					</TabsList>
 					<PortfolioTabsContent
@@ -169,7 +169,7 @@ function Page({
 						/>
 					</PortfolioTabsContent>
 					<PortfolioTabsContent
-						portfolioType={PortfolioType.PerAsset}
+						portfolioType={PortfolioType.PerAssetItem}
 						title='Per Asset'
 						description='Stats for each asset item in the portfolio'>
 						<WithLoadedAssetItemSection

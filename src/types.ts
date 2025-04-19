@@ -52,7 +52,7 @@ export enum PortfolioType {
 	Overall = 'Overall',
 	PerAssetClass = 'PerAssetClass',
 	PerAssetType = 'PerAssetType',
-	PerAsset = 'PerAsset',
+	PerAssetItem = 'PerAsset',
 }
 
 export type AssetItem = Omit<

@@ -1,6 +1,6 @@
-import { AssetClassPortfolio } from '@/types';
+import { AssetClass, AssetClassPortfolio } from '@/types';
 import { ColumnDef } from '@tanstack/react-table';
-import { displayPercentage } from '@/lib/utils';
+import { displayAssetClassText, displayPercentage } from '@/lib/utils';
 import { createColumnDef, DataTable } from '@/components/ui/data-table';
 import PortfolioCharts from '@/features/portfolio/components/PortfolioCharts';
 import CurrencyAmount from '@/components/CurrencyAmount';
@@ -9,7 +9,7 @@ const columns: ColumnDef<AssetClassPortfolio>[] = [
 	createColumnDef({
 		accessorKey: 'id',
 		headerText: 'Asset Class',
-		cellTextFn: (data) => data.id,
+		cellTextFn: (data) => displayAssetClassText(data.id as AssetClass),
 		align: 'left',
 		enableHiding: false,
 	}),
