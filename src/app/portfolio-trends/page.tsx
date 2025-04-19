@@ -1,18 +1,16 @@
 'use client';
 import withAssets from '@/features/components/hoc/withAssets';
-import withInstruments from '@/features/components/hoc/withInstruments';
 import withPortfolios from '@/features/components/hoc/withPortfolios';
 import InvestmentsFilterForm from '@/features/components/InvestmentsFilterForm';
 import {
 	AssetItemPortfolio,
-	InstrumentPortfolio,
-	InstrumentType,
-	InstrumentTypePortfolio,
+	AssetTypePortfolio,
+	AssetClassPortfolio,
 	OverallPortfolio,
 } from '@/features/lib/types';
 import withPortfolioTrendsSection from '@/features/components/hoc/withPortfolioTrendsSection';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
-import { displayInstrumentType } from '@/features/lib/utils';
+import { AssetClass, AssetType } from '@/types';
 
 export default function Page() {
 	const PortfolioTrendsOverallSection =
@@ -21,14 +19,13 @@ export default function Page() {
 		});
 
 	const PortfolioTrendsPerInstrumentTypeSection =
-		withPortfolioTrendsSection<InstrumentTypePortfolio>({
-			labelFn: (portfolio) =>
-				displayInstrumentType(portfolio.id as InstrumentType),
+		withPortfolioTrendsSection<AssetClassPortfolio>({
+			labelFn: (portfolio) => portfolio.id as AssetClass,
 		});
 
 	const PortfolioTrendsPerInstrumentSection =
-		withPortfolioTrendsSection<InstrumentPortfolio>({
-			labelFn: (portfolio) => portfolio.instrumentName,
+		withPortfolioTrendsSection<AssetTypePortfolio>({
+			labelFn: (portfolio) => portfolio.id as AssetType,
 		});
 
 	const PortfolioTrendsPerAssetSection =
@@ -43,9 +40,7 @@ export default function Page() {
 		PortfolioTrendsPerAssetSection
 	);
 
-	const WithLoadedInvestmentsFilterForm = withAssets(
-		withInstruments(InvestmentsFilterForm)
-	);
+	const WithLoadedInvestmentsFilterForm = withAssets(InvestmentsFilterForm);
 
 	return (
 		<>

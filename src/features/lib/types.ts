@@ -38,11 +38,10 @@ export type Portfolio = {
 
 export type OverallPortfolio = Portfolio;
 
-export type InstrumentTypePortfolio = Portfolio;
+export type AssetClassPortfolio = Portfolio;
 
-export type InstrumentPortfolio = Portfolio & {
-	instrumentName: string;
-	instrumentType: InstrumentType;
+export type AssetTypePortfolio = Portfolio & {
+	assetClass: AssetClass;
 };
 
 export type AssetItemPortfolio = Portfolio & {

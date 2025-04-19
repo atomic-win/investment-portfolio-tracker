@@ -15,41 +15,40 @@ import {
 	FormControl,
 	FormMessage,
 } from '@/components/ui/form';
-import { AssetItem, Instrument, InstrumentType } from '@/features/lib/types';
+import { AssetItem } from '@/features/lib/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { displayInstrumentType } from '@/features/lib/utils';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { SlidersHorizontalIcon } from 'lucide-react';
+import { AssetClass, AssetType } from '@/types';
 
 const schema = z.object({
-	instrumentTypes: z.array(z.nativeEnum(InstrumentType)),
-	instrumentIds: z.array(z.string()),
+	assetClasses: z.array(z.nativeEnum(AssetClass)),
+	assetTypes: z.array(z.nativeEnum(AssetType)),
 	assetIds: z.array(z.string()),
 });
 
 export default function InvestmentsFilterForm({
 	assets,
-	instruments,
 }: {
 	assets: AssetItem[];
-	instruments: Instrument[];
 }) {
 	const searchParams = useSearchParams();
 	const pathname = usePathname();
 	const { replace } = useRouter();
 
-	const filteredInstrumentTypes =
-		(searchParams.getAll('instrumentTypes') as InstrumentType[]) || [];
-	const filteredInstrumentIds = searchParams.getAll('instrumentIds') || [];
+	const filteredAssetClasses =
+		(searchParams.getAll('assetClass') as AssetClass[]) || [];
+	const filteredAssetTypes =
+		(searchParams.getAll('assetType') as AssetType[]) || [];
 	const filteredAssetIds = searchParams.getAll('assetIds') || [];
 
 	const form = useForm<z.infer<typeof schema>>({
 		resolver: zodResolver(schema),
 		defaultValues: {
-			instrumentTypes: filteredInstrumentTypes,
-			instrumentIds: filteredInstrumentIds,
+			assetClasses: filteredAssetClasses,
+			assetTypes: filteredAssetTypes,
 			assetIds: filteredAssetIds,
 		},
 	});
@@ -61,15 +60,15 @@ export default function InvestmentsFilterForm({
 			params.delete(key);
 		}
 
-		if (data.instrumentTypes.length > 0) {
-			for (const instrumentType of data.instrumentTypes) {
-				params.append('instrumentTypes', instrumentType);
+		if (data.assetClasses.length > 0) {
+			for (const assetClass of data.assetClasses) {
+				params.append('assetClass', assetClass);
 			}
 		}
 
-		if (data.instrumentIds.length > 0) {
-			for (const instrumentId of data.instrumentIds) {
-				params.append('instrumentIds', instrumentId);
+		if (data.assetTypes.length > 0) {
+			for (const assetType of data.assetTypes) {
+				params.append('assetType', assetType);
 			}
 		}
 
@@ -102,102 +101,95 @@ export default function InvestmentsFilterForm({
 					<form onSubmit={() => {}} className='space-y-6'>
 						<FormField
 							control={form.control}
-							name='instrumentTypes'
+							name='assetClasses'
 							render={() => (
 								<FormItem>
 									<div>
-										<FormLabel className='text-base'>Instrument Type</FormLabel>
+										<FormLabel className='text-base'>Asset Class</FormLabel>
 										<FormDescription>
-											Select the instrument types for portfolio calculation
+											Select the Asset Classes for portfolio calculation
 										</FormDescription>
 									</div>
-									{Object.values(InstrumentType)
-										.filter(
-											(instrumentType) =>
-												instrumentType !== InstrumentType.Unknown
-										)
-										.map((instrumentType) => (
-											<FormField
-												key={instrumentType}
-												control={form.control}
-												name='instrumentTypes'
-												render={({ field }) => {
-													return (
-														<div className='py-0.5'>
-															<FormItem
-																key={instrumentType}
-																className='flex flex-row items-start space-x-3 space-y-0'>
-																<FormControl>
-																	<Checkbox
-																		checked={field.value?.includes(
-																			instrumentType
-																		)}
-																		onCheckedChange={(checked) => {
-																			if (checked) {
-																				field.onChange([
-																					...field.value,
-																					instrumentType,
-																				]);
-																			} else {
-																				field.onChange(
-																					field.value?.filter(
-																						(value) => value !== instrumentType
-																					)
-																				);
-																			}
+									{Object.values(AssetClass).map((assetClass) => (
+										<FormField
+											key={assetClass}
+											control={form.control}
+											name='assetClasses'
+											render={({ field }) => {
+												return (
+													<div className='py-0.5'>
+														<FormItem
+															key={assetClass}
+															className='flex flex-row items-start space-x-3 space-y-0'>
+															<FormControl>
+																<Checkbox
+																	checked={field.value?.includes(assetClass)}
+																	onCheckedChange={(checked) => {
+																		if (checked) {
+																			field.onChange([
+																				...field.value,
+																				assetClass,
+																			]);
+																		} else {
+																			field.onChange(
+																				field.value?.filter(
+																					(value) => value !== assetClass
+																				)
+																			);
+																		}
 
-																			form.handleSubmit(onCheckedChange)();
-																		}}
-																	/>
-																</FormControl>
-																<FormLabel className='font-normal'>
-																	{displayInstrumentType(instrumentType)}
-																</FormLabel>
-															</FormItem>
-														</div>
-													);
-												}}
-											/>
-										))}
+																		form.handleSubmit(onCheckedChange)();
+																	}}
+																/>
+															</FormControl>
+															<FormLabel className='font-normal'>
+																{assetClass}
+															</FormLabel>
+														</FormItem>
+													</div>
+												);
+											}}
+										/>
+									))}
 									<FormMessage />
 								</FormItem>
 							)}
 						/>
 						<FormField
 							control={form.control}
-							name='instrumentIds'
+							name='assetTypes'
 							render={() => (
 								<FormItem>
 									<div>
-										<FormLabel className='text-base'>Instruments</FormLabel>
+										<FormLabel className='text-base'>Asset Types</FormLabel>
 										<FormDescription>
-											Select the instruments for portfolio calculation
+											Select the Asset Types for portfolio calculation
 										</FormDescription>
 									</div>
-									{instruments.map((instrument) => (
+									{Object.values(AssetType).map((assetType) => (
 										<FormField
-											key={instrument.id}
+											key={assetType}
 											control={form.control}
-											name='instrumentIds'
+											name='assetTypes'
 											render={({ field }) => {
 												return (
 													<div className='py-0.5'>
 														<FormItem
-															key={instrument.id}
+															key={assetType}
 															className='flex flex-row items-start space-x-3 space-y-0'>
 															<FormControl>
 																<Checkbox
-																	checked={field.value?.includes(instrument.id)}
+																	checked={field.value?.includes(assetType)}
 																	onCheckedChange={(checked) => {
 																		if (checked) {
 																			field.onChange([
 																				...field.value,
-																				instrument.id,
+																				assetType,
 																			]);
 																		} else {
 																			field.onChange(
 																				field.value?.filter(
-																					(value) => value !== instrument.id
+																					(value) => value !== assetType
 																				)
 																			);
 																		}
@@ -205,15 +197,20 @@ export default function InvestmentsFilterForm({
 																		form.handleSubmit(onCheckedChange)();
 																	}}
 																	disabled={
-																		filteredInstrumentTypes.length !== 0 &&
-																		!filteredInstrumentTypes.includes(
-																			instrument.type
-																		)
+																		filteredAssetClasses.length !== 0 &&
+																		!assets
+																			.filter((x) =>
+																				filteredAssetClasses.includes(
+																					x.assetClass
+																				)
+																			)
+																			.map((x) => x.assetType)
+																			.includes(assetType)
 																	}
 																/>
 															</FormControl>
 															<FormLabel className='font-normal'>
-																{instrument.name}
+																{assetType}
 															</FormLabel>
 														</FormItem>
 													</div>
@@ -267,17 +264,14 @@ export default function InvestmentsFilterForm({
 																		form.handleSubmit(onCheckedChange)();
 																	}}
 																	disabled={
-																		!instruments
-																			.filter(
-																				(instrument) =>
-																					filteredInstrumentTypes.length ===
-																						0 ||
-																					filteredInstrumentTypes.includes(
-																						instrument.type
-																					)
-																			)
-																			.map((instrument) => instrument.id)
-																			.includes(asset.instrumentId)
+																		(filteredAssetClasses.length !== 0 &&
+																			!filteredAssetClasses.includes(
+																				asset.assetClass
+																			)) ||
+																		(filteredAssetTypes.length !== 0 &&
+																			!filteredAssetTypes.includes(
+																				asset.assetType
+																			))
 																	}
 																/>
 															</FormControl>

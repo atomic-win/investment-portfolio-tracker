@@ -8,8 +8,8 @@ import {
 } from '@/components/ui/card';
 import {
 	OverallPortfolio,
-	InstrumentTypePortfolio,
-	InstrumentPortfolio,
+	AssetClassPortfolio,
+	AssetTypePortfolio,
 	AssetItemPortfolio,
 	AssetItem,
 	Instrument,
@@ -34,10 +34,10 @@ export default function withPortfolios(
 		portfolios: OverallPortfolio[];
 	}>,
 	InstrumentTypeSection: React.ComponentType<{
-		portfolios: InstrumentTypePortfolio[];
+		portfolios: AssetClassPortfolio[];
 	}>,
 	InstrumentSection: React.ComponentType<{
-		portfolios: InstrumentPortfolio[];
+		portfolios: AssetTypePortfolio[];
 	}>,
 	AssetSection: React.ComponentType<{
 		portfolios: AssetItemPortfolio[];
@@ -82,10 +82,10 @@ function Page({
 		portfolios: OverallPortfolio[];
 	}>;
 	InstrumentTypeSection: React.ComponentType<{
-		portfolios: InstrumentTypePortfolio[];
+		portfolios: AssetClassPortfolio[];
 	}>;
 	InstrumentSection: React.ComponentType<{
-		portfolios: InstrumentPortfolio[];
+		portfolios: AssetTypePortfolio[];
 	}>;
 	AssetSection: React.ComponentType<{
 		portfolios: AssetItemPortfolio[];

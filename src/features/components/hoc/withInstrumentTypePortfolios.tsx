@@ -1,5 +1,5 @@
 import {
-	InstrumentTypePortfolio,
+	AssetClassPortfolio,
 	Portfolio,
 	Instrument,
 	AssetItem,
@@ -9,7 +9,7 @@ import {
 import { withValuations } from '@/features/components/hoc/withValuations';
 
 export function withInstrumentTypePortfolios<
-	T extends { portfolios: InstrumentTypePortfolio[] }
+	T extends { portfolios: AssetClassPortfolio[] }
 >(Component: React.ComponentType<T>) {
 	return function WithInstrumentTypePortfolios(
 		props: Omit<T, 'portfolios'> & {
@@ -43,7 +43,7 @@ function calculateInstrumentTypePortfolio(
 	assets: AssetItem[],
 	instruments: Instrument[],
 	portfolio: Portfolio
-): InstrumentTypePortfolio {
+): AssetClassPortfolio {
 	return {
 		...portfolio,
 		type: PortfolioType.PerInvestmentInstrumentType,
