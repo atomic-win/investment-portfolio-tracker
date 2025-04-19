@@ -2,7 +2,7 @@ import { createColumnDef, DataTable } from '@/components/ui/data-table';
 import { AssetItemPortfolio } from '@/features/lib/types';
 import { ColumnDef } from '@tanstack/react-table';
 import { displayPercentage } from '@/features/lib/utils';
-import DeleteAssetDialog from '@/features/components/DeleteAssetDialog';
+import DeleteAssetItemDialog from '@/features/assetItems/components/DeleteAssetDialog';
 import CurrencyAmount from '@/components/CurrencyAmount';
 
 const columns: ColumnDef<AssetItemPortfolio>[] = [
@@ -70,7 +70,7 @@ const columns: ColumnDef<AssetItemPortfolio>[] = [
 		id: 'actions',
 		cell: ({ row }) => {
 			const item = row.original;
-			return <DeleteAssetDialog asset={item} />;
+			return <DeleteAssetItemDialog assetItem={item} />;
 		},
 	},
 ];

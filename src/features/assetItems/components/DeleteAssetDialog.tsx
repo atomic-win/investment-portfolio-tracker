@@ -16,10 +16,10 @@ import { useDeleteAssetMutation } from '@/features/hooks/assets';
 import React from 'react';
 import CurrencyAmount from '@/components/CurrencyAmount';
 
-export default function DeleteAssetDialog({
-	asset,
+export default function DeleteAssetItemDialog({
+	assetItem,
 }: {
-	asset: AssetItemPortfolio;
+	assetItem: AssetItemPortfolio;
 }) {
 	const { mutateAsync: deleteAssetAsync } = useDeleteAssetMutation();
 
@@ -32,29 +32,32 @@ export default function DeleteAssetDialog({
 				<AlertDialogHeader>
 					<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
 					<AlertDialogDescription>
-						This action cannot be undone. This will permanently delete the
-						asset.
+						This action cannot be undone. This will permanently delete the asset
+						item.
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<div>
-					<InfoLine label='Asset Name' value={asset.assetName} />
-					<InfoLine label='Asset Type' value={asset.assetType} />
+					<InfoLine label='Asset Name' value={assetItem.assetName} />
+					<InfoLine label='Asset Type' value={assetItem.assetType} />
 					<InfoLine
 						label='Invested Value'
-						value={<CurrencyAmount amount={asset.investedValue} />}
+						value={<CurrencyAmount amount={assetItem.investedValue} />}
 					/>
 					<InfoLine
 						label='Current Value'
-						value={<CurrencyAmount amount={asset.currentValue} />}
+						value={<CurrencyAmount amount={assetItem.currentValue} />}
 					/>
-					<InfoLine label='XIRR' value={displayPercentage(asset.xirrPercent)} />
+					<InfoLine
+						label='XIRR'
+						value={displayPercentage(assetItem.xirrPercent)}
+					/>
 				</div>
 				<AlertDialogFooter>
 					<AlertDialogCancel>Cancel</AlertDialogCancel>
 					<Button variant='destructive' asChild>
 						<AlertDialogAction
 							onClick={async () => {
-								await deleteAssetAsync(asset.id);
+								await deleteAssetAsync(assetItem.id);
 							}}>
 							Delete
 						</AlertDialogAction>
