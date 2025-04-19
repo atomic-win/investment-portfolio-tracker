@@ -7,20 +7,20 @@ import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import withCurrency from '@/components/hoc/withCurrency';
 
 export default function Page() {
-	const WithLoadedAssetsTable = withAssetItems(
+	const WithLoadedAssetItemsTable = withAssetItems(
 		withCurrency(withAssetItemPortfolios(AssetItemsTable))
 	);
 
 	return (
 		<>
-			<title>Assets</title>
+			<title>Asset Items</title>
 			<SidebarTriggerWithBreadcrumb
 				breadcrumbs={[{ title: 'Asset Items', href: '/assetitems' }]}
 			/>
 			<div className='container mx-auto p-2'>
 				<Card className='mx-auto rounded-lg shadow-md w-full p-2'>
 					<CardContent className='p-6'>
-						<WithLoadedAssetsTable
+						<WithLoadedAssetItemsTable
 							assetItemIds={[]}
 							latest={true}
 							transactions={[]}

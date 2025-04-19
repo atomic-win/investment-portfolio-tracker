@@ -9,8 +9,8 @@ import withCurrency from '@/components/hoc/withCurrency';
 import withTransactions from '@/features/assetItems/hoc/withTransactions';
 import { AssetItemPortfolio } from '@/features/lib/types';
 
-export default function Page({ params }: { params: { assetId: string } }) {
-	const assetId = params.assetId;
+export default function Page({ params }: { params: { assetItemId: string } }) {
+	const assetItemId = params.assetItemId;
 
 	const WithAddTransactionFormWrapper = withAssetItems(
 		withCurrency(
@@ -19,7 +19,7 @@ export default function Page({ params }: { params: { assetId: string } }) {
 	);
 
 	return (
-		<WithAddTransactionFormWrapper assetItemIds={[assetId]} latest={true} />
+		<WithAddTransactionFormWrapper assetItemIds={[assetItemId]} latest={true} />
 	);
 }
 

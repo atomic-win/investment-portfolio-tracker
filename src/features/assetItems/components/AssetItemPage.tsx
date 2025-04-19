@@ -13,14 +13,16 @@ export default function AssetItemPage({
 }: {
 	assetItemId: string;
 }) {
-	const WithLoadedAssetWrapper = withAssetItems(
-		withCurrency(withTransactions(withAssetItemPortfolios(AssetWrapper)))
+	const WithLoadedAssetItemWrapper = withAssetItems(
+		withCurrency(withTransactions(withAssetItemPortfolios(AssetItemWrapper)))
 	);
 
-	return <WithLoadedAssetWrapper assetItemIds={[assetItemId]} latest={true} />;
+	return (
+		<WithLoadedAssetItemWrapper assetItemIds={[assetItemId]} latest={true} />
+	);
 }
 
-function AssetWrapper({
+function AssetItemWrapper({
 	portfolios,
 	transactions,
 }: {

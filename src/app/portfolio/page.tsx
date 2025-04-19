@@ -4,7 +4,7 @@ import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import withPortfolios from '@/features/portfolio/hoc/withPortfolios';
 import InvestmentsFilterForm from '@/features/assetItems/components/InvestmentsFilterForm';
 import PortfolioOverallSection from '@/features/portfolio/components/PortfolioOverallSection';
-import PortfolioPerAssetSection from '@/features/portfolio/components/PortfolioPerAssetSection';
+import PortfolioPerAssetItemSection from '@/features/portfolio/components/PortfolioPerAssetItemSection';
 import PortfolioPerAssetTypeSection from '@/features/portfolio/components/PortfolioPerAssetTypeSection';
 import PortfolioPerAssetClassSection from '@/features/portfolio/components/PortfolioPerAssetClassSection';
 
@@ -13,7 +13,7 @@ export default function Page() {
 		PortfolioOverallSection,
 		PortfolioPerAssetClassSection,
 		PortfolioPerAssetTypeSection,
-		PortfolioPerAssetSection
+		PortfolioPerAssetItemSection
 	);
 
 	const WithLoadedInvestmentsFilterForm = withAssetItems(InvestmentsFilterForm);

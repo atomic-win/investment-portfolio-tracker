@@ -21,7 +21,7 @@ export default function DeleteAssetItemDialog({
 }: {
 	assetItem: AssetItemPortfolio;
 }) {
-	const { mutateAsync: deleteAssetAsync } = useDeleteAssetItemMutation();
+	const { mutateAsync: deleteAssetItemAsync } = useDeleteAssetItemMutation();
 
 	return (
 		<AlertDialog>
@@ -57,7 +57,7 @@ export default function DeleteAssetItemDialog({
 					<Button variant='destructive' asChild>
 						<AlertDialogAction
 							onClick={async () => {
-								await deleteAssetAsync(assetItem.id);
+								await deleteAssetItemAsync(assetItem.id);
 							}}>
 							Delete
 						</AlertDialogAction>

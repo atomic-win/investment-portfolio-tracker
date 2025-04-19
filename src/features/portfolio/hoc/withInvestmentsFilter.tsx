@@ -20,9 +20,9 @@ export default function withInvestmentsFilter<
 		const filteredAssetTypes = (searchParams.getAll('assetType') ||
 			[]) as AssetType[];
 
-		const filteredAssetItemIds = searchParams.getAll('assetItemIds') || [];
+		const filteredAssetItemIds = searchParams.getAll('assetItemId') || [];
 
-		const applicableAssetIds = calculateApplicableAssetIds(
+		const applicableAssetItemIds = calculateApplicableAssetItemIds(
 			filteredAssetClasses,
 			filteredAssetTypes,
 			filteredAssetItemIds,
@@ -32,14 +32,14 @@ export default function withInvestmentsFilter<
 		return (
 			<Component
 				{...(props as T)}
-				assetItemIds={applicableAssetIds}
+				assetItemIds={applicableAssetItemIds}
 				assetItems={assetItems}
 			/>
 		);
 	};
 }
 
-function calculateApplicableAssetIds(
+function calculateApplicableAssetItemIds(
 	filteredAssetClasses: AssetClass[],
 	filteredAssetTypes: AssetType[],
 	filteredAssetItemIds: string[],

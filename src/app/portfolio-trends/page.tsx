@@ -28,7 +28,7 @@ export default function Page() {
 			labelFn: (portfolio) => portfolio.id as AssetType,
 		});
 
-	const PortfolioTrendsPerAssetSection =
+	const PortfolioTrendsPerAssetItemSection =
 		withPortfolioTrendsSection<AssetItemPortfolio>({
 			labelFn: (portfolio) => portfolio.assetName,
 		});
@@ -37,7 +37,7 @@ export default function Page() {
 		PortfolioTrendsOverallSection,
 		PortfolioTrendsPerAssetClassSection,
 		PortfolioTrendsPerAssetTypeSection,
-		PortfolioTrendsPerAssetSection
+		PortfolioTrendsPerAssetItemSection
 	);
 
 	const WithLoadedInvestmentsFilterForm = withAssetItems(InvestmentsFilterForm);

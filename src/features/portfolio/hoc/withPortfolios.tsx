@@ -37,7 +37,7 @@ export default function withPortfolios(
 	AssetTypeSection: React.ComponentType<{
 		portfolios: AssetTypePortfolio[];
 	}>,
-	AssetSection: React.ComponentType<{
+	AssetItemSection: React.ComponentType<{
 		portfolios: AssetItemPortfolio[];
 	}>
 ) {
@@ -52,7 +52,7 @@ export default function withPortfolios(
 				OverallSection={OverallSection}
 				AssetClassSection={AssetClassSection}
 				AssetTypeSection={AssetTypeSection}
-				AssetSection={AssetSection}
+				AssetItemSection={AssetItemSection}
 			/>
 		);
 	};
@@ -66,7 +66,7 @@ function Page({
 	OverallSection,
 	AssetClassSection,
 	AssetTypeSection,
-	AssetSection,
+	AssetItemSection,
 }: {
 	assetItemIds: string[];
 	assetItems: AssetItem[];
@@ -81,7 +81,7 @@ function Page({
 	AssetTypeSection: React.ComponentType<{
 		portfolios: AssetTypePortfolio[];
 	}>;
-	AssetSection: React.ComponentType<{
+	AssetItemSection: React.ComponentType<{
 		portfolios: AssetItemPortfolio[];
 	}>;
 }) {
@@ -111,8 +111,8 @@ function Page({
 		withAssetTypePortfolios(AssetTypeSection)
 	);
 
-	const WithLoadedAssetSection = withCurrency(
-		withAssetItemPortfolios(AssetSection)
+	const WithLoadedAssetItemSection = withCurrency(
+		withAssetItemPortfolios(AssetItemSection)
 	);
 
 	return (
@@ -172,7 +172,7 @@ function Page({
 						portfolioType={PortfolioType.PerAsset}
 						title='Per Asset'
 						description='Stats for each asset item in the portfolio'>
-						<WithLoadedAssetSection
+						<WithLoadedAssetItemSection
 							assetItemIds={assetItemIds}
 							transactions={transactions}
 							assetItems={assetItems}

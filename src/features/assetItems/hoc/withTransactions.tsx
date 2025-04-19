@@ -1,7 +1,7 @@
 import ErrorComponent from '@/components/ErrorComponent';
 import LoadingComponent from '@/components/LoadingComponent';
 import { Transaction } from '@/features/lib/types';
-import { useAssetItemTransactionsQueries } from '@/features/assetItems/hooks/transactions';
+import { useAssetItemsTransactionsQueries } from '@/features/assetItems/hooks/transactions';
 
 export default function withTransactions<
 	T extends { transactions: Transaction[] }
@@ -12,7 +12,7 @@ export default function withTransactions<
 			assetItemIds: string[];
 		}
 	) {
-		const transactionsResults = useAssetItemTransactionsQueries(
+		const transactionsResults = useAssetItemsTransactionsQueries(
 			props.currency,
 			props.assetItemIds
 		);

@@ -22,7 +22,7 @@ export type DeleteTransactionRequest = {
 	date: string;
 };
 
-export function useAssetItemTransactionsQueries(
+export function useAssetItemsTransactionsQueries(
 	currency: string | undefined,
 	assetItemIds: string[] | undefined
 ) {
@@ -91,30 +91,30 @@ function onSettled(
 	queryClient.invalidateQueries({
 		predicate: (query) => {
 			if (
-				query.queryKey[0] !== 'investments' ||
-				query.queryKey[1] !== 'assets'
+				query.queryKey[0] !== 'assetitems' &&
+				query.queryKey[0] !== 'valuation'
 			) {
 				return false;
 			}
 
 			if (
-				query.queryKey[2] === request.assetItemId &&
-				query.queryKey[3] === 'transactions'
+				query.queryKey[1] === request.assetItemId &&
+				query.queryKey[2] === 'transactions'
 			) {
 				return true;
 			}
 
-			if (query.queryKey[2] !== 'valuation') {
+			if (query.queryKey[1] !== 'valuation') {
 				return false;
 			}
 
-			const valuationQueryData = query.queryKey[3] as {
-				assetIds: string[];
+			const valuationQueryData = query.queryKey[2] as {
+				assetItemIds: string[];
 				date: string;
 			};
 
 			return (
-				valuationQueryData.assetIds.includes(request.assetItemId) &&
+				valuationQueryData.assetItemIds.includes(request.assetItemId) &&
 				valuationQueryData.date >= request.date
 			);
 		},

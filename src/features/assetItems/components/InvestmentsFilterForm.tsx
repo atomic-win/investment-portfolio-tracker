@@ -26,7 +26,7 @@ import { AssetClass, AssetType } from '@/types';
 const schema = z.object({
 	assetClasses: z.array(z.nativeEnum(AssetClass)),
 	assetTypes: z.array(z.nativeEnum(AssetType)),
-	assetIds: z.array(z.string()),
+	assetItemIds: z.array(z.string()),
 });
 
 export default function InvestmentsFilterForm({
@@ -42,14 +42,14 @@ export default function InvestmentsFilterForm({
 		(searchParams.getAll('assetClass') as AssetClass[]) || [];
 	const filteredAssetTypes =
 		(searchParams.getAll('assetType') as AssetType[]) || [];
-	const filteredAssetIds = searchParams.getAll('assetIds') || [];
+	const filteredAssetItemIds = searchParams.getAll('assetItemId') || [];
 
 	const form = useForm<z.infer<typeof schema>>({
 		resolver: zodResolver(schema),
 		defaultValues: {
 			assetClasses: filteredAssetClasses,
 			assetTypes: filteredAssetTypes,
-			assetIds: filteredAssetIds,
+			assetItemIds: filteredAssetItemIds,
 		},
 	});
 
@@ -58,7 +58,7 @@ export default function InvestmentsFilterForm({
 
 		params.delete('assetClass');
 		params.delete('assetType');
-		params.delete('assetIds');
+		params.delete('assetItemId');
 
 		if (data.assetClasses.length > 0) {
 			for (const assetClass of data.assetClasses) {
@@ -72,9 +72,9 @@ export default function InvestmentsFilterForm({
 			}
 		}
 
-		if (data.assetIds.length > 0) {
-			for (const assetId of data.assetIds) {
-				params.append('assetIds', assetId);
+		if (data.assetItemIds.length > 0) {
+			for (const assetItemId of data.assetItemIds) {
+				params.append('assetItemId', assetItemId);
 			}
 		}
 
@@ -232,7 +232,7 @@ export default function InvestmentsFilterForm({
 						/>
 						<FormField
 							control={form.control}
-							name='assetIds'
+							name='assetItemIds'
 							render={() => (
 								<FormItem>
 									<div>
@@ -245,7 +245,7 @@ export default function InvestmentsFilterForm({
 										<FormField
 											key={assetItem.id}
 											control={form.control}
-											name='assetIds'
+											name='assetItemIds'
 											render={({ field }) => {
 												return (
 													<div className='py-0.5'>
