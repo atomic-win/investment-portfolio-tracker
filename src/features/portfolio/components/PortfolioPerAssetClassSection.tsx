@@ -1,4 +1,4 @@
-import { AssetClassPortfolio } from '@/features/lib/types';
+import { AssetClassPortfolio } from '@/types';
 import { ColumnDef } from '@tanstack/react-table';
 import { displayPercentage } from '@/lib/utils';
 import { createColumnDef, DataTable } from '@/components/ui/data-table';

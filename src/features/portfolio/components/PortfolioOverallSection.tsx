@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { OverallPortfolio } from '@/features/lib/types';
+import { OverallPortfolio } from '@/types';
 import { createColumnDef, DataTable } from '@/components/ui/data-table';
 import { displayPercentage } from '@/lib/utils';
 import CurrencyAmount from '@/components/CurrencyAmount';

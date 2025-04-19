@@ -6,7 +6,7 @@ import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemP
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import withCurrency from '@/components/hoc/withCurrency';
 import withTransactions from '@/features/assetItems/hoc/withTransactions';
-import { AssetItemPortfolio, Transaction } from '@/features/lib/types';
+import { AssetItemPortfolio, Transaction } from '@/types';
 
 export default function AssetItemPage({
 	assetItemId,

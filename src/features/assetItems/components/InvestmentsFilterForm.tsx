@@ -15,7 +15,7 @@ import {
 	FormControl,
 	FormMessage,
 } from '@/components/ui/form';
-import { AssetItem } from '@/features/lib/types';
+import { AssetItem } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';

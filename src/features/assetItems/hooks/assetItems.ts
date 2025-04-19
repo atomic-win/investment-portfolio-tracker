@@ -1,6 +1,6 @@
 import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { AssetItem } from '@/features/lib/types';
+import { AssetItem } from '@/types';
 
 export function useAllAssetItemsQuery() {
 	const primalApiClient = usePrimalApiClient();

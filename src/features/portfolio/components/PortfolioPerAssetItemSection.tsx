@@ -1,5 +1,5 @@
 import { createColumnDef, DataTable } from '@/components/ui/data-table';
-import { AssetItemPortfolio } from '@/features/lib/types';
+import { AssetItemPortfolio } from '@/types';
 import { ColumnDef } from '@tanstack/react-table';
 import { displayPercentage } from '@/lib/utils';
 import PortfolioCharts from '@/features/portfolio/components/PortfolioCharts';

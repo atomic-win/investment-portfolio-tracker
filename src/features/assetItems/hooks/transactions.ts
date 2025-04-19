@@ -5,7 +5,7 @@ import {
 	useQueries,
 	useQueryClient,
 } from '@tanstack/react-query';
-import { Transaction } from '@/features/lib/types';
+import { Transaction } from '@/types';
 import { TransactionType } from '@/types';
 
 export type AddTransactionRequest = {

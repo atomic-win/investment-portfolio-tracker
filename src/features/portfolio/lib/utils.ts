@@ -1,4 +1,4 @@
-import { PortfolioType } from '@/features/lib/types';
+import { PortfolioType } from '@/types';
 
 export function displayPortfolioType(portfolioType: PortfolioType): string {
 	switch (portfolioType) {

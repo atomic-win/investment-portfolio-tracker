@@ -1,6 +1,6 @@
 import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
 import { useQueries } from '@tanstack/react-query';
-import { AssetItem, Transaction, Valuation } from '@/features/lib/types';
+import { AssetItem, Transaction, Valuation } from '@/types';
 import { DateTime } from 'luxon';
 
 export default function useValuationQueries(

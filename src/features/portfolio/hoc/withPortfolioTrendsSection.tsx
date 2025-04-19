@@ -1,4 +1,4 @@
-import { Portfolio, PortfolioType } from '@/features/lib/types';
+import { Portfolio, PortfolioType } from '@/types';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import {

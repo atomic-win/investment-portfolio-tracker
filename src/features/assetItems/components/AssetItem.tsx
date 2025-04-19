@@ -1,6 +1,6 @@
 'use client';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { AssetItemPortfolio, Transaction } from '@/features/lib/types';
+import { AssetItemPortfolio, Transaction } from '@/types';
 import TransactionsTable from '@/features/assetItems/components/TransactionsTable';
 import { Separator } from '@/components/ui/separator';
 import { displayPercentage } from '@/lib/utils';

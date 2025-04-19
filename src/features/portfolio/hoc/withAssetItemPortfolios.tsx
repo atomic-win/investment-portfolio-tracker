@@ -4,7 +4,7 @@ import {
 	Portfolio,
 	PortfolioType,
 	Transaction,
-} from '@/features/lib/types';
+} from '@/types';
 import { withValuations } from '@/features/portfolio/hoc/withValuations';
 
 export function withAssetItemPortfolios<

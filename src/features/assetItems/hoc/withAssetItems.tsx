@@ -1,7 +1,7 @@
 'use client';
 import ErrorComponent from '@/components/ErrorComponent';
 import LoadingComponent from '@/components/LoadingComponent';
-import { AssetItem } from '@/features/lib/types';
+import { AssetItem } from '@/types';
 import { useAllAssetItemsQuery } from '@/features/assetItems/hooks/assetItems';
 
 export default function withAssetItems<T extends { assetItems: AssetItem[] }>(

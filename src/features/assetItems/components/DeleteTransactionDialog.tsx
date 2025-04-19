@@ -10,7 +10,7 @@ import {
 	AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { AssetItemPortfolio, Transaction } from '@/features/lib/types';
+import { AssetItemPortfolio, Transaction } from '@/types';
 import { useDeleteTransactionMutation } from '@/features/assetItems/hooks/transactions';
 import React from 'react';
 import CurrencyAmount from '@/components/CurrencyAmount';

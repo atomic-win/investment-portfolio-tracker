@@ -14,7 +14,7 @@ import {
 	AssetItem,
 	PortfolioType,
 	Transaction,
-} from '@/features/lib/types';
+} from '@/types';
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import { withOverallPortfolios } from '@/features/portfolio/hoc/withOverallPortfolios';
 import { withAssetClassPortfolios } from '@/features/portfolio/hoc/withAssetClassPortfolios';

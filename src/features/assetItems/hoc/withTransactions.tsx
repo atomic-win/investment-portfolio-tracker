@@ -1,6 +1,6 @@
 import ErrorComponent from '@/components/ErrorComponent';
 import LoadingComponent from '@/components/LoadingComponent';
-import { Transaction } from '@/features/lib/types';
+import { Transaction } from '@/types';
 import { useAssetItemsTransactionsQueries } from '@/features/assetItems/hooks/transactions';
 
 export default function withTransactions<

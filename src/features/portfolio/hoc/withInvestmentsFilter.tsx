@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { AssetItem } from '@/features/lib/types';
+import { AssetItem } from '@/types';
 import { useSearchParams } from 'next/navigation';
 import { AssetClass, AssetType } from '@/types';
 

@@ -1,5 +1,5 @@
 'use client';
-import { AssetItemPortfolio, Transaction } from '@/features/lib/types';
+import { AssetItemPortfolio, Transaction } from '@/types';
 import { createColumnDef, DataTable } from '@/components/ui/data-table';
 import { ColumnDef } from '@tanstack/react-table';
 import DeleteTransactionDialog from '@/features/assetItems/components/DeleteTransactionDialog';

@@ -7,7 +7,7 @@ import {
 	PortfolioType,
 	Transaction,
 	Valuation,
-} from '@/features/lib/types';
+} from '@/types';
 
 export function withValuations<
 	TPortfolio extends Portfolio,

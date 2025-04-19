@@ -8,7 +8,7 @@ import {
 	ChartLegendContent,
 } from '@/components/ui/chart';
 import { Pie, PieChart } from 'recharts';
-import { Portfolio } from '@/features/lib/types';
+import { Portfolio } from '@/types';
 
 export default function PortfolioCharts<TPortfolio extends Portfolio>({
 	portfolios,

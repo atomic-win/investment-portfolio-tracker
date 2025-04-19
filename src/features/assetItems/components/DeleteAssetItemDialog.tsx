@@ -10,7 +10,7 @@ import {
 	AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { AssetItemPortfolio } from '@/features/lib/types';
+import { AssetItemPortfolio } from '@/types';
 import { displayPercentage } from '@/lib/utils';
 import { useDeleteAssetItemMutation } from '@/features/assetItems/hooks/assetItems';
 import React from 'react';

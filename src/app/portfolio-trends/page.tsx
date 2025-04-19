@@ -7,7 +7,7 @@ import {
 	AssetTypePortfolio,
 	AssetClassPortfolio,
 	OverallPortfolio,
-} from '@/features/lib/types';
+} from '@/types';
 import withPortfolioTrendsSection from '@/features/portfolio/hoc/withPortfolioTrendsSection';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
 import { AssetClass, AssetType } from '@/types';
