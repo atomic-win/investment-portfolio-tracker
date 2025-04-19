@@ -1,15 +1,15 @@
 'use client';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
 import { Card } from '@/components/ui/card';
-import AddTransactionForm from '@/features/components/forms/AddTransactionForm';
+import AddTransactionForm from '@/features/assetItems/components/AddTransactionForm';
 import { withAssetPortfolios } from '@/features/components/hoc/withAssetPortfolios';
 import withAssets from '@/features/components/hoc/withAssets';
 import withCurrency from '@/features/components/hoc/withCurrency';
 import withTransactions from '@/features/components/hoc/withTransactions';
 import { AssetItemPortfolio } from '@/features/lib/types';
 
-export default function Page({ params }: { params: { assetId: string } }) {
-	const assetId = params.assetId;
+export default function Page({ params }: { params: { assetItemId: string } }) {
+	const assetId = params.assetItemId;
 
 	const WithAddTransactionFormWrapper = withAssets(
 		withCurrency(
@@ -25,7 +25,7 @@ function AddTransactionFormWrapper({
 }: {
 	portfolios: AssetItemPortfolio[];
 }) {
-	const asset = portfolios[0];
+	const assetItem = portfolios[0];
 
 	return (
 		<>
@@ -33,16 +33,16 @@ function AddTransactionFormWrapper({
 			<SidebarTriggerWithBreadcrumb
 				breadcrumbs={[
 					{ title: 'Asset Items', href: '/assetitems' },
-					{ title: asset.assetName, href: `/assetitems/${asset.id}` },
+					{ title: assetItem.assetName, href: `/assetitems/${assetItem.id}` },
 					{
 						title: 'Add Transaction',
-						href: `/assetitems/${asset.id}/transactions/add`,
+						href: `/assetitems/${assetItem.id}/transactions/add`,
 					},
 				]}
 			/>
 			<div className='container mx-auto p-2 h-full'>
 				<Card className='p-8 max-w-screen-sm mx-auto'>
-					<AddTransactionForm asset={asset} />
+					<AddTransactionForm assetItem={assetItem} />
 				</Card>
 			</div>
 		</>

@@ -51,9 +51,9 @@ const schema = z.object({
 });
 
 export default function AddTransactionForm({
-	asset,
+	assetItem,
 }: {
-	asset: AssetItemPortfolio;
+	assetItem: AssetItemPortfolio;
 }) {
 	const { mutateAsync: addTransactionAsync } = useAddTransactionMutation();
 	const router = useRouter();
@@ -71,7 +71,7 @@ export default function AddTransactionForm({
 		await addTransactionAsync({
 			date: DateTime.fromJSDate(data.date).toISODate()!,
 			name: data.name,
-			assetId: asset.id,
+			assetId: assetItem.id,
 			type: data.transactionType,
 			units: data.units,
 		});
@@ -130,7 +130,7 @@ export default function AddTransactionForm({
 											</SelectIcon>
 										</SelectTrigger>
 										<SelectContent className='rounded-xl'>
-											{getApplicableTransactionTypes(asset.assetType)
+											{getApplicableTransactionTypes(assetItem.assetType)
 												.filter((type) => type !== TransactionType.Unknown)
 												.map((type) => (
 													<SelectItem

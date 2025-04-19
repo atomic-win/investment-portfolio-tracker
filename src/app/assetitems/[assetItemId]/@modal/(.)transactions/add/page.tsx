@@ -2,7 +2,7 @@
 import { Modal } from '@/components/Modal';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
 import { DialogContent, DialogHeader } from '@/components/ui/dialog';
-import AddTransactionForm from '@/features/components/forms/AddTransactionForm';
+import AddTransactionForm from '@/features/assetItems/components/AddTransactionForm';
 import { withAssetPortfolios } from '@/features/components/hoc/withAssetPortfolios';
 import withAssets from '@/features/components/hoc/withAssets';
 import withCurrency from '@/features/components/hoc/withCurrency';
@@ -26,7 +26,7 @@ function AddTransactionFormWrapper({
 }: {
 	portfolios: AssetItemPortfolio[];
 }) {
-	const asset = portfolios[0];
+	const assetItem = portfolios[0];
 
 	return (
 		<Modal>
@@ -36,18 +36,18 @@ function AddTransactionFormWrapper({
 						breadcrumbs={[
 							{ title: 'Asset Items', href: '/assetitems' },
 							{
-								title: asset.assetName,
-								href: `/assetitems/${asset.id}`,
+								title: assetItem.assetName,
+								href: `/assetitems/${assetItem.id}`,
 							},
 							{
 								title: 'Add Transaction',
-								href: `/assetitems/${asset.id}/transactions/add`,
+								href: `/assetitems/${assetItem.id}/transactions/add`,
 							},
 						]}
 					/>
 				</DialogHeader>
 				<div className='p-2'>
-					<AddTransactionForm asset={asset} />
+					<AddTransactionForm assetItem={assetItem} />
 				</div>
 			</DialogContent>
 		</Modal>
