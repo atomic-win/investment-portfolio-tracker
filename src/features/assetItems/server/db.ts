@@ -11,6 +11,7 @@ import { and, eq } from 'drizzle-orm';
 import { cacheLife } from 'next/dist/server/use-cache/cache-life';
 import { cacheTag } from 'next/dist/server/use-cache/cache-tag';
 import { assetIdTag, assetItemsTag, assetItemTag } from './cacheTag';
+import { unstable_expireTag as expireTag } from 'next/cache';
 
 export async function getAssetId(type: AssetType, externalId: string) {
 	'use cache';
@@ -64,6 +65,7 @@ export async function getAssetItem(userId: string, id: string) {
 }
 
 export async function addAssetId(data: typeof AssetIdTable.$inferInsert) {
+	expireTag(assetIdTag(data.type, data.externalId));
 	return await db.insert(AssetIdTable).values(data).returning();
 }
 
