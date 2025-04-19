@@ -9,6 +9,8 @@ import {
 } from '@/features/assetItems/server/db';
 import { getMutualFund } from '@/services/mfApiService';
 import { searchSymbol } from '@/services/stockApiService';
+import { unstable_expireTag as expireTag } from 'next/cache';
+import { assetItemsTag } from '@/features/assetItems/server/cacheTag';
 
 const AssetItemSchema = z
 	.object({
@@ -302,6 +304,8 @@ async function addAssetItemAndReturn({
 		assetClass,
 		assetId,
 	});
+
+	expireTag(assetItemsTag(userId));
 
 	return new NextResponse(null, { status: 201 });
 }

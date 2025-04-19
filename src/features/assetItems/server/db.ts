@@ -8,8 +8,15 @@ import {
 import { AssetType } from '@/types';
 import assert from 'assert';
 import { and, eq } from 'drizzle-orm';
+import { cacheLife } from 'next/dist/server/use-cache/cache-life';
+import { cacheTag } from 'next/dist/server/use-cache/cache-tag';
+import { assetIdTag, assetItemsTag, assetItemTag } from './cacheTag';
 
 export async function getAssetId(type: AssetType, externalId: string) {
+	'use cache';
+	cacheLife('daily');
+	cacheTag(assetIdTag(type, externalId));
+
 	const assetIdMapping = await db
 		.select()
 		.from(AssetIdTable)
@@ -25,6 +32,10 @@ export async function getAssetId(type: AssetType, externalId: string) {
 }
 
 export async function getAllAssetItems(userId: string) {
+	'use cache';
+	cacheLife('daily');
+	cacheTag(assetItemsTag(userId));
+
 	const result = await db
 		.select()
 		.from(AssetItemTable)
@@ -35,6 +46,10 @@ export async function getAllAssetItems(userId: string) {
 }
 
 export async function getAssetItem(userId: string, id: string) {
+	'use cache';
+	cacheLife('daily');
+	cacheTag(assetItemTag(userId, id));
+
 	const result = await db
 		.select()
 		.from(AssetItemTable)
@@ -48,9 +63,6 @@ export async function getAssetItem(userId: string, id: string) {
 	return calulateAssetItem(result[0]);
 }
 
-export async function getAsset(id: string) {
-	return await db.select().from(AssetTable).where(eq(AssetTable.id, id));
-}
 export async function addAssetId(data: typeof AssetIdTable.$inferInsert) {
 	return await db.insert(AssetIdTable).values(data).returning();
 }

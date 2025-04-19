@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AuthClaims } from '@/types';
 import { deleteAssetItem, getAssetItem } from '@/features/assetItems/server/db';
+import { unstable_expireTag as expireTag } from 'next/cache';
+import {
+	assetItemsTag,
+	assetItemTag,
+} from '@/features/assetItems/server/cacheTag';
 
 export default async function handler(
 	_req: NextRequest,
@@ -18,6 +23,9 @@ export default async function handler(
 		}
 
 		await deleteAssetItem(assetItemId);
+
+		expireTag(assetItemsTag(userId));
+		expireTag(assetItemTag(userId, assetItemId));
 
 		return new NextResponse(null, { status: 204 });
 	} catch (error) {
