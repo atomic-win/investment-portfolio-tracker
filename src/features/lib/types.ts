@@ -42,7 +42,7 @@ export type Transaction = {
 	date: string;
 	name: string;
 	type: TransactionType;
-	assetId: string;
+	assetItemId: string;
 	units: number;
 	amount: number;
 };

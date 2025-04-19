@@ -1,6 +1,6 @@
 import ErrorComponent from '@/components/ErrorComponent';
 import LoadingComponent from '@/components/LoadingComponent';
-import useValuationQueries from '@/features/hooks/valuation';
+import useValuationQueries from '@/features/portfolio/hooks/valuation';
 import {
 	AssetItem,
 	Portfolio,

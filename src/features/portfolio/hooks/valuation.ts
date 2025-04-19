@@ -5,26 +5,26 @@ import { DateTime } from 'luxon';
 
 export default function useValuationQueries(
 	currency: string | undefined,
-	assetIds: string[] | undefined,
-	assets: AssetItem[],
+	assetItemIds: string[] | undefined,
+	assetItems: AssetItem[],
 	transactions: Transaction[],
-	idSelector: (asset: AssetItem) => string,
+	idSelector: (assetItem: AssetItem) => string,
 	latest: boolean
 ) {
 	const primalApiClient = usePrimalApiClient();
-	assetIds = (assetIds || []).sort();
-	assets = assets || [];
+	assetItemIds = (assetItemIds || []).sort();
+	assetItems = assetItems || [];
 
 	const queryInputs = getQueryInputs(
-		assetIds,
-		assets,
+		assetItemIds,
+		assetItems,
 		transactions,
 		idSelector,
 		latest
 	);
 
 	return useQueries({
-		queries: queryInputs.map(({ id, assetIds: assetItemIds, date }) => ({
+		queries: queryInputs.map(({ id, assetItemIds, date }) => ({
 			queryKey: [
 				'valuation',
 				{
@@ -41,7 +41,7 @@ export default function useValuationQueries(
 				);
 				return response.data as Valuation;
 			},
-			enabled: !!currency && assetItemIds.length > 0 && assets.length > 0,
+			enabled: !!currency && assetItemIds.length > 0 && assetItems.length > 0,
 			select: (data: Valuation) =>
 				({
 					...data,
@@ -53,39 +53,39 @@ export default function useValuationQueries(
 }
 
 function getQueryInputs(
-	assetIds: string[],
-	assets: AssetItem[],
+	assetItemIds: string[],
+	assetItems: AssetItem[],
 	transactions: Transaction[],
-	idSelector: (asset: AssetItem) => string,
+	idSelector: (assetItem: AssetItem) => string,
 	latest: boolean
-): { id: string; assetIds: string[]; date: string }[] {
-	const idToAssetIds = new Map<string, string[]>();
+): { id: string; assetItemIds: string[]; date: string }[] {
+	const idToAssetItemIds = new Map<string, string[]>();
 
-	for (const assetId of assetIds) {
-		const asset = assets.find((x) => x.id === assetId)!;
+	for (const assetItemId of assetItemIds) {
+		const assetItem = assetItems.find((x) => x.id === assetItemId)!;
 
-		const id = idSelector(asset);
+		const id = idSelector(assetItem);
 
-		if (!idToAssetIds.has(id)) {
-			idToAssetIds.set(id, []);
+		if (!idToAssetItemIds.has(id)) {
+			idToAssetItemIds.set(id, []);
 		}
 
-		idToAssetIds.get(id)!.push(assetId);
+		idToAssetItemIds.get(id)!.push(assetItemId);
 	}
 
-	const dates = getQueryDates(assetIds, transactions, latest);
+	const dates = getQueryDates(assetItemIds, transactions, latest);
 
-	return Array.from(idToAssetIds.entries()).flatMap(([id, assetIds]) =>
+	return Array.from(idToAssetItemIds.entries()).flatMap(([id, assetItemIds]) =>
 		dates.map((date) => ({
 			id,
-			assetIds,
+			assetItemIds,
 			date,
 		}))
 	);
 }
 
 function getQueryDates(
-	assetIds: string[],
+	assetItemIds: string[],
 	transactions: Transaction[],
 	latest: boolean
 ): string[] {
@@ -94,7 +94,7 @@ function getQueryDates(
 	if (!latest) {
 		const earliestDate = DateTime.fromISO(
 			transactions
-				.filter((x) => assetIds.includes(x.assetId))
+				.filter((x) => assetItemIds.includes(x.assetItemId))
 				.reduce((acc, x) => (x.date < acc ? x.date : acc), dates[0])
 		);
 
