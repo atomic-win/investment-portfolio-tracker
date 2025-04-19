@@ -19,7 +19,7 @@ import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import { withOverallPortfolios } from '@/features/portfolio/hoc/withOverallPortfolios';
 import { withAssetClassPortfolios } from '@/features/portfolio/hoc/withAssetClassPortfolios';
 import { withAssetTypePortfolios } from '@/features/portfolio/hoc/withAssetTypePortfolios';
-import { withAssetPortfolios } from '@/features/portfolio/hoc/withAssetPortfolios';
+import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
 import withInvestmentsFilter from '@/features/portfolio/hoc/withInvestmentsFilter';
 import withCurrency from '@/components/hoc/withCurrency';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -112,7 +112,7 @@ function Page({
 	);
 
 	const WithLoadedAssetSection = withCurrency(
-		withAssetPortfolios(AssetSection)
+		withAssetItemPortfolios(AssetSection)
 	);
 
 	return (

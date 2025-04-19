@@ -2,13 +2,13 @@
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
 import { Card, CardContent } from '@/components/ui/card';
 import AssetItemsTable from '@/features/assetItems/components/AssetItemsTable';
-import { withAssetPortfolios } from '@/features/portfolio/hoc/withAssetPortfolios';
+import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import withCurrency from '@/components/hoc/withCurrency';
 
 export default function Page() {
 	const WithLoadedAssetsTable = withAssetItems(
-		withCurrency(withAssetPortfolios(AssetItemsTable))
+		withCurrency(withAssetItemPortfolios(AssetItemsTable))
 	);
 
 	return (

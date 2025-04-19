@@ -8,12 +8,12 @@ import {
 import { findAssetItemById } from '@/features/lib/utils';
 import { withValuations } from '@/features/components/hoc/withValuations';
 
-export function withAssetPortfolios<
+export function withAssetItemPortfolios<
 	T extends {
 		portfolios: AssetItemPortfolio[];
 	}
 >(Component: React.ComponentType<T>) {
-	return function WithAssetPortfolios(
+	return function WithAssetItemPortfolios(
 		props: Omit<T, 'portfolios'> & {
 			currency: string;
 			assetItemIds: string[];

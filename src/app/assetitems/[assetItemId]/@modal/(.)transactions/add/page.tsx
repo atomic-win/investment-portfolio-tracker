@@ -3,7 +3,7 @@ import { Modal } from '@/components/Modal';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
 import { DialogContent, DialogHeader } from '@/components/ui/dialog';
 import AddTransactionForm from '@/features/assetItems/components/AddTransactionForm';
-import { withAssetPortfolios } from '@/features/portfolio/hoc/withAssetPortfolios';
+import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import withCurrency from '@/components/hoc/withCurrency';
 import withTransactions from '@/features/components/hoc/withTransactions';
@@ -14,7 +14,7 @@ export default function Page({ params }: { params: { assetId: string } }) {
 
 	const WithAddTransactionFormWrapper = withAssetItems(
 		withCurrency(
-			withTransactions(withAssetPortfolios(AddTransactionFormWrapper))
+			withTransactions(withAssetItemPortfolios(AddTransactionFormWrapper))
 		)
 	);
 

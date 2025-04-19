@@ -2,7 +2,7 @@
 
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
 import AssetItem from '@/features/assetItems/components/AssetItem';
-import { withAssetPortfolios } from '@/features/portfolio/hoc/withAssetPortfolios';
+import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import withCurrency from '@/components/hoc/withCurrency';
 import withTransactions from '@/features/components/hoc/withTransactions';
@@ -14,7 +14,7 @@ export default function AssetItemPage({
 	assetItemId: string;
 }) {
 	const WithLoadedAssetWrapper = withAssetItems(
-		withCurrency(withTransactions(withAssetPortfolios(AssetWrapper)))
+		withCurrency(withTransactions(withAssetItemPortfolios(AssetWrapper)))
 	);
 
 	return <WithLoadedAssetWrapper assetItemIds={[assetItemId]} latest={true} />;
