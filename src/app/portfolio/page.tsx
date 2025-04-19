@@ -1,6 +1,6 @@
 'use client';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
-import withAssets from '@/features/components/hoc/withAssets';
+import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import withPortfolios from '@/features/components/hoc/withPortfolios';
 import InvestmentsFilterForm from '@/features/assetItems/components/InvestmentsFilterForm';
 import PortfolioOverallSection from '@/features/portfolio/components/PortfolioOverallSection';
@@ -16,7 +16,7 @@ export default function Page() {
 		PortfolioPerAssetSection
 	);
 
-	const WithLoadedInvestmentsFilterForm = withAssets(InvestmentsFilterForm);
+	const WithLoadedInvestmentsFilterForm = withAssetItems(InvestmentsFilterForm);
 
 	return (
 		<>

@@ -4,7 +4,7 @@ import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcr
 import { DialogContent, DialogHeader } from '@/components/ui/dialog';
 import AddTransactionForm from '@/features/assetItems/components/AddTransactionForm';
 import { withAssetPortfolios } from '@/features/portfolio/hoc/withAssetPortfolios';
-import withAssets from '@/features/components/hoc/withAssets';
+import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import withCurrency from '@/features/components/hoc/withCurrency';
 import withTransactions from '@/features/components/hoc/withTransactions';
 import { AssetItemPortfolio } from '@/features/lib/types';
@@ -12,7 +12,7 @@ import { AssetItemPortfolio } from '@/features/lib/types';
 export default function Page({ params }: { params: { assetId: string } }) {
 	const assetId = params.assetId;
 
-	const WithAddTransactionFormWrapper = withAssets(
+	const WithAddTransactionFormWrapper = withAssetItems(
 		withCurrency(
 			withTransactions(withAssetPortfolios(AddTransactionFormWrapper))
 		)

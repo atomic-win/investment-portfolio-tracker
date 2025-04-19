@@ -15,7 +15,7 @@ import {
 	PortfolioType,
 	Transaction,
 } from '@/features/lib/types';
-import withAssets from '@/features/components/hoc/withAssets';
+import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import { withOverallPortfolios } from '@/features/components/hoc/withOverallPortfolios';
 import { withAssetClassPortfolios } from '@/features/portfolio/hoc/withAssetClassPortfolios';
 import { withAssetTypePortfolios } from '@/features/components/hoc/withAssetTypePortfolios';
@@ -42,7 +42,7 @@ export default function withPortfolios(
 	}>
 ) {
 	return function WithPortfolios({ latest }: { latest: boolean }) {
-		const WithLoadedComponent = withAssets(
+		const WithLoadedComponent = withAssetItems(
 			withInvestmentsFilter(withCurrency(withTransactions(Page)))
 		);
 

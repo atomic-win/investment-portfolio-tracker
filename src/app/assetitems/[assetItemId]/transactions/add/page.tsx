@@ -3,7 +3,7 @@ import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcr
 import { Card } from '@/components/ui/card';
 import AddTransactionForm from '@/features/assetItems/components/AddTransactionForm';
 import { withAssetPortfolios } from '@/features/portfolio/hoc/withAssetPortfolios';
-import withAssets from '@/features/components/hoc/withAssets';
+import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import withCurrency from '@/features/components/hoc/withCurrency';
 import withTransactions from '@/features/components/hoc/withTransactions';
 import { AssetItemPortfolio } from '@/features/lib/types';
@@ -11,7 +11,7 @@ import { AssetItemPortfolio } from '@/features/lib/types';
 export default function Page({ params }: { params: { assetItemId: string } }) {
 	const assetId = params.assetItemId;
 
-	const WithAddTransactionFormWrapper = withAssets(
+	const WithAddTransactionFormWrapper = withAssetItems(
 		withCurrency(
 			withTransactions(withAssetPortfolios(AddTransactionFormWrapper))
 		)

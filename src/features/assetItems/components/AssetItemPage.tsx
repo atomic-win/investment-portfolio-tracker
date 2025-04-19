@@ -3,7 +3,7 @@
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
 import AssetItem from '@/features/assetItems/components/AssetItem';
 import { withAssetPortfolios } from '@/features/portfolio/hoc/withAssetPortfolios';
-import withAssets from '@/features/components/hoc/withAssets';
+import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import withCurrency from '@/features/components/hoc/withCurrency';
 import withTransactions from '@/features/components/hoc/withTransactions';
 import { AssetItemPortfolio, Transaction } from '@/features/lib/types';
@@ -13,7 +13,7 @@ export default function AssetItemPage({
 }: {
 	assetItemId: string;
 }) {
-	const WithLoadedAssetWrapper = withAssets(
+	const WithLoadedAssetWrapper = withAssetItems(
 		withCurrency(withTransactions(withAssetPortfolios(AssetWrapper)))
 	);
 

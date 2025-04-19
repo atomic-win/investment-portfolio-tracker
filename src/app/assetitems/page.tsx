@@ -3,11 +3,11 @@ import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcr
 import { Card, CardContent } from '@/components/ui/card';
 import AssetItemsTable from '@/features/assetItems/components/AssetItemsTable';
 import { withAssetPortfolios } from '@/features/portfolio/hoc/withAssetPortfolios';
-import withAssets from '@/features/components/hoc/withAssets';
+import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import withCurrency from '@/features/components/hoc/withCurrency';
 
 export default function Page() {
-	const WithLoadedAssetsTable = withAssets(
+	const WithLoadedAssetsTable = withAssetItems(
 		withCurrency(withAssetPortfolios(AssetItemsTable))
 	);
 
