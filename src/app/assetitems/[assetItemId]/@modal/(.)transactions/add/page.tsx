@@ -5,7 +5,7 @@ import { DialogContent, DialogHeader } from '@/components/ui/dialog';
 import AddTransactionForm from '@/features/assetItems/components/AddTransactionForm';
 import { withAssetPortfolios } from '@/features/portfolio/hoc/withAssetPortfolios';
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
-import withCurrency from '@/features/components/hoc/withCurrency';
+import withCurrency from '@/components/hoc/withCurrency';
 import withTransactions from '@/features/components/hoc/withTransactions';
 import { AssetItemPortfolio } from '@/features/lib/types';
 

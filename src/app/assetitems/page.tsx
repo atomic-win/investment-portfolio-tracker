@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import AssetItemsTable from '@/features/assetItems/components/AssetItemsTable';
 import { withAssetPortfolios } from '@/features/portfolio/hoc/withAssetPortfolios';
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
-import withCurrency from '@/features/components/hoc/withCurrency';
+import withCurrency from '@/components/hoc/withCurrency';
 
 export default function Page() {
 	const WithLoadedAssetsTable = withAssetItems(

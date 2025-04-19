@@ -21,7 +21,7 @@ import { withAssetClassPortfolios } from '@/features/portfolio/hoc/withAssetClas
 import { withAssetTypePortfolios } from '@/features/portfolio/hoc/withAssetTypePortfolios';
 import { withAssetPortfolios } from '@/features/portfolio/hoc/withAssetPortfolios';
 import withInvestmentsFilter from '@/features/components/hoc/withInvestmentsFilter';
-import withCurrency from '@/features/components/hoc/withCurrency';
+import withCurrency from '@/components/hoc/withCurrency';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { displayPortfolioType } from '@/features/lib/utils';

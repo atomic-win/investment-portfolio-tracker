@@ -4,7 +4,7 @@ import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcr
 import AssetItem from '@/features/assetItems/components/AssetItem';
 import { withAssetPortfolios } from '@/features/portfolio/hoc/withAssetPortfolios';
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
-import withCurrency from '@/features/components/hoc/withCurrency';
+import withCurrency from '@/components/hoc/withCurrency';
 import withTransactions from '@/features/components/hoc/withTransactions';
 import { AssetItemPortfolio, Transaction } from '@/features/lib/types';
 
