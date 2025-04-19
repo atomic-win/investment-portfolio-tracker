@@ -30,6 +30,7 @@ export enum AssetType {
 }
 
 export enum TransactionType {
+	Unknown = 'UNKNOWN',
 	Buy = 'Buy',
 	Sell = 'Sell',
 	Deposit = 'Deposit',

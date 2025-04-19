@@ -1,10 +1,6 @@
 'use client';
 import { CardContent } from '@/components/ui/card';
-import {
-	AssetItemPortfolio,
-	InstrumentType,
-	TransactionType,
-} from '@/features/lib/types';
+import { AssetItemPortfolio } from '@/features/lib/types';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -27,12 +23,12 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { displayTransactionType } from '@/features/lib/utils';
 import { Input } from '@/components/ui/input';
 import { useAddTransactionMutation } from '@/features/hooks/transactions';
 import { useRouter } from 'next/navigation';
 import { DateTime } from 'luxon';
 import { ChevronDown } from 'lucide-react';
+import { AssetType, TransactionType } from '@/types';
 
 const schema = z.object({
 	date: z.date({
@@ -134,14 +130,14 @@ export default function AddTransactionForm({
 											</SelectIcon>
 										</SelectTrigger>
 										<SelectContent className='rounded-xl'>
-											{getApplicableTransactionTypes(asset.instrumentType)
+											{getApplicableTransactionTypes(asset.assetType)
 												.filter((type) => type !== TransactionType.Unknown)
 												.map((type) => (
 													<SelectItem
 														key={type}
 														value={type}
 														className='rounded-lg'>
-														{displayTransactionType(type)}
+														{type}
 													</SelectItem>
 												))}
 										</SelectContent>
@@ -176,14 +172,13 @@ export default function AddTransactionForm({
 }
 
 function getApplicableTransactionTypes(
-	instrumentType: InstrumentType | undefined
+	assetType: AssetType
 ): TransactionType[] {
-	switch (instrumentType) {
-		case InstrumentType.EmergencyFunds:
-		case InstrumentType.CashAccounts:
-		case InstrumentType.FixedDeposits:
-		case InstrumentType.EPF:
-		case InstrumentType.PPF:
+	switch (assetType) {
+		case AssetType.CashAccounts:
+		case AssetType.FixedDeposits:
+		case AssetType.EPF:
+		case AssetType.PPF:
 			return [
 				TransactionType.Deposit,
 				TransactionType.Withdrawal,
@@ -191,15 +186,15 @@ function getApplicableTransactionTypes(
 				TransactionType.SelfInterest,
 				TransactionType.InterestPenalty,
 			];
-		case InstrumentType.MutualFunds:
+		case AssetType.MutualFunds:
 			return [TransactionType.Buy, TransactionType.Sell];
-		case InstrumentType.Stocks:
+		case AssetType.Stocks:
 			return [
 				TransactionType.Buy,
 				TransactionType.Sell,
 				TransactionType.Dividend,
 			];
 		default:
-			throw new Error(`Unsupported instrument type: ${instrumentType}`);
+			throw new Error(`Unsupported asset type: ${assetType}`);
 	}
 }

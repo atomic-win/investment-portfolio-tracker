@@ -1,17 +1,6 @@
 import { AssetItemTable } from '@/drizzle/schema';
 import { AssetClass, AssetType, TransactionType } from '@/types';
 
-export enum InstrumentType {
-	Unknown = 'Unknown',
-	EmergencyFunds = 'EmergencyFunds',
-	CashAccounts = 'CashAccounts',
-	FixedDeposits = 'FixedDeposits',
-	EPF = 'EPF',
-	PPF = 'PPF',
-	MutualFunds = 'MutualFunds',
-	Stocks = 'Stocks',
-}
-
 export enum PortfolioType {
 	Unknown = 'Unknown',
 	Overall = 'Overall',
