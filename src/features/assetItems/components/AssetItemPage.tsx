@@ -5,7 +5,7 @@ import AssetItem from '@/features/assetItems/components/AssetItem';
 import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import withCurrency from '@/components/hoc/withCurrency';
-import withTransactions from '@/features/components/hoc/withTransactions';
+import withTransactions from '@/features/assetItems/hoc/withTransactions';
 import { AssetItemPortfolio, Transaction } from '@/features/lib/types';
 
 export default function AssetItemPage({

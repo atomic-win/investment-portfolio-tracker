@@ -9,19 +9,19 @@ export default function withTransactions<
 	return function WithTransactions(
 		props: Omit<T, 'transactions'> & {
 			currency: string;
-			assetIds: string[];
+			assetItemIds: string[];
 		}
 	) {
-		const assetTransactionsResults = useAssetTransactionsQueries(
+		const transactionsResults = useAssetTransactionsQueries(
 			props.currency,
-			props.assetIds
+			props.assetItemIds
 		);
 
-		if (assetTransactionsResults.some((result) => result.isFetching)) {
+		if (transactionsResults.some((result) => result.isFetching)) {
 			return <LoadingComponent loadingMessage='Fetching transactions' />;
 		}
 
-		if (assetTransactionsResults.some((result) => result.isError)) {
+		if (transactionsResults.some((result) => result.isError)) {
 			return (
 				<ErrorComponent errorMessage='Failed while fetching transactions' />
 			);
@@ -30,7 +30,7 @@ export default function withTransactions<
 		return (
 			<Component
 				{...(props as unknown as T)}
-				transactions={assetTransactionsResults.flatMap((x) => x.data!)}
+				transactions={transactionsResults.flatMap((x) => x.data!)}
 			/>
 		);
 	};
