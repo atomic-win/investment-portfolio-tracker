@@ -24,7 +24,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { useAddTransactionMutation } from '@/features/hooks/transactions';
+import { useAddTransactionMutation } from '@/features/assetItems/hooks/transactions';
 import { useRouter } from 'next/navigation';
 import { DateTime } from 'luxon';
 import { ChevronDown } from 'lucide-react';
@@ -71,7 +71,7 @@ export default function AddTransactionForm({
 		await addTransactionAsync({
 			date: DateTime.fromJSDate(data.date).toISODate()!,
 			name: data.name,
-			assetId: assetItem.id,
+			assetItemId: assetItem.id,
 			type: data.transactionType,
 			units: data.units,
 		});

@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { AssetItemPortfolio, Transaction } from '@/features/lib/types';
-import { useDeleteTransactionMutation } from '@/features/hooks/transactions';
+import { useDeleteTransactionMutation } from '@/features/assetItems/hooks/transactions';
 import React from 'react';
 import CurrencyAmount from '@/components/CurrencyAmount';
 
@@ -55,7 +55,7 @@ export default function DeleteTransactionDialog({
 						<AlertDialogAction
 							onClick={async () => {
 								await deleteTransactionAsync({
-									assetId: assetItem.id,
+									assetItemId: assetItem.id,
 									transactionId: transaction.id,
 									date: transaction.date,
 								});

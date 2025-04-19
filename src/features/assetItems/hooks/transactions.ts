@@ -12,24 +12,24 @@ export type AddTransactionRequest = {
 	date: string;
 	name: string;
 	type: TransactionType;
-	assetId: string;
+	assetItemId: string;
 	units: number;
 };
 
 export type DeleteTransactionRequest = {
-	assetId: string;
+	assetItemId: string;
 	transactionId: string;
 	date: string;
 };
 
-export function useAssetTransactionsQueries(
+export function useAssetItemTransactionsQueries(
 	currency: string | undefined,
-	assetIds: string[] | undefined
+	assetItemIds: string[] | undefined
 ) {
 	const primalApiClient = usePrimalApiClient();
 
 	return useQueries({
-		queries: (assetIds || []).map((assetItemId) => ({
+		queries: (assetItemIds || []).map((assetItemId) => ({
 			queryKey: [
 				'assetitems',
 				assetItemId,
@@ -48,7 +48,7 @@ export function useAssetTransactionsQueries(
 			select: (data: Transaction[]) =>
 				data.map((x) => ({
 					...x,
-					assetId: assetItemId,
+					assetItemId,
 				})),
 			enabled: !!currency && !!assetItemId,
 		})),
@@ -62,7 +62,7 @@ export function useDeleteTransactionMutation() {
 	return useMutation({
 		mutationFn: async (request: DeleteTransactionRequest) => {
 			await primalApiClient.delete(
-				`assetitems/${request.assetId}/transactions/${request.transactionId}`
+				`assetitems/${request.assetItemId}/transactions/${request.transactionId}`
 			);
 		},
 		onSettled: (_data, _error, request) => onSettled(queryClient, request),
@@ -76,7 +76,7 @@ export function useAddTransactionMutation() {
 	return useMutation({
 		mutationFn: async (transaction: AddTransactionRequest) => {
 			await primalApiClient.post(
-				`assetitems/${transaction.assetId}/transactions`,
+				`assetitems/${transaction.assetItemId}/transactions`,
 				transaction
 			);
 		},
@@ -98,7 +98,7 @@ function onSettled(
 			}
 
 			if (
-				query.queryKey[2] === request.assetId &&
+				query.queryKey[2] === request.assetItemId &&
 				query.queryKey[3] === 'transactions'
 			) {
 				return true;
@@ -114,7 +114,7 @@ function onSettled(
 			};
 
 			return (
-				valuationQueryData.assetIds.includes(request.assetId) &&
+				valuationQueryData.assetIds.includes(request.assetItemId) &&
 				valuationQueryData.date >= request.date
 			);
 		},
