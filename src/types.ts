@@ -1,4 +1,4 @@
-import { AssetItemTable } from './drizzle/schema';
+import { AssetItemTable, TransactionTable } from './drizzle/schema';
 
 export enum IdentityProvider {
 	Google = 'Google',
@@ -60,6 +60,13 @@ export type AssetItem = Omit<
 	'createdAt' | 'updatedAt' | 'userId' | 'assetId'
 > & { assetType: AssetType };
 
+export type Transaction = Omit<
+	typeof TransactionTable.$inferSelect,
+	'createdAt' | 'updatedAt'
+> & {
+	ammount: number;
+};
+
 export type Portfolio = {
 	id: string;
 	date: string;
@@ -81,16 +88,6 @@ export type AssetItemPortfolio = Portfolio & {
 	name: string;
 	assetClass: AssetClass;
 	assetType: AssetType;
-};
-
-export type Transaction = {
-	id: string;
-	date: string;
-	name: string;
-	type: TransactionType;
-	assetItemId: string;
-	units: number;
-	amount: number;
 };
 
 export type Valuation = {
