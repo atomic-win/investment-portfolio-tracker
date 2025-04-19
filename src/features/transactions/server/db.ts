@@ -3,10 +3,13 @@ import { db } from '@/drizzle/db';
 import { TransactionTable } from '@/drizzle/schema';
 import { and, asc, eq, lte } from 'drizzle-orm';
 import { cacheLife } from 'next/dist/server/use-cache/cache-life';
+import { cacheTag } from 'next/dist/server/use-cache/cache-tag';
+import { transactionsTag, transactionTag } from './cacheTag';
 
 export async function getAllTransactions(assetItemId: string, date: string) {
 	'use cache';
 	cacheLife('daily');
+	cacheTag(transactionsTag(assetItemId));
 
 	return await db
 		.select()
@@ -21,6 +24,10 @@ export async function getAllTransactions(assetItemId: string, date: string) {
 }
 
 export async function getTransaction(assetItemId: string, id: string) {
+	'use cache';
+	cacheLife('daily');
+	cacheTag(transactionTag(assetItemId, id));
+
 	return await db
 		.select()
 		.from(TransactionTable)

@@ -4,6 +4,8 @@ import { z } from 'zod';
 import { getAssetItem } from '@/features/assetItems/server/db';
 import { DateTime } from 'luxon';
 import { addTransaction } from '@/features/transactions/server/db';
+import { unstable_expireTag as expireTag } from 'next/cache';
+import { transactionsTag } from '@/features/transactions/server/cacheTag';
 
 const format = 'yyyy-MM-dd';
 
@@ -91,6 +93,8 @@ export default async function handler(
 			assetItemId,
 			...parsedBody.data,
 		});
+
+		expireTag(transactionsTag(assetItemId));
 
 		return new NextResponse(null, { status: 200 });
 	} catch (error) {

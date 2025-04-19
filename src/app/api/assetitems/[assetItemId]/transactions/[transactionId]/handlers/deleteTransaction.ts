@@ -5,6 +5,11 @@ import {
 	deleteTransaction,
 	getTransaction,
 } from '@/features/transactions/server/db';
+import { unstable_expireTag as expireTag } from 'next/cache';
+import {
+	transactionsTag,
+	transactionTag,
+} from '@/features/transactions/server/cacheTag';
 
 export default async function handler(
 	_req: NextRequest,
@@ -28,6 +33,9 @@ export default async function handler(
 		}
 
 		await deleteTransaction(transactionId);
+
+		expireTag(transactionsTag(assetItemId));
+		expireTag(transactionTag(assetItemId, transactionId));
 
 		return new NextResponse(null, { status: 204 });
 	} catch (error) {

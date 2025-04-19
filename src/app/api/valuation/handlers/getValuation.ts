@@ -8,6 +8,8 @@ import { DateTime } from 'luxon';
 import { TransactionTable } from '@/drizzle/schema';
 import _ from 'lodash';
 import { cacheLife } from 'next/dist/server/use-cache/cache-life';
+import { cacheTag } from 'next/dist/server/use-cache/cache-tag';
+import { transactionsTag } from '@/features/transactions/server/cacheTag';
 
 const dateFormat = 'yyyy-MM-dd';
 
@@ -93,6 +95,7 @@ async function calculateAssetItemValuation(
 ) {
 	'use cache';
 	cacheLife('daily');
+	cacheTag(transactionsTag(assetItemId));
 
 	const transactions = await getAllTransactions(assetItemId, evaluationDate);
 
