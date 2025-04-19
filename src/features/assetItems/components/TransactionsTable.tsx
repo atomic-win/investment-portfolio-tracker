@@ -9,7 +9,7 @@ import { PlusIcon } from 'lucide-react';
 import CurrencyAmount from '@/components/CurrencyAmount';
 
 type TableItem = Transaction & {
-	asset: AssetItemPortfolio;
+	assetItem: AssetItemPortfolio;
 };
 
 const columns: ColumnDef<TableItem>[] = [
@@ -55,22 +55,25 @@ const columns: ColumnDef<TableItem>[] = [
 		cell: ({ row }) => {
 			const item = row.original;
 			return (
-				<DeleteTransactionDialog assetItem={item.asset} transaction={item} />
+				<DeleteTransactionDialog
+					assetItem={item.assetItem}
+					transaction={item}
+				/>
 			);
 		},
 	},
 ];
 
 export default function TransactionsTable({
-	asset,
+	assetItem,
 	transactions,
 }: {
-	asset: AssetItemPortfolio;
+	assetItem: AssetItemPortfolio;
 	transactions: Transaction[];
 }) {
 	const items = transactions.map((transaction) => ({
 		...transaction,
-		asset,
+		assetItem,
 	}));
 
 	return (
@@ -78,7 +81,7 @@ export default function TransactionsTable({
 			<div className='flex justify-end text-xl font-semibold items-center'>
 				<Button>
 					<PlusIcon />
-					<Link href={`/assetitems/${asset.id}/transactions/add`}>
+					<Link href={`/assetitems/${assetItem.id}/transactions/add`}>
 						Add Transaction
 					</Link>
 				</Button>

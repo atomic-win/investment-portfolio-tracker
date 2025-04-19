@@ -19,7 +19,7 @@ export function withValuations<
 		props: Omit<T, 'portfolios'> & {
 			currency: string;
 			assetIds: string[];
-			assets: AssetItem[];
+			assetItems: AssetItem[];
 			transactions: Transaction[];
 			idSelector: (asset: AssetItem) => string;
 			portfolioFn: (assets: AssetItem[], portfolio: Portfolio) => TPortfolio;
@@ -30,8 +30,8 @@ export function withValuations<
 			props.currency,
 			props.assetIds.length > 0
 				? props.assetIds
-				: props.assets.map((asset) => asset.id),
-			props.assets,
+				: props.assetItems.map((assetItem) => assetItem.id),
+			props.assetItems,
 			props.transactions,
 			props.idSelector,
 			props.latest
@@ -50,7 +50,7 @@ export function withValuations<
 				{...(props as unknown as T)}
 				portfolios={calculatePortfolios(
 					valuationQueryResults.map((result) => result.data!)
-				).map((portfolio) => props.portfolioFn(props.assets, portfolio))}
+				).map((portfolio) => props.portfolioFn(props.assetItems, portfolio))}
 			/>
 		);
 	};

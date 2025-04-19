@@ -1,7 +1,7 @@
 'use client';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { AssetItemPortfolio, Transaction } from '@/features/lib/types';
-import TransactionsTable from '@/features/components/TransactionsTable';
+import TransactionsTable from '@/features/assetItems/components/TransactionsTable';
 import { Separator } from '@/components/ui/separator';
 import { displayPercentage } from '@/features/lib/utils';
 import React from 'react';
@@ -37,7 +37,7 @@ export default function AssetItem({
 				<Separator />
 			</CardHeader>
 			<CardContent className='mt-0 space-y-4'>
-				<TransactionsTable asset={assetItem} transactions={transactions} />
+				<TransactionsTable assetItem={assetItem} transactions={transactions} />
 			</CardContent>
 		</Card>
 	);

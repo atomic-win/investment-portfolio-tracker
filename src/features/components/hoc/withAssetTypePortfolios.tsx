@@ -26,7 +26,7 @@ export function withAssetTypePortfolios<
 				{...(props as unknown as T)}
 				currency={props.currency}
 				assetIds={props.assetIds}
-				assets={props.assets}
+				assetItems={props.assets}
 				transactions={props.transactions}
 				idSelector={(assetItem) => assetItem.assetType}
 				portfolioFn={calculateAssetTypePortfolio}

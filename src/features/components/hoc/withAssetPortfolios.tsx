@@ -5,7 +5,7 @@ import {
 	PortfolioType,
 	Transaction,
 } from '@/features/lib/types';
-import { findAssetById } from '@/features/lib/utils';
+import { findAssetItemById } from '@/features/lib/utils';
 import { withValuations } from '@/features/components/hoc/withValuations';
 
 export function withAssetPortfolios<
@@ -17,7 +17,7 @@ export function withAssetPortfolios<
 		props: Omit<T, 'portfolios'> & {
 			currency: string;
 			assetIds: string[];
-			assets: AssetItem[];
+			assetItems: AssetItem[];
 			transactions: Transaction[];
 			latest: boolean;
 		}
@@ -31,29 +31,29 @@ export function withAssetPortfolios<
 				assetIds={
 					props.assetIds.length > 0
 						? props.assetIds
-						: props.assets.map((asset) => asset.id)
+						: props.assetItems.map((assetItem) => assetItem.id)
 				}
-				assets={props.assets}
+				assetItems={props.assetItems}
 				transactions={props.transactions}
-				idSelector={(asset) => asset.id}
-				portfolioFn={calculateAssetPortfolio}
+				idSelector={(assetItem) => assetItem.id}
+				portfolioFn={calculateAssetItemPortfolio}
 				latest={props.latest}
 			/>
 		);
 	};
 }
 
-function calculateAssetPortfolio(
-	assets: AssetItem[],
+function calculateAssetItemPortfolio(
+	assetItems: AssetItem[],
 	portfolio: Portfolio
 ): AssetItemPortfolio {
-	const asset = findAssetById(assets, portfolio.id)!;
+	const assetItem = findAssetItemById(assetItems, portfolio.id)!;
 
 	return {
 		...portfolio,
 		type: PortfolioType.PerAsset,
-		assetName: asset.name,
-		assetClass: asset.assetClass,
-		assetType: asset.assetType,
+		assetName: assetItem.name,
+		assetClass: assetItem.assetClass,
+		assetType: assetItem.assetType,
 	};
 }
