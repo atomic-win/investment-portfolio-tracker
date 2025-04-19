@@ -1,14 +1,14 @@
 'use client';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
 import { Card, CardContent } from '@/components/ui/card';
-import AssetsTable from '@/features/components/AssetsTable';
+import AssetItemsTable from '@/features/assetItems/components/AssetItemsTable';
 import { withAssetPortfolios } from '@/features/components/hoc/withAssetPortfolios';
 import withAssets from '@/features/components/hoc/withAssets';
 import withCurrency from '@/features/components/hoc/withCurrency';
 
 export default function Page() {
 	const WithLoadedAssetsTable = withAssets(
-		withCurrency(withAssetPortfolios(AssetsTable))
+		withCurrency(withAssetPortfolios(AssetItemsTable))
 	);
 
 	return (

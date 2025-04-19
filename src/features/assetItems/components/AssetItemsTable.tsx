@@ -7,19 +7,12 @@ import CurrencyAmount from '@/components/CurrencyAmount';
 
 const columns: ColumnDef<AssetItemPortfolio>[] = [
 	createColumnDef({
-		accessorKey: 'asset',
-		headerText: 'Asset',
+		accessorKey: 'id',
+		headerText: 'Asset Item',
 		linkFn: (data) => `/assetitems/${data.id}`,
 		cellTextFn: (data) => data.assetName,
 		align: 'left',
 		enableHiding: false,
-	}),
-	createColumnDef({
-		accessorKey: 'assetClass',
-		id: 'Asset Class',
-		headerText: 'Asset Class',
-		cellTextFn: (data) => data.assetClass,
-		align: 'left',
 	}),
 	createColumnDef({
 		accessorKey: 'assetType',
@@ -27,6 +20,13 @@ const columns: ColumnDef<AssetItemPortfolio>[] = [
 		headerText: 'Asset Type',
 		cellTextFn: (data) => data.assetType,
 		sortingFnCompare: (data) => data.assetType,
+		align: 'left',
+	}),
+	createColumnDef({
+		accessorKey: 'assetClass',
+		id: 'Asset Class',
+		headerText: 'Asset Class',
+		cellTextFn: (data) => data.assetClass,
 		align: 'left',
 	}),
 	createColumnDef({
@@ -75,7 +75,7 @@ const columns: ColumnDef<AssetItemPortfolio>[] = [
 	},
 ];
 
-export default function AssetsTable({
+export default function AssetItemsTable({
 	portfolios,
 }: {
 	portfolios: AssetItemPortfolio[];
