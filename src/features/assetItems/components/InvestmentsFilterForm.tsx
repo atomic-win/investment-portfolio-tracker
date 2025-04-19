@@ -30,9 +30,9 @@ const schema = z.object({
 });
 
 export default function InvestmentsFilterForm({
-	assets,
+	assetItems,
 }: {
-	assets: AssetItem[];
+	assetItems: AssetItem[];
 }) {
 	const searchParams = useSearchParams();
 	const pathname = usePathname();
@@ -141,7 +141,7 @@ export default function InvestmentsFilterForm({
 																		form.handleSubmit(onCheckedChange)();
 																	}}
 																	disabled={
-																		!assets.some(
+																		!assetItems.some(
 																			(x) => x.assetClass === assetClass
 																		)
 																	}
@@ -202,11 +202,11 @@ export default function InvestmentsFilterForm({
 																		form.handleSubmit(onCheckedChange)();
 																	}}
 																	disabled={
-																		!assets.some(
+																		!assetItems.some(
 																			(x) => x.assetType === assetType
 																		) ||
 																		(filteredAssetClasses.length !== 0 &&
-																			!assets
+																			!assetItems
 																				.filter((x) =>
 																					filteredAssetClasses.includes(
 																						x.assetClass
@@ -236,35 +236,35 @@ export default function InvestmentsFilterForm({
 							render={() => (
 								<FormItem>
 									<div>
-										<FormLabel className='text-base'>Assets</FormLabel>
+										<FormLabel className='text-base'>Asset Items</FormLabel>
 										<FormDescription>
-											Select the assets for portfolio calculation
+											Select the Asset Items for portfolio calculation
 										</FormDescription>
 									</div>
-									{assets.map((asset) => (
+									{assetItems.map((assetItem) => (
 										<FormField
-											key={asset.id}
+											key={assetItem.id}
 											control={form.control}
 											name='assetIds'
 											render={({ field }) => {
 												return (
 													<div className='py-0.5'>
 														<FormItem
-															key={asset.id}
+															key={assetItem.id}
 															className='flex flex-row items-start space-x-3 space-y-0'>
 															<FormControl>
 																<Checkbox
-																	checked={field.value?.includes(asset.id)}
+																	checked={field.value?.includes(assetItem.id)}
 																	onCheckedChange={(checked) => {
 																		if (checked) {
 																			field.onChange([
 																				...field.value,
-																				asset.id,
+																				assetItem.id,
 																			]);
 																		} else {
 																			field.onChange(
 																				field.value?.filter(
-																					(value) => value !== asset.id
+																					(value) => value !== assetItem.id
 																				)
 																			);
 																		}
@@ -274,17 +274,17 @@ export default function InvestmentsFilterForm({
 																	disabled={
 																		(filteredAssetClasses.length !== 0 &&
 																			!filteredAssetClasses.includes(
-																				asset.assetClass
+																				assetItem.assetClass
 																			)) ||
 																		(filteredAssetTypes.length !== 0 &&
 																			!filteredAssetTypes.includes(
-																				asset.assetType
+																				assetItem.assetType
 																			))
 																	}
 																/>
 															</FormControl>
 															<FormLabel className='font-normal'>
-																{asset.name}
+																{assetItem.name}
 															</FormLabel>
 														</FormItem>
 													</div>

@@ -7,11 +7,11 @@ import { AssetClass, AssetType } from '@/types';
 export default function withInvestmentsFilter<
 	T extends {
 		assetIds: string[];
-		assets: AssetItem[];
+		assetItems: AssetItem[];
 	}
 >(Component: React.ComponentType<T>) {
 	return function WithInvestmentsFilter(props: Omit<T, 'assetIds'>) {
-		const { assets } = props;
+		const { assetItems } = props;
 		const searchParams = useSearchParams();
 
 		const filteredAssetClasses = (searchParams.getAll('assetClass') ||
@@ -26,14 +26,14 @@ export default function withInvestmentsFilter<
 			filteredAssetClasses,
 			filteredAssetTypes,
 			filteredAssetIds,
-			assets
+			assetItems
 		);
 
 		return (
 			<Component
 				{...(props as T)}
 				assetIds={applicableAssetIds}
-				assets={assets}
+				assets={assetItems}
 			/>
 		);
 	};
