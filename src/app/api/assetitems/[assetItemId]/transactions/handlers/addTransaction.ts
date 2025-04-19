@@ -48,7 +48,7 @@ export default async function handler(
 		const transactionType = parsedBody.data.type;
 
 		if (
-			assetType === AssetType.MutualFunds &&
+			assetType === AssetType.MutualFund &&
 			transactionType !== TransactionType.Buy &&
 			transactionType !== TransactionType.Sell
 		) {
@@ -59,7 +59,7 @@ export default async function handler(
 		}
 
 		if (
-			assetType === AssetType.Stocks &&
+			assetType === AssetType.Stock &&
 			transactionType !== TransactionType.Buy &&
 			transactionType !== TransactionType.Sell &&
 			transactionType !== TransactionType.Dividend
@@ -71,8 +71,8 @@ export default async function handler(
 		}
 
 		if (
-			(assetType === AssetType.CashAccounts ||
-				assetType === AssetType.FixedDeposits ||
+			(assetType === AssetType.CashAccount ||
+				assetType === AssetType.FixedDeposit ||
 				assetType === AssetType.EPF ||
 				assetType === AssetType.PPF) &&
 			transactionType !== TransactionType.Deposit &&

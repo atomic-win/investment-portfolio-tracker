@@ -25,7 +25,7 @@ const AssetItemSchema = z
 			.optional(),
 	})
 	.superRefine((data, ctx) => {
-		if (data.type === AssetType.MutualFunds || data.type === AssetType.Stocks) {
+		if (data.type === AssetType.MutualFund || data.type === AssetType.Stock) {
 			if (data.currency) {
 				ctx.addIssue({
 					code: z.ZodIssueCode.custom,
@@ -43,7 +43,7 @@ const AssetItemSchema = z
 			}
 		}
 
-		if (data.type === AssetType.MutualFunds && !data.schemeCode) {
+		if (data.type === AssetType.MutualFund && !data.schemeCode) {
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
 				message: 'Scheme Code is required for Mutual Funds',
@@ -53,7 +53,7 @@ const AssetItemSchema = z
 			return;
 		}
 
-		if (data.type === AssetType.Stocks && !data.symbol) {
+		if (data.type === AssetType.Stock && !data.symbol) {
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
 				message: 'Symbol is required for Stocks',
@@ -63,7 +63,7 @@ const AssetItemSchema = z
 			return;
 		}
 
-		if (data.type !== AssetType.MutualFunds && data.type !== AssetType.Stocks) {
+		if (data.type !== AssetType.MutualFund && data.type !== AssetType.Stock) {
 			if (!!!data.currency) {
 				ctx.addIssue({
 					code: z.ZodIssueCode.custom,
@@ -99,7 +99,7 @@ export default async function handler(req: NextRequest, claims: AuthClaims) {
 
 		const { name, type, schemeCode, symbol, currency } = parsedBody.data;
 
-		if (type === AssetType.MutualFunds) {
+		if (type === AssetType.MutualFund) {
 			return addMutualFundAssetItem({
 				userId,
 				name,
@@ -107,7 +107,7 @@ export default async function handler(req: NextRequest, claims: AuthClaims) {
 			});
 		}
 
-		if (type === AssetType.Stocks) {
+		if (type === AssetType.Stock) {
 			return addStockAssetItem({
 				userId,
 				name,
@@ -159,15 +159,12 @@ async function addMutualFundAssetItem({
 
 	const newAsset = await addAsset({
 		name: mfApiResponse.meta.scheme_name,
-		type: AssetType.MutualFunds,
+		type: AssetType.MutualFund,
 		externalId: schemeCode.toString(),
 		currency: Currency.INR,
 	});
 
-	const assetId = await getAssetId(
-		AssetType.MutualFunds,
-		schemeCode.toString()
-	);
+	const assetId = await getAssetId(AssetType.MutualFund, schemeCode.toString());
 
 	if (assetId) {
 		return await addAssetItemAndReturn({
@@ -179,7 +176,7 @@ async function addMutualFundAssetItem({
 	}
 
 	await addAssetId({
-		type: AssetType.MutualFunds,
+		type: AssetType.MutualFund,
 		externalId: schemeCode.toString(),
 		assetId: newAsset.id,
 	});
@@ -201,7 +198,7 @@ async function addStockAssetItem({
 	name: string;
 	symbol: string;
 }) {
-	const assetId = await getAssetId(AssetType.Stocks, symbol);
+	const assetId = await getAssetId(AssetType.Stock, symbol);
 
 	if (assetId) {
 		return addAssetItemAndReturn({
@@ -225,13 +222,13 @@ async function addStockAssetItem({
 
 	const newAsset = await addAsset({
 		name: bestMatch.name,
-		type: AssetType.Stocks,
+		type: AssetType.Stock,
 		externalId: symbol,
 		currency: z.nativeEnum(Currency).parse(bestMatch.currency),
 	});
 
 	await addAssetId({
-		type: AssetType.Stocks,
+		type: AssetType.Stock,
 		externalId: symbol,
 		assetId: newAsset.id,
 	});

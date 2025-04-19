@@ -175,8 +175,8 @@ function getApplicableTransactionTypes(
 	assetType: AssetType
 ): TransactionType[] {
 	switch (assetType) {
-		case AssetType.CashAccounts:
-		case AssetType.FixedDeposits:
+		case AssetType.CashAccount:
+		case AssetType.FixedDeposit:
 		case AssetType.EPF:
 		case AssetType.PPF:
 			return [
@@ -186,9 +186,9 @@ function getApplicableTransactionTypes(
 				TransactionType.SelfInterest,
 				TransactionType.InterestPenalty,
 			];
-		case AssetType.MutualFunds:
+		case AssetType.MutualFund:
 			return [TransactionType.Buy, TransactionType.Sell];
-		case AssetType.Stocks:
+		case AssetType.Stock:
 			return [
 				TransactionType.Buy,
 				TransactionType.Sell,

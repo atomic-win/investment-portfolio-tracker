@@ -102,7 +102,7 @@ async function getAssetRate(
 
 	const assetType = asset.type;
 
-	if (assetType !== AssetType.MutualFunds && assetType !== AssetType.Stocks) {
+	if (assetType !== AssetType.MutualFund && assetType !== AssetType.Stock) {
 		return 1;
 	}
 
@@ -149,7 +149,7 @@ async function getAssetRate(
 function refreshAssetRates(asset: typeof AssetTable.$inferSelect) {
 	const assetType = asset.type;
 
-	if (assetType === AssetType.MutualFunds) {
+	if (assetType === AssetType.MutualFund) {
 		return refreshMutualFundRates(asset);
 	}
 

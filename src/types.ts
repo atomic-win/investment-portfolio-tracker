@@ -17,16 +17,16 @@ export enum Language {
 export enum AssetClass {
 	Equity = 'Equity',
 	Debt = 'Debt',
-	EmergencyFunds = 'Emergency Funds',
+	EmergencyFund = 'EmergencyFund',
 }
 
 export enum AssetType {
-	CashAccounts = 'Cash Accounts',
-	FixedDeposits = 'Fixed Deposits',
-	EPF = 'Employee Provident Fund',
-	PPF = 'Public Provident Fund',
-	MutualFunds = 'Mutual Funds',
-	Stocks = 'Stocks',
+	CashAccount = 'CashAccount',
+	FixedDeposit = 'FixedDeposit',
+	EPF = 'EPF',
+	PPF = 'PPF',
+	MutualFund = 'MutualFund',
+	Stock = 'Stock',
 }
 
 export enum TransactionType {
@@ -37,8 +37,8 @@ export enum TransactionType {
 	Withdrawal = 'Withdrawal',
 	Dividend = 'Dividend',
 	Interest = 'Interest',
-	SelfInterest = 'Self Interest',
-	InterestPenalty = 'Interest Penalty',
+	SelfInterest = 'SelfInterest',
+	InterestPenalty = 'InterestPenalty',
 }
 
 export type AuthClaims = {
