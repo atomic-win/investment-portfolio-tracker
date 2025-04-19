@@ -52,7 +52,7 @@ const columns: ColumnDef<AssetClassPortfolio>[] = [
 	}),
 ];
 
-export default function PortfolioPerInstrumentTypeSection({
+export default function PortfolioPerAssetClassSection({
 	portfolios,
 }: {
 	portfolios: AssetClassPortfolio[];

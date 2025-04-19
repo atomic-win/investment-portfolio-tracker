@@ -5,14 +5,14 @@ import withPortfolios from '@/features/components/hoc/withPortfolios';
 import InvestmentsFilterForm from '@/features/components/InvestmentsFilterForm';
 import PortfolioOverallSection from '@/features/components/PortfolioOverallSection';
 import PortfolioPerAssetSection from '@/features/components/PortfolioPerAssetSection';
-import PortfolioPerInstrumentSection from '@/features/components/PortfolioPerInstrumentSection';
-import PortfolioPerInstrumentTypeSection from '@/features/components/PortfolioPerInstrumentTypeSection';
+import PortfolioPerAssetTypeSection from '@/features/components/PortfolioPerAssetTypeSection';
+import PortfolioPerAssetClassSection from '@/features/components/PortfolioPerAssetClassSection';
 
 export default function Page() {
 	const WithLoadedPortfolio = withPortfolios(
 		PortfolioOverallSection,
-		PortfolioPerInstrumentTypeSection,
-		PortfolioPerInstrumentSection,
+		PortfolioPerAssetClassSection,
+		PortfolioPerAssetTypeSection,
 		PortfolioPerAssetSection
 	);
 

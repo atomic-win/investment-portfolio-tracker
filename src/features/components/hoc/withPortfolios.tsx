@@ -31,10 +31,10 @@ export default function withPortfolios(
 	OverallSection: React.ComponentType<{
 		portfolios: OverallPortfolio[];
 	}>,
-	InstrumentTypeSection: React.ComponentType<{
+	AssetClassSection: React.ComponentType<{
 		portfolios: AssetClassPortfolio[];
 	}>,
-	InstrumentSection: React.ComponentType<{
+	AssetTypeSection: React.ComponentType<{
 		portfolios: AssetTypePortfolio[];
 	}>,
 	AssetSection: React.ComponentType<{
@@ -50,8 +50,8 @@ export default function withPortfolios(
 			<WithLoadedComponent
 				latest={latest}
 				OverallSection={OverallSection}
-				InstrumentTypeSection={InstrumentTypeSection}
-				InstrumentSection={InstrumentSection}
+				AssetClassSection={AssetClassSection}
+				AssetTypeSection={AssetTypeSection}
 				AssetSection={AssetSection}
 			/>
 		);
@@ -64,8 +64,8 @@ function Page({
 	transactions,
 	latest,
 	OverallSection,
-	InstrumentTypeSection,
-	InstrumentSection,
+	AssetClassSection,
+	AssetTypeSection,
 	AssetSection,
 }: {
 	assetIds: string[];
@@ -75,10 +75,10 @@ function Page({
 	OverallSection: React.ComponentType<{
 		portfolios: OverallPortfolio[];
 	}>;
-	InstrumentTypeSection: React.ComponentType<{
+	AssetClassSection: React.ComponentType<{
 		portfolios: AssetClassPortfolio[];
 	}>;
-	InstrumentSection: React.ComponentType<{
+	AssetTypeSection: React.ComponentType<{
 		portfolios: AssetTypePortfolio[];
 	}>;
 	AssetSection: React.ComponentType<{
@@ -103,12 +103,12 @@ function Page({
 		withOverallPortfolios(OverallSection)
 	);
 
-	const WithLoadedInstrumentTypeSection = withCurrency(
-		withAssetClassPortfolios(InstrumentTypeSection)
+	const WithLoadedAssetClassSection = withCurrency(
+		withAssetClassPortfolios(AssetClassSection)
 	);
 
-	const WithLoadedInstrumentSection = withCurrency(
-		withAssetTypePortfolios(InstrumentSection)
+	const WithLoadedAssetTypeSection = withCurrency(
+		withAssetTypePortfolios(AssetTypeSection)
 	);
 
 	const WithLoadedAssetSection = withCurrency(
@@ -148,9 +148,9 @@ function Page({
 					</PortfolioTabsContent>
 					<PortfolioTabsContent
 						portfolioType={PortfolioType.PerAssetClass}
-						title='Per Instrument Type'
-						description='Stats for each instrument type in the portfolio'>
-						<WithLoadedInstrumentTypeSection
+						title='Per Asset Class'
+						description='Stats for each asset class in the portfolio'>
+						<WithLoadedAssetClassSection
 							assetIds={assetIds}
 							assets={assets}
 							transactions={transactions}
@@ -159,9 +159,9 @@ function Page({
 					</PortfolioTabsContent>
 					<PortfolioTabsContent
 						portfolioType={PortfolioType.PerAssetType}
-						title='Per Instrument'
-						description='Stats for each instrument in the portfolio'>
-						<WithLoadedInstrumentSection
+						title='Per Asset Type'
+						description='Stats for each asset type in the portfolio'>
+						<WithLoadedAssetTypeSection
 							assetIds={assetIds}
 							assets={assets}
 							transactions={transactions}

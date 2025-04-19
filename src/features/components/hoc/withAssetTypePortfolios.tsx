@@ -10,7 +10,7 @@ import { withValuations } from '@/features/components/hoc/withValuations';
 export function withAssetTypePortfolios<
 	T extends { portfolios: AssetTypePortfolio[] }
 >(Component: React.ComponentType<T>) {
-	return function WithInstrumentPortfolios(
+	return function WithAssetTypePortfolios(
 		props: Omit<T, 'portfolios'> & {
 			currency: string;
 			assetIds: string[];
@@ -29,14 +29,14 @@ export function withAssetTypePortfolios<
 				assets={props.assets}
 				transactions={props.transactions}
 				idSelector={(assetItem) => assetItem.assetType}
-				portfolioFn={calculateInstrumentPortfolio}
+				portfolioFn={calculateAssetTypePortfolio}
 				latest={props.latest}
 			/>
 		);
 	};
 }
 
-function calculateInstrumentPortfolio(
+function calculateAssetTypePortfolio(
 	assets: AssetItem[],
 	portfolio: Portfolio
 ): AssetTypePortfolio {

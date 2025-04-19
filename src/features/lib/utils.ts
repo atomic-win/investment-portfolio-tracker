@@ -23,9 +23,9 @@ export function displayPortfolioType(portfolioType: PortfolioType): string {
 		case PortfolioType.Overall:
 			return 'Overall';
 		case PortfolioType.PerAssetClass:
-			return 'Per Instrument Type';
+			return 'Per Asset Class';
 		case PortfolioType.PerAssetType:
-			return 'Per Instrument';
+			return 'Per Asset Type';
 		case PortfolioType.PerAsset:
 			return 'Per Asset';
 		default:

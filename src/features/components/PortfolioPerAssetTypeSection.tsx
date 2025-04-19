@@ -14,14 +14,6 @@ const columns: ColumnDef<AssetTypePortfolio>[] = [
 		enableHiding: false,
 	}),
 	createColumnDef({
-		accessorKey: 'assetClass',
-		id: 'Asset Class',
-		headerText: 'Asset Class',
-		cellTextFn: (data) => data.assetClass,
-		sortingFnCompare: (data) => data.assetClass,
-		align: 'left',
-	}),
-	createColumnDef({
 		accessorKey: 'investedValue',
 		id: 'Invested Value',
 		headerText: 'Invested Value',
@@ -60,7 +52,7 @@ const columns: ColumnDef<AssetTypePortfolio>[] = [
 	}),
 ];
 
-export default function PortfolioPerInstrumentSection({
+export default function PortfolioPerAssetTypeSection({
 	portfolios,
 }: {
 	portfolios: AssetTypePortfolio[];

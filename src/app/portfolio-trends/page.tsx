@@ -18,12 +18,12 @@ export default function Page() {
 			labelFn: () => 'Overall',
 		});
 
-	const PortfolioTrendsPerInstrumentTypeSection =
+	const PortfolioTrendsPerAssetClassSection =
 		withPortfolioTrendsSection<AssetClassPortfolio>({
 			labelFn: (portfolio) => portfolio.id as AssetClass,
 		});
 
-	const PortfolioTrendsPerInstrumentSection =
+	const PortfolioTrendsPerAssetTypeSection =
 		withPortfolioTrendsSection<AssetTypePortfolio>({
 			labelFn: (portfolio) => portfolio.id as AssetType,
 		});
@@ -35,8 +35,8 @@ export default function Page() {
 
 	const WithLoadedPortfolio = withPortfolios(
 		PortfolioTrendsOverallSection,
-		PortfolioTrendsPerInstrumentTypeSection,
-		PortfolioTrendsPerInstrumentSection,
+		PortfolioTrendsPerAssetClassSection,
+		PortfolioTrendsPerAssetTypeSection,
 		PortfolioTrendsPerAssetSection
 	);
 
