@@ -6,7 +6,7 @@ import {
 	Transaction,
 } from '@/features/lib/types';
 import { findAssetItemById } from '@/features/lib/utils';
-import { withValuations } from '@/features/components/hoc/withValuations';
+import { withValuations } from '@/features/portfolio/hoc/withValuations';
 
 export function withAssetItemPortfolios<
 	T extends {
@@ -28,7 +28,7 @@ export function withAssetItemPortfolios<
 			<WithLoadedValuationsComponent
 				{...(props as unknown as T)}
 				currency={props.currency}
-				assetIds={
+				assetItemIds={
 					props.assetItemIds.length > 0
 						? props.assetItemIds
 						: props.assetItems.map((assetItem) => assetItem.id)

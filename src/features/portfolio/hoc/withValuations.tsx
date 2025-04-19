@@ -18,18 +18,21 @@ export function withValuations<
 	return function WithValuations(
 		props: Omit<T, 'portfolios'> & {
 			currency: string;
-			assetIds: string[];
+			assetItemIds: string[];
 			assetItems: AssetItem[];
 			transactions: Transaction[];
-			idSelector: (asset: AssetItem) => string;
-			portfolioFn: (assets: AssetItem[], portfolio: Portfolio) => TPortfolio;
+			idSelector: (assetItem: AssetItem) => string;
+			portfolioFn: (
+				assetItems: AssetItem[],
+				portfolio: Portfolio
+			) => TPortfolio;
 			latest: boolean;
 		}
 	) {
 		const valuationQueryResults = useValuationQueries(
 			props.currency,
-			props.assetIds.length > 0
-				? props.assetIds
+			props.assetItemIds.length > 0
+				? props.assetItemIds
 				: props.assetItems.map((assetItem) => assetItem.id),
 			props.assetItems,
 			props.transactions,

@@ -5,7 +5,7 @@ import {
 	PortfolioType,
 	Transaction,
 } from '@/features/lib/types';
-import { withValuations } from '@/features/components/hoc/withValuations';
+import { withValuations } from '@/features/portfolio/hoc/withValuations';
 
 export function withOverallPortfolios<
 	T extends { portfolios: OverallPortfolio[] }
@@ -25,7 +25,7 @@ export function withOverallPortfolios<
 			<WithLoadedValuationsComponent
 				{...(props as unknown as T)}
 				currency={props.currency}
-				assetIds={props.assetItemIds}
+				assetItemIds={props.assetItemIds}
 				assetItems={props.assetItems}
 				transactions={props.transactions}
 				idSelector={() => 'overall'}
