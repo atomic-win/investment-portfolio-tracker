@@ -76,7 +76,7 @@ export default function TransactionsTable({
 			<div className='flex justify-end text-xl font-semibold items-center'>
 				<Button>
 					<PlusIcon />
-					<Link href={`/assets/${asset.id}/transactions/add`}>
+					<Link href={`/assetitems/${asset.id}/transactions/add`}>
 						Add Transaction
 					</Link>
 				</Button>

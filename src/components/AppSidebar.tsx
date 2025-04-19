@@ -18,7 +18,7 @@ import Link from 'next/link';
 
 const data = [
 	{ title: 'Portfolio', url: '/portfolio' },
-	{ title: 'Assets', url: '/assets' },
+	{ title: 'Assets', url: '/assetitems' },
 	{ title: 'Portfolio Trends', url: '/portfolio-trends' },
 ];
 

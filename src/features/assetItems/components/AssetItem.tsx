@@ -7,34 +7,37 @@ import { displayPercentage } from '@/features/lib/utils';
 import React from 'react';
 import CurrencyAmount from '@/components/CurrencyAmount';
 
-export default function Asset({
-	asset,
+export default function AssetItem({
+	assetItem,
 	transactions,
 }: {
-	asset: AssetItemPortfolio;
+	assetItem: AssetItemPortfolio;
 	transactions: Transaction[];
 }) {
 	return (
 		<Card className='mx-auto my-2 rounded-lg shadow-md w-full'>
 			<CardHeader>
 				<div className='grid grid-cols-3 justify-between gap-2'>
-					<InfoLine label='Asset Name' value={asset.assetName} />
-					<InfoLine label='Asset Class' value={asset.assetClass} />
-					<InfoLine label='Asset Type' value={asset.assetType} />
+					<InfoLine label='Asset Item Name' value={assetItem.assetName} />
+					<InfoLine label='Asset Type' value={assetItem.assetType} />
+					<InfoLine label='Asset Class' value={assetItem.assetClass} />
 					<InfoLine
 						label='Invested Value'
-						value={<CurrencyAmount amount={asset.investedValue} />}
+						value={<CurrencyAmount amount={assetItem.investedValue} />}
 					/>
 					<InfoLine
 						label='Current Value'
-						value={<CurrencyAmount amount={asset.currentValue} />}
+						value={<CurrencyAmount amount={assetItem.currentValue} />}
 					/>
-					<InfoLine label='XIRR' value={displayPercentage(asset.xirrPercent)} />
+					<InfoLine
+						label='XIRR'
+						value={displayPercentage(assetItem.xirrPercent)}
+					/>
 				</div>
 				<Separator />
 			</CardHeader>
 			<CardContent className='mt-0 space-y-4'>
-				<TransactionsTable asset={asset} transactions={transactions} />
+				<TransactionsTable asset={assetItem} transactions={transactions} />
 			</CardContent>
 		</Card>
 	);

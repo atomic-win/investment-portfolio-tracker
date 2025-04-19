@@ -1,19 +1,23 @@
 'use client';
 
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
-import Asset from '@/features/components/Asset';
+import AssetItem from '@/features/assetItems/components/AssetItem';
 import { withAssetPortfolios } from '@/features/components/hoc/withAssetPortfolios';
 import withAssets from '@/features/components/hoc/withAssets';
 import withCurrency from '@/features/components/hoc/withCurrency';
 import withTransactions from '@/features/components/hoc/withTransactions';
 import { AssetItemPortfolio, Transaction } from '@/features/lib/types';
 
-export default function AssetItemPage({ assetId }: { assetId: string }) {
+export default function AssetItemPage({
+	assetItemId,
+}: {
+	assetItemId: string;
+}) {
 	const WithLoadedAssetWrapper = withAssets(
 		withCurrency(withTransactions(withAssetPortfolios(AssetWrapper)))
 	);
 
-	return <WithLoadedAssetWrapper assetIds={[assetId]} latest={true} />;
+	return <WithLoadedAssetWrapper assetIds={[assetItemId]} latest={true} />;
 }
 
 function AssetWrapper({
@@ -23,19 +27,19 @@ function AssetWrapper({
 	portfolios: AssetItemPortfolio[];
 	transactions: Transaction[];
 }) {
-	const asset = portfolios[0];
+	const assetItem = portfolios[0];
 
 	return (
 		<>
-			<title>{asset.assetName}</title>
+			<title>{assetItem.assetName}</title>
 			<SidebarTriggerWithBreadcrumb
 				breadcrumbs={[
-					{ title: 'Assets', href: '/assets' },
-					{ title: asset.assetName, href: `/assets/${asset.id}` },
+					{ title: 'Asset Items', href: '/assetitems' },
+					{ title: assetItem.assetName, href: `/assetitems/${assetItem.id}` },
 				]}
 			/>
 			<div className='container mx-auto p-2'>
-				<Asset asset={asset} transactions={transactions} />
+				<AssetItem assetItem={assetItem} transactions={transactions} />
 			</div>
 		</>
 	);

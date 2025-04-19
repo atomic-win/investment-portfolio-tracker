@@ -15,7 +15,7 @@ export default function Page() {
 		<>
 			<title>Assets</title>
 			<SidebarTriggerWithBreadcrumb
-				breadcrumbs={[{ title: 'Assets', href: '/assets' }]}
+				breadcrumbs={[{ title: 'Asset Items', href: '/assetitems' }]}
 			/>
 			<div className='container mx-auto p-2'>
 				<Card className='mx-auto rounded-lg shadow-md w-full p-2'>
