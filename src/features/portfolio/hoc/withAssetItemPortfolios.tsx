@@ -53,7 +53,7 @@ function calculateAssetItemPortfolio(
 	return {
 		...portfolio,
 		type: PortfolioType.PerAsset,
-		assetName: assetItem.name,
+		name: assetItem.name,
 		assetClass: assetItem.assetClass,
 		assetType: assetItem.assetType,
 	};

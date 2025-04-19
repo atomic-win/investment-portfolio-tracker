@@ -37,7 +37,7 @@ export default function DeleteAssetItemDialog({
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<div>
-					<InfoLine label='Asset Name' value={assetItem.assetName} />
+					<InfoLine label='Asset Name' value={assetItem.name} />
 					<InfoLine label='Asset Type' value={assetItem.assetType} />
 					<InfoLine
 						label='Invested Value'

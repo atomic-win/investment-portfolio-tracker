@@ -42,7 +42,7 @@ export default function DeleteTransactionDialog({
 					<InfoLine label='Date' value={transaction.date} />
 					<InfoLine label='Transaction Name' value={transaction.name} />
 					<InfoLine label='Transaction Type' value={transaction.type} />
-					<InfoLine label='Asset Item Name' value={assetItem.assetName} />
+					<InfoLine label='Asset Item Name' value={assetItem.name} />
 					<InfoLine label='Units' value={transaction.units.toString()} />
 					<InfoLine
 						label='Transaction Amount'

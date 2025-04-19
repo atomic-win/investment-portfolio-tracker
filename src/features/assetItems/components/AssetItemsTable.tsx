@@ -10,7 +10,7 @@ const columns: ColumnDef<AssetItemPortfolio>[] = [
 		accessorKey: 'id',
 		headerText: 'Asset Item',
 		linkFn: (data) => `/assetitems/${data.id}`,
-		cellTextFn: (data) => data.assetName,
+		cellTextFn: (data) => data.name,
 		align: 'left',
 		enableHiding: false,
 	}),

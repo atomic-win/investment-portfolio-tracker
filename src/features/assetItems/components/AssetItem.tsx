@@ -18,7 +18,7 @@ export default function AssetItem({
 		<Card className='mx-auto my-2 rounded-lg shadow-md w-full'>
 			<CardHeader>
 				<div className='grid grid-cols-3 justify-between gap-2'>
-					<InfoLine label='Asset Item Name' value={assetItem.assetName} />
+					<InfoLine label='Asset Item Name' value={assetItem.name} />
 					<InfoLine label='Asset Type' value={assetItem.assetType} />
 					<InfoLine label='Asset Class' value={assetItem.assetClass} />
 					<InfoLine

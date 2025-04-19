@@ -35,7 +35,7 @@ function AddTransactionFormWrapper({
 			<SidebarTriggerWithBreadcrumb
 				breadcrumbs={[
 					{ title: 'Asset Items', href: '/assetitems' },
-					{ title: assetItem.assetName, href: `/assetitems/${assetItem.id}` },
+					{ title: assetItem.name, href: `/assetitems/${assetItem.id}` },
 					{
 						title: 'Add Transaction',
 						href: `/assetitems/${assetItem.id}/transactions/add`,

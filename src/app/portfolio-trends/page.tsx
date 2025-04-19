@@ -30,7 +30,7 @@ export default function Page() {
 
 	const PortfolioTrendsPerAssetItemSection =
 		withPortfolioTrendsSection<AssetItemPortfolio>({
-			labelFn: (portfolio) => portfolio.assetName,
+			labelFn: (portfolio) => portfolio.name,
 		});
 
 	const WithLoadedPortfolio = withPortfolios(

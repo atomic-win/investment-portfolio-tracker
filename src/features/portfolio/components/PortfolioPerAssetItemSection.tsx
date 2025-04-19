@@ -9,7 +9,7 @@ const columns: ColumnDef<AssetItemPortfolio>[] = [
 	createColumnDef({
 		accessorKey: 'assetItemName',
 		headerText: 'Asset Item Name',
-		cellTextFn: (data) => data.assetName,
+		cellTextFn: (data) => data.name,
 		align: 'left',
 		enableHiding: false,
 	}),
@@ -76,7 +76,7 @@ export default function PortfolioPerAssetItemSection({
 		<div className='mx-auto'>
 			<PortfolioCharts
 				portfolios={portfolios}
-				labelFn={(portfolio) => portfolio.assetName}
+				labelFn={(portfolio) => portfolio.name}
 			/>
 			<DataTable
 				columns={columns}

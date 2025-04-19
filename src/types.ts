@@ -78,7 +78,7 @@ export type AssetClassPortfolio = Portfolio;
 export type AssetTypePortfolio = Portfolio;
 
 export type AssetItemPortfolio = Portfolio & {
-	assetName: string;
+	name: string;
 	assetClass: AssetClass;
 	assetType: AssetType;
 };

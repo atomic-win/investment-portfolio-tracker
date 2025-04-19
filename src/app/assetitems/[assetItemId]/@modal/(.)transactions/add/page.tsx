@@ -38,7 +38,7 @@ function AddTransactionFormWrapper({
 						breadcrumbs={[
 							{ title: 'Asset Items', href: '/assetitems' },
 							{
-								title: assetItem.assetName,
+								title: assetItem.name,
 								href: `/assetitems/${assetItem.id}`,
 							},
 							{

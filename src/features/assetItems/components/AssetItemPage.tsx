@@ -33,11 +33,11 @@ function AssetItemWrapper({
 
 	return (
 		<>
-			<title>{assetItem.assetName}</title>
+			<title>{assetItem.name}</title>
 			<SidebarTriggerWithBreadcrumb
 				breadcrumbs={[
 					{ title: 'Asset Items', href: '/assetitems' },
-					{ title: assetItem.assetName, href: `/assetitems/${assetItem.id}` },
+					{ title: assetItem.name, href: `/assetitems/${assetItem.id}` },
 				]}
 			/>
 			<div className='container mx-auto p-2'>
