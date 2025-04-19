@@ -10,7 +10,7 @@ import {
 	ChartTooltipContent,
 } from '@/components/ui/chart';
 import { CartesianGrid, XAxis, YAxis, Line, LineChart } from 'recharts';
-import { displayNumber, displayPortfolioType } from '@/features/lib/utils';
+import { displayPortfolioType } from '@/features/lib/utils';
 import { displayPercentage } from '@/lib/utils';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useCurrencyQuery } from '@/hooks/useCurrencyQuery';
@@ -305,4 +305,8 @@ function displayTrendType(trendType: TrendType) {
 		default:
 			throw new Error(`Unknown trend type: ${trendType}`);
 	}
+}
+
+function displayNumber(number: number) {
+	return Intl.NumberFormat('en-IN').format(number);
 }
