@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { PlusIcon } from 'lucide-react';
 import CurrencyAmount from '@/components/CurrencyAmount';
+import { displayTransactionTypeText } from '@/lib/utils';
 
 type TableItem = Transaction & {
 	assetItem: AssetItemPortfolio;
@@ -32,7 +33,7 @@ const columns: ColumnDef<TableItem>[] = [
 		accessorKey: 'transactionType',
 		id: 'Transaction Type',
 		headerText: 'Transaction Type',
-		cellTextFn: (item) => item.type,
+		cellTextFn: (item) => displayTransactionTypeText(item.type),
 		align: 'left',
 		enableHiding: false,
 	}),

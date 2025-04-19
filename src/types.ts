@@ -64,7 +64,7 @@ export type Transaction = Omit<
 	typeof TransactionTable.$inferSelect,
 	'createdAt' | 'updatedAt'
 > & {
-	ammount: number;
+	amount: number;
 };
 
 export type Portfolio = {

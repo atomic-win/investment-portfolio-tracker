@@ -22,6 +22,7 @@ import { z } from 'zod';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { SlidersHorizontalIcon } from 'lucide-react';
 import { AssetClass, AssetType } from '@/types';
+import { displayAssetClassText, displayAssetTypeText } from '@/lib/utils';
 
 const schema = z.object({
 	assetClasses: z.array(z.nativeEnum(AssetClass)),
@@ -148,7 +149,7 @@ export default function InvestmentsFilterForm({
 																/>
 															</FormControl>
 															<FormLabel className='font-normal'>
-																{assetClass}
+																{displayAssetClassText(assetClass)}
 															</FormLabel>
 														</FormItem>
 													</div>
@@ -218,7 +219,7 @@ export default function InvestmentsFilterForm({
 																/>
 															</FormControl>
 															<FormLabel className='font-normal'>
-																{assetType}
+																{displayAssetTypeText(assetType)}
 															</FormLabel>
 														</FormItem>
 													</div>

@@ -29,6 +29,7 @@ import { useRouter } from 'next/navigation';
 import { DateTime } from 'luxon';
 import { ChevronDown } from 'lucide-react';
 import { AssetType, TransactionType } from '@/types';
+import { displayTransactionTypeText } from '@/lib/utils';
 
 const schema = z.object({
 	date: z.date({
@@ -137,7 +138,7 @@ export default function AddTransactionForm({
 														key={type}
 														value={type}
 														className='rounded-lg'>
-														{type}
+														{displayTransactionTypeText(type)}
 													</SelectItem>
 												))}
 										</SelectContent>

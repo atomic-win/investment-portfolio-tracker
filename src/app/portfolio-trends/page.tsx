@@ -11,6 +11,7 @@ import {
 import withPortfolioTrendsSection from '@/features/portfolio/hoc/withPortfolioTrendsSection';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
 import { AssetClass, AssetType } from '@/types';
+import { displayAssetClassText, displayAssetTypeText } from '@/lib/utils';
 
 export default function Page() {
 	const PortfolioTrendsOverallSection =
@@ -20,12 +21,12 @@ export default function Page() {
 
 	const PortfolioTrendsPerAssetClassSection =
 		withPortfolioTrendsSection<AssetClassPortfolio>({
-			labelFn: (portfolio) => portfolio.id as AssetClass,
+			labelFn: (portfolio) => displayAssetClassText(portfolio.id as AssetClass),
 		});
 
 	const PortfolioTrendsPerAssetTypeSection =
 		withPortfolioTrendsSection<AssetTypePortfolio>({
-			labelFn: (portfolio) => portfolio.id as AssetType,
+			labelFn: (portfolio) => displayAssetTypeText(portfolio.id as AssetType),
 		});
 
 	const PortfolioTrendsPerAssetItemSection =
