@@ -6,11 +6,11 @@ import { AssetClass, AssetType } from '@/types';
 
 export default function withInvestmentsFilter<
 	T extends {
-		assetIds: string[];
+		assetItemIds: string[];
 		assetItems: AssetItem[];
 	}
 >(Component: React.ComponentType<T>) {
-	return function WithInvestmentsFilter(props: Omit<T, 'assetIds'>) {
+	return function WithInvestmentsFilter(props: Omit<T, 'assetItemIds'>) {
 		const { assetItems } = props;
 		const searchParams = useSearchParams();
 
@@ -20,20 +20,20 @@ export default function withInvestmentsFilter<
 		const filteredAssetTypes = (searchParams.getAll('assetType') ||
 			[]) as AssetType[];
 
-		const filteredAssetIds = searchParams.getAll('assetIds') || [];
+		const filteredAssetItemIds = searchParams.getAll('assetItemIds') || [];
 
 		const applicableAssetIds = calculateApplicableAssetIds(
 			filteredAssetClasses,
 			filteredAssetTypes,
-			filteredAssetIds,
+			filteredAssetItemIds,
 			assetItems
 		);
 
 		return (
 			<Component
 				{...(props as T)}
-				assetIds={applicableAssetIds}
-				assets={assetItems}
+				assetItemIds={applicableAssetIds}
+				assetItems={assetItems}
 			/>
 		);
 	};
@@ -42,23 +42,23 @@ export default function withInvestmentsFilter<
 function calculateApplicableAssetIds(
 	filteredAssetClasses: AssetClass[],
 	filteredAssetTypes: AssetType[],
-	filteredAssetIds: string[],
-	assets: AssetItem[]
+	filteredAssetItemIds: string[],
+	assetItems: AssetItem[]
 ): string[] {
-	if (filteredAssetIds.length !== 0) {
-		return filteredAssetIds;
+	if (filteredAssetItemIds.length !== 0) {
+		return filteredAssetItemIds;
 	}
 
-	return assets
+	return assetItems
 		.filter(
-			(asset) =>
+			(assetItem) =>
 				filteredAssetClasses.length === 0 ||
-				filteredAssetClasses.includes(asset.assetClass)
+				filteredAssetClasses.includes(assetItem.assetClass)
 		)
 		.filter(
-			(asset) =>
+			(assetItem) =>
 				filteredAssetTypes.length === 0 ||
-				filteredAssetTypes.includes(asset.assetType)
+				filteredAssetTypes.includes(assetItem.assetType)
 		)
-		.map((asset) => asset.id);
+		.map((assetItem) => assetItem.id);
 }

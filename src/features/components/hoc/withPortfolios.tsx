@@ -20,7 +20,7 @@ import { withOverallPortfolios } from '@/features/components/hoc/withOverallPort
 import { withAssetClassPortfolios } from '@/features/portfolio/hoc/withAssetClassPortfolios';
 import { withAssetTypePortfolios } from '@/features/portfolio/hoc/withAssetTypePortfolios';
 import { withAssetPortfolios } from '@/features/portfolio/hoc/withAssetPortfolios';
-import withInvestmentsFilter from '@/features/components/hoc/withInvestmentsFilter';
+import withInvestmentsFilter from '@/features/portfolio/hoc/withInvestmentsFilter';
 import withCurrency from '@/components/hoc/withCurrency';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
