@@ -1,24 +1,24 @@
 import { createColumnDef, DataTable } from '@/components/ui/data-table';
 import { AssetTypePortfolio } from '@/features/lib/types';
 import { ColumnDef } from '@tanstack/react-table';
-import { displayInstrumentType, displayPercentage } from '@/features/lib/utils';
+import { displayPercentage } from '@/features/lib/utils';
 import PortfolioCharts from '@/features/components/PortfolioCharts';
 import CurrencyAmount from '@/components/CurrencyAmount';
 
 const columns: ColumnDef<AssetTypePortfolio>[] = [
 	createColumnDef({
-		accessorKey: 'instrument',
-		headerText: 'Instrument',
-		cellTextFn: (data) => data.instrumentName,
+		accessorKey: 'id',
+		headerText: 'Asset Type',
+		cellTextFn: (data) => data.id,
 		align: 'left',
 		enableHiding: false,
 	}),
 	createColumnDef({
-		accessorKey: 'instrumentType',
-		id: 'Instrument Type',
-		headerText: 'Instrument Type',
-		cellTextFn: (data) => displayInstrumentType(data.instrumentType),
-		sortingFnCompare: (data) => data.instrumentType,
+		accessorKey: 'assetClass',
+		id: 'Asset Class',
+		headerText: 'Asset Class',
+		cellTextFn: (data) => data.assetClass,
+		sortingFnCompare: (data) => data.assetClass,
 		align: 'left',
 	}),
 	createColumnDef({
@@ -69,7 +69,7 @@ export default function PortfolioPerInstrumentSection({
 		<div className='mx-auto'>
 			<PortfolioCharts
 				portfolios={portfolios}
-				labelFn={(portfolio) => portfolio.instrumentName}
+				labelFn={(portfolio) => portfolio.id}
 			/>
 			<DataTable
 				columns={columns}
@@ -81,7 +81,7 @@ export default function PortfolioPerInstrumentSection({
 					},
 				]}
 				initialColumnVisibility={{
-					'Instrument Type': false,
+					'Asset Class': false,
 				}}
 			/>
 		</div>
