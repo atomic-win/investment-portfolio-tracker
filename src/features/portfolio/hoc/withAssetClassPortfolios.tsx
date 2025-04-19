@@ -13,8 +13,8 @@ export function withAssetClassPortfolios<
 	return function WithAssetClassPortfolios(
 		props: Omit<T, 'portfolios'> & {
 			currency: string;
-			assetIds: string[];
-			assets: AssetItem[];
+			assetItemIds: string[];
+			assetItems: AssetItem[];
 			transactions: Transaction[];
 			latest: boolean;
 		}
@@ -25,8 +25,8 @@ export function withAssetClassPortfolios<
 			<WithLoadedValuationsComponent
 				{...(props as unknown as T)}
 				currency={props.currency}
-				assetIds={props.assetIds}
-				assetItems={props.assets}
+				assetIds={props.assetItemIds}
+				assetItems={props.assetItems}
 				transactions={props.transactions}
 				idSelector={(assetItem) => assetItem.assetClass}
 				portfolioFn={calculateAssetClassPortfolio}
@@ -37,7 +37,7 @@ export function withAssetClassPortfolios<
 }
 
 function calculateAssetClassPortfolio(
-	assets: AssetItem[],
+	assetItems: AssetItem[],
 	portfolio: Portfolio
 ): AssetClassPortfolio {
 	return {

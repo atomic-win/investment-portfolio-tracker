@@ -17,7 +17,7 @@ import {
 } from '@/features/lib/types';
 import withAssets from '@/features/components/hoc/withAssets';
 import { withOverallPortfolios } from '@/features/components/hoc/withOverallPortfolios';
-import { withAssetClassPortfolios } from '@/features/components/hoc/withAssetClassPortfolios';
+import { withAssetClassPortfolios } from '@/features/portfolio/hoc/withAssetClassPortfolios';
 import { withAssetTypePortfolios } from '@/features/components/hoc/withAssetTypePortfolios';
 import { withAssetPortfolios } from '@/features/components/hoc/withAssetPortfolios';
 import withInvestmentsFilter from '@/features/components/hoc/withInvestmentsFilter';
@@ -151,8 +151,8 @@ function Page({
 						title='Per Asset Class'
 						description='Stats for each asset class in the portfolio'>
 						<WithLoadedAssetClassSection
-							assetIds={assetIds}
-							assets={assets}
+							assetItemIds={assetIds}
+							assetItems={assets}
 							transactions={transactions}
 							latest={latest}
 						/>
