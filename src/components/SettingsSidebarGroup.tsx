@@ -5,7 +5,6 @@ import {
 	SidebarMenu,
 	useSidebar,
 } from '@/components/ui/sidebar';
-import { useCurrencyQuery } from '@/hooks/useCurrencyQuery';
 import useUpdateSettingMutation from '@/hooks/useUpdateSettingMutation';
 import {
 	Select,
@@ -17,27 +16,16 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { ChevronRight } from 'lucide-react';
-import { useIpQuery } from '@/hooks/useIpQuery';
-import { useLocaleQuery } from '@/hooks/useLocaleQuery';
-import { calculateLocaleOptions } from '@/lib/utils';
+import { useMySettingsQuery } from '@/hooks/useMySettingsQuery';
+import { Currency, Language } from '@/types';
 
 export default function SettingsSidebarGroup() {
 	const { isMobile } = useSidebar();
 
-	const { data: ipData, isLoading: isIpDataLoading } = useIpQuery();
-
-	const { data: currency, isLoading: isCurrencyLoading } = useCurrencyQuery();
-	const { data: locale, isLoading: isLocaleLoading } = useLocaleQuery();
+	const { data, isFetching, error } = useMySettingsQuery();
 	const { mutate: updateSetting } = useUpdateSettingMutation();
 
-	if (
-		isCurrencyLoading ||
-		isLocaleLoading ||
-		isIpDataLoading ||
-		!currency ||
-		!locale ||
-		!ipData
-	) {
+	if (isFetching || error || !data || !data.language || !data.currency) {
 		return <SidebarGroup className='mt-auto' />;
 	}
 
@@ -45,14 +33,14 @@ export default function SettingsSidebarGroup() {
 		{
 			name: 'currency',
 			title: 'Currency',
-			value: currency,
-			options: Intl.supportedValuesOf('currency'),
+			value: data.currency,
+			options: Object.values(Currency).filter((x) => x !== Currency.Unknown),
 		},
 		{
 			name: 'locale',
 			title: 'Language',
-			value: locale,
-			options: calculateLocaleOptions(!!!ipData ? [] : ipData.languages),
+			value: data.language,
+			options: Object.values(Language),
 		},
 	];
 

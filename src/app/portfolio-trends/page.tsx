@@ -1,18 +1,17 @@
 'use client';
-import withAssets from '@/features/components/hoc/withAssets';
-import withInstruments from '@/features/components/hoc/withInstruments';
-import withPortfolios from '@/features/components/hoc/withPortfolios';
-import InvestmentsFilterForm from '@/features/components/InvestmentsFilterForm';
+import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
+import withPortfolios from '@/features/portfolio/hoc/withPortfolios';
+import InvestmentsFilterForm from '@/features/assetItems/components/InvestmentsFilterForm';
 import {
-	AssetPortfolio,
-	InstrumentPortfolio,
-	InstrumentType,
-	InstrumentTypePortfolio,
+	AssetItemPortfolio,
+	AssetTypePortfolio,
+	AssetClassPortfolio,
 	OverallPortfolio,
-} from '@/features/lib/types';
-import withPortfolioTrendsSection from '@/features/components/hoc/withPortfolioTrendsSection';
+} from '@/types';
+import withPortfolioTrendsSection from '@/features/portfolio/hoc/withPortfolioTrendsSection';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
-import { displayInstrumentType } from '@/features/lib/utils';
+import { AssetClass, AssetType } from '@/types';
+import { displayAssetClassText, displayAssetTypeText } from '@/lib/utils';
 
 export default function Page() {
 	const PortfolioTrendsOverallSection =
@@ -20,32 +19,29 @@ export default function Page() {
 			labelFn: () => 'Overall',
 		});
 
-	const PortfolioTrendsPerInstrumentTypeSection =
-		withPortfolioTrendsSection<InstrumentTypePortfolio>({
-			labelFn: (portfolio) =>
-				displayInstrumentType(portfolio.id as InstrumentType),
+	const PortfolioTrendsPerAssetClassSection =
+		withPortfolioTrendsSection<AssetClassPortfolio>({
+			labelFn: (portfolio) => displayAssetClassText(portfolio.id as AssetClass),
 		});
 
-	const PortfolioTrendsPerInstrumentSection =
-		withPortfolioTrendsSection<InstrumentPortfolio>({
-			labelFn: (portfolio) => portfolio.instrumentName,
+	const PortfolioTrendsPerAssetTypeSection =
+		withPortfolioTrendsSection<AssetTypePortfolio>({
+			labelFn: (portfolio) => displayAssetTypeText(portfolio.id as AssetType),
 		});
 
-	const PortfolioTrendsPerAssetSection =
-		withPortfolioTrendsSection<AssetPortfolio>({
-			labelFn: (portfolio) => portfolio.assetName,
+	const PortfolioTrendsPerAssetItemSection =
+		withPortfolioTrendsSection<AssetItemPortfolio>({
+			labelFn: (portfolio) => portfolio.name,
 		});
 
 	const WithLoadedPortfolio = withPortfolios(
 		PortfolioTrendsOverallSection,
-		PortfolioTrendsPerInstrumentTypeSection,
-		PortfolioTrendsPerInstrumentSection,
-		PortfolioTrendsPerAssetSection
+		PortfolioTrendsPerAssetClassSection,
+		PortfolioTrendsPerAssetTypeSection,
+		PortfolioTrendsPerAssetItemSection
 	);
 
-	const WithLoadedInvestmentsFilterForm = withAssets(
-		withInstruments(InvestmentsFilterForm)
-	);
+	const WithLoadedInvestmentsFilterForm = withAssetItems(InvestmentsFilterForm);
 
 	return (
 		<>

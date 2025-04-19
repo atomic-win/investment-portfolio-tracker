@@ -9,8 +9,8 @@ export const useLogInMutation = () => {
 
 	return useMutation({
 		mutationFn: async (idToken: string) => {
-			const response = await primalApiClient.post('/authentication/signin', {
-				idToken: idToken,
+			const response = await primalApiClient.post('auth/google', {
+				idToken,
 			});
 
 			const accessToken = response.data.accessToken;

@@ -1,3 +1,4 @@
+'use client';
 import { DollarSignIcon } from 'lucide-react';
 
 import {
@@ -17,7 +18,7 @@ import Link from 'next/link';
 
 const data = [
 	{ title: 'Portfolio', url: '/portfolio' },
-	{ title: 'Assets', url: '/assets' },
+	{ title: 'Asset Items', url: '/assetitems' },
 	{ title: 'Portfolio Trends', url: '/portfolio-trends' },
 ];
 
