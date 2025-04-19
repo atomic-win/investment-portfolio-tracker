@@ -1,7 +1,11 @@
 import { createColumnDef, DataTable } from '@/components/ui/data-table';
 import { AssetItemPortfolio } from '@/types';
 import { ColumnDef } from '@tanstack/react-table';
-import { displayPercentage } from '@/lib/utils';
+import {
+	displayAssetClassText,
+	displayAssetTypeText,
+	displayPercentage,
+} from '@/lib/utils';
 import DeleteAssetItemDialog from '@/features/assetItems/components/DeleteAssetItemDialog';
 import CurrencyAmount from '@/components/CurrencyAmount';
 
@@ -18,15 +22,15 @@ const columns: ColumnDef<AssetItemPortfolio>[] = [
 		accessorKey: 'assetType',
 		id: 'Asset Type',
 		headerText: 'Asset Type',
-		cellTextFn: (data) => data.assetType,
-		sortingFnCompare: (data) => data.assetType,
+		cellTextFn: (data) => displayAssetTypeText(data.assetType),
+		sortingFnCompare: (data) => displayAssetTypeText(data.assetType),
 		align: 'left',
 	}),
 	createColumnDef({
 		accessorKey: 'assetClass',
 		id: 'Asset Class',
 		headerText: 'Asset Class',
-		cellTextFn: (data) => data.assetClass,
+		cellTextFn: (data) => displayAssetClassText(data.assetClass),
 		align: 'left',
 	}),
 	createColumnDef({
