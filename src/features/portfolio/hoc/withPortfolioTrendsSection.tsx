@@ -13,9 +13,8 @@ import { CartesianGrid, XAxis, YAxis, Line, LineChart } from 'recharts';
 import { displayPortfolioType } from '@/features/lib/utils';
 import { displayPercentage } from '@/lib/utils';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { useCurrencyQuery } from '@/hooks/useCurrencyQuery';
-import { useLocaleQuery } from '@/hooks/useLocaleQuery';
 import { displayCurrencyAmountText } from '@/lib/utils';
+import { useMySettingsQuery } from '@/hooks/useMySettingsQuery';
 
 enum TrendType {
 	InvestedValue = 'InvestedValue',
@@ -32,16 +31,21 @@ export default function withPortfolioTrendsSection<
 	}: {
 		portfolios: TPortfolio[];
 	}) {
-		const { data: currency, isLoading: isCurrencyLoading } = useCurrencyQuery();
-		const { data: locale, isLoading: isLocaleLoading } = useLocaleQuery();
+		const {
+			data: userSettings,
+			isFetching: isUserSettingsFetching,
+			error,
+		} = useMySettingsQuery();
 
 		const searchParams = useSearchParams();
 		const pathname = usePathname();
 		const { replace } = useRouter();
 
-		if (isCurrencyLoading || isLocaleLoading || !currency || !locale) {
+		if (isUserSettingsFetching || error || !userSettings) {
 			return null;
 		}
+
+		const { currency, language: locale } = userSettings;
 
 		const activeTrendType =
 			(searchParams.get('trendType') as TrendType) || TrendType.InvestedValue;
@@ -97,7 +101,7 @@ export default function withPortfolioTrendsSection<
 						chartTitle='Invested Value Trend'
 						valueFn={(portfolio) => portfolio.investedValue}
 						yAxisFormat={(value) =>
-							displayCurrencyAmountText(locale, currency, value, 'compact', 2)
+							displayCurrencyAmountText(locale!, currency!, value, 'compact', 2)
 						}
 						showTotalInTooltip={!isOverallPortfolioType}
 					/>
@@ -110,7 +114,7 @@ export default function withPortfolioTrendsSection<
 						chartTitle='Current Value Trend'
 						valueFn={(portfolio) => portfolio.currentValue}
 						yAxisFormat={(value) =>
-							displayCurrencyAmountText(locale, currency, value, 'compact', 2)
+							displayCurrencyAmountText(locale!, currency!, value, 'compact', 2)
 						}
 						showTotalInTooltip={!isOverallPortfolioType}
 					/>

@@ -27,13 +27,15 @@ export async function getUserSettings(userId: string) {
 
 	cacheTag(getUserSettingsTag(userId));
 
-	return await db
-		.select({
-			currency: UserSettingTable.currency,
-			language: UserSettingTable.language,
-		})
-		.from(UserSettingTable)
-		.where(eq(UserSettingTable.id, userId));
+	return (
+		await db
+			.select({
+				currency: UserSettingTable.currency,
+				language: UserSettingTable.language,
+			})
+			.from(UserSettingTable)
+			.where(eq(UserSettingTable.id, userId))
+	)[0];
 }
 
 export async function updateUserSettings(
