@@ -140,6 +140,11 @@ export default function InvestmentsFilterForm({
 
 																		form.handleSubmit(onCheckedChange)();
 																	}}
+																	disabled={
+																		!assets.some(
+																			(x) => x.assetClass === assetClass
+																		)
+																	}
 																/>
 															</FormControl>
 															<FormLabel className='font-normal'>
@@ -197,15 +202,18 @@ export default function InvestmentsFilterForm({
 																		form.handleSubmit(onCheckedChange)();
 																	}}
 																	disabled={
-																		filteredAssetClasses.length !== 0 &&
-																		!assets
-																			.filter((x) =>
-																				filteredAssetClasses.includes(
-																					x.assetClass
+																		!assets.some(
+																			(x) => x.assetType === assetType
+																		) ||
+																		(filteredAssetClasses.length !== 0 &&
+																			!assets
+																				.filter((x) =>
+																					filteredAssetClasses.includes(
+																						x.assetClass
+																					)
 																				)
-																			)
-																			.map((x) => x.assetType)
-																			.includes(assetType)
+																				.map((x) => x.assetType)
+																				.includes(assetType))
 																	}
 																/>
 															</FormControl>
