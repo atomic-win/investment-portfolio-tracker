@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
 						id: user.id,
 					},
 					JWT_SECRET,
-					{ expiresIn: '7d' }
+					{ expiresIn: '1h' }
 				);
 
 				return NextResponse.json({ accessToken: customJwt });
