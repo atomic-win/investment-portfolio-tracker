@@ -1,15 +1,15 @@
-import { InstrumentType, AssetClassPortfolio } from '@/features/lib/types';
+import { AssetClassPortfolio } from '@/features/lib/types';
 import { ColumnDef } from '@tanstack/react-table';
-import { displayInstrumentType, displayPercentage } from '@/features/lib/utils';
+import { displayPercentage } from '@/features/lib/utils';
 import { createColumnDef, DataTable } from '@/components/ui/data-table';
 import PortfolioCharts from '@/features/components/PortfolioCharts';
 import CurrencyAmount from '@/components/CurrencyAmount';
 
 const columns: ColumnDef<AssetClassPortfolio>[] = [
 	createColumnDef({
-		accessorKey: 'instrumentType',
-		headerText: 'Instrument Type',
-		cellTextFn: (data) => displayInstrumentType(data.id as InstrumentType),
+		accessorKey: 'id',
+		headerText: 'Asset Class',
+		cellTextFn: (data) => data.id,
 		align: 'left',
 		enableHiding: false,
 	}),
@@ -61,9 +61,7 @@ export default function PortfolioPerInstrumentTypeSection({
 		<div className='mx-auto'>
 			<PortfolioCharts
 				portfolios={portfolios}
-				labelFn={(portfolio) =>
-					displayInstrumentType(portfolio.id as InstrumentType)
-				}
+				labelFn={(portfolio) => portfolio.id}
 			/>
 			<DataTable
 				columns={columns}
