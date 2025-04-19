@@ -18,6 +18,7 @@ import { cacheLife } from 'next/dist/server/use-cache/cache-life';
 export async function getAssetItemCurrency(assetItemId: string) {
 	'use cache';
 	cacheLife('daily');
+
 	const asset = await getAsset(assetItemId);
 	return asset.currency;
 }
@@ -25,6 +26,7 @@ export async function getAssetItemCurrency(assetItemId: string) {
 export async function getAssetItemRate(assetItemId: string, date: string) {
 	'use cache';
 	cacheLife('daily');
+
 	const asset = await getAsset(assetItemId);
 	return getAssetRate(asset, date);
 }
