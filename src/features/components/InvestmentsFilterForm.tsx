@@ -56,9 +56,9 @@ export default function InvestmentsFilterForm({
 	function onCheckedChange(data: z.infer<typeof schema>) {
 		const params = new URLSearchParams(searchParams);
 
-		for (const key in data) {
-			params.delete(key);
-		}
+		params.delete('assetClass');
+		params.delete('assetType');
+		params.delete('assetIds');
 
 		if (data.assetClasses.length > 0) {
 			for (const assetClass of data.assetClasses) {
