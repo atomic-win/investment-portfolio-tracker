@@ -13,8 +13,8 @@ export function withOverallPortfolios<
 	return function WithOverallPortfolios(
 		props: Omit<T, 'portfolios'> & {
 			currency: string;
-			assetIds: string[];
-			assets: AssetItem[];
+			assetItemIds: string[];
+			assetItems: AssetItem[];
 			transactions: Transaction[];
 			latest: boolean;
 		}
@@ -25,8 +25,8 @@ export function withOverallPortfolios<
 			<WithLoadedValuationsComponent
 				{...(props as unknown as T)}
 				currency={props.currency}
-				assetIds={props.assetIds}
-				assetItems={props.assets}
+				assetIds={props.assetItemIds}
+				assetItems={props.assetItems}
 				transactions={props.transactions}
 				idSelector={() => 'overall'}
 				portfolioFn={calculateOverallPortfolio}
@@ -37,7 +37,7 @@ export function withOverallPortfolios<
 }
 
 function calculateOverallPortfolio(
-	assets: AssetItem[],
+	assetItems: AssetItem[],
 	portfolio: Portfolio
 ): OverallPortfolio {
 	return {

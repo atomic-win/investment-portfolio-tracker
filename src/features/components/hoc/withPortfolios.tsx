@@ -16,7 +16,7 @@ import {
 	Transaction,
 } from '@/features/lib/types';
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
-import { withOverallPortfolios } from '@/features/components/hoc/withOverallPortfolios';
+import { withOverallPortfolios } from '@/features/portfolio/hoc/withOverallPortfolios';
 import { withAssetClassPortfolios } from '@/features/portfolio/hoc/withAssetClassPortfolios';
 import { withAssetTypePortfolios } from '@/features/portfolio/hoc/withAssetTypePortfolios';
 import { withAssetPortfolios } from '@/features/portfolio/hoc/withAssetPortfolios';
@@ -140,8 +140,8 @@ function Page({
 						title='Overall'
 						description='Stats for the portfolio'>
 						<WithLoadedOverallSection
-							assetIds={assetIds}
-							assets={assets}
+							assetItemIds={assetIds}
+							assetItems={assets}
 							transactions={transactions}
 							latest={latest}
 						/>
