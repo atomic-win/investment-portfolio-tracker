@@ -16,10 +16,10 @@ import React from 'react';
 import CurrencyAmount from '@/components/CurrencyAmount';
 
 export default function DeleteTransactionDialog({
-	asset,
+	assetItem,
 	transaction,
 }: {
-	asset: AssetItemPortfolio;
+	assetItem: AssetItemPortfolio;
 	transaction: Transaction;
 }) {
 	const { mutateAsync: deleteTransactionAsync } =
@@ -42,7 +42,7 @@ export default function DeleteTransactionDialog({
 					<InfoLine label='Date' value={transaction.date} />
 					<InfoLine label='Transaction Name' value={transaction.name} />
 					<InfoLine label='Transaction Type' value={transaction.type} />
-					<InfoLine label='Asset Name' value={asset.assetName} />
+					<InfoLine label='Asset Item Name' value={assetItem.assetName} />
 					<InfoLine label='Units' value={transaction.units.toString()} />
 					<InfoLine
 						label='Transaction Amount'
@@ -55,7 +55,7 @@ export default function DeleteTransactionDialog({
 						<AlertDialogAction
 							onClick={async () => {
 								await deleteTransactionAsync({
-									assetId: asset.id,
+									assetId: assetItem.id,
 									transactionId: transaction.id,
 									date: transaction.date,
 								});

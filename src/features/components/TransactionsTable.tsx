@@ -2,7 +2,7 @@
 import { AssetItemPortfolio, Transaction } from '@/features/lib/types';
 import { createColumnDef, DataTable } from '@/components/ui/data-table';
 import { ColumnDef } from '@tanstack/react-table';
-import DeleteTransactionDialog from '@/features/components/DeleteTransactionDialog';
+import DeleteTransactionDialog from '@/features/assetItems/components/DeleteTransactionDialog';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { PlusIcon } from 'lucide-react';
@@ -54,7 +54,9 @@ const columns: ColumnDef<TableItem>[] = [
 		id: 'actions',
 		cell: ({ row }) => {
 			const item = row.original;
-			return <DeleteTransactionDialog asset={item.asset} transaction={item} />;
+			return (
+				<DeleteTransactionDialog assetItem={item.asset} transaction={item} />
+			);
 		},
 	},
 ];
