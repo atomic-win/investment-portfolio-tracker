@@ -1,11 +1,4 @@
-import { AssetItem, PortfolioType } from '@/features/lib/types';
-
-export function findAssetItemById(
-	assetItems: AssetItem[],
-	id: string
-): AssetItem | undefined {
-	return (assetItems || []).find((asset) => asset.id === id);
-}
+import { PortfolioType } from '@/features/lib/types';
 
 export function displayPercentage(percent: number) {
 	return Intl.NumberFormat('en-IN', {

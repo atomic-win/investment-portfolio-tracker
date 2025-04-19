@@ -5,7 +5,6 @@ import {
 	PortfolioType,
 	Transaction,
 } from '@/features/lib/types';
-import { findAssetItemById } from '@/features/lib/utils';
 import { withValuations } from '@/features/portfolio/hoc/withValuations';
 
 export function withAssetItemPortfolios<
@@ -47,7 +46,9 @@ function calculateAssetItemPortfolio(
 	assetItems: AssetItem[],
 	portfolio: Portfolio
 ): AssetItemPortfolio {
-	const assetItem = findAssetItemById(assetItems, portfolio.id)!;
+	const assetItem = (assetItems || []).find(
+		(assetItem) => assetItem.id === portfolio.id
+	)!;
 
 	return {
 		...portfolio,
