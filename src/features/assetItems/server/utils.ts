@@ -223,8 +223,6 @@ async function getStockRates(asset: typeof AssetTable.$inferSelect) {
 }
 
 async function getExchangeRateLastRefreshedAt(from: Currency, to: Currency) {
-	console.log('getExchangeRateLastRefreshedAt', from, to);
-
 	const rateMetadata = await db
 		.select()
 		.from(RateMetadataTable)
@@ -238,8 +236,6 @@ async function getExchangeRateLastRefreshedAt(from: Currency, to: Currency) {
 }
 
 async function getAssetRateLastRefreshedAt(assetId: string) {
-	console.log('getAssetRateLastRefreshedAt', assetId);
-
 	const rateMetadata = await db
 		.select()
 		.from(RateMetadataTable)

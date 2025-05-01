@@ -29,7 +29,6 @@ export function withValuations<
 			latest: boolean;
 		}
 	) {
-		console.log('WithValuations', props);
 		const valuationQueryResults = useValuationQueries(
 			props.currency,
 			props.assetItemIds.length > 0
@@ -62,8 +61,6 @@ export function withValuations<
 
 function calculatePortfolios(valuations: Valuation[]): Portfolio[] {
 	const dateToValuations = new Map<string, Valuation[]>();
-
-	console.log('Calculating portfolios', valuations);
 
 	for (const valuation of valuations) {
 		if (
