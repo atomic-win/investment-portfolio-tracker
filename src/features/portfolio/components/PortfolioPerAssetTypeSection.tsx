@@ -61,7 +61,7 @@ export default function PortfolioPerAssetTypeSection({
 		<div className='mx-auto'>
 			<PortfolioCharts
 				portfolios={portfolios}
-				labelFn={(portfolio) => portfolio.id}
+				labelFn={(portfolio) => displayAssetTypeText(portfolio.id as AssetType)}
 			/>
 			<DataTable
 				columns={columns}
