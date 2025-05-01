@@ -25,6 +25,7 @@ export enum AssetClass {
 
 export enum AssetType {
 	CashAccount = 'CashAccount',
+	TradingAccount = 'TradingAccount',
 	FixedDeposit = 'FixedDeposit',
 	EPF = 'EPF',
 	PPF = 'PPF',

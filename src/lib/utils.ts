@@ -33,6 +33,8 @@ export function displayAssetTypeText(assetType: AssetType) {
 	switch (assetType) {
 		case AssetType.CashAccount:
 			return 'Cash Account';
+		case AssetType.TradingAccount:
+			return 'Trading Account';
 		case AssetType.FixedDeposit:
 			return 'Fixed Deposit';
 		case AssetType.EPF:
