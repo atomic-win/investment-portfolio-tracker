@@ -132,39 +132,39 @@ async function refreshExchangeRates(from: Currency, to: Currency) {
 	const exchangeRates = await getExchangeRates(from, to);
 
 	const toInsert = exchangeRates.filter(
-		(rate) =>
-			DateTime.fromISO(rate.date)
-				.diff(DateTime.fromISO(lastRefreshedAt))
-				.as('days') >= -1
+		(rate) => rate.date.diff(DateTime.fromISO(lastRefreshedAt)).as('days') >= -1
 	);
 
 	const rates = toInsert.map((rate) => ({
 		from,
 		to,
-		...rate,
+		date: rate.date.toFormat('yyyy-MM-dd'),
+		rate: rate.rate,
 	}));
 
-	if (rates.length === 0) {
-		return Promise.resolve();
+	if (rates.length !== 0) {
+		await db.insert(ExchangeRateTable).values(rates).onConflictDoNothing();
 	}
 
-	await db.insert(ExchangeRateTable).values(rates).onConflictDoNothing();
-
 	await db
-		.update(RateMetadataTable)
-		.set({
-			refreshedAt: DateTime.utc().toFormat('yyyy-MM-dd'),
+		.insert(RateMetadataTable)
+		.values({
+			id: `Currency-${from}-${to}`,
+			refreshedAt: DateTime.utc().toISO(),
 		})
-		.where(eq(RateMetadataTable.id, `Currency-${from}-${to}`));
-
-	return Promise.resolve();
+		.onConflictDoUpdate({
+			target: [RateMetadataTable.id],
+			set: {
+				refreshedAt: DateTime.utc().toISO(),
+			},
+		});
 }
 
 async function refreshAssetRates(asset: typeof AssetTable.$inferSelect) {
 	const lastRefreshedAt = await getAssetRateLastRefreshedAt(asset.id);
 
 	if (DateTime.utc().diff(DateTime.fromISO(lastRefreshedAt)).as('days') <= 1) {
-		return Promise.resolve();
+		return;
 	}
 
 	const assetType = asset.type;
@@ -191,13 +191,17 @@ async function refreshAssetRates(asset: typeof AssetTable.$inferSelect) {
 	}
 
 	await db
-		.update(RateMetadataTable)
-		.set({
+		.insert(RateMetadataTable)
+		.values({
+			id: `Asset-${asset.id}`,
 			refreshedAt: DateTime.utc().toFormat('yyyy-MM-dd'),
 		})
-		.where(eq(RateMetadataTable.id, `Asset-${asset.id}`));
-
-	return Promise.resolve();
+		.onConflictDoUpdate({
+			target: [RateMetadataTable.id],
+			set: {
+				refreshedAt: DateTime.utc().toISO(),
+			},
+		});
 }
 
 async function getMutualFundRates(asset: typeof AssetTable.$inferSelect) {
@@ -213,8 +217,8 @@ async function getStockRates(asset: typeof AssetTable.$inferSelect) {
 	const stockPrices = await getStockPrices(asset.externalId!);
 
 	return stockPrices.map((rate) => ({
-		date: rate.timestamp,
-		rate: rate.close,
+		date: rate.date.toFormat('yyyy-MM-dd'),
+		rate: rate.rate,
 	}));
 }
 

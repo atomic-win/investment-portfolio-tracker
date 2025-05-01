@@ -1,75 +1,37 @@
-import axios from 'axios';
-import Papa from 'papaparse';
-
-const API_KEY = process.env.ALPHA_VANTAGE_API_KEY;
-
-const stocksApiClient = axios.create({
-	baseURL: `https://www.alphavantage.co`,
-	validateStatus: () => true,
-});
+import { Rate } from '@/types';
+import { DateTime } from 'luxon';
+import yahooFinance from 'yahoo-finance2';
 
 export type SymbolSearchResponse = {
 	symbol: string;
 	name: string;
-	type: string;
-	region: string;
-	marketOpen: string;
-	marketClose: string;
-	timezone: string;
 	currency: string;
-	matchScore: number;
-};
-
-export type StockPriceResponse = {
-	timestamp: string;
-	open: number;
-	high: number;
-	low: number;
-	close: number;
-	volume: number;
 };
 
 export async function searchSymbol(symbol: string) {
-	const response = await stocksApiClient.get(
-		`/query?apikey=${API_KEY}&datatype=csv&function=SYMBOL_SEARCH&keywords=${symbol}`,
-		{ responseType: 'text' }
-	);
+	const searchResult = await yahooFinance.quote(symbol);
 
-	if (response.status !== 200) {
-		throw new Error('Failed to fetch symbol data');
+	if (!!!searchResult) {
+		return null;
 	}
 
-	const parsed = Papa.parse<SymbolSearchResponse>(response.data, {
-		header: true,
-		skipEmptyLines: true,
-	});
-
-	if (parsed.errors.length > 0) {
-		throw new Error('Failed to parse symbol data');
-	}
-
-	return parsed.data.sort((a, b) => {
-		return b.matchScore - a.matchScore;
-	});
+	return {
+		symbol: searchResult.symbol,
+		name: searchResult.longName,
+		currency: searchResult.currency,
+	} as SymbolSearchResponse;
 }
 
 export async function getStockPrices(symbol: string) {
-	const response = await stocksApiClient.get(
-		`/query?apikey=${API_KEY}&datatype=csv&function=TIME_SERIES_DAILY&symbol=${symbol}&outputsize=full`,
-		{ responseType: 'text' }
-	);
-
-	if (response.status !== 200) {
-		throw new Error('Failed to fetch stock data');
-	}
-
-	const parsed = Papa.parse<StockPriceResponse>(response.data, {
-		header: true,
-		skipEmptyLines: true,
+	const stockRates = await yahooFinance.chart(symbol, {
+		period1: '2017-01-01',
+		events: '',
 	});
 
-	return parsed.data.map((data) => ({
-		date: data.timestamp,
-		price: data.close,
-	}));
+	return stockRates.quotes
+		.filter((quote) => quote.close !== null)
+		.map((quote) => ({
+			date: DateTime.fromJSDate(quote.date),
+			rate: quote.close,
+		})) as Rate[];
 }
