@@ -40,7 +40,6 @@
 		"lucide-react": "^0.483.0",
 		"luxon": "^3.5.0",
 		"next": "^15.3.0-canary.43",
-		"papaparse": "^5.5.2",
 		"react": "^19.0.0",
 		"react-day-picker": "^9.6.3",
 		"react-dom": "^19.0.0",
