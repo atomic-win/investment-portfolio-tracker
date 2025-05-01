@@ -1,4 +1,4 @@
-import { index, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { primaryKey, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { createdAt, updatedAt } from '../schemaHelpers';
 import { relations } from 'drizzle-orm';
 import { AssetTable } from './asset';
@@ -16,7 +16,12 @@ export const AssetRateTable = sqliteTable(
 		createdAt,
 		updatedAt,
 	},
-	(table) => [index('asset_rates_id_date_idx').on(table.id, table.date)]
+	(table) => [
+		primaryKey({
+			name: 'asset_rates_pkey',
+			columns: [table.id, table.date],
+		}),
+	]
 );
 
 export const AssetRateAssetRelationships = relations(

@@ -5,21 +5,16 @@ import {
 	AssetRateTable,
 	AssetTable,
 	ExchangeRateTable,
+	RateMetadataTable,
 } from '@/drizzle/schema';
 import { eq, and, gte } from 'drizzle-orm';
-import { desc, lte, max } from 'drizzle-orm/sql';
+import { desc, lte } from 'drizzle-orm/sql';
 import { AssetType, Currency } from '@/types';
 import { DateTime } from 'luxon';
 import { getMutualFundNav } from '@/services/mfApiService';
 import { getStockPrices } from '@/services/stockApiService';
 import { getExchangeRates } from '@/services/exchangeRateApiService';
 import { cacheLife } from 'next/dist/server/use-cache/cache-life';
-import { cacheTag } from 'next/dist/server/use-cache/cache-tag';
-import {
-	assetRateLastUpdatedAtTag,
-	exchangeRateLastUpdatedAtTag,
-} from './cacheTag';
-import { revalidateTag } from 'next/cache';
 
 export async function getAssetItemCurrency(assetItemId: string) {
 	'use cache';
@@ -128,9 +123,9 @@ async function getAssetRate(
 }
 
 async function refreshExchangeRates(from: Currency, to: Currency) {
-	const lastUpdatedAt = await getExchangeRateLastUpdatedAt(from, to);
+	const lastRefreshedAt = await getExchangeRateLastRefreshedAt(from, to);
 
-	if (DateTime.utc().diff(DateTime.fromISO(lastUpdatedAt)).as('days') <= 1) {
+	if (DateTime.utc().diff(DateTime.fromISO(lastRefreshedAt)).as('days') <= 1) {
 		return;
 	}
 
@@ -139,7 +134,7 @@ async function refreshExchangeRates(from: Currency, to: Currency) {
 	const toInsert = exchangeRates.filter(
 		(rate) =>
 			DateTime.fromISO(rate.date)
-				.diff(DateTime.fromISO(lastUpdatedAt))
+				.diff(DateTime.fromISO(lastRefreshedAt))
 				.as('days') >= -1
 	);
 
@@ -155,122 +150,100 @@ async function refreshExchangeRates(from: Currency, to: Currency) {
 
 	await db.insert(ExchangeRateTable).values(rates).onConflictDoNothing();
 
-	revalidateTag(exchangeRateLastUpdatedAtTag(from, to));
+	await db
+		.update(RateMetadataTable)
+		.set({
+			refreshedAt: DateTime.utc().toFormat('yyyy-MM-dd'),
+		})
+		.where(eq(RateMetadataTable.id, `Currency-${from}-${to}`));
+
 	return Promise.resolve();
 }
 
 async function refreshAssetRates(asset: typeof AssetTable.$inferSelect) {
-	const lastUpdatedAt = await getAssetRateLastUpdatedAt(asset.id);
+	const lastRefreshedAt = await getAssetRateLastRefreshedAt(asset.id);
 
-	if (DateTime.utc().diff(DateTime.fromISO(lastUpdatedAt)).as('days') <= 1) {
+	if (DateTime.utc().diff(DateTime.fromISO(lastRefreshedAt)).as('days') <= 1) {
 		return Promise.resolve();
 	}
 
 	const assetType = asset.type;
 
-	if (assetType === AssetType.MutualFund) {
-		return await refreshMutualFundRates(asset, lastUpdatedAt);
-	}
+	const rates =
+		assetType === AssetType.MutualFund
+			? await getMutualFundRates(asset)
+			: await getStockRates(asset);
 
-	return await refreshStockRates(asset, lastUpdatedAt);
-}
-
-async function refreshMutualFundRates(
-	asset: typeof AssetTable.$inferSelect,
-	lastUpdatedAt: string
-) {
-	const mfApiResponse = await getMutualFundNav(Number(asset.externalId));
-
-	const rates = mfApiResponse!
-		.data!.filter(
-			(rate) =>
-				DateTime.fromFormat(rate.date, 'dd-MM-yyyy')
-					.diff(DateTime.fromISO(lastUpdatedAt))
-					.as('days') >= -1
-		)
-		.map((rate) => ({
-			id: asset.id,
-			date: DateTime.fromFormat(rate.date, 'dd-MM-yyyy').toFormat('yyyy-MM-dd'),
-			rate: Number(rate.nav),
-		}));
-
-	if (rates.length === 0) {
-		return Promise.resolve();
-	}
-
-	await db.insert(AssetRateTable).values(rates).onConflictDoNothing();
-
-	revalidateTag(assetRateLastUpdatedAtTag(asset.id));
-	return Promise.resolve();
-}
-
-async function refreshStockRates(
-	asset: typeof AssetTable.$inferSelect,
-	lastUpdatedAt: string
-) {
-	const stockPrices = await getStockPrices(asset.externalId!);
-
-	const rates = stockPrices
+	const ratesToInsert = rates
 		.filter(
 			(rate) =>
-				DateTime.fromFormat(rate.date, 'yyyy-MM-dd')
-					.diff(DateTime.fromISO(lastUpdatedAt))
+				DateTime.fromISO(rate.date)
+					.diff(DateTime.fromISO(lastRefreshedAt))
 					.as('days') >= -1
 		)
 		.map((rate) => ({
-			date: rate.date,
-			rate: rate.price,
 			id: asset.id,
+			...rate,
 		}));
 
-	if (rates.length === 0) {
-		return Promise.resolve();
+	if (ratesToInsert.length !== 0) {
+		await db.insert(AssetRateTable).values(ratesToInsert).onConflictDoNothing();
 	}
 
-	await db.insert(AssetRateTable).values(rates).onConflictDoNothing();
+	await db
+		.update(RateMetadataTable)
+		.set({
+			refreshedAt: DateTime.utc().toFormat('yyyy-MM-dd'),
+		})
+		.where(eq(RateMetadataTable.id, `Asset-${asset.id}`));
 
-	revalidateTag(assetRateLastUpdatedAtTag(asset.id));
 	return Promise.resolve();
 }
 
-async function getExchangeRateLastUpdatedAt(from: Currency, to: Currency) {
-	'use cache';
-	cacheLife('daily');
-	cacheTag(exchangeRateLastUpdatedAtTag(from, to));
+async function getMutualFundRates(asset: typeof AssetTable.$inferSelect) {
+	const mfApiResponse = await getMutualFundNav(Number(asset.externalId));
 
-	console.log('getExchangeRateLastUpdatedAt', from, to);
-
-	const lastUpdatedAt = await db
-		.select({
-			lastUpdatedAt: max(ExchangeRateTable.updatedAt),
-		})
-		.from(ExchangeRateTable)
-		.where(and(eq(ExchangeRateTable.from, from), eq(ExchangeRateTable.to, to)));
-
-	if (lastUpdatedAt.length === 0) {
-		return '1970-01-01';
-	}
-
-	return lastUpdatedAt[0].lastUpdatedAt!;
+	return mfApiResponse!.data!.map((rate) => ({
+		date: DateTime.fromFormat(rate.date, 'dd-MM-yyyy').toFormat('yyyy-MM-dd'),
+		rate: Number(rate.nav),
+	}));
 }
 
-async function getAssetRateLastUpdatedAt(assetId: string) {
-	'use cache';
-	cacheLife('daily');
-	cacheTag(assetRateLastUpdatedAtTag(assetId));
+async function getStockRates(asset: typeof AssetTable.$inferSelect) {
+	const stockPrices = await getStockPrices(asset.externalId!);
 
-	console.log('getAssetRateLastUpdatedAt', assetId);
+	return stockPrices.map((rate) => ({
+		date: rate.timestamp,
+		rate: rate.close,
+	}));
+}
 
-	const lastUpdatedAt = await db
-		.select({
-			lastUpdatedAt: max(AssetRateTable.updatedAt),
-		})
-		.from(AssetRateTable)
-		.where(eq(AssetRateTable.id, assetId));
+async function getExchangeRateLastRefreshedAt(from: Currency, to: Currency) {
+	console.log('getExchangeRateLastRefreshedAt', from, to);
 
-	if (lastUpdatedAt.length === 0) {
+	const rateMetadata = await db
+		.select()
+		.from(RateMetadataTable)
+		.where(and(eq(RateMetadataTable.id, `Currency-${from}-${to}`)));
+
+	if (rateMetadata.length === 0) {
 		return '1970-01-01';
 	}
 
-	return lastUpdatedAt[0].lastUpdatedAt!;
+	return rateMetadata[0].refreshedAt!;
+}
+
+async function getAssetRateLastRefreshedAt(assetId: string) {
+	console.log('getAssetRateLastRefreshedAt', assetId);
+
+	const rateMetadata = await db
+		.select()
+		.from(RateMetadataTable)
+		.where(and(eq(RateMetadataTable.id, `Asset-${assetId}`)));
+
+	if (rateMetadata.length === 0) {
+		return '1970-01-01';
+	}
+
+	return rateMetadata[0].refreshedAt!;
 }

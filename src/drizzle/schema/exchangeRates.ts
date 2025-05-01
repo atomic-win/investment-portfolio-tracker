@@ -1,4 +1,4 @@
-import { index, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { primaryKey, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { createdAt, updatedAt } from '../schemaHelpers';
 import { Currency } from '@/types';
 
@@ -13,10 +13,9 @@ export const ExchangeRateTable = sqliteTable(
 		updatedAt,
 	},
 	(table) => [
-		index('exchange_rates_from_to_date_idx').on(
-			table.from,
-			table.to,
-			table.date
-		),
+		primaryKey({
+			name: 'exchange_rates_pkey',
+			columns: [table.from, table.to, table.date],
+		}),
 	]
 );

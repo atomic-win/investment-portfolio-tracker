@@ -7,3 +7,4 @@ export * from './schema/assetRates';
 export * from './schema/exchangeRates';
 export * from './schema/assetItem';
 export * from './schema/transaction';
+export * from './schema/rateMetadata';
