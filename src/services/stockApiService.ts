@@ -22,7 +22,7 @@ export async function searchSymbol(symbol: string) {
 	} as SymbolSearchResponse;
 }
 
-export async function getStockPrices(symbol: string) {
+export async function getStockRates(symbol: string) {
 	const stockRates = await yahooFinance.chart(symbol, {
 		period1: '2017-01-01',
 		events: '',

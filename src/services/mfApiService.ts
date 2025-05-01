@@ -1,4 +1,6 @@
+import { Rate } from '@/types';
 import axios from 'axios';
+import { DateTime } from 'luxon';
 
 export type MFApiResponse = {
 	meta: {
@@ -26,6 +28,11 @@ export async function getMutualFund(schemeCode: number) {
 	return (await mfApiClient.get(`mf/${schemeCode}`)).data as MFApiResponse;
 }
 
-export async function getMutualFundNav(schemeCode: number) {
-	return (await mfApiClient.get(`mf/${schemeCode}`)).data as MFApiResponse;
+export async function getMutualFundRates(schemeCode: number) {
+	return (
+		(await mfApiClient.get(`mf/${schemeCode}`)).data as MFApiResponse
+	).data.map((rate) => ({
+		date: DateTime.fromFormat(rate.date, 'dd-MM-yyyy'),
+		rate: Number(rate.nav),
+	})) as Rate[];
 }
