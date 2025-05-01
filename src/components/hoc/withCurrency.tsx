@@ -8,12 +8,6 @@ export default function withCurrency<T extends { currency: string }>(
 	return function WithCurrency(props: Omit<T, 'currency'>) {
 		const { data: settings, isFetching, error } = useMySettingsQuery();
 
-		console.log({
-			settings,
-			isFetching,
-			error,
-		});
-
 		if (isFetching) {
 			return <LoadingComponent loadingMessage='Fetching currency' />;
 		}

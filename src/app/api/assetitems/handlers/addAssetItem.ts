@@ -233,22 +233,20 @@ async function addStockAssetItem({
 		});
 	}
 
-	const symbolSearchResults = await searchSymbol(symbol);
+	const symbolSearchResult = await searchSymbol(symbol);
 
-	if (!symbolSearchResults || symbolSearchResults.length === 0) {
+	if (!!!symbolSearchResult) {
 		return NextResponse.json(
 			{ error: 'Invalid stock symbol' },
 			{ status: 400 }
 		);
 	}
 
-	const bestMatch = symbolSearchResults[0];
-
 	const newAsset = await addAsset({
-		name: bestMatch.name,
+		name: symbolSearchResult.name,
 		type: AssetType.Stock,
 		externalId: symbol,
-		currency: z.nativeEnum(Currency).parse(bestMatch.currency),
+		currency: z.nativeEnum(Currency).parse(symbolSearchResult.currency),
 	});
 
 	await addAssetId({

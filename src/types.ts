@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import { AssetItemTable, TransactionTable } from './drizzle/schema';
 
 export enum IdentityProvider {
@@ -97,4 +98,9 @@ export type Valuation = {
 	investedValue: number;
 	currentValue: number;
 	xirrPercent: number;
+};
+
+export type Rate = {
+	date: DateTime;
+	rate: number;
 };
