@@ -1,7 +1,7 @@
 'use server';
 import { db } from '@/drizzle/db';
 import { TransactionTable } from '@/drizzle/schema';
-import { and, asc, eq, lte } from 'drizzle-orm';
+import { and, asc, eq, lte, min } from 'drizzle-orm';
 import { cacheLife } from 'next/dist/server/use-cache/cache-life';
 import { cacheTag } from 'next/dist/server/use-cache/cache-tag';
 import { transactionsTag, transactionTag } from './cacheTag';
@@ -21,6 +21,26 @@ export async function getAllTransactions(assetItemId: string, date: string) {
 			)
 		)
 		.orderBy(asc(TransactionTable.date));
+}
+
+export async function getFirstTransactionDate(assetItemId: string) {
+	'use cache';
+	cacheLife('daily');
+	cacheTag(transactionsTag(assetItemId));
+
+	const firstDateRow = await db
+		.select({
+			date: min(TransactionTable.date),
+		})
+		.from(TransactionTable)
+		.where(eq(TransactionTable.assetItemId, assetItemId))
+		.limit(1);
+
+	if (firstDateRow.length === 0) {
+		return null;
+	}
+
+	return firstDateRow[0].date!;
 }
 
 export async function getTransaction(assetItemId: string, id: string) {

@@ -12,6 +12,7 @@ import { cacheLife } from 'next/dist/server/use-cache/cache-life';
 import { cacheTag } from 'next/dist/server/use-cache/cache-tag';
 import { assetIdTag, assetItemsTag, assetItemTag } from './cacheTag';
 import { unstable_expireTag as expireTag } from 'next/cache';
+import { getFirstTransactionDate } from '@/features/transactions/server/db';
 
 export async function getAssetId(type: AssetType, externalId: string) {
 	'use cache';
@@ -43,7 +44,7 @@ export async function getAllAssetItems(userId: string) {
 		.where(eq(AssetItemTable.userId, userId))
 		.innerJoin(AssetTable, eq(AssetItemTable.assetId, AssetTable.id));
 
-	return result.map(calulateAssetItem);
+	return await Promise.all(result.map(calulateAssetItem));
 }
 
 export async function getAssetItem(userId: string, id: string) {
@@ -61,7 +62,7 @@ export async function getAssetItem(userId: string, id: string) {
 		return null;
 	}
 
-	return calulateAssetItem(result[0]);
+	return await calulateAssetItem(result[0]);
 }
 
 export async function addAssetId(data: typeof AssetIdTable.$inferInsert) {
@@ -91,7 +92,7 @@ export async function addAssetRates(
 	return await db.insert(AssetRateTable).values(data).returning();
 }
 
-function calulateAssetItem(data: {
+async function calulateAssetItem(data: {
 	asset_items: typeof AssetItemTable.$inferSelect;
 	assets: typeof AssetTable.$inferSelect;
 }) {
@@ -113,5 +114,6 @@ function calulateAssetItem(data: {
 		assetClass: assetItem.assetClass,
 		assetType: asset.type,
 		currency: asset.currency,
+		firstTransactionDate: await getFirstTransactionDate(assetItem.id),
 	};
 }
