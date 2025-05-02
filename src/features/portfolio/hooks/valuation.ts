@@ -1,26 +1,24 @@
 import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
 import { useQueries } from '@tanstack/react-query';
-import { AssetItem, Transaction, Valuation } from '@/types';
+import { AssetItem, Valuation } from '@/types';
 import { DateTime } from 'luxon';
 
 export default function useValuationQueries(
-	currency: string | undefined,
-	assetItemIds: string[] | undefined,
 	assetItems: AssetItem[],
-	transactions: Transaction[],
-	idSelector: (assetItem: AssetItem) => string,
-	latest: boolean
+	assetItemIds: string[] | undefined,
+	latest: boolean,
+	currency: string | undefined,
+	idSelector: (assetItem: AssetItem) => string
 ) {
 	const primalApiClient = usePrimalApiClient();
 	assetItemIds = (assetItemIds || []).sort();
 	assetItems = assetItems || [];
 
 	const queryInputs = getQueryInputs(
-		assetItemIds,
 		assetItems,
-		transactions,
-		idSelector,
-		latest
+		assetItemIds,
+		latest,
+		idSelector
 	);
 
 	return useQueries({
@@ -53,11 +51,10 @@ export default function useValuationQueries(
 }
 
 function getQueryInputs(
-	assetItemIds: string[],
 	assetItems: AssetItem[],
-	transactions: Transaction[],
-	idSelector: (assetItem: AssetItem) => string,
-	latest: boolean
+	assetItemIds: string[],
+	latest: boolean,
+	idSelector: (assetItem: AssetItem) => string
 ): { id: string; assetItemIds: string[]; date: string }[] {
 	const idToAssetItemIds = new Map<string, string[]>();
 
@@ -73,7 +70,7 @@ function getQueryInputs(
 		idToAssetItemIds.get(id)!.push(assetItemId);
 	}
 
-	const dates = getQueryDates(assetItemIds, transactions, latest);
+	const dates = getQueryDates(assetItems, assetItemIds, latest);
 
 	return Array.from(idToAssetItemIds.entries()).flatMap(([id, assetItemIds]) =>
 		dates.map((date) => ({
@@ -85,17 +82,22 @@ function getQueryInputs(
 }
 
 function getQueryDates(
+	assetItems: AssetItem[],
 	assetItemIds: string[],
-	transactions: Transaction[],
 	latest: boolean
 ): string[] {
 	const dates = [DateTime.now().toISODate()];
 
 	if (!latest) {
 		const earliestDate = DateTime.fromISO(
-			transactions
-				.filter((x) => assetItemIds.includes(x.assetItemId))
-				.reduce((acc, x) => (x.date < acc ? x.date : acc), dates[0])
+			assetItems
+				.filter((x) => assetItemIds.includes(x.id))
+				.filter((x) => x.firstTransactionDate)
+				.reduce(
+					(acc, x) =>
+						x.firstTransactionDate! < acc ? x.firstTransactionDate! : acc,
+					dates[0]
+				)
 		);
 
 		let date = DateTime.now().minus({ months: 1 }).endOf('month');

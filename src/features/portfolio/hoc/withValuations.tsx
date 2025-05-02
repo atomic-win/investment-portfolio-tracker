@@ -1,13 +1,7 @@
 import ErrorComponent from '@/components/ErrorComponent';
 import LoadingComponent from '@/components/LoadingComponent';
 import useValuationQueries from '@/features/portfolio/hooks/valuation';
-import {
-	AssetItem,
-	Portfolio,
-	PortfolioType,
-	Transaction,
-	Valuation,
-} from '@/types';
+import { AssetItem, Portfolio, PortfolioType, Valuation } from '@/types';
 
 export function withValuations<
 	TPortfolio extends Portfolio,
@@ -17,27 +11,25 @@ export function withValuations<
 >(Component: React.ComponentType<T>) {
 	return function WithValuations(
 		props: Omit<T, 'portfolios'> & {
-			currency: string;
-			assetItemIds: string[];
 			assetItems: AssetItem[];
-			transactions: Transaction[];
+			assetItemIds: string[];
+			latest: boolean;
+			currency: string;
 			idSelector: (assetItem: AssetItem) => string;
 			portfolioFn: (
 				assetItems: AssetItem[],
 				portfolio: Portfolio
 			) => TPortfolio;
-			latest: boolean;
 		}
 	) {
 		const valuationQueryResults = useValuationQueries(
-			props.currency,
+			props.assetItems,
 			props.assetItemIds.length > 0
 				? props.assetItemIds
 				: props.assetItems.map((assetItem) => assetItem.id),
-			props.assetItems,
-			props.transactions,
-			props.idSelector,
-			props.latest
+			props.latest,
+			props.currency,
+			props.idSelector
 		);
 
 		if (valuationQueryResults.some((result) => result.isFetching)) {

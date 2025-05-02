@@ -3,7 +3,6 @@ import {
 	AssetItem,
 	Portfolio,
 	PortfolioType,
-	Transaction,
 } from '@/types';
 import { withValuations } from '@/features/portfolio/hoc/withValuations';
 
@@ -14,11 +13,10 @@ export function withAssetItemPortfolios<
 >(Component: React.ComponentType<T>) {
 	return function WithAssetItemPortfolios(
 		props: Omit<T, 'portfolios'> & {
-			currency: string;
-			assetItemIds: string[];
 			assetItems: AssetItem[];
-			transactions: Transaction[];
+			assetItemIds: string[];
 			latest: boolean;
+			currency: string;
 		}
 	) {
 		const WithLoadedValuationsComponent = withValuations(Component);
@@ -26,17 +24,16 @@ export function withAssetItemPortfolios<
 		return (
 			<WithLoadedValuationsComponent
 				{...(props as unknown as T)}
-				currency={props.currency}
+				assetItems={props.assetItems}
 				assetItemIds={
 					props.assetItemIds.length > 0
 						? props.assetItemIds
 						: props.assetItems.map((assetItem) => assetItem.id)
 				}
-				assetItems={props.assetItems}
-				transactions={props.transactions}
+				latest={props.latest}
+				currency={props.currency}
 				idSelector={(assetItem) => assetItem.id}
 				portfolioFn={calculateAssetItemPortfolio}
-				latest={props.latest}
 			/>
 		);
 	};

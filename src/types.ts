@@ -61,7 +61,7 @@ export enum PortfolioType {
 export type AssetItem = Omit<
 	typeof AssetItemTable.$inferSelect,
 	'createdAt' | 'updatedAt' | 'userId' | 'assetId'
-> & { assetType: AssetType };
+> & { assetType: AssetType; firstTransactionDate: string | null };
 
 export type Transaction = Omit<
 	typeof TransactionTable.$inferSelect,
