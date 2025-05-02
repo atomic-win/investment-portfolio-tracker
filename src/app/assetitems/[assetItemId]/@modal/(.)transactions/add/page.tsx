@@ -6,16 +6,13 @@ import AddTransactionForm from '@/features/assetItems/components/AddTransactionF
 import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import withCurrency from '@/components/hoc/withCurrency';
-import withTransactions from '@/features/assetItems/hoc/withTransactions';
 import { AssetItemPortfolio } from '@/types';
 
 export default function Page({ params }: { params: { assetItemId: string } }) {
 	const assetItemId = params.assetItemId;
 
 	const WithAddTransactionFormWrapper = withAssetItems(
-		withCurrency(
-			withTransactions(withAssetItemPortfolios(AddTransactionFormWrapper))
-		)
+		withCurrency(withAssetItemPortfolios(AddTransactionFormWrapper))
 	);
 
 	return (

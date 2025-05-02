@@ -5,8 +5,7 @@ import AssetItem from '@/features/assetItems/components/AssetItem';
 import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import withCurrency from '@/components/hoc/withCurrency';
-import withTransactions from '@/features/assetItems/hoc/withTransactions';
-import { AssetItemPortfolio, Transaction } from '@/types';
+import { AssetItemPortfolio } from '@/types';
 
 export default function AssetItemPage({
 	assetItemId,
@@ -14,7 +13,7 @@ export default function AssetItemPage({
 	assetItemId: string;
 }) {
 	const WithLoadedAssetItemWrapper = withAssetItems(
-		withCurrency(withTransactions(withAssetItemPortfolios(AssetItemWrapper)))
+		withCurrency(withAssetItemPortfolios(AssetItemWrapper))
 	);
 
 	return (
@@ -24,10 +23,8 @@ export default function AssetItemPage({
 
 function AssetItemWrapper({
 	portfolios,
-	transactions,
 }: {
 	portfolios: AssetItemPortfolio[];
-	transactions: Transaction[];
 }) {
 	const assetItem = portfolios[0];
 
@@ -41,7 +38,7 @@ function AssetItemWrapper({
 				]}
 			/>
 			<div className='container mx-auto p-2'>
-				<AssetItem assetItem={assetItem} transactions={transactions} />
+				<AssetItem assetItem={assetItem} />
 			</div>
 		</>
 	);
