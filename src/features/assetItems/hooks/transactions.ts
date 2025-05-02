@@ -2,7 +2,6 @@ import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
 import {
 	QueryClient,
 	useMutation,
-	useQueries,
 	useQuery,
 	useQueryClient,
 } from '@tanstack/react-query';
@@ -22,39 +21,6 @@ export type DeleteTransactionRequest = {
 	transactionId: string;
 	date: string;
 };
-
-export function useAssetItemsTransactionsQueries(
-	currency: string | undefined,
-	assetItemIds: string[] | undefined
-) {
-	const primalApiClient = usePrimalApiClient();
-
-	return useQueries({
-		queries: (assetItemIds || []).map((assetItemId) => ({
-			queryKey: [
-				'assetitems',
-				assetItemId,
-				'transactions',
-				{
-					currency,
-				},
-			],
-			queryFn: async () => {
-				const response = await primalApiClient.get(
-					`assetitems/${assetItemId}/transactions?currency=${currency}`
-				);
-				const transactions = response.data as Transaction[];
-				return transactions.sort((a, b) => b.date.localeCompare(a.date));
-			},
-			select: (data: Transaction[]) =>
-				data.map((x) => ({
-					...x,
-					assetItemId,
-				})),
-			enabled: !!currency && !!assetItemId,
-		})),
-	});
-}
 
 export function useAssetItemTransactionsQuery(
 	assetItemId: string,
