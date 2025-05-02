@@ -83,6 +83,7 @@ export function useAssetItemTransactionsQuery(
 				...x,
 				assetItemId,
 			})),
+		enabled: !!currency && !!assetItemId,
 	});
 }
 
