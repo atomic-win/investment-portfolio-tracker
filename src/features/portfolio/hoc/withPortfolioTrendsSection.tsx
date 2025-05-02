@@ -15,6 +15,7 @@ import { displayPercentage } from '@/lib/utils';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { displayCurrencyAmountText } from '@/lib/utils';
 import { useMySettingsQuery } from '@/hooks/useMySettingsQuery';
+import { DateTime } from 'luxon';
 
 enum TrendType {
 	InvestedValue = 'InvestedValue',
@@ -166,14 +167,14 @@ function TrendsChart<TPortfolio extends Portfolio>({
 	showTotalInTooltip: boolean;
 }) {
 	const chartDataMap = new Map<
-		string,
+		number,
 		{
-			date: string;
+			date: number;
 		}
 	>();
 
 	portfolios.forEach((portfolio) => {
-		const date = portfolio.date;
+		const date = DateTime.fromISO(portfolio.date).toMillis();
 
 		if (!chartDataMap.has(date)) {
 			chartDataMap.set(date, {
@@ -188,8 +189,8 @@ function TrendsChart<TPortfolio extends Portfolio>({
 		});
 	});
 
-	const chartData = Array.from(chartDataMap.values()).sort((a, b) =>
-		a.date.localeCompare(b.date)
+	const chartData = Array.from(chartDataMap.values()).sort(
+		(a, b) => a.date - b.date
 	);
 
 	return (
@@ -207,6 +208,12 @@ function TrendsChart<TPortfolio extends Portfolio>({
 						<CartesianGrid />
 						<XAxis
 							dataKey='date'
+							type='number'
+							scale='time'
+							domain={['dataMin', 'dataMax']}
+							tickFormatter={(date) =>
+								DateTime.fromMillis(date as number).toISODate()!
+							}
 							tickLine={true}
 							axisLine={true}
 							tickMargin={8}
@@ -230,7 +237,11 @@ function TrendsChart<TPortfolio extends Portfolio>({
 											{/* Add this before the first item */}
 											{index === 0 && (
 												<div className='flex basis-full items-center pt-1.5 text-xs font-medium text-foreground'>
-													{item.payload.date}
+													{
+														DateTime.fromMillis(
+															item.payload.date as number
+														).toISODate()!
+													}
 												</div>
 											)}
 											<div
