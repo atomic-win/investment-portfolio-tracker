@@ -1,6 +1,6 @@
 'use client';
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
-import { PortfolioPageContainer } from '@/features/portfolio/hoc/withPortfolios';
+import PortfolioPageContainer from '@/features/portfolio/components/PortfolioPageContainer';
 import InvestmentsFilterForm from '@/features/assetItems/components/InvestmentsFilterForm';
 import {
 	AssetItemPortfolio,

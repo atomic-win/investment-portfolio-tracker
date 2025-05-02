@@ -23,7 +23,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { displayPortfolioType } from '@/features/portfolio/lib/utils';
 
-export function PortfolioPageContainer({
+export default function PortfolioPageContainer({
 	assetItemIds,
 	assetItems,
 	latest,
