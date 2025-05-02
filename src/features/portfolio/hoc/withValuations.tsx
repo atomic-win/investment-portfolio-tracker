@@ -52,18 +52,23 @@ export function withValuations<
 			<Component
 				{...(props as unknown as T)}
 				portfolios={calculatePortfolios(
-					valuationQueryResults.map((result) => result.data!)
+					valuationQueryResults.map((result) => result.data!),
+					props.latest
 				).map((portfolio) => props.portfolioFn(props.assetItems, portfolio))}
 			/>
 		);
 	};
 }
 
-function calculatePortfolios(valuations: Valuation[]): Portfolio[] {
+function calculatePortfolios(
+	valuations: Valuation[],
+	isLatest: boolean
+): Portfolio[] {
 	const dateToValuations = new Map<string, Valuation[]>();
 
 	for (const valuation of valuations) {
 		if (
+			!isLatest &&
 			valuation.investedValue === 0 &&
 			valuation.currentValue === 0 &&
 			valuation.xirrPercent === 0
