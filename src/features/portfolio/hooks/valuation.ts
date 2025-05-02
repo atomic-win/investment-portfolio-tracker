@@ -100,10 +100,14 @@ function getQueryDates(
 				)
 		);
 
-		let date = DateTime.now().minus({ months: 1 }).endOf('month');
+		let date = DateTime.now().set({ month: 3, day: 31 }); // Set to the nearest March
+		if (date > DateTime.now()) {
+			date = date.minus({ years: 1 }); // Move to the previous March if the current date is past March
+		}
+
 		while (date >= earliestDate) {
 			dates.push(date.toISODate());
-			date = date.minus({ months: 1 }).endOf('month');
+			date = date.minus({ years: 1 }); // Move back yearwise
 		}
 	}
 
