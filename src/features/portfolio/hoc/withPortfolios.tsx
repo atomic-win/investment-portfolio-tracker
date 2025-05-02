@@ -14,47 +14,16 @@ import {
 	AssetItem,
 	PortfolioType,
 } from '@/types';
-import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import { withOverallPortfolios } from '@/features/portfolio/hoc/withOverallPortfolios';
 import { withAssetClassPortfolios } from '@/features/portfolio/hoc/withAssetClassPortfolios';
 import { withAssetTypePortfolios } from '@/features/portfolio/hoc/withAssetTypePortfolios';
 import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
-import withInvestmentsFilter from '@/features/portfolio/hoc/withInvestmentsFilter';
 import withCurrency from '@/components/hoc/withCurrency';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { displayPortfolioType } from '@/features/portfolio/lib/utils';
 
-export default function withPortfolios(
-	OverallSection: React.ComponentType<{
-		portfolios: OverallPortfolio[];
-	}>,
-	AssetClassSection: React.ComponentType<{
-		portfolios: AssetClassPortfolio[];
-	}>,
-	AssetTypeSection: React.ComponentType<{
-		portfolios: AssetTypePortfolio[];
-	}>,
-	AssetItemSection: React.ComponentType<{
-		portfolios: AssetItemPortfolio[];
-	}>
-) {
-	return function WithPortfolios({ latest }: { latest: boolean }) {
-		const WithLoadedComponent = withAssetItems(withInvestmentsFilter(Page));
-
-		return (
-			<WithLoadedComponent
-				latest={latest}
-				OverallSection={OverallSection}
-				AssetClassSection={AssetClassSection}
-				AssetTypeSection={AssetTypeSection}
-				AssetItemSection={AssetItemSection}
-			/>
-		);
-	};
-}
-
-function Page({
+export function PortfolioPageContainer({
 	assetItemIds,
 	assetItems,
 	latest,
