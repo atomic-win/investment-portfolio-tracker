@@ -1,5 +1,5 @@
 'use client';
-import { AssetItemPortfolio, Transaction } from '@/types';
+import { AssetItemPortfolio, Currency, Transaction } from '@/types';
 import { createColumnDef, DataTable } from '@/components/ui/data-table';
 import { ColumnDef } from '@tanstack/react-table';
 import DeleteTransactionDialog from '@/features/assetItems/components/DeleteTransactionDialog';
@@ -8,6 +8,9 @@ import Link from 'next/link';
 import { PlusIcon } from 'lucide-react';
 import CurrencyAmount from '@/components/CurrencyAmount';
 import { displayTransactionTypeText } from '@/lib/utils';
+import { useAssetItemTransactionsQuery } from '../hooks/transactions';
+import LoadingComponent from '@/components/LoadingComponent';
+import ErrorComponent from '@/components/ErrorComponent';
 
 type TableItem = Transaction & {
 	assetItem: AssetItemPortfolio;
@@ -67,11 +70,25 @@ const columns: ColumnDef<TableItem>[] = [
 
 export default function TransactionsTable({
 	assetItem,
-	transactions,
+	currency,
 }: {
 	assetItem: AssetItemPortfolio;
-	transactions: Transaction[];
+	currency: Currency;
 }) {
+	const {
+		data: transactions,
+		isLoading,
+		isError,
+	} = useAssetItemTransactionsQuery(assetItem.id, currency);
+
+	if (isLoading) {
+		return <LoadingComponent loadingMessage='Fetching transactions' />;
+	}
+
+	if (isError || !transactions) {
+		return <ErrorComponent errorMessage='Failed while fetching transactions' />;
+	}
+
 	const items = transactions.map((transaction) => ({
 		...transaction,
 		assetItem,

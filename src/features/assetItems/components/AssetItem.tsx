@@ -1,19 +1,20 @@
 'use client';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { AssetItemPortfolio, Transaction } from '@/types';
+import { AssetItemPortfolio } from '@/types';
 import TransactionsTable from '@/features/assetItems/components/TransactionsTable';
 import { Separator } from '@/components/ui/separator';
 import { displayPercentage } from '@/lib/utils';
 import React from 'react';
 import CurrencyAmount from '@/components/CurrencyAmount';
+import withCurrency from '@/components/hoc/withCurrency';
 
 export default function AssetItem({
 	assetItem,
-	transactions,
 }: {
 	assetItem: AssetItemPortfolio;
-	transactions: Transaction[];
 }) {
+	const WithLoadedTransactionsTable = withCurrency(TransactionsTable);
+
 	return (
 		<Card className='mx-auto my-2 rounded-lg shadow-md w-full'>
 			<CardHeader>
@@ -37,7 +38,7 @@ export default function AssetItem({
 				<Separator />
 			</CardHeader>
 			<CardContent className='mt-0 space-y-4'>
-				<TransactionsTable assetItem={assetItem} transactions={transactions} />
+				<WithLoadedTransactionsTable assetItem={assetItem} />
 			</CardContent>
 		</Card>
 	);
