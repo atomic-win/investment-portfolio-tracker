@@ -5,12 +5,11 @@ import {
 	SidebarMenu,
 	useSidebar,
 } from '@/components/ui/sidebar';
-import useUpdateSettingMutation from '@/hooks/useUpdateSettingMutation';
+import useUpdateSettingsMutation from '@/hooks/useUpdateSettingsMutation';
 import {
 	Select,
 	SelectContent,
 	SelectIcon,
-	// SelectIcon,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
@@ -23,7 +22,7 @@ export default function SettingsSidebarGroup() {
 	const { isMobile } = useSidebar();
 
 	const { data, isFetching, error } = useMySettingsQuery();
-	const { mutate: updateSetting } = useUpdateSettingMutation();
+	const { mutate: updateSetting } = useUpdateSettingsMutation();
 
 	if (isFetching || error || !data || !data.language || !data.currency) {
 		return <SidebarGroup className='mt-auto' />;
@@ -52,7 +51,11 @@ export default function SettingsSidebarGroup() {
 					<Select
 						key={setting.name}
 						onValueChange={(x) =>
-							updateSetting({ settingName: setting.name, settingValue: x })
+							updateSetting(
+								setting.name === 'currency'
+									? { currency: x as Currency }
+									: { language: x as Language }
+							)
 						}
 						value={setting.value}>
 						<SelectTrigger
