@@ -13,55 +13,19 @@ import {
 	AssetItemPortfolio,
 	AssetItem,
 	PortfolioType,
-	Transaction,
 } from '@/types';
-import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import { withOverallPortfolios } from '@/features/portfolio/hoc/withOverallPortfolios';
 import { withAssetClassPortfolios } from '@/features/portfolio/hoc/withAssetClassPortfolios';
 import { withAssetTypePortfolios } from '@/features/portfolio/hoc/withAssetTypePortfolios';
 import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
-import withInvestmentsFilter from '@/features/portfolio/hoc/withInvestmentsFilter';
 import withCurrency from '@/components/hoc/withCurrency';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { displayPortfolioType } from '@/features/portfolio/lib/utils';
-import withTransactions from '@/features/assetItems/hoc/withTransactions';
 
-export default function withPortfolios(
-	OverallSection: React.ComponentType<{
-		portfolios: OverallPortfolio[];
-	}>,
-	AssetClassSection: React.ComponentType<{
-		portfolios: AssetClassPortfolio[];
-	}>,
-	AssetTypeSection: React.ComponentType<{
-		portfolios: AssetTypePortfolio[];
-	}>,
-	AssetItemSection: React.ComponentType<{
-		portfolios: AssetItemPortfolio[];
-	}>
-) {
-	return function WithPortfolios({ latest }: { latest: boolean }) {
-		const WithLoadedComponent = withAssetItems(
-			withInvestmentsFilter(withCurrency(withTransactions(Page)))
-		);
-
-		return (
-			<WithLoadedComponent
-				latest={latest}
-				OverallSection={OverallSection}
-				AssetClassSection={AssetClassSection}
-				AssetTypeSection={AssetTypeSection}
-				AssetItemSection={AssetItemSection}
-			/>
-		);
-	};
-}
-
-function Page({
+export default function PortfolioPageContainer({
 	assetItemIds,
 	assetItems,
-	transactions,
 	latest,
 	OverallSection,
 	AssetClassSection,
@@ -70,7 +34,6 @@ function Page({
 }: {
 	assetItemIds: string[];
 	assetItems: AssetItem[];
-	transactions: Transaction[];
 	latest: boolean;
 	OverallSection: React.ComponentType<{
 		portfolios: OverallPortfolio[];
@@ -142,7 +105,6 @@ function Page({
 						<WithLoadedOverallSection
 							assetItemIds={assetItemIds}
 							assetItems={assetItems}
-							transactions={transactions}
 							latest={latest}
 						/>
 					</PortfolioTabsContent>
@@ -153,7 +115,6 @@ function Page({
 						<WithLoadedAssetClassSection
 							assetItemIds={assetItemIds}
 							assetItems={assetItems}
-							transactions={transactions}
 							latest={latest}
 						/>
 					</PortfolioTabsContent>
@@ -164,7 +125,6 @@ function Page({
 						<WithLoadedAssetTypeSection
 							assetItemIds={assetItemIds}
 							assetItems={assetItems}
-							transactions={transactions}
 							latest={latest}
 						/>
 					</PortfolioTabsContent>
@@ -174,7 +134,6 @@ function Page({
 						description='Stats for each asset item in the portfolio'>
 						<WithLoadedAssetItemSection
 							assetItemIds={assetItemIds}
-							transactions={transactions}
 							assetItems={assetItems}
 							latest={latest}
 						/>

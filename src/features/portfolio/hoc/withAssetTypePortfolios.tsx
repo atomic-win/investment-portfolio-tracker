@@ -2,7 +2,6 @@ import {
 	AssetTypePortfolio,
 	Portfolio,
 	AssetItem,
-	Transaction,
 	PortfolioType,
 } from '@/types';
 import { withValuations } from '@/features/portfolio/hoc/withValuations';
@@ -15,7 +14,6 @@ export function withAssetTypePortfolios<
 			currency: string;
 			assetItemIds: string[];
 			assetItems: AssetItem[];
-			transactions: Transaction[];
 			latest: boolean;
 		}
 	) {
@@ -24,13 +22,12 @@ export function withAssetTypePortfolios<
 		return (
 			<WithLoadedValuationsComponent
 				{...(props as unknown as T)}
-				currency={props.currency}
-				assetItemIds={props.assetItemIds}
 				assetItems={props.assetItems}
-				transactions={props.transactions}
+				assetItemIds={props.assetItemIds}
+				latest={props.latest}
+				currency={props.currency}
 				idSelector={(assetItem) => assetItem.assetType}
 				portfolioFn={calculateAssetTypePortfolio}
-				latest={props.latest}
 			/>
 		);
 	};

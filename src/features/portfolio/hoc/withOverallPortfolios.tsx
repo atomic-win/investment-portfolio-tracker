@@ -1,10 +1,4 @@
-import {
-	OverallPortfolio,
-	Portfolio,
-	AssetItem,
-	PortfolioType,
-	Transaction,
-} from '@/types';
+import { OverallPortfolio, Portfolio, AssetItem, PortfolioType } from '@/types';
 import { withValuations } from '@/features/portfolio/hoc/withValuations';
 
 export function withOverallPortfolios<
@@ -12,11 +6,10 @@ export function withOverallPortfolios<
 >(Component: React.ComponentType<T>) {
 	return function WithOverallPortfolios(
 		props: Omit<T, 'portfolios'> & {
-			currency: string;
-			assetItemIds: string[];
 			assetItems: AssetItem[];
-			transactions: Transaction[];
+			assetItemIds: string[];
 			latest: boolean;
+			currency: string;
 		}
 	) {
 		const WithLoadedValuationsComponent = withValuations(Component);
@@ -24,13 +17,12 @@ export function withOverallPortfolios<
 		return (
 			<WithLoadedValuationsComponent
 				{...(props as unknown as T)}
-				currency={props.currency}
-				assetItemIds={props.assetItemIds}
 				assetItems={props.assetItems}
-				transactions={props.transactions}
+				assetItemIds={props.assetItemIds}
+				latest={props.latest}
+				currency={props.currency}
 				idSelector={() => 'overall'}
 				portfolioFn={calculateOverallPortfolio}
-				latest={props.latest}
 			/>
 		);
 	};

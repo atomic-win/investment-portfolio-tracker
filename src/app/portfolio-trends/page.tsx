@@ -1,6 +1,6 @@
 'use client';
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
-import withPortfolios from '@/features/portfolio/hoc/withPortfolios';
+import PortfolioPageContainer from '@/features/portfolio/components/PortfolioPageContainer';
 import InvestmentsFilterForm from '@/features/assetItems/components/InvestmentsFilterForm';
 import {
 	AssetItemPortfolio,
@@ -12,6 +12,7 @@ import withPortfolioTrendsSection from '@/features/portfolio/hoc/withPortfolioTr
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
 import { AssetClass, AssetType } from '@/types';
 import { displayAssetClassText, displayAssetTypeText } from '@/lib/utils';
+import withInvestmentsFilter from '@/features/portfolio/hoc/withInvestmentsFilter';
 
 export default function Page() {
 	const PortfolioTrendsOverallSection =
@@ -34,11 +35,8 @@ export default function Page() {
 			labelFn: (portfolio) => portfolio.name,
 		});
 
-	const WithLoadedPortfolio = withPortfolios(
-		PortfolioTrendsOverallSection,
-		PortfolioTrendsPerAssetClassSection,
-		PortfolioTrendsPerAssetTypeSection,
-		PortfolioTrendsPerAssetItemSection
+	const WithLoadedPortfolioPageContainer = withAssetItems(
+		withInvestmentsFilter(PortfolioPageContainer)
 	);
 
 	const WithLoadedInvestmentsFilterForm = withAssetItems(InvestmentsFilterForm);
@@ -52,7 +50,13 @@ export default function Page() {
 			<div className='container mx-auto p-2'>
 				<div className='grid grid-cols-3 gap-4'>
 					<div className='col-span-2'>
-						<WithLoadedPortfolio latest={false} />
+						<WithLoadedPortfolioPageContainer
+							latest={false}
+							OverallSection={PortfolioTrendsOverallSection}
+							AssetClassSection={PortfolioTrendsPerAssetClassSection}
+							AssetTypeSection={PortfolioTrendsPerAssetTypeSection}
+							AssetItemSection={PortfolioTrendsPerAssetItemSection}
+						/>
 					</div>
 					<div className='col-span-1'>
 						<WithLoadedInvestmentsFilterForm />
