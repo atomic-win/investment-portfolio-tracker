@@ -129,7 +129,7 @@ export default async function handler(req: NextRequest, claims: AuthClaims) {
 			});
 		}
 
-		if (type === AssetType.TBill || type === AssetType.TradingAccount) {
+		if (type === AssetType.TBill) {
 			return addDefaultAssetItem({
 				userId,
 				name,
@@ -332,7 +332,6 @@ async function addAssetItemAndReturn({
 
 function isAssetClassInputSupported(assetType: AssetType) {
 	return (
-		assetType !== AssetType.TradingAccount &&
 		assetType !== AssetType.MutualFund &&
 		assetType !== AssetType.Stock &&
 		assetType !== AssetType.TBill

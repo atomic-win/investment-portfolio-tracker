@@ -176,7 +176,7 @@ function getApplicableTransactionTypes(
 	assetType: AssetType
 ): TransactionType[] {
 	switch (assetType) {
-		case AssetType.CashAccount:
+		case AssetType.BankAccount:
 		case AssetType.FixedDeposit:
 		case AssetType.EPF:
 		case AssetType.PPF:

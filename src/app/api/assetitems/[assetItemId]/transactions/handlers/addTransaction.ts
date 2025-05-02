@@ -73,7 +73,7 @@ export default async function handler(
 		}
 
 		if (
-			(assetType === AssetType.CashAccount ||
+			(assetType === AssetType.BankAccount ||
 				assetType === AssetType.FixedDeposit ||
 				assetType === AssetType.EPF ||
 				assetType === AssetType.PPF) &&
