@@ -141,7 +141,9 @@ export default function AddTransactionForm({
 						)}
 					/>
 					<div className='flex justify-end'>
-						<Button type='submit'>Add Transaction</Button>
+						<Button type='submit' className='cursor-pointer'>
+							Add Transaction
+						</Button>
 					</div>
 				</form>
 			</Form>

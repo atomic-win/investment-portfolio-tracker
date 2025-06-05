@@ -97,12 +97,12 @@ export default function TransactionsTable({
 	return (
 		<div className='mx-auto'>
 			<div className='flex justify-end text-xl font-semibold items-center'>
-				<Button>
-					<PlusIcon />
-					<Link href={`/assetitems/${assetItem.id}/transactions/add`}>
+				<Link href={`/assetitems/${assetItem.id}/transactions/add`}>
+					<Button className='cursor-pointer'>
+						<PlusIcon />
 						Add Transaction
-					</Link>
-				</Button>
+					</Button>
+				</Link>
 			</div>
 			<DataTable
 				columns={columns}
