@@ -1,6 +1,6 @@
 'use client';
 import { CardContent } from '@/components/ui/card';
-import { AssetItemPortfolio, AssetType } from '@/types';
+import { AssetItemPortfolio, AssetType, TransactionType } from '@/types';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -26,7 +26,6 @@ import { Input } from '@/components/ui/input';
 import { useAddTransactionMutation } from '@/features/assetItems/hooks/transactions';
 import { useRouter } from 'next/navigation';
 import { ChevronDown } from 'lucide-react';
-import { TransactionType } from '@/types';
 import { displayTransactionTypeText } from '@/lib/utils';
 import {
 	AddTransactionRequest,
