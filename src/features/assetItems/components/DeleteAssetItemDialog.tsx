@@ -26,7 +26,9 @@ export default function DeleteAssetItemDialog({
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
-				<Button variant='destructive'>Delete</Button>
+				<Button variant='destructive' className='cursor-pointer'>
+					Delete
+				</Button>
 			</AlertDialogTrigger>
 			<AlertDialogContent>
 				<AlertDialogHeader>
@@ -54,7 +56,7 @@ export default function DeleteAssetItemDialog({
 				</div>
 				<AlertDialogFooter>
 					<AlertDialogCancel>Cancel</AlertDialogCancel>
-					<Button variant='destructive' asChild>
+					<Button variant='destructive' className='cursor-pointer' asChild>
 						<AlertDialogAction
 							onClick={async () => {
 								await deleteAssetItemAsync(assetItem.id);
