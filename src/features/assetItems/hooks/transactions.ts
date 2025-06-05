@@ -7,11 +7,12 @@ import {
 } from '@tanstack/react-query';
 import { Transaction } from '@/types';
 import { AddTransactionRequest } from '@/features/assetItems/schema';
+import { DateTime } from 'luxon';
 
 export type DeleteTransactionRequest = {
 	assetItemId: string;
 	transactionId: string;
-	date: string;
+	date: Date;
 };
 
 export function useAssetItemTransactionsQuery(
@@ -94,18 +95,19 @@ function onSettled(
 				return true;
 			}
 
-			if (query.queryKey[1] !== 'valuation') {
+			if (query.queryKey[0] !== 'valuation') {
 				return false;
 			}
 
-			const valuationQueryData = query.queryKey[2] as {
+			const valuationQueryData = query.queryKey[1] as {
 				assetItemIds: string[];
 				date: string;
 			};
 
 			return (
 				valuationQueryData.assetItemIds.includes(request.assetItemId) &&
-				valuationQueryData.date >= request.date
+				valuationQueryData.date >=
+					DateTime.fromJSDate(request.date).toISODate()!
 			);
 		},
 	});
