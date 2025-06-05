@@ -6,15 +6,7 @@ import {
 	useQueryClient,
 } from '@tanstack/react-query';
 import { Transaction } from '@/types';
-import { TransactionType } from '@/types';
-
-export type AddTransactionRequest = {
-	date: string;
-	name: string;
-	type: TransactionType;
-	assetItemId: string;
-	units: number;
-};
+import { AddTransactionRequest } from '@/features/assetItems/schema';
 
 export type DeleteTransactionRequest = {
 	assetItemId: string;

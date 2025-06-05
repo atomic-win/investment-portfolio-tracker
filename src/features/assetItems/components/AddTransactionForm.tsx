@@ -26,30 +26,14 @@ import {
 import { Input } from '@/components/ui/input';
 import { useAddTransactionMutation } from '@/features/assetItems/hooks/transactions';
 import { useRouter } from 'next/navigation';
-import { DateTime } from 'luxon';
 import { ChevronDown } from 'lucide-react';
-import { AssetType, TransactionType } from '@/types';
+import { TransactionType } from '@/types';
 import { displayTransactionTypeText } from '@/lib/utils';
-
-const schema = z.object({
-	date: z.date({
-		required_error: 'Transaction date is required',
-	}),
-	name: z
-		.string()
-		.min(4, {
-			message: 'Transaction name must be at least 4 characters',
-		})
-		.max(100, {
-			message: 'Transaction name must be at most 100 characters',
-		}),
-	transactionType: z.nativeEnum(TransactionType, {
-		required_error: 'Transaction type is required',
-	}),
-	units: z.coerce.number().int().positive({
-		message: 'Units must be greater than 0',
-	}),
-});
+import {
+	AddTransactionRequest,
+	AddTransactionSchema,
+	getApplicableTransactionTypes,
+} from '@/features/assetItems/schema';
 
 export default function AddTransactionForm({
 	assetItem,
@@ -59,22 +43,19 @@ export default function AddTransactionForm({
 	const { mutateAsync: addTransactionAsync } = useAddTransactionMutation();
 	const router = useRouter();
 
-	const form = useForm<z.infer<typeof schema>>({
-		resolver: zodResolver(schema),
+	const form = useForm<z.infer<typeof AddTransactionSchema>>({
+		resolver: zodResolver(AddTransactionSchema),
 		defaultValues: {
 			date: new Date(),
-			transactionType: TransactionType.Unknown,
+			type: TransactionType.Unknown,
 			units: 0,
 		},
 	});
 
-	async function onSubmit(data: z.infer<typeof schema>) {
+	async function onSubmit(data: Omit<AddTransactionRequest, 'assetItemId'>) {
 		await addTransactionAsync({
-			date: DateTime.fromJSDate(data.date).toISODate()!,
-			name: data.name,
+			...data,
 			assetItemId: assetItem.id,
-			type: data.transactionType,
-			units: data.units,
 		});
 
 		router.back();
@@ -116,7 +97,7 @@ export default function AddTransactionForm({
 					/>
 					<FormField
 						control={form.control}
-						name='transactionType'
+						name='type'
 						render={({ field }) => (
 							<FormItem>
 								<FormLabel>Transaction Type</FormLabel>
@@ -170,32 +151,4 @@ export default function AddTransactionForm({
 			</Form>
 		</CardContent>
 	);
-}
-
-function getApplicableTransactionTypes(
-	assetType: AssetType
-): TransactionType[] {
-	switch (assetType) {
-		case AssetType.BankAccount:
-		case AssetType.FixedDeposit:
-		case AssetType.EPF:
-		case AssetType.PPF:
-			return [
-				TransactionType.Deposit,
-				TransactionType.Withdrawal,
-				TransactionType.Interest,
-				TransactionType.SelfInterest,
-				TransactionType.InterestPenalty,
-			];
-		case AssetType.MutualFund:
-			return [TransactionType.Buy, TransactionType.Sell];
-		case AssetType.Stock:
-			return [
-				TransactionType.Buy,
-				TransactionType.Sell,
-				TransactionType.Dividend,
-			];
-		default:
-			throw new Error(`Unsupported asset type: ${assetType}`);
-	}
 }

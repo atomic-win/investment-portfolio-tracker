@@ -1,24 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { AssetType, AuthClaims, TransactionType } from '@/types';
-import { z } from 'zod';
+import { AuthClaims } from '@/types';
 import { getAssetItem } from '@/features/assetItems/server/db';
-import { DateTime } from 'luxon';
 import { addTransaction } from '@/features/transactions/server/db';
 import { unstable_expireTag as expireTag } from 'next/cache';
 import { transactionsTag } from '@/features/transactions/server/cacheTag';
-
-const format = 'yyyy-MM-dd';
-
-const TransactionSchema = z
-	.object({
-		date: z.string(),
-		name: z.string().min(3).max(1000),
-		type: z.nativeEnum(TransactionType),
-		units: z.number().positive(),
-	})
-	.refine((data) => DateTime.fromFormat(data.date, format).isValid, {
-		message: 'Invalid date format. Expected format: yyyy-MM-dd',
-	});
+import {
+	AddTransactionSchema,
+	getApplicableTransactionTypes,
+} from '@/features/assetItems/schema';
+import { DateTime } from 'luxon';
 
 export default async function handler(
 	req: NextRequest,
@@ -31,7 +21,7 @@ export default async function handler(
 	try {
 		const body = await req.json();
 
-		const parsedBody = TransactionSchema.safeParse(body);
+		const parsedBody = AddTransactionSchema.safeParse(body);
 
 		if (!parsedBody.success) {
 			return NextResponse.json(
@@ -49,42 +39,11 @@ export default async function handler(
 		const assetType = assetItem.assetType;
 		const transactionType = parsedBody.data.type;
 
-		if (
-			assetType === AssetType.MutualFund &&
-			transactionType !== TransactionType.Buy &&
-			transactionType !== TransactionType.Sell
-		) {
+		if (!getApplicableTransactionTypes(assetType).includes(transactionType)) {
 			return NextResponse.json(
-				'Invalid transaction type for Mutual Funds. Only Buy and Sell are allowed.',
-				{ status: 400 }
-			);
-		}
-
-		if (
-			assetType === AssetType.Stock &&
-			transactionType !== TransactionType.Buy &&
-			transactionType !== TransactionType.Sell &&
-			transactionType !== TransactionType.Dividend
-		) {
-			return NextResponse.json(
-				'Invalid transaction type for Stocks. Only Buy, Sell and Dividend are allowed.',
-				{ status: 400 }
-			);
-		}
-
-		if (
-			(assetType === AssetType.BankAccount ||
-				assetType === AssetType.FixedDeposit ||
-				assetType === AssetType.EPF ||
-				assetType === AssetType.PPF) &&
-			transactionType !== TransactionType.Deposit &&
-			transactionType !== TransactionType.Withdrawal &&
-			transactionType !== TransactionType.Interest &&
-			transactionType !== TransactionType.SelfInterest &&
-			transactionType !== TransactionType.InterestPenalty
-		) {
-			return NextResponse.json(
-				`Invalid transaction type for ${assetType}. Only Deposit, Withdrawal, Interest, Self Interest and Interest Penalty are allowed.`,
+				{
+					error: `Transaction type ${transactionType} is not applicable for this asset item`,
+				},
 				{ status: 400 }
 			);
 		}
@@ -92,6 +51,7 @@ export default async function handler(
 		await addTransaction({
 			assetItemId,
 			...parsedBody.data,
+			date: DateTime.fromJSDate(parsedBody.data.date).toISODate()!,
 		});
 
 		expireTag(transactionsTag(assetItemId));
