@@ -2,7 +2,6 @@
 import axios from 'axios';
 import useAccessTokenQuery from '@/hooks/useAccessTokenQuery';
 import { useRouter } from 'next/navigation';
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { QueryClient, useQueryClient } from '@tanstack/react-query';
 
 export const usePrimalApiClient = () => {
@@ -41,7 +40,7 @@ export const usePrimalApiClient = () => {
 
 async function handleUnauthorized(
 	queryClient: QueryClient,
-	router: AppRouterInstance
+	router: ReturnType<typeof useRouter>
 ) {
 	localStorage.removeItem('accessToken');
 	queryClient.clear();
