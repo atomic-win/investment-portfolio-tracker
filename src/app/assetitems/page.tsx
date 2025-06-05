@@ -22,8 +22,8 @@ export default function Page() {
 			/>
 			<div className='container mx-auto p-2'>
 				<Card className='mx-auto rounded-lg shadow-md w-full p-2 gap-4'>
-					<CardHeader className='border-b'>
-						<CardTitle className='text-3xl'>Asset Items</CardTitle>
+					<CardHeader className='border-b py-2'>
+						<CardTitle className='text-3xl h-full'>Asset Items</CardTitle>
 					</CardHeader>
 					<CardContent className='px-6 pb-6'>
 						<div className='flex justify-end text-xl font-semibold items-center mb-2'>
