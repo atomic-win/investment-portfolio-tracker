@@ -11,90 +11,7 @@ import { getMutualFund } from '@/services/mfApiService';
 import { searchSymbol } from '@/services/stockApiService';
 import { unstable_expireTag as expireTag } from 'next/cache';
 import { assetItemsTag } from '@/features/assetItems/server/cacheTag';
-
-const AssetItemSchema = z
-	.object({
-		name: z.string().min(3).max(50),
-		assetClass: z.nativeEnum(AssetClass).optional(),
-		type: z.nativeEnum(AssetType),
-		schemeCode: z.number().int().min(100000).max(999999).optional(),
-		symbol: z.string().optional(),
-		currency: z
-			.nativeEnum(Currency)
-			.refine((val) => val !== Currency.Unknown, {
-				message: 'Currency cannot be Unknown',
-			})
-			.optional(),
-	})
-	.superRefine((data, ctx) => {
-		if (!!!data.assetClass) {
-			if (isAssetClassInputSupported(data.type)) {
-				ctx.addIssue({
-					code: z.ZodIssueCode.custom,
-					message: `Asset Class is required for ${data.type}`,
-				});
-			}
-			return;
-		}
-
-		if (!isAssetClassInputSupported(data.type)) {
-			ctx.addIssue({
-				code: z.ZodIssueCode.custom,
-				message: `Asset Class is not required for ${data.type}`,
-			});
-		}
-	})
-	.superRefine((data, ctx) => {
-		if (!!!data.schemeCode) {
-			if (isSchemeCodeInputSupported(data.type)) {
-				ctx.addIssue({
-					code: z.ZodIssueCode.custom,
-					message: `Scheme Code is required for ${data.type}`,
-				});
-			}
-			return;
-		}
-		if (!isSchemeCodeInputSupported(data.type)) {
-			ctx.addIssue({
-				code: z.ZodIssueCode.custom,
-				message: `Scheme Code is not required for ${data.type}`,
-			});
-		}
-	})
-	.superRefine((data, ctx) => {
-		if (!!!data.symbol) {
-			if (isSymbolInputSupported(data.type)) {
-				ctx.addIssue({
-					code: z.ZodIssueCode.custom,
-					message: `Symbol is required for ${data.type}`,
-				});
-			}
-			return;
-		}
-		if (!isSymbolInputSupported(data.type)) {
-			ctx.addIssue({
-				code: z.ZodIssueCode.custom,
-				message: `Symbol is not required for ${data.type}`,
-			});
-		}
-	})
-	.superRefine((data, ctx) => {
-		if (!!!data.currency) {
-			if (isCurrencyInputSupported(data.type)) {
-				ctx.addIssue({
-					code: z.ZodIssueCode.custom,
-					message: `Currency is required for ${data.type}`,
-				});
-			}
-			return;
-		}
-		if (!isCurrencyInputSupported(data.type)) {
-			ctx.addIssue({
-				code: z.ZodIssueCode.custom,
-				message: `Currency is not required for ${data.type}`,
-			});
-		}
-	});
+import { AddAssetItemSchema } from '@/features/assetItems/schema';
 
 export default async function handler(req: NextRequest, claims: AuthClaims) {
 	const userId = claims.id;
@@ -102,7 +19,7 @@ export default async function handler(req: NextRequest, claims: AuthClaims) {
 	try {
 		const body = await req.json();
 
-		const parsedBody = AssetItemSchema.safeParse(body);
+		const parsedBody = AddAssetItemSchema.safeParse(body);
 
 		if (!parsedBody.success) {
 			return NextResponse.json(
@@ -328,28 +245,4 @@ async function addAssetItemAndReturn({
 	expireTag(assetItemsTag(userId));
 
 	return new NextResponse(null, { status: 201 });
-}
-
-function isAssetClassInputSupported(assetType: AssetType) {
-	return (
-		assetType !== AssetType.MutualFund &&
-		assetType !== AssetType.Stock &&
-		assetType !== AssetType.TBill
-	);
-}
-
-function isSchemeCodeInputSupported(assetType: AssetType) {
-	return assetType === AssetType.MutualFund;
-}
-
-function isSymbolInputSupported(assetType: AssetType) {
-	return assetType === AssetType.Stock;
-}
-
-function isCurrencyInputSupported(assetType: AssetType) {
-	return (
-		assetType !== AssetType.MutualFund &&
-		assetType !== AssetType.Stock &&
-		assetType !== AssetType.TBill
-	);
 }
