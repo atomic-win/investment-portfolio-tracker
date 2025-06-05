@@ -167,7 +167,7 @@ function getUnitLabel(
 		case AssetType.Stock:
 			return transactionType === TransactionType.Dividend
 				? getAmountLabel(assetItem)
-				: 'Units';
+				: 'Shares';
 		default:
 			throw new Error(`Unsupported asset type: ${assetItem.assetType}`);
 	}
