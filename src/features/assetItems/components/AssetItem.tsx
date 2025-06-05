@@ -3,7 +3,11 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { AssetItemPortfolio } from '@/types';
 import TransactionsTable from '@/features/assetItems/components/TransactionsTable';
 import { Separator } from '@/components/ui/separator';
-import { displayPercentage } from '@/lib/utils';
+import {
+	displayAssetClassText,
+	displayAssetTypeText,
+	displayPercentage,
+} from '@/lib/utils';
 import React from 'react';
 import CurrencyAmount from '@/components/CurrencyAmount';
 import withCurrency from '@/components/hoc/withCurrency';
@@ -20,8 +24,14 @@ export default function AssetItem({
 			<CardHeader>
 				<div className='grid grid-cols-3 justify-between gap-2'>
 					<InfoLine label='Asset Item Name' value={assetItem.name} />
-					<InfoLine label='Asset Type' value={assetItem.assetType} />
-					<InfoLine label='Asset Class' value={assetItem.assetClass} />
+					<InfoLine
+						label='Asset Type'
+						value={displayAssetTypeText(assetItem.assetType)}
+					/>
+					<InfoLine
+						label='Asset Class'
+						value={displayAssetClassText(assetItem.assetClass)}
+					/>
 					<InfoLine
 						label='Invested Value'
 						value={<CurrencyAmount amount={assetItem.investedValue} />}
