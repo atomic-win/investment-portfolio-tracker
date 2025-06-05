@@ -27,10 +27,12 @@ export default function Page() {
 					</CardHeader>
 					<CardContent className='px-6 pb-6'>
 						<div className='flex justify-end text-xl font-semibold items-center mb-2'>
-							<Button>
-								<PlusIcon />
-								<Link href={`/assetitems/add`}>Add Asset Item</Link>
-							</Button>
+							<Link href={`/assetitems/add`}>
+								<Button className='cursor-pointer'>
+									<PlusIcon />
+									Add Asset Item
+								</Button>
+							</Link>
 						</div>
 						<WithLoadedAssetItemsTable assetItemIds={[]} latest={true} />
 					</CardContent>

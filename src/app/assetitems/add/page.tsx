@@ -13,6 +13,7 @@ export default function Page() {
 					{
 						title: 'Add Asset Item',
 						href: `/assetitems/add`,
+						disabled: true,
 					},
 				]}
 			/>

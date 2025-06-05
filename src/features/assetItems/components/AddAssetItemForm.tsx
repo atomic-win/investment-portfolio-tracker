@@ -216,7 +216,9 @@ export default function AddAssetItemForm() {
 						/>
 					)}
 					<div className='flex justify-end'>
-						<Button type='submit'>Add Asset Item</Button>
+						<Button type='submit' className='cursor-pointer'>
+							Add Asset Item
+						</Button>
 					</div>
 				</form>
 			</Form>
