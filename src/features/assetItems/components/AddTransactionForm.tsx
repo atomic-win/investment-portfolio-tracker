@@ -1,6 +1,6 @@
 'use client';
 import { CardContent } from '@/components/ui/card';
-import { AssetItemPortfolio } from '@/types';
+import { AssetItemPortfolio, AssetType } from '@/types';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -8,7 +8,6 @@ import {
 	FormField,
 	FormItem,
 	FormLabel,
-	FormDescription,
 	FormMessage,
 	Form,
 	FormControl,
@@ -76,7 +75,6 @@ export default function AddTransactionForm({
 								<FormControl>
 									<DatePicker date={field.value} onSelect={field.onChange} />
 								</FormControl>
-								<FormDescription>Date of transaction</FormDescription>
 								<FormMessage />
 							</FormItem>
 						)}
@@ -90,7 +88,6 @@ export default function AddTransactionForm({
 								<FormControl>
 									<Input {...field} />
 								</FormControl>
-								<FormDescription>Name of transaction</FormDescription>
 								<FormMessage />
 							</FormItem>
 						)}
@@ -125,7 +122,6 @@ export default function AddTransactionForm({
 										</SelectContent>
 									</Select>
 								</FormControl>
-								<FormDescription>Type of transaction</FormDescription>
 								<FormMessage />
 							</FormItem>
 						)}
@@ -135,11 +131,12 @@ export default function AddTransactionForm({
 						name='units'
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Units</FormLabel>
+								<FormLabel>
+									{getUnitLabel(assetItem, form.watch('type'))}
+								</FormLabel>
 								<FormControl>
 									<Input {...field} />
 								</FormControl>
-								<FormDescription>Number of units</FormDescription>
 								<FormMessage />
 							</FormItem>
 						)}
@@ -151,4 +148,31 @@ export default function AddTransactionForm({
 			</Form>
 		</CardContent>
 	);
+}
+
+function getUnitLabel(
+	assetItem: AssetItemPortfolio,
+	transactionType: TransactionType
+) {
+	switch (assetItem.assetType) {
+		case AssetType.BankAccount:
+		case AssetType.Wallet:
+		case AssetType.FixedDeposit:
+		case AssetType.EPF:
+		case AssetType.PPF:
+		case AssetType.TBill:
+			return getAmountLabel(assetItem);
+		case AssetType.MutualFund:
+			return 'Units';
+		case AssetType.Stock:
+			return transactionType === TransactionType.Dividend
+				? getAmountLabel(assetItem)
+				: 'Units';
+		default:
+			throw new Error(`Unsupported asset type: ${assetItem.assetType}`);
+	}
+}
+
+function getAmountLabel(assetItem: AssetItemPortfolio) {
+	return `Amount (${assetItem.currency})`;
 }

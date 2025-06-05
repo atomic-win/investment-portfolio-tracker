@@ -53,5 +53,6 @@ function calculateAssetItemPortfolio(
 		name: assetItem.name,
 		assetClass: assetItem.assetClass,
 		assetType: assetItem.assetType,
+		currency: assetItem.currency,
 	};
 }
