@@ -90,7 +90,7 @@ export const AddAssetItemSchema = z
 export function isAssetClassInputSupported(assetType: AssetType) {
 	return (
 		assetType !== AssetType.MutualFund &&
-		getApplicableAssetClassesInput(assetType).length > 1
+		getApplicableAssetClasses(assetType).length > 1
 	);
 }
 
@@ -106,7 +106,7 @@ export function isCurrencyInputSupported(assetType: AssetType) {
 	return assetType !== AssetType.MutualFund && assetType !== AssetType.Stock;
 }
 
-export function getApplicableAssetClassesInput(assetType: AssetType) {
+export function getApplicableAssetClasses(assetType: AssetType) {
 	switch (assetType) {
 		case AssetType.BankAccount:
 		case AssetType.FixedDeposit:

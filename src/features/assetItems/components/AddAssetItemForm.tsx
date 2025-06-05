@@ -29,7 +29,7 @@ import { z } from 'zod';
 import {
 	AddAssetItemRequest,
 	AddAssetItemSchema,
-	getApplicableAssetClassesInput,
+	getApplicableAssetClasses,
 	isAssetClassInputSupported,
 	isCurrencyInputSupported,
 	isSchemeCodeInputSupported,
@@ -124,7 +124,7 @@ export default function AddAssetItemForm() {
 												</SelectIcon>
 											</SelectTrigger>
 											<SelectContent className='rounded-xl'>
-												{getApplicableAssetClassesInput(assetType).map(
+												{getApplicableAssetClasses(assetType).map(
 													(assetClass) => (
 														<SelectItem
 															key={assetClass}
