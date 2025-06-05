@@ -14,6 +14,7 @@ import { AssetItemPortfolio, Transaction } from '@/types';
 import { useDeleteTransactionMutation } from '@/features/assetItems/hooks/transactions';
 import React from 'react';
 import CurrencyAmount from '@/components/CurrencyAmount';
+import { DateTime } from 'luxon';
 
 export default function DeleteTransactionDialog({
 	assetItem,
@@ -57,7 +58,7 @@ export default function DeleteTransactionDialog({
 								await deleteTransactionAsync({
 									assetItemId: assetItem.id,
 									transactionId: transaction.id,
-									date: transaction.date,
+									date: DateTime.fromISO(transaction.date).toJSDate(),
 								});
 							}}>
 							Delete
