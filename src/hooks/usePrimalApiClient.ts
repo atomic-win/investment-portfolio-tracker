@@ -1,11 +1,13 @@
 'use client';
 import axios from 'axios';
-import { useLogOutMutation } from '@/hooks/useLogOutMutation';
 import useAccessTokenQuery from '@/hooks/useAccessTokenQuery';
+import { useRouter } from 'next/navigation';
+import { QueryClient, useQueryClient } from '@tanstack/react-query';
 
 export const usePrimalApiClient = () => {
 	const { data: accessToken } = useAccessTokenQuery();
-	const logOutMutation = useLogOutMutation();
+	const queryClient = useQueryClient();
+	const router = useRouter();
 
 	const headers = {
 		'Content-type': 'application/json',
@@ -21,13 +23,13 @@ export const usePrimalApiClient = () => {
 	apiClient.interceptors.response.use(
 		async (response) => {
 			if (response.status === 401) {
-				await logOutMutation.mutateAsync();
+				return await handleUnauthorized(queryClient, router);
 			}
 			return response;
 		},
 		async (error) => {
 			if (error.response.status === 401) {
-				logOutMutation.mutateAsync();
+				return await handleUnauthorized(queryClient, router);
 			}
 			return error;
 		}
@@ -35,3 +37,13 @@ export const usePrimalApiClient = () => {
 
 	return apiClient;
 };
+
+async function handleUnauthorized(
+	queryClient: QueryClient,
+	router: ReturnType<typeof useRouter>
+) {
+	localStorage.removeItem('accessToken');
+	queryClient.clear();
+	router.push('/');
+	return Promise.reject(new Error('Unauthorized'));
+}
