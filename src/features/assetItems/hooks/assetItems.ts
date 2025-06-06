@@ -1,5 +1,6 @@
 import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
 import {
+	Query,
 	QueryClient,
 	useMutation,
 	useQuery,
@@ -45,7 +46,13 @@ export function useDeleteAssetItemMutation() {
 		mutationFn: async (assetItemId: string) => {
 			await primalApiClient.delete(`assetitems/${assetItemId}`);
 		},
-		onSettled: async () => await refreshAssetItems(queryClient),
+		onSuccess: async (_data, assetItemId) => {
+			queryClient.removeQueries({
+				predicate: (query) => isQueryRelatedToAssetItem(query, { assetItemId }),
+			});
+
+			await refreshAssetItems(queryClient);
+		},
 	});
 }
 
@@ -64,36 +71,37 @@ export async function refreshAssetItem(
 	}
 ) {
 	return await queryClient.invalidateQueries({
-		predicate: (query) => {
-			if (
-				query.queryKey[0] !== 'assetitems' &&
-				query.queryKey[0] !== 'valuation'
-			) {
-				return false;
-			}
-
-			if (
-				query.queryKey[1] === request.assetItemId &&
-				query.queryKey[2] === 'transactions'
-			) {
-				return true;
-			}
-
-			if (query.queryKey[0] !== 'valuation') {
-				return false;
-			}
-
-			const valuationQueryData = query.queryKey[1] as {
-				assetItemIds: string[];
-				date: string;
-			};
-
-			return (
-				valuationQueryData.assetItemIds.includes(request.assetItemId) &&
-				(request.date === undefined ||
-					valuationQueryData.date >=
-						DateTime.fromJSDate(request.date).toISODate()!)
-			);
-		},
+		predicate: (query) => isQueryRelatedToAssetItem(query, request),
 	});
+}
+
+function isQueryRelatedToAssetItem(
+	query: Query<unknown, Error, unknown, readonly unknown[]>,
+	request: { assetItemId: string; date?: Date | undefined }
+) {
+	if (query.queryKey[0] !== 'assetitems' && query.queryKey[0] !== 'valuation') {
+		return false;
+	}
+
+	if (
+		query.queryKey[1] === request.assetItemId &&
+		query.queryKey[2] === 'transactions'
+	) {
+		return true;
+	}
+
+	if (query.queryKey[0] !== 'valuation') {
+		return false;
+	}
+
+	const valuationQueryData = query.queryKey[1] as {
+		assetItemIds: string[];
+		date: string;
+	};
+
+	return (
+		valuationQueryData.assetItemIds.includes(request.assetItemId) &&
+		(request.date === undefined ||
+			valuationQueryData.date >= DateTime.fromJSDate(request.date).toISODate()!)
+	);
 }

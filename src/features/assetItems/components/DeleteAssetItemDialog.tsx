@@ -11,7 +11,11 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { AssetItemPortfolio } from '@/types';
-import { displayPercentage } from '@/lib/utils';
+import {
+	displayAssetClassText,
+	displayAssetTypeText,
+	displayPercentage,
+} from '@/lib/utils';
 import { useDeleteAssetItemMutation } from '@/features/assetItems/hooks/assetItems';
 import React from 'react';
 import CurrencyAmount from '@/components/CurrencyAmount';
@@ -40,7 +44,14 @@ export default function DeleteAssetItemDialog({
 				</AlertDialogHeader>
 				<div>
 					<InfoLine label='Asset Name' value={assetItem.name} />
-					<InfoLine label='Asset Type' value={assetItem.assetType} />
+					<InfoLine
+						label='Asset Type'
+						value={displayAssetTypeText(assetItem.assetType)}
+					/>
+					<InfoLine
+						label='Asset Class'
+						value={displayAssetClassText(assetItem.assetClass)}
+					/>
 					<InfoLine
 						label='Invested Value'
 						value={<CurrencyAmount amount={assetItem.investedValue} />}
