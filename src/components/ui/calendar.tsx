@@ -29,19 +29,19 @@ function Calendar({
 			className={cn('p-3', className)}
 			classNames={{
 				months: 'flex flex-col sm:flex-row',
-				month: 'flex flex-col gap-4 px-6',
+				month: 'flex flex-col gap-4 px-4',
 				month_caption: 'flex justify-center pt-1 relative items-center',
 				caption_label: 'hidden',
-				dropdowns: 'flex justify-center gap-1',
-				nav: 'flex items-center gap-1',
+				dropdowns: 'flex justify-center gap-2',
+				nav: 'mt-2',
 				button_previous: cn(
 					buttonVariants({ variant: 'outline' }),
-					'size-7 bg-transparent p-0 opacity-50 hover:opacity-100',
+					'size-8 bg-transparent p-0 opacity-50 hover:opacity-100',
 					'absolute left-2'
 				),
 				button_next: cn(
 					buttonVariants({ variant: 'outline' }),
-					'size-7 bg-transparent p-0 opacity-50 hover:opacity-100',
+					'size-8 bg-transparent p-0 opacity-50 hover:opacity-100',
 					'absolute right-2'
 				),
 				month_grid: 'w-full border-collapse space-x-1',
@@ -90,7 +90,7 @@ function Calendar({
 							onValueChange={(value) => {
 								handleChange(value);
 							}}>
-							<SelectTrigger className='pr-1.5 focus:ring-0'>
+							<SelectTrigger className='pr-1.5 h-[28px]'>
 								<SelectValue>{selected?.label}</SelectValue>
 								<SelectIcon>
 									<ChevronsUpDownIcon className='size-4' />
