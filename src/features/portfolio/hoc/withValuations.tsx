@@ -8,18 +8,17 @@ export function withValuations<
 	T extends {
 		portfolios: TPortfolio[];
 	}
->(Component: React.ComponentType<T>) {
+>(
+	Component: React.ComponentType<T>,
+	idSelector: (assetItem: AssetItem) => string,
+	portfolioFn: (assetItems: AssetItem[], portfolio: Portfolio) => TPortfolio
+) {
 	return function WithValuations(
 		props: Omit<T, 'portfolios'> & {
 			assetItems: AssetItem[];
 			assetItemIds: string[];
 			latest: boolean;
 			currency: string;
-			idSelector: (assetItem: AssetItem) => string;
-			portfolioFn: (
-				assetItems: AssetItem[],
-				portfolio: Portfolio
-			) => TPortfolio;
 		}
 	) {
 		const valuationQueryResults = useValuationQueries(
@@ -29,7 +28,7 @@ export function withValuations<
 				: props.assetItems.map((assetItem) => assetItem.id),
 			props.latest,
 			props.currency,
-			props.idSelector
+			idSelector
 		);
 
 		if (valuationQueryResults.some((result) => result.isFetching)) {
@@ -46,7 +45,7 @@ export function withValuations<
 				portfolios={calculatePortfolios(
 					valuationQueryResults.map((result) => result.data!),
 					props.latest
-				).map((portfolio) => props.portfolioFn(props.assetItems, portfolio))}
+				).map((portfolio) => portfolioFn(props.assetItems, portfolio))}
 			/>
 		);
 	};

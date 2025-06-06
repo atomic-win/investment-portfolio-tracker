@@ -11,28 +11,11 @@ export function withAssetItemPortfolios<
 		portfolios: AssetItemPortfolio[];
 	}
 >(Component: React.ComponentType<T>) {
-	return function WithAssetItemPortfolios(
-		props: Omit<T, 'portfolios'> & {
-			assetItems: AssetItem[];
-			assetItemIds: string[];
-			latest: boolean;
-			currency: string;
-		}
-	) {
-		const WithLoadedValuationsComponent = withValuations(Component);
-
-		return (
-			<WithLoadedValuationsComponent
-				{...(props as unknown as T)}
-				assetItems={props.assetItems}
-				assetItemIds={props.assetItemIds}
-				latest={props.latest}
-				currency={props.currency}
-				idSelector={(assetItem) => assetItem.id}
-				portfolioFn={calculateAssetItemPortfolio}
-			/>
-		);
-	};
+	return withValuations(
+		Component,
+		(assetItem: AssetItem) => assetItem.id,
+		calculateAssetItemPortfolio
+	);
 }
 
 function calculateAssetItemPortfolio(
