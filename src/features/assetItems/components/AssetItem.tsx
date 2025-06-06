@@ -1,7 +1,7 @@
 'use client';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { AssetItemPortfolio } from '@/types';
-import TransactionsTable from '@/features/assetItems/components/TransactionsTable';
+import TransactionsTable from '@/features/transactions/components/TransactionsTable';
 import { Separator } from '@/components/ui/separator';
 import {
 	displayAssetClassText,

@@ -23,7 +23,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { useAddTransactionMutation } from '@/features/assetItems/hooks/transactions';
+import { useAddTransactionMutation } from '@/features/transactions/hooks/transactions';
 import { useRouter } from 'next/navigation';
 import { ChevronDown } from 'lucide-react';
 import { displayTransactionTypeText } from '@/lib/utils';

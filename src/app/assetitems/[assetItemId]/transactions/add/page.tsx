@@ -1,7 +1,7 @@
 'use client';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
 import { Card } from '@/components/ui/card';
-import AddTransactionForm from '@/features/assetItems/components/AddTransactionForm';
+import AddTransactionForm from '@/features/transactions/components/AddTransactionForm';
 import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import withCurrency from '@/components/hoc/withCurrency';
