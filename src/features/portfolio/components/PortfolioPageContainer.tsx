@@ -14,14 +14,12 @@ import {
 	AssetItem,
 	PortfolioType,
 } from '@/types';
-import { withOverallPortfolios } from '@/features/portfolio/hoc/withOverallPortfolios';
-import { withAssetClassPortfolios } from '@/features/portfolio/hoc/withAssetClassPortfolios';
-import { withAssetTypePortfolios } from '@/features/portfolio/hoc/withAssetTypePortfolios';
 import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
 import withCurrency from '@/components/hoc/withCurrency';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { displayPortfolioType } from '@/features/portfolio/lib/utils';
+import { withValuations } from '@/features/portfolio/hoc/withValuations';
 
 export default function PortfolioPageContainer({
 	assetItemIds,
@@ -63,15 +61,15 @@ export default function PortfolioPageContainer({
 	}
 
 	const WithLoadedOverallSection = withCurrency(
-		withOverallPortfolios(OverallSection)
+		withValuations(OverallSection, () => 'overall')
 	);
 
 	const WithLoadedAssetClassSection = withCurrency(
-		withAssetClassPortfolios(AssetClassSection)
+		withValuations(AssetClassSection, (assetItem) => assetItem.assetClass)
 	);
 
 	const WithLoadedAssetTypeSection = withCurrency(
-		withAssetTypePortfolios(AssetTypeSection)
+		withValuations(AssetTypeSection, (assetItem) => assetItem.assetType)
 	);
 
 	const WithLoadedAssetItemSection = withCurrency(

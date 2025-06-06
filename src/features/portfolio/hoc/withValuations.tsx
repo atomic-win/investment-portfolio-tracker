@@ -11,7 +11,7 @@ export function withValuations<
 >(
 	Component: React.ComponentType<T>,
 	idSelector: (assetItem: AssetItem) => string,
-	portfolioFn: (assetItems: AssetItem[], portfolio: Portfolio) => TPortfolio
+	portfolioFn?: (assetItems: AssetItem[], portfolio: Portfolio) => TPortfolio
 ) {
 	return function WithValuations(
 		props: Omit<T, 'portfolios'> & {
@@ -45,7 +45,11 @@ export function withValuations<
 				portfolios={calculatePortfolios(
 					valuationQueryResults.map((result) => result.data!),
 					props.latest
-				).map((portfolio) => portfolioFn(props.assetItems, portfolio))}
+				).map((portfolio) =>
+					portfolioFn
+						? portfolioFn(props.assetItems, portfolio)
+						: (portfolio as TPortfolio)
+				)}
 			/>
 		);
 	};

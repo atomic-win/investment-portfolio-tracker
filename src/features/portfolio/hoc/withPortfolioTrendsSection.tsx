@@ -1,4 +1,4 @@
-import { Portfolio } from '@/types';
+import { Portfolio, PortfolioType } from '@/types';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import {
@@ -27,9 +27,11 @@ enum TrendType {
 export default function withPortfolioTrendsSection<
 	TPortfolio extends Portfolio
 >({
+	portfolioType,
 	labelFn,
 	showTotalInTooltip = true,
 }: {
+	portfolioType: PortfolioType;
 	labelFn: (portfolio: TPortfolio) => string;
 	showTotalInTooltip?: boolean;
 }) {
@@ -101,6 +103,7 @@ export default function withPortfolioTrendsSection<
 				</TabsList>
 				<TabsContent value={TrendType.InvestedValue}>
 					<TrendsChart
+						portfolioType={portfolioType}
 						portfolioIds={portfolioIds}
 						portfolios={portfolios}
 						chartConfig={chartConfig}
@@ -114,6 +117,7 @@ export default function withPortfolioTrendsSection<
 				</TabsContent>
 				<TabsContent value={TrendType.CurrentValue}>
 					<TrendsChart
+						portfolioType={portfolioType}
 						portfolioIds={portfolioIds}
 						portfolios={portfolios}
 						chartConfig={chartConfig}
@@ -127,6 +131,7 @@ export default function withPortfolioTrendsSection<
 				</TabsContent>
 				<TabsContent value={TrendType.XIRR}>
 					<TrendsChart
+						portfolioType={portfolioType}
 						portfolioIds={portfolioIds}
 						portfolios={portfolios}
 						chartConfig={chartConfig}
@@ -138,6 +143,7 @@ export default function withPortfolioTrendsSection<
 				</TabsContent>
 				<TabsContent value={TrendType.Ratio}>
 					<TrendsChart
+						portfolioType={portfolioType}
 						portfolioIds={portfolioIds}
 						portfolios={portfolios}
 						chartConfig={chartConfig}
@@ -155,6 +161,7 @@ export default function withPortfolioTrendsSection<
 }
 
 function TrendsChart<TPortfolio extends Portfolio>({
+	portfolioType,
 	portfolioIds,
 	portfolios,
 	chartConfig,
@@ -163,6 +170,7 @@ function TrendsChart<TPortfolio extends Portfolio>({
 	yAxisFormat,
 	showTotalInTooltip,
 }: {
+	portfolioType: PortfolioType;
 	portfolioIds: string[];
 	portfolios: TPortfolio[];
 	chartConfig: ChartConfig;
@@ -203,7 +211,7 @@ function TrendsChart<TPortfolio extends Portfolio>({
 			<CardHeader className='flex items-center gap-4 space-y-0 p-4 mt-2 sm:flex-row'>
 				<div className='grid text-center sm:text-left w-full gap-2 justify-center'>
 					<CardTitle>
-						{chartTitle} - {displayPortfolioType(portfolios[0].type)}
+						{chartTitle} - {displayPortfolioType(portfolioType)}
 					</CardTitle>
 				</div>
 			</CardHeader>

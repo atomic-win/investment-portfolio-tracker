@@ -1,9 +1,4 @@
-import {
-	AssetItemPortfolio,
-	AssetItem,
-	Portfolio,
-	PortfolioType,
-} from '@/types';
+import { AssetItemPortfolio, AssetItem, Portfolio } from '@/types';
 import { withValuations } from '@/features/portfolio/hoc/withValuations';
 
 export function withAssetItemPortfolios<
@@ -28,7 +23,6 @@ function calculateAssetItemPortfolio(
 
 	return {
 		...portfolio,
-		type: PortfolioType.PerAssetItem,
 		name: assetItem.name,
 		assetClass: assetItem.assetClass,
 		assetType: assetItem.assetType,

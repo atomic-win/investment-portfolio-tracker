@@ -7,6 +7,7 @@ import {
 	AssetTypePortfolio,
 	AssetClassPortfolio,
 	OverallPortfolio,
+	PortfolioType,
 } from '@/types';
 import withPortfolioTrendsSection from '@/features/portfolio/hoc/withPortfolioTrendsSection';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
@@ -17,22 +18,26 @@ import withInvestmentsFilter from '@/features/portfolio/hoc/withInvestmentsFilte
 export default function Page() {
 	const PortfolioTrendsOverallSection =
 		withPortfolioTrendsSection<OverallPortfolio>({
+			portfolioType: PortfolioType.Overall,
 			labelFn: () => 'Overall',
 			showTotalInTooltip: false,
 		});
 
 	const PortfolioTrendsPerAssetClassSection =
 		withPortfolioTrendsSection<AssetClassPortfolio>({
+			portfolioType: PortfolioType.PerAssetClass,
 			labelFn: (portfolio) => displayAssetClassText(portfolio.id as AssetClass),
 		});
 
 	const PortfolioTrendsPerAssetTypeSection =
 		withPortfolioTrendsSection<AssetTypePortfolio>({
+			portfolioType: PortfolioType.PerAssetType,
 			labelFn: (portfolio) => displayAssetTypeText(portfolio.id as AssetType),
 		});
 
 	const PortfolioTrendsPerAssetItemSection =
 		withPortfolioTrendsSection<AssetItemPortfolio>({
+			portfolioType: PortfolioType.PerAssetItem,
 			labelFn: (portfolio) => portfolio.name,
 		});
 
