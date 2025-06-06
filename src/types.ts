@@ -78,7 +78,6 @@ export type Transaction = Omit<
 export type Portfolio = {
 	id: string;
 	date: string;
-	type: PortfolioType;
 	investedValue: number;
 	investedValuePercent: number;
 	currentValue: number;
