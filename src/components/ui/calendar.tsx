@@ -29,20 +29,20 @@ function Calendar({
 			className={cn('p-3', className)}
 			classNames={{
 				months: 'flex flex-col sm:flex-row',
-				month: 'flex flex-col gap-4 px-4',
+				month: 'flex flex-col gap-4 px-1',
 				month_caption: 'flex justify-center pt-1 relative items-center',
 				caption_label: 'hidden',
 				dropdowns: 'flex justify-center gap-2',
-				nav: 'mt-2',
+				nav: 'mt-1.5',
 				button_previous: cn(
 					buttonVariants({ variant: 'outline' }),
 					'size-8 bg-transparent p-0 opacity-50 hover:opacity-100',
-					'absolute left-2'
+					'absolute left-3'
 				),
 				button_next: cn(
 					buttonVariants({ variant: 'outline' }),
 					'size-8 bg-transparent p-0 opacity-50 hover:opacity-100',
-					'absolute right-2'
+					'absolute right-3'
 				),
 				month_grid: 'w-full border-collapse space-x-1',
 				weekdays: 'flex',
