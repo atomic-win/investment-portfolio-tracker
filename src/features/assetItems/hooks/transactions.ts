@@ -1,19 +1,8 @@
 import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
-import {
-	QueryClient,
-	useMutation,
-	useQuery,
-	useQueryClient,
-} from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Transaction } from '@/types';
 import { AddTransactionRequest } from '@/features/assetItems/schema';
-import { DateTime } from 'luxon';
-
-export type DeleteTransactionRequest = {
-	assetItemId: string;
-	transactionId: string;
-	date: Date;
-};
+import { refreshAssetItem } from './assetItems';
 
 export function useAssetItemTransactionsQuery(
 	assetItemId: string,
@@ -51,12 +40,17 @@ export function useDeleteTransactionMutation() {
 	const primalApiClient = usePrimalApiClient();
 
 	return useMutation({
-		mutationFn: async (request: DeleteTransactionRequest) => {
+		mutationFn: async (request: {
+			assetItemId: string;
+			transactionId: string;
+			date: Date;
+		}) => {
 			await primalApiClient.delete(
 				`assetitems/${request.assetItemId}/transactions/${request.transactionId}`
 			);
 		},
-		onSettled: (_data, _error, request) => onSettled(queryClient, request),
+		onSuccess: async (_data, variables) =>
+			await refreshAssetItem(queryClient, variables),
 	});
 }
 
@@ -71,44 +65,7 @@ export function useAddTransactionMutation() {
 				transaction
 			);
 		},
-		onSettled: (_data, _error, request) => onSettled(queryClient, request),
-	});
-}
-
-function onSettled(
-	queryClient: QueryClient,
-	request: DeleteTransactionRequest | AddTransactionRequest
-) {
-	queryClient.invalidateQueries({
-		predicate: (query) => {
-			if (
-				query.queryKey[0] !== 'assetitems' &&
-				query.queryKey[0] !== 'valuation'
-			) {
-				return false;
-			}
-
-			if (
-				query.queryKey[1] === request.assetItemId &&
-				query.queryKey[2] === 'transactions'
-			) {
-				return true;
-			}
-
-			if (query.queryKey[0] !== 'valuation') {
-				return false;
-			}
-
-			const valuationQueryData = query.queryKey[1] as {
-				assetItemIds: string[];
-				date: string;
-			};
-
-			return (
-				valuationQueryData.assetItemIds.includes(request.assetItemId) &&
-				valuationQueryData.date >=
-					DateTime.fromJSDate(request.date).toISODate()!
-			);
-		},
+		onSuccess: async (_data, variables) =>
+			await refreshAssetItem(queryClient, variables),
 	});
 }
