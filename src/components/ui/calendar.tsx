@@ -1,11 +1,20 @@
 'use client';
 
 import * as React from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { DayPicker } from 'react-day-picker';
+import { ChevronLeft, ChevronRight, ChevronsUpDownIcon } from 'lucide-react';
+import { DayPicker, DropdownProps } from 'react-day-picker';
 
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
+import {
+	Select,
+	SelectContent,
+	SelectIcon,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 function Calendar({
 	className,
@@ -16,12 +25,14 @@ function Calendar({
 	return (
 		<DayPicker
 			showOutsideDays={showOutsideDays}
+			captionLayout='dropdown'
 			className={cn('p-3', className)}
 			classNames={{
 				months: 'flex flex-col sm:flex-row',
 				month: 'flex flex-col gap-4 px-6',
-				month_caption: 'flex justify-center pt-1 relative items-center w-full',
-				caption_label: 'text-sm font-medium',
+				month_caption: 'flex justify-center pt-1 relative items-center',
+				caption_label: 'hidden',
+				dropdowns: 'flex justify-center gap-1',
 				nav: 'flex items-center gap-1',
 				button_previous: cn(
 					buttonVariants({ variant: 'outline' }),
@@ -64,6 +75,41 @@ function Calendar({
 				...classNames,
 			}}
 			components={{
+				Dropdown: ({ value, onChange, ...props }: DropdownProps) => {
+					const options = props.options!;
+					const selected = options.find((child) => child.value === value);
+					const handleChange = (value: string) => {
+						const changeEvent = {
+							target: { value },
+						} as React.ChangeEvent<HTMLSelectElement>;
+						onChange?.(changeEvent);
+					};
+					return (
+						<Select
+							value={value?.toString()}
+							onValueChange={(value) => {
+								handleChange(value);
+							}}>
+							<SelectTrigger className='pr-1.5 focus:ring-0'>
+								<SelectValue>{selected?.label}</SelectValue>
+								<SelectIcon>
+									<ChevronsUpDownIcon className='size-4' />
+								</SelectIcon>
+							</SelectTrigger>
+							<SelectContent position='popper'>
+								<ScrollArea className='h-80'>
+									{options.map((option, id: number) => (
+										<SelectItem
+											key={`${option.value}-${id}`}
+											value={option.value?.toString() ?? ''}>
+											{option.label}
+										</SelectItem>
+									))}
+								</ScrollArea>
+							</SelectContent>
+						</Select>
+					);
+				},
 				PreviousMonthButton: ({ className, ...props }) => (
 					<button className={className} {...props}>
 						<ChevronLeft />
