@@ -26,8 +26,10 @@ import { DataTableToolbar } from '@/components/ui/data-table-toolbar';
 import { cn } from '@/lib/utils';
 import { DataTablePagination } from '@/components/ui/data-table-pagination';
 import Link from 'next/link';
+import { useLocalStorage } from 'usehooks-ts';
 
 interface DataTableProps<TData, TValue> {
+	id: string;
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
 }
@@ -131,6 +133,7 @@ export function createColumnDef<TData>({
 }
 
 export function DataTable<TData, TValue>({
+	id,
 	columns,
 	data,
 	initialSorting,
@@ -150,10 +153,13 @@ export function DataTable<TData, TValue>({
 		doPagination = false;
 	}
 
-	const [pagination, setPagination] = useState({
-		pageIndex: 0,
-		pageSize: doPagination ? 8 : data.length,
-	});
+	const [pagination, setPagination] = useLocalStorage(
+		`data-table-pagination-${id}`,
+		{
+			pageIndex: 0,
+			pageSize: !!doPagination ? 8 : data.length,
+		}
+	);
 
 	const table = useReactTable({
 		data,

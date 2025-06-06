@@ -64,6 +64,7 @@ export default function PortfolioPerAssetTypeSection({
 				labelFn={(portfolio) => displayAssetTypeText(portfolio.id as AssetType)}
 			/>
 			<DataTable
+				id='portfolio-per-asset-type'
 				columns={columns}
 				data={portfolios}
 				initialSorting={[

@@ -87,6 +87,7 @@ export default function AssetItemsTable({
 	return (
 		<div className='mx-auto'>
 			<DataTable
+				id='asset-items'
 				columns={columns}
 				data={portfolios}
 				initialSorting={[

@@ -75,6 +75,7 @@ export default function TransactionsTable({
 				</Button>
 			</div>
 			<DataTable
+				id='transactions'
 				columns={getColumns(assetItem)}
 				data={items}
 				initialSorting={[

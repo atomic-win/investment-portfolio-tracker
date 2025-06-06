@@ -35,7 +35,7 @@ export default function PortfolioOverallSection({
 }) {
 	return (
 		<div className='mx-auto'>
-			<DataTable columns={columns} data={portfolios} />
+			<DataTable id='portfolio-overall' columns={columns} data={portfolios} />
 		</div>
 	);
 }

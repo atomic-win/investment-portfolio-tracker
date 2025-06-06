@@ -79,6 +79,7 @@ export default function PortfolioPerAssetItemSection({
 				labelFn={(portfolio) => portfolio.name}
 			/>
 			<DataTable
+				id='portfolio-per-asset-item'
 				columns={columns}
 				data={portfolios}
 				initialSorting={[
