@@ -18,6 +18,7 @@ export default function Page() {
 	const PortfolioTrendsOverallSection =
 		withPortfolioTrendsSection<OverallPortfolio>({
 			labelFn: () => 'Overall',
+			showTotalInTooltip: false,
 		});
 
 	const PortfolioTrendsPerAssetClassSection =

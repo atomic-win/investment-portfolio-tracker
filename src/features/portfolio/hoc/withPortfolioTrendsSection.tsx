@@ -1,4 +1,4 @@
-import { Portfolio, PortfolioType } from '@/types';
+import { Portfolio } from '@/types';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import {
@@ -26,7 +26,13 @@ enum TrendType {
 
 export default function withPortfolioTrendsSection<
 	TPortfolio extends Portfolio
->({ labelFn }: { labelFn: (portfolio: TPortfolio) => string }) {
+>({
+	labelFn,
+	showTotalInTooltip = true,
+}: {
+	labelFn: (portfolio: TPortfolio) => string;
+	showTotalInTooltip?: boolean;
+}) {
 	return function PortfolioTrendsSection({
 		portfolios,
 	}: {
@@ -74,7 +80,6 @@ export default function withPortfolioTrendsSection<
 			) satisfies ChartConfig;
 
 		const portfolioIds = latestPortfolios.map((p) => p.id);
-		const isOverallPortfolioType = portfolios[0].type === PortfolioType.Overall;
 
 		return (
 			<Tabs
@@ -104,7 +109,7 @@ export default function withPortfolioTrendsSection<
 						yAxisFormat={(value) =>
 							displayCurrencyAmountText(locale!, currency!, value, 'compact', 2)
 						}
-						showTotalInTooltip={!isOverallPortfolioType}
+						showTotalInTooltip={showTotalInTooltip}
 					/>
 				</TabsContent>
 				<TabsContent value={TrendType.CurrentValue}>
@@ -117,7 +122,7 @@ export default function withPortfolioTrendsSection<
 						yAxisFormat={(value) =>
 							displayCurrencyAmountText(locale!, currency!, value, 'compact', 2)
 						}
-						showTotalInTooltip={!isOverallPortfolioType}
+						showTotalInTooltip={showTotalInTooltip}
 					/>
 				</TabsContent>
 				<TabsContent value={TrendType.XIRR}>
