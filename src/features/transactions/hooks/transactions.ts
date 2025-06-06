@@ -2,7 +2,7 @@ import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Transaction } from '@/types';
 import { AddTransactionRequest } from '@/features/assetItems/schema';
-import { refreshAssetItem } from './assetItems';
+import { refreshAssetItem } from '@/features/assetItems/hooks/assetItems';
 
 export function useAssetItemTransactionsQuery(
 	assetItemId: string,

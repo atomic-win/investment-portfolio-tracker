@@ -1,54 +1,11 @@
-'use client';
-import { Modal } from '@/components/Modal';
-import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
-import { DialogContent, DialogHeader } from '@/components/ui/dialog';
-import AddTransactionForm from '@/features/assetItems/components/AddTransactionForm';
-import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
-import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
-import withCurrency from '@/components/hoc/withCurrency';
-import { AssetItemPortfolio } from '@/types';
+import AddTransactionModal from '@/features/transactions/components/AddTransactionModal';
 
-export default function Page({ params }: { params: { assetItemId: string } }) {
-	const assetItemId = params.assetItemId;
-
-	const WithAddTransactionFormWrapper = withAssetItems(
-		withCurrency(withAssetItemPortfolios(AddTransactionFormWrapper))
-	);
-
-	return (
-		<WithAddTransactionFormWrapper assetItemIds={[assetItemId]} latest={true} />
-	);
-}
-
-function AddTransactionFormWrapper({
-	portfolios,
+export default async function Page({
+	params,
 }: {
-	portfolios: AssetItemPortfolio[];
+	params: Promise<{ assetItemId: string }>;
 }) {
-	const assetItem = portfolios[0];
+	const { assetItemId } = await params;
 
-	return (
-		<Modal>
-			<DialogContent>
-				<DialogHeader>
-					<SidebarTriggerWithBreadcrumb
-						breadcrumbs={[
-							{ title: 'Asset Items', href: '/assetitems' },
-							{
-								title: assetItem.name,
-								href: `/assetitems/${assetItem.id}`,
-							},
-							{
-								title: 'Add Transaction',
-								href: `/assetitems/${assetItem.id}/transactions/add`,
-							},
-						]}
-					/>
-				</DialogHeader>
-				<div className='p-2'>
-					<AddTransactionForm assetItem={assetItem} />
-				</div>
-			</DialogContent>
-		</Modal>
-	);
+	return <AddTransactionModal assetItemId={assetItemId} />;
 }

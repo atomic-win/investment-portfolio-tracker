@@ -8,17 +8,17 @@ import {
 } from '@/types';
 import { createColumnDef, DataTable } from '@/components/ui/data-table';
 import { ColumnDef } from '@tanstack/react-table';
-import DeleteTransactionDialog from '@/features/assetItems/components/DeleteTransactionDialog';
+import DeleteTransactionDialog from '@/features/transactions/components/DeleteTransactionDialog';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { PlusIcon, RefreshCwIcon } from 'lucide-react';
 import CurrencyAmount from '@/components/CurrencyAmount';
 import { displayTransactionTypeText } from '@/lib/utils';
-import { useAssetItemTransactionsQuery } from '../hooks/transactions';
+import { useAssetItemTransactionsQuery } from '@/features/transactions/hooks/transactions';
 import LoadingComponent from '@/components/LoadingComponent';
 import ErrorComponent from '@/components/ErrorComponent';
 import { useQueryClient } from '@tanstack/react-query';
-import { refreshAssetItem } from '../hooks/assetItems';
+import { refreshAssetItem } from '../../assetItems/hooks/assetItems';
 
 type TableItem = Transaction & {
 	assetItem: AssetItemPortfolio;
