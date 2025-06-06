@@ -11,12 +11,14 @@ import { ColumnDef } from '@tanstack/react-table';
 import DeleteTransactionDialog from '@/features/assetItems/components/DeleteTransactionDialog';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { PlusIcon } from 'lucide-react';
+import { PlusIcon, RefreshCwIcon } from 'lucide-react';
 import CurrencyAmount from '@/components/CurrencyAmount';
 import { displayTransactionTypeText } from '@/lib/utils';
 import { useAssetItemTransactionsQuery } from '../hooks/transactions';
 import LoadingComponent from '@/components/LoadingComponent';
 import ErrorComponent from '@/components/ErrorComponent';
+import { useQueryClient } from '@tanstack/react-query';
+import { refreshAssetItem } from '../hooks/assetItems';
 
 type TableItem = Transaction & {
 	assetItem: AssetItemPortfolio;
@@ -29,9 +31,12 @@ export default function TransactionsTable({
 	assetItem: AssetItemPortfolio;
 	currency: Currency;
 }) {
+	const queryClient = useQueryClient();
+
 	const {
 		data: transactions,
 		isLoading,
+		isFetching,
 		isError,
 	} = useAssetItemTransactionsQuery(assetItem.id, currency);
 
@@ -50,13 +55,24 @@ export default function TransactionsTable({
 
 	return (
 		<div className='mx-auto'>
-			<div className='flex justify-end text-xl font-semibold items-center'>
+			<div className='flex justify-end text-xl font-semibold items-center gap-x-2'>
 				<Link href={`/assetitems/${assetItem.id}/transactions/add`}>
-					<Button className='cursor-pointer'>
+					<Button className='cursor-pointer' disabled={isFetching}>
 						<PlusIcon />
 						Add Transaction
 					</Button>
 				</Link>
+				<Button
+					className='cursor-pointer'
+					disabled={isFetching}
+					onClick={async () =>
+						await refreshAssetItem(queryClient, {
+							assetItemId: assetItem.id,
+						})
+					}>
+					<RefreshCwIcon />
+					Refresh
+				</Button>
 			</div>
 			<DataTable
 				columns={getColumns(assetItem)}

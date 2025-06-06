@@ -7,9 +7,13 @@ import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import withCurrency from '@/components/hoc/withCurrency';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { PlusIcon } from 'lucide-react';
+import { PlusIcon, RefreshCwIcon } from 'lucide-react';
+import { useQueryClient } from '@tanstack/react-query';
+import { refreshAssetItems } from '@/features/assetItems/hooks/assetItems';
 
 export default function Page() {
+	const queryClient = useQueryClient();
+
 	const WithLoadedAssetItemsTable = withAssetItems(
 		withCurrency(withAssetItemPortfolios(AssetItemsTable))
 	);
@@ -26,13 +30,19 @@ export default function Page() {
 						<CardTitle className='text-3xl h-full'>Asset Items</CardTitle>
 					</CardHeader>
 					<CardContent className='px-6 pb-6'>
-						<div className='flex justify-end text-xl font-semibold items-center mb-2'>
+						<div className='flex justify-end text-xl font-semibold items-center mb-2 gap-x-2'>
 							<Link href={`/assetitems/add`}>
 								<Button className='cursor-pointer'>
 									<PlusIcon />
 									Add Asset Item
 								</Button>
 							</Link>
+							<Button
+								className='cursor-pointer'
+								onClick={async () => await refreshAssetItems(queryClient)}>
+								<RefreshCwIcon />
+								Refresh
+							</Button>
 						</div>
 						<WithLoadedAssetItemsTable assetItemIds={[]} latest={true} />
 					</CardContent>
