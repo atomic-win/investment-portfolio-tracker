@@ -153,13 +153,30 @@ export function DataTable<TData, TValue>({
 		doPagination = false;
 	}
 
-	const [pagination, setPagination] = useLocalStorage(
-		`data-table-pagination-${id}`,
-		{
-			pageIndex: 0,
-			pageSize: !!doPagination ? 8 : data.length,
-		}
+	const [pageIndex, setPageIndex] = useState(0);
+
+	const [pageSize, setPageSize] = useLocalStorage(
+		`data-table-page-size-${id}`,
+		!!doPagination ? 8 : data.length
 	);
+
+	const pagination = {
+		pageIndex,
+		pageSize,
+	};
+
+	const setPagination = (
+		updater: ((old: typeof pagination) => typeof pagination) | typeof pagination
+	) => {
+		if (typeof updater === 'function') {
+			const newPagination = updater(pagination);
+			setPageIndex(newPagination.pageIndex);
+			setPageSize(newPagination.pageSize);
+		} else {
+			setPageIndex(updater.pageIndex);
+			setPageSize(updater.pageSize);
+		}
+	};
 
 	const table = useReactTable({
 		data,
