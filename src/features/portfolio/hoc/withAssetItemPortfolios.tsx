@@ -25,11 +25,7 @@ export function withAssetItemPortfolios<
 			<WithLoadedValuationsComponent
 				{...(props as unknown as T)}
 				assetItems={props.assetItems}
-				assetItemIds={
-					props.assetItemIds.length > 0
-						? props.assetItemIds
-						: props.assetItems.map((assetItem) => assetItem.id)
-				}
+				assetItemIds={props.assetItemIds}
 				latest={props.latest}
 				currency={props.currency}
 				idSelector={(assetItem) => assetItem.id}
