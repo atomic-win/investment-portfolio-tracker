@@ -1,4 +1,4 @@
-import { AddTransactionModal } from '@/features/transactions/components/AddTransactionModal';
+import AddTransactionModal from '@/features/transactions/components/AddTransactionModal';
 
 export default async function Page({
 	params,

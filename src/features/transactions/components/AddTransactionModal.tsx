@@ -8,9 +8,13 @@ import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import withCurrency from '@/components/hoc/withCurrency';
 import { AssetItemPortfolio } from '@/types';
 
-export function AddTransactionModal({ assetItemId }: { assetItemId: string }) {
+export default function AddTransactionModalWrapper({
+	assetItemId,
+}: {
+	assetItemId: string;
+}) {
 	const WithAddTransactionFormWrapper = withAssetItems(
-		withCurrency(withAssetItemPortfolios(ModalComponent))
+		withCurrency(withAssetItemPortfolios(AddTransactionModal))
 	);
 
 	return (
@@ -18,7 +22,11 @@ export function AddTransactionModal({ assetItemId }: { assetItemId: string }) {
 	);
 }
 
-function ModalComponent({ portfolios }: { portfolios: AssetItemPortfolio[] }) {
+function AddTransactionModal({
+	portfolios,
+}: {
+	portfolios: AssetItemPortfolio[];
+}) {
 	const assetItem = portfolios[0];
 
 	return (
