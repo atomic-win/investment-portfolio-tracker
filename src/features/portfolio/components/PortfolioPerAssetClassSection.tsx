@@ -66,6 +66,7 @@ export default function PortfolioPerAssetClassSection({
 				}
 			/>
 			<DataTable
+				id='portfolio-per-asset-class'
 				columns={columns}
 				data={portfolios}
 				initialSorting={[
