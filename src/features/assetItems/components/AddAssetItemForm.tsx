@@ -23,7 +23,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { useAddAssetItemMutation } from '../hooks/assetItems';
+import { useAddAssetItemMutation } from '@/features/assetItems/hooks/assetItems';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import {
@@ -34,7 +34,7 @@ import {
 	isCurrencyInputSupported,
 	isSchemeCodeInputSupported,
 	isSymbolInputSupported,
-} from '../schema';
+} from '@/features/assetItems/schema';
 
 export default function AddAssetItemForm() {
 	const { mutateAsync: addAssetItemAsync } = useAddAssetItemMutation();

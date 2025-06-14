@@ -1,7 +1,7 @@
 import { primaryKey, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { createdAt, updatedAt } from '../schemaHelpers';
+import { createdAt, updatedAt } from '@/drizzle/schemaHelpers';
 import { relations } from 'drizzle-orm';
-import { AssetTable } from './asset';
+import { AssetTable } from '@/drizzle/schema/asset';
 
 export const AssetRateTable = sqliteTable(
 	'asset_rates',

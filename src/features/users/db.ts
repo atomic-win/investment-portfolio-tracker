@@ -2,7 +2,7 @@ import { db } from '@/drizzle/db';
 import { UserSettingTable, UserTable } from '@/drizzle/schema';
 import { eq } from 'drizzle-orm';
 import { cacheTag } from 'next/dist/server/use-cache/cache-tag';
-import { getUserSettingsTag, getUserTag } from './cacheTag';
+import { getUserSettingsTag, getUserTag } from '@/features/users/cacheTag';
 import { revalidateTag } from 'next/cache';
 import { cacheLife } from 'next/dist/server/use-cache/cache-life';
 

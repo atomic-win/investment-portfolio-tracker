@@ -22,6 +22,12 @@ export default defineConfig([
 			'@stylistic/quotes': ['error', 'single', { avoidEscape: true }],
 			'@stylistic/semi': ['error', 'always'],
 			'import/no-duplicates': ['error', { 'prefer-inline': true }],
+			'no-restricted-imports': [
+				'error',
+				{
+					patterns: ['./*', '../*'],
+				},
+			],
 		},
 	},
 	globalIgnores([

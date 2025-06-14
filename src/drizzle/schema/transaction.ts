@@ -1,8 +1,8 @@
 import { check, index, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { createdAt, id, updatedAt } from '../schemaHelpers';
+import { createdAt, id, updatedAt } from '@/drizzle/schemaHelpers';
 import { TransactionType } from '@/types';
 import { relations, sql } from 'drizzle-orm';
-import { AssetItemTable } from './assetItem';
+import { AssetItemTable } from '@/drizzle/schema/assetItem';
 
 export const TransactionTable = sqliteTable(
 	'transactions',

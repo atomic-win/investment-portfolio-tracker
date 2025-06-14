@@ -1,6 +1,6 @@
 import { sqliteTable, text, primaryKey } from 'drizzle-orm/sqlite-core';
-import { createdAt } from '../schemaHelpers';
-import { UserTable } from './user';
+import { createdAt } from '@/drizzle/schemaHelpers';
+import { UserTable } from '@/drizzle/schema/user';
 import { relations } from 'drizzle-orm';
 import { IdentityProvider } from '@/types';
 

@@ -1,8 +1,8 @@
 import { sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { createdAt, id, updatedAt } from '../schemaHelpers';
+import { createdAt, id, updatedAt } from '@/drizzle/schemaHelpers';
 import { relations } from 'drizzle-orm';
-import { UserSettingTable } from './userSetting';
-import { AssetItemTable } from './assetItem';
+import { UserSettingTable } from '@/drizzle/schema/userSetting';
+import { AssetItemTable } from '@/drizzle/schema/assetItem';
 
 export const UserTable = sqliteTable('users', {
 	id,

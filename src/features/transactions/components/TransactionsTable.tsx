@@ -18,7 +18,7 @@ import { useAssetItemTransactionsQuery } from '@/features/transactions/hooks/tra
 import LoadingComponent from '@/components/LoadingComponent';
 import ErrorComponent from '@/components/ErrorComponent';
 import { useQueryClient } from '@tanstack/react-query';
-import { refreshAssetItem } from '../../assetItems/hooks/assetItems';
+import { refreshAssetItem } from '@/features/assetItems/hooks/assetItems';
 
 type TableItem = Transaction & {
 	assetItem: AssetItemPortfolio;

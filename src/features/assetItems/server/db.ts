@@ -10,7 +10,11 @@ import assert from 'assert';
 import { and, eq } from 'drizzle-orm';
 import { cacheLife } from 'next/dist/server/use-cache/cache-life';
 import { cacheTag } from 'next/dist/server/use-cache/cache-tag';
-import { assetIdTag, assetItemsTag, assetItemTag } from './cacheTag';
+import {
+	assetIdTag,
+	assetItemsTag,
+	assetItemTag,
+} from '@/features/assetItems/server/cacheTag';
 import { unstable_expireTag as expireTag } from 'next/cache';
 import { getFirstTransactionDate } from '@/features/transactions/server/db';
 
