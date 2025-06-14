@@ -1,5 +1,8 @@
 'use client';
+import { GoogleLogin } from '@react-oauth/google';
 import { ChevronUp, LogOut, User2 } from 'lucide-react';
+
+import LoadingComponent from '@/components/LoadingComponent';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -7,12 +10,10 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { SidebarMenuButton } from '@/components/ui/sidebar';
-import { GoogleLogin } from '@react-oauth/google';
 import useAccessTokenQuery from '@/hooks/useAccessTokenQuery';
 import { useLogInMutation } from '@/hooks/useLogInMutation';
 import { useLogOutMutation } from '@/hooks/useLogOutMutation';
 import { useMyProfileQuery } from '@/hooks/useMyProfileQuery';
-import LoadingComponent from '@/components/LoadingComponent';
 
 export default function AccountMenu() {
 	const { data: accessToken, isLoading } = useAccessTokenQuery();

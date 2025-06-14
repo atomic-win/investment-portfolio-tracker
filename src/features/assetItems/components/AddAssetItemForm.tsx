@@ -1,3 +1,10 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ChevronDown } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import { Button } from '@/components/ui/button';
 import { CardContent } from '@/components/ui/card';
 import {
 	FormField,
@@ -9,11 +16,6 @@ import {
 	Form,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { displayAssetClassText, displayAssetTypeText } from '@/lib/utils';
-import { AssetType, Currency } from '@/types';
-import { ChevronDown } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
 	Select,
 	SelectContent,
@@ -22,10 +24,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
-import { useAddAssetItemMutation } from '../hooks/assetItems';
-import { useRouter } from 'next/navigation';
-import { z } from 'zod';
+import { useAddAssetItemMutation } from '@/features/assetItems/hooks/assetItems';
 import {
 	AddAssetItemRequest,
 	AddAssetItemSchema,
@@ -34,7 +33,9 @@ import {
 	isCurrencyInputSupported,
 	isSchemeCodeInputSupported,
 	isSymbolInputSupported,
-} from '../schema';
+} from '@/features/assetItems/schema';
+import { displayAssetClassText, displayAssetTypeText } from '@/lib/utils';
+import { AssetType, Currency } from '@/types';
 
 export default function AddAssetItemForm() {
 	const { mutateAsync: addAssetItemAsync } = useAddAssetItemMutation();

@@ -1,6 +1,7 @@
+import { Suspense } from 'react';
+
 import LoadingComponent from '@/components/LoadingComponent';
 import AssetItemPage from '@/features/assetItems/components/AssetItemPage';
-import { Suspense } from 'react';
 
 export default function Page({
 	params,

@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
+
 import { UserTable } from '@/drizzle/schema';
+import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
 
 export const useMyProfileQuery = () => {
 	const primalApiClient = usePrimalApiClient();

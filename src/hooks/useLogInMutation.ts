@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
 import { useRouter } from 'next/navigation';
+
+import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
 
 export const useLogInMutation = () => {
 	const primalApiClient = usePrimalApiClient();

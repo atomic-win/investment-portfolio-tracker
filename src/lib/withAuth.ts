@@ -1,7 +1,8 @@
-import { getUser } from '@/features/users/db';
-import { AuthClaims } from '@/types';
 import { jwtVerify } from 'jose';
 import { NextRequest, NextResponse } from 'next/server';
+
+import { getUser } from '@/features/users/db';
+import { AuthClaims } from '@/types';
 
 const SECRET_KEY = process.env.JWT_SECRET as string;
 const encoder = new TextEncoder();

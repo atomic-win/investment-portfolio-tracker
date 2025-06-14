@@ -1,10 +1,14 @@
 'use server';
-import { db } from '@/drizzle/db';
-import { TransactionTable } from '@/drizzle/schema';
 import { and, asc, eq, lte, min } from 'drizzle-orm';
 import { cacheLife } from 'next/dist/server/use-cache/cache-life';
 import { cacheTag } from 'next/dist/server/use-cache/cache-tag';
-import { transactionsTag, transactionTag } from './cacheTag';
+
+import { db } from '@/drizzle/db';
+import { TransactionTable } from '@/drizzle/schema';
+import {
+	transactionsTag,
+	transactionTag,
+} from '@/features/transactions/server/cacheTag';
 
 export async function getAllTransactions(assetItemId: string, date: string) {
 	'use cache';

@@ -1,15 +1,16 @@
 'use client';
+import { useQueryClient } from '@tanstack/react-query';
+import { PlusIcon, RefreshCwIcon } from 'lucide-react';
+import Link from 'next/link';
+
+import withCurrency from '@/components/hoc/withCurrency';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import AssetItemsTable from '@/features/assetItems/components/AssetItemsTable';
-import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
-import withCurrency from '@/components/hoc/withCurrency';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { PlusIcon, RefreshCwIcon } from 'lucide-react';
-import { useQueryClient } from '@tanstack/react-query';
 import { refreshAssetItems } from '@/features/assetItems/hooks/assetItems';
+import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
 
 export default function Page() {
 	const queryClient = useQueryClient();
@@ -31,7 +32,7 @@ export default function Page() {
 					</CardHeader>
 					<CardContent className='px-6 pb-6'>
 						<div className='flex justify-end text-xl font-semibold items-center mb-2 gap-x-2'>
-							<Link href={`/assetitems/add`}>
+							<Link href={'/assetitems/add'}>
 								<Button className='cursor-pointer'>
 									<PlusIcon />
 									Add Asset Item

@@ -1,9 +1,10 @@
-import { AssetClass, AssetClassPortfolio } from '@/types';
 import { ColumnDef } from '@tanstack/react-table';
-import { displayAssetClassText, displayPercentage } from '@/lib/utils';
+
+import CurrencyAmount from '@/components/CurrencyAmount';
 import { createColumnDef, DataTable } from '@/components/ui/data-table';
 import PortfolioCharts from '@/features/portfolio/components/PortfolioCharts';
-import CurrencyAmount from '@/components/CurrencyAmount';
+import { displayAssetClassText, displayPercentage } from '@/lib/utils';
+import { AssetClass, AssetClassPortfolio } from '@/types';
 
 const columns: ColumnDef<AssetClassPortfolio>[] = [
 	createColumnDef({

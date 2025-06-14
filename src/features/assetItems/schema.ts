@@ -1,5 +1,6 @@
-import { AssetClass, AssetType, Currency, TransactionType } from '@/types';
 import { z } from 'zod';
+
+import { AssetClass, AssetType, Currency, TransactionType } from '@/types';
 
 export type AddAssetItemRequest = z.infer<typeof AddAssetItemSchema>;
 

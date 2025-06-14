@@ -1,8 +1,8 @@
 'use client';
-import React from 'react';
-import { AssetItem } from '@/types';
 import { useSearchParams } from 'next/navigation';
-import { AssetClass, AssetType } from '@/types';
+import React from 'react';
+
+import { AssetItem, AssetClass, AssetType } from '@/types';
 
 export default function withInvestmentsFilter<
 	T extends {

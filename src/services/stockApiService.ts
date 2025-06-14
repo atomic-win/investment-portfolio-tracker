@@ -1,6 +1,7 @@
-import { Rate } from '@/types';
 import { DateTime } from 'luxon';
 import yahooFinance from 'yahoo-finance2';
+
+import { Rate } from '@/types';
 
 export type SymbolSearchResponse = {
 	symbol: string;

@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
+
 import { UserSettingTable } from '@/drizzle/schema';
-import useAccessTokenQuery from './useAccessTokenQuery';
+import useAccessTokenQuery from '@/hooks/useAccessTokenQuery';
+import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
 
 export function useMySettingsQuery() {
 	const primalApiClient = usePrimalApiClient();

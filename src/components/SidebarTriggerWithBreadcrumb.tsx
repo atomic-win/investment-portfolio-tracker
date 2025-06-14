@@ -1,5 +1,3 @@
-import { Separator } from '@/components/ui/separator';
-import { SidebarTrigger } from '@/components/ui/sidebar';
 import {
 	Breadcrumb,
 	BreadcrumbList,
@@ -8,6 +6,8 @@ import {
 	BreadcrumbSeparator,
 	BreadcrumbPage,
 } from '@/components/ui/breadcrumb';
+import { Separator } from '@/components/ui/separator';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 
 export type BreadcrumbItemDetail = {
 	title: string;

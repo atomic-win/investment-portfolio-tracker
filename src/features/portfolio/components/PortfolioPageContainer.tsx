@@ -1,4 +1,7 @@
 'use client';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+
+import withCurrency from '@/components/hoc/withCurrency';
 import {
 	Card,
 	CardContent,
@@ -6,6 +9,10 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
+import { withValuations } from '@/features/portfolio/hoc/withValuations';
+import { displayPortfolioType } from '@/features/portfolio/lib/utils';
 import {
 	OverallPortfolio,
 	AssetClassPortfolio,
@@ -14,12 +21,6 @@ import {
 	AssetItem,
 	PortfolioType,
 } from '@/types';
-import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
-import withCurrency from '@/components/hoc/withCurrency';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { displayPortfolioType } from '@/features/portfolio/lib/utils';
-import { withValuations } from '@/features/portfolio/hoc/withValuations';
 
 export default function PortfolioPageContainer({
 	assetItemIds,

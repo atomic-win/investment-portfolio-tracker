@@ -1,3 +1,6 @@
+import React from 'react';
+
+import CurrencyAmount from '@/components/CurrencyAmount';
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -10,15 +13,13 @@ import {
 	AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { AssetItemPortfolio } from '@/types';
+import { useDeleteAssetItemMutation } from '@/features/assetItems/hooks/assetItems';
 import {
 	displayAssetClassText,
 	displayAssetTypeText,
 	displayPercentage,
 } from '@/lib/utils';
-import { useDeleteAssetItemMutation } from '@/features/assetItems/hooks/assetItems';
-import React from 'react';
-import CurrencyAmount from '@/components/CurrencyAmount';
+import { AssetItemPortfolio } from '@/types';
 
 export default function DeleteAssetItemDialog({
 	assetItem,

@@ -1,6 +1,7 @@
+import { NextRequest, NextResponse } from 'next/server';
+
 import { getUserSettings } from '@/features/users/db';
 import { AuthClaims } from '@/types';
-import { NextRequest, NextResponse } from 'next/server';
 
 export default async function handler(_req: NextRequest, claims: AuthClaims) {
 	const userId = claims.id;

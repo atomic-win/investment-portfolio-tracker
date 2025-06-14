@@ -1,19 +1,20 @@
 'use client';
+import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
+import InvestmentsFilterForm from '@/features/assetItems/components/InvestmentsFilterForm';
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import PortfolioPageContainer from '@/features/portfolio/components/PortfolioPageContainer';
-import InvestmentsFilterForm from '@/features/assetItems/components/InvestmentsFilterForm';
+import withInvestmentsFilter from '@/features/portfolio/hoc/withInvestmentsFilter';
+import withPortfolioTrendsSection from '@/features/portfolio/hoc/withPortfolioTrendsSection';
+import { displayAssetClassText, displayAssetTypeText } from '@/lib/utils';
 import {
 	AssetItemPortfolio,
 	AssetTypePortfolio,
 	AssetClassPortfolio,
 	OverallPortfolio,
 	PortfolioType,
+	AssetClass,
+	AssetType,
 } from '@/types';
-import withPortfolioTrendsSection from '@/features/portfolio/hoc/withPortfolioTrendsSection';
-import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
-import { AssetClass, AssetType } from '@/types';
-import { displayAssetClassText, displayAssetTypeText } from '@/lib/utils';
-import withInvestmentsFilter from '@/features/portfolio/hoc/withInvestmentsFilter';
 
 export default function Page() {
 	const PortfolioTrendsOverallSection =

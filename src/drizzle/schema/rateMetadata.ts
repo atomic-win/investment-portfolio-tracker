@@ -1,6 +1,7 @@
 import { sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { createdAt, updatedAt } from '../schemaHelpers';
 import { DateTime } from 'luxon';
+
+import { createdAt, updatedAt } from '@/drizzle/schemaHelpers';
 
 export const RateMetadataTable = sqliteTable('rate_metadata', {
 	id: text('id').primaryKey(),

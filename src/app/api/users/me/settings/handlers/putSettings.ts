@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
 import { updateUserSettings } from '@/features/users/db';
 import { AuthClaims, Currency, Language } from '@/types';
-import { z } from 'zod';
 
 const SettingsSchema = z.object({
 	currency: z.nativeEnum(Currency).optional(),

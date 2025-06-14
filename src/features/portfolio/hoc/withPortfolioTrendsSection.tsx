@@ -1,6 +1,8 @@
-import { Portfolio, PortfolioType } from '@/types';
+import { DateTime } from 'luxon';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { CartesianGrid, XAxis, YAxis, Line, LineChart } from 'recharts';
+
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import {
 	ChartConfig,
 	ChartContainer,
@@ -9,13 +11,11 @@ import {
 	ChartTooltip,
 	ChartTooltipContent,
 } from '@/components/ui/chart';
-import { CartesianGrid, XAxis, YAxis, Line, LineChart } from 'recharts';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { displayPortfolioType } from '@/features/portfolio/lib/utils';
-import { displayPercentage } from '@/lib/utils';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { displayCurrencyAmountText } from '@/lib/utils';
 import { useMySettingsQuery } from '@/hooks/useMySettingsQuery';
-import { DateTime } from 'luxon';
+import { displayPercentage, displayCurrencyAmountText } from '@/lib/utils';
+import { Portfolio, PortfolioType } from '@/types';
 
 enum TrendType {
 	InvestedValue = 'InvestedValue',

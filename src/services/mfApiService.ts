@@ -1,6 +1,7 @@
-import { Rate } from '@/types';
 import axios from 'axios';
 import { DateTime } from 'luxon';
+
+import { Rate } from '@/types';
 
 export type MFApiResponse = {
 	meta: {

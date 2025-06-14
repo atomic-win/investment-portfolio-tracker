@@ -1,8 +1,9 @@
-import { primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { AssetType } from '@/types';
-import { AssetTable } from './asset';
 import { relations } from 'drizzle-orm';
-import { createdAt, updatedAt } from '../schemaHelpers';
+import { primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+
+import { AssetTable } from '@/drizzle/schema/asset';
+import { createdAt, updatedAt } from '@/drizzle/schemaHelpers';
+import { AssetType } from '@/types';
 
 export const AssetIdTable = sqliteTable(
 	'asset_ids',
