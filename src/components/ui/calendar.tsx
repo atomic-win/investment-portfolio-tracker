@@ -1,11 +1,11 @@
 'use client';
 
-import * as React from 'react';
 import { ChevronLeft, ChevronRight, ChevronsUpDownIcon } from 'lucide-react';
+import * as React from 'react';
 import { DayPicker, DropdownProps } from 'react-day-picker';
 
-import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import {
 	Select,
 	SelectContent,
@@ -14,7 +14,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { cn } from '@/lib/utils';
 
 function Calendar({
 	className,

@@ -1,13 +1,14 @@
-import { createColumnDef, DataTable } from '@/components/ui/data-table';
-import { AssetItemPortfolio } from '@/types';
 import { ColumnDef } from '@tanstack/react-table';
+
+import CurrencyAmount from '@/components/CurrencyAmount';
+import { createColumnDef, DataTable } from '@/components/ui/data-table';
+import DeleteAssetItemDialog from '@/features/assetItems/components/DeleteAssetItemDialog';
 import {
 	displayAssetClassText,
 	displayAssetTypeText,
 	displayPercentage,
 } from '@/lib/utils';
-import DeleteAssetItemDialog from '@/features/assetItems/components/DeleteAssetItemDialog';
-import CurrencyAmount from '@/components/CurrencyAmount';
+import { AssetItemPortfolio } from '@/types';
 
 const columns: ColumnDef<AssetItemPortfolio>[] = [
 	createColumnDef({

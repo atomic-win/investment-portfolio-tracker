@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+
 import { getUser } from '@/features/users/db';
 import { AuthClaims } from '@/types';
 

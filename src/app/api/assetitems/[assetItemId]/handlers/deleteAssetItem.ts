@@ -1,11 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { AuthClaims } from '@/types';
-import { deleteAssetItem, getAssetItem } from '@/features/assetItems/server/db';
 import { unstable_expireTag as expireTag } from 'next/cache';
+import { NextRequest, NextResponse } from 'next/server';
+
 import {
 	assetItemsTag,
 	assetItemTag,
 } from '@/features/assetItems/server/cacheTag';
+import { deleteAssetItem, getAssetItem } from '@/features/assetItems/server/db';
+import { AuthClaims } from '@/types';
 
 export default async function handler(
 	_req: NextRequest,

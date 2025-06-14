@@ -1,16 +1,17 @@
 'use client';
+import React from 'react';
+
+import CurrencyAmount from '@/components/CurrencyAmount';
+import withCurrency from '@/components/hoc/withCurrency';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { AssetItemPortfolio } from '@/types';
-import TransactionsTable from '@/features/transactions/components/TransactionsTable';
 import { Separator } from '@/components/ui/separator';
+import TransactionsTable from '@/features/transactions/components/TransactionsTable';
 import {
 	displayAssetClassText,
 	displayAssetTypeText,
 	displayPercentage,
 } from '@/lib/utils';
-import React from 'react';
-import CurrencyAmount from '@/components/CurrencyAmount';
-import withCurrency from '@/components/hoc/withCurrency';
+import { AssetItemPortfolio } from '@/types';
 
 export default function AssetItem({
 	assetItem,

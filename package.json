@@ -74,6 +74,9 @@
 		"eslint": "^9.29.0",
 		"eslint-config": "^0.3.0",
 		"eslint-config-next": "15.2.3",
+		"eslint-import-resolver-typescript": "^4.4.3",
+		"eslint-plugin-import": "^2.31.0",
+		"is-bun-module": "^2.0.0",
 		"tailwindcss": "^4",
 		"typescript": "^5"
 	}

@@ -1,12 +1,12 @@
 'use client';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
-import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
-import PortfolioPageContainer from '@/features/portfolio/components/PortfolioPageContainer';
 import InvestmentsFilterForm from '@/features/assetItems/components/InvestmentsFilterForm';
+import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import PortfolioOverallSection from '@/features/portfolio/components/PortfolioOverallSection';
+import PortfolioPageContainer from '@/features/portfolio/components/PortfolioPageContainer';
+import PortfolioPerAssetClassSection from '@/features/portfolio/components/PortfolioPerAssetClassSection';
 import PortfolioPerAssetItemSection from '@/features/portfolio/components/PortfolioPerAssetItemSection';
 import PortfolioPerAssetTypeSection from '@/features/portfolio/components/PortfolioPerAssetTypeSection';
-import PortfolioPerAssetClassSection from '@/features/portfolio/components/PortfolioPerAssetClassSection';
 import withInvestmentsFilter from '@/features/portfolio/hoc/withInvestmentsFilter';
 
 export default function Page() {

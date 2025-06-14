@@ -10,7 +10,14 @@ import {
 	useReactTable,
 	VisibilityState,
 } from '@tanstack/react-table';
+import { ArrowDown, ArrowUp, ArrowUpDown, ExternalLink } from 'lucide-react';
+import Link from 'next/link';
+import React, { useState } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 
+import { Button } from '@/components/ui/button';
+import { DataTablePagination } from '@/components/ui/data-table-pagination';
+import { DataTableToolbar } from '@/components/ui/data-table-toolbar';
 import {
 	Table,
 	TableBody,
@@ -19,14 +26,7 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { ArrowDown, ArrowUp, ArrowUpDown, ExternalLink } from 'lucide-react';
-import { DataTableToolbar } from '@/components/ui/data-table-toolbar';
 import { cn } from '@/lib/utils';
-import { DataTablePagination } from '@/components/ui/data-table-pagination';
-import Link from 'next/link';
-import { useLocalStorage } from 'usehooks-ts';
 
 interface DataTableProps<TData, TValue> {
 	id: string;

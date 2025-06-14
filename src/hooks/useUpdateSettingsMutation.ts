@@ -1,7 +1,8 @@
 'use client';
 
-import { UserSettingTable } from '@/drizzle/schema';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+
+import { UserSettingTable } from '@/drizzle/schema';
 import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
 
 export default function useUpdateSettingsMutation() {

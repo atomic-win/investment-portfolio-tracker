@@ -1,6 +1,8 @@
-import { Portfolio, PortfolioType } from '@/types';
+import { DateTime } from 'luxon';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { CartesianGrid, XAxis, YAxis, Line, LineChart } from 'recharts';
+
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import {
 	ChartConfig,
 	ChartContainer,
@@ -9,12 +11,11 @@ import {
 	ChartTooltip,
 	ChartTooltipContent,
 } from '@/components/ui/chart';
-import { CartesianGrid, XAxis, YAxis, Line, LineChart } from 'recharts';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { displayPortfolioType } from '@/features/portfolio/lib/utils';
-import { displayPercentage , displayCurrencyAmountText } from '@/lib/utils';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useMySettingsQuery } from '@/hooks/useMySettingsQuery';
-import { DateTime } from 'luxon';
+import { displayPercentage, displayCurrencyAmountText } from '@/lib/utils';
+import { Portfolio, PortfolioType } from '@/types';
 
 enum TrendType {
 	InvestedValue = 'InvestedValue',
@@ -271,18 +272,18 @@ function TrendsChart<TPortfolio extends Portfolio>({
 											{/* Add this after the last item */}
 											{showTotalInTooltip &&
 												index === Object.keys(item.payload).length - 2 && (
-												<div className='mt-1.5 flex basis-full items-center border-t pt-1.5 text-xs font-medium text-foreground'>
-													Total
-													<div className='ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground'>
-														{yAxisFormat(
-															portfolioIds
-																.map((id) => item.payload[id])
-																.filter((value) => value !== undefined)
-																.reduce((acc, value) => acc + value, 0)
-														)}
+													<div className='mt-1.5 flex basis-full items-center border-t pt-1.5 text-xs font-medium text-foreground'>
+														Total
+														<div className='ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground'>
+															{yAxisFormat(
+																portfolioIds
+																	.map((id) => item.payload[id])
+																	.filter((value) => value !== undefined)
+																	.reduce((acc, value) => acc + value, 0)
+															)}
+														</div>
 													</div>
-												</div>
-											)}
+												)}
 										</>
 									)}
 								/>

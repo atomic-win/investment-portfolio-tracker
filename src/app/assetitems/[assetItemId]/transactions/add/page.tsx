@@ -1,6 +1,7 @@
+import { Suspense } from 'react';
+
 import LoadingComponent from '@/components/LoadingComponent';
 import AddTransactionPage from '@/features/transactions/components/AddTransactionPage';
-import { Suspense } from 'react';
 
 export default function Page({
 	params,

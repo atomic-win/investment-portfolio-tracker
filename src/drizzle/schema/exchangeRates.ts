@@ -1,4 +1,5 @@
 import { primaryKey, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+
 import { createdAt, updatedAt } from '@/drizzle/schemaHelpers';
 import { Currency } from '@/types';
 

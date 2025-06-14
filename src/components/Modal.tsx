@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+
 import { Dialog } from '@/components/ui/dialog';
 
 export function Modal({ children }: { children: React.ReactNode }) {

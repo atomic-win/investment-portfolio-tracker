@@ -1,10 +1,10 @@
 'use client';
 
+import withCurrency from '@/components/hoc/withCurrency';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
 import AssetItem from '@/features/assetItems/components/AssetItem';
-import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
-import withCurrency from '@/components/hoc/withCurrency';
+import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
 import { AssetItemPortfolio } from '@/types';
 
 export default function AssetItemPage({

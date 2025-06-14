@@ -1,9 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { and, eq } from 'drizzle-orm';
 import { OAuth2Client, TokenPayload } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
+import { NextRequest, NextResponse } from 'next/server';
+
 import { db } from '@/drizzle/db';
 import { UserIdTable, UserSettingTable, UserTable } from '@/drizzle/schema';
-import { and, eq } from 'drizzle-orm';
 import { getUser } from '@/features/users/db';
 import { IdentityProvider } from '@/types';
 

@@ -1,6 +1,9 @@
 'use client';
 import { DollarSignIcon } from 'lucide-react';
+import Link from 'next/link';
 
+import AccountMenu from '@/components/AccountMenu';
+import SettingsSidebarGroup from '@/components/SettingsSidebarGroup';
 import {
 	Sidebar,
 	SidebarContent,
@@ -12,9 +15,6 @@ import {
 	SidebarMenuItem,
 	SidebarRail,
 } from '@/components/ui/sidebar';
-import AccountMenu from '@/components/AccountMenu';
-import SettingsSidebarGroup from '@/components/SettingsSidebarGroup';
-import Link from 'next/link';
 
 const data = [
 	{ title: 'Portfolio', url: '/portfolio' },

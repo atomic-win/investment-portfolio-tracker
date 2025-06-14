@@ -1,3 +1,5 @@
+import { Pie, PieChart } from 'recharts';
+
 import { Card, CardTitle, CardContent } from '@/components/ui/card';
 import {
 	ChartConfig,
@@ -7,7 +9,6 @@ import {
 	ChartLegend,
 	ChartLegendContent,
 } from '@/components/ui/chart';
-import { Pie, PieChart } from 'recharts';
 import { Portfolio } from '@/types';
 
 export default function PortfolioCharts<TPortfolio extends Portfolio>({

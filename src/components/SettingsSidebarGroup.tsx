@@ -1,11 +1,6 @@
 'use client';
-import {
-	SidebarGroup,
-	SidebarGroupLabel,
-	SidebarMenu,
-	useSidebar,
-} from '@/components/ui/sidebar';
-import useUpdateSettingsMutation from '@/hooks/useUpdateSettingsMutation';
+import { ChevronRight } from 'lucide-react';
+
 import {
 	Select,
 	SelectContent,
@@ -14,8 +9,14 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { ChevronRight } from 'lucide-react';
+import {
+	SidebarGroup,
+	SidebarGroupLabel,
+	SidebarMenu,
+	useSidebar,
+} from '@/components/ui/sidebar';
 import { useMySettingsQuery } from '@/hooks/useMySettingsQuery';
+import useUpdateSettingsMutation from '@/hooks/useUpdateSettingsMutation';
 import { Currency, Language } from '@/types';
 
 export default function SettingsSidebarGroup() {

@@ -1,11 +1,14 @@
-import { sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { createdAt, id, updatedAt } from '@/drizzle/schemaHelpers';
-import { AssetType, Currency } from '@/types';
 import { relations } from 'drizzle-orm';
+import { sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { DateTime } from 'luxon';
+
 import { AssetIdTable } from '@/drizzle/schema/assetId';
 import { AssetItemTable } from '@/drizzle/schema/assetItem';
-import { DateTime } from 'luxon';
 import { AssetRateTable } from '@/drizzle/schema/assetRates';
+import { createdAt, id, updatedAt } from '@/drizzle/schemaHelpers';
+import { AssetType, Currency } from '@/types';
+
+
 
 export const AssetTable = sqliteTable('assets', {
 	id,

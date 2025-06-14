@@ -1,8 +1,9 @@
 'use client';
-import axios from 'axios';
-import useAccessTokenQuery from '@/hooks/useAccessTokenQuery';
-import { useRouter } from 'next/navigation';
 import { QueryClient, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+
+import useAccessTokenQuery from '@/hooks/useAccessTokenQuery';
 
 export const usePrimalApiClient = () => {
 	const { data: accessToken } = useAccessTokenQuery();

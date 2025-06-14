@@ -1,5 +1,5 @@
-import { AssetItemPortfolio, AssetItem, Portfolio } from '@/types';
 import { withValuations } from '@/features/portfolio/hoc/withValuations';
+import { AssetItemPortfolio, AssetItem, Portfolio } from '@/types';
 
 export function withAssetItemPortfolios<
 	T extends {
