@@ -31,7 +31,7 @@ export default function Page() {
 					</CardHeader>
 					<CardContent className='px-6 pb-6'>
 						<div className='flex justify-end text-xl font-semibold items-center mb-2 gap-x-2'>
-							<Link href={`/assetitems/add`}>
+							<Link href={'/assetitems/add'}>
 								<Button className='cursor-pointer'>
 									<PlusIcon />
 									Add Asset Item

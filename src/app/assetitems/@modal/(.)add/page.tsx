@@ -14,7 +14,7 @@ export default function Page() {
 							{ title: 'Asset Items', href: '/assetitems' },
 							{
 								title: 'Add Asset Item',
-								href: `/assetitems/add`,
+								href: '/assetitems/add',
 								disabled: true,
 							},
 						]}

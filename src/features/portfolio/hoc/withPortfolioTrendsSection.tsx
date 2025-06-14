@@ -272,18 +272,18 @@ function TrendsChart<TPortfolio extends Portfolio>({
 											{/* Add this after the last item */}
 											{showTotalInTooltip &&
 												index === Object.keys(item.payload).length - 2 && (
-													<div className='mt-1.5 flex basis-full items-center border-t pt-1.5 text-xs font-medium text-foreground'>
-														Total
-														<div className='ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground'>
-															{yAxisFormat(
-																portfolioIds
-																	.map((id) => item.payload[id])
-																	.filter((value) => value !== undefined)
-																	.reduce((acc, value) => acc + value, 0)
-															)}
-														</div>
+												<div className='mt-1.5 flex basis-full items-center border-t pt-1.5 text-xs font-medium text-foreground'>
+													Total
+													<div className='ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground'>
+														{yAxisFormat(
+															portfolioIds
+																.map((id) => item.payload[id])
+																.filter((value) => value !== undefined)
+																.reduce((acc, value) => acc + value, 0)
+														)}
 													</div>
-												)}
+												</div>
+											)}
 										</>
 									)}
 								/>
