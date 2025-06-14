@@ -6,7 +6,9 @@
 		"dev": "next dev --turbopack",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint"
+		"lint": "next lint",
+		"lint:fix": "next lint --fix",
+		"format": "prettier --write ."
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^4.1.3",
@@ -55,6 +57,7 @@
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "^3",
+		"@stylistic/eslint-plugin": "^4.4.1",
 		"@tailwindcss/postcss": "^4",
 		"@types/better-sqlite3": "^7.6.13",
 		"@types/jsonwebtoken": "^9.0.9",
@@ -66,7 +69,8 @@
 		"@types/react-dom": "^19",
 		"dotenv": "^16.4.7",
 		"drizzle-kit": "^0.30.6",
-		"eslint": "^9",
+		"eslint": "^9.29.0",
+		"eslint-config": "^0.3.0",
 		"eslint-config-next": "15.2.3",
 		"tailwindcss": "^4",
 		"typescript": "^5"
