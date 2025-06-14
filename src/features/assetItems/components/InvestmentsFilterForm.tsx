@@ -15,13 +15,12 @@ import {
 	FormControl,
 	FormMessage,
 } from '@/components/ui/form';
-import { AssetItem } from '@/types';
+import { AssetItem , AssetClass, AssetType } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { SlidersHorizontalIcon } from 'lucide-react';
-import { AssetClass, AssetType } from '@/types';
 import { displayAssetClassText, displayAssetTypeText } from '@/lib/utils';
 
 const schema = z.object({

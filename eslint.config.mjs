@@ -21,6 +21,7 @@ export default defineConfig([
 			'@stylistic/indent': ['error', 'tab'],
 			'@stylistic/quotes': ['error', 'single', { avoidEscape: true }],
 			'@stylistic/semi': ['error', 'always'],
+			'import/no-duplicates': ['error', { 'prefer-inline': true }],
 		},
 	},
 	globalIgnores([

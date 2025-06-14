@@ -8,10 +8,11 @@ import {
 	AssetClassPortfolio,
 	OverallPortfolio,
 	PortfolioType,
+	AssetClass,
+	AssetType,
 } from '@/types';
 import withPortfolioTrendsSection from '@/features/portfolio/hoc/withPortfolioTrendsSection';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
-import { AssetClass, AssetType } from '@/types';
 import { displayAssetClassText, displayAssetTypeText } from '@/lib/utils';
 import withInvestmentsFilter from '@/features/portfolio/hoc/withInvestmentsFilter';
 
