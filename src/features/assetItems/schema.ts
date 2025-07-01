@@ -174,6 +174,8 @@ export function getApplicableTransactionTypes(
 				TransactionType.Sell,
 				TransactionType.Dividend,
 			];
+		case AssetType.Wallet:
+			return [TransactionType.Deposit, TransactionType.Withdrawal];
 		default:
 			throw new Error(`Unsupported asset type: ${assetType}`);
 	}
