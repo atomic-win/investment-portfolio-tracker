@@ -176,6 +176,12 @@ export function getApplicableTransactionTypes(
 			];
 		case AssetType.Wallet:
 			return [TransactionType.Deposit, TransactionType.Withdrawal];
+		case AssetType.TBill:
+			return [
+				TransactionType.Deposit,
+				TransactionType.Withdrawal,
+				TransactionType.Interest,
+			];
 		default:
 			throw new Error(`Unsupported asset type: ${assetType}`);
 	}
