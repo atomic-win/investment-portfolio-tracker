@@ -1,7 +1,9 @@
 'use server';
 import { and, asc, eq, lte, min } from 'drizzle-orm';
+import { DateTime } from 'luxon';
 import { cacheLife } from 'next/dist/server/use-cache/cache-life';
 import { cacheTag } from 'next/dist/server/use-cache/cache-tag';
+import { v7 } from 'uuid';
 
 import { db } from '@/drizzle/db';
 import { TransactionTable } from '@/drizzle/schema';
@@ -66,7 +68,15 @@ export async function getTransaction(assetItemId: string, id: string) {
 export async function addTransaction(
 	data: typeof TransactionTable.$inferInsert
 ) {
-	return await db.insert(TransactionTable).values(data).returning();
+	return await db
+		.insert(TransactionTable)
+		.values({
+			...data,
+			id: v7({
+				msecs: DateTime.fromISO(data.date).toMillis(),
+			}),
+		})
+		.returning();
 }
 
 export async function deleteTransaction(id: string) {
