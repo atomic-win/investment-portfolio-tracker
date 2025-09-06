@@ -40,6 +40,8 @@ export function DatePicker({
 					onSelect={onSelect}
 					autoFocus
 					fixedWeeks
+					className='rounded-md border shadow-sm'
+					captionLayout='dropdown'
 				/>
 			</PopoverContent>
 		</Popover>
