@@ -1,34 +1,17 @@
 'use client';
-import withCurrency from '@/components/hoc/withCurrency';
 import { Modal } from '@/components/Modal';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
 import { DialogContent, DialogHeader } from '@/components/ui/dialog';
-import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
-import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
+import { withAssetItemPortfolio } from '@/features/portfolio/hoc/withAssetItemPortfolio';
 import AddTransactionForm from '@/features/transactions/components/AddTransactionForm';
 import { AssetItemPortfolio } from '@/types';
 
-export default function AddTransactionModalWrapper({
-	assetItemId,
-}: {
-	assetItemId: string;
-}) {
-	const WithAddTransactionFormWrapper = withAssetItems(
-		withCurrency(withAssetItemPortfolios(AddTransactionModal))
-	);
-
-	return (
-		<WithAddTransactionFormWrapper assetItemIds={[assetItemId]} latest={true} />
-	);
+export default function Page({ assetItemId }: { assetItemId: string }) {
+	const WrappedComponent = withAssetItemPortfolio(PageComponent);
+	return <WrappedComponent assetItemId={assetItemId} />;
 }
 
-function AddTransactionModal({
-	portfolios,
-}: {
-	portfolios: AssetItemPortfolio[];
-}) {
-	const assetItem = portfolios[0];
-
+function PageComponent({ assetItem }: { assetItem: AssetItemPortfolio }) {
 	return (
 		<Modal>
 			<DialogContent>
