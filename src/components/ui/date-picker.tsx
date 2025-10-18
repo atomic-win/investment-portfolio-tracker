@@ -18,11 +18,11 @@ export function DatePicker({
 	onSelect,
 }: {
 	date: Date | undefined;
-	onSelect: (date: Date | undefined) => void;
+	onSelect?: (date: Date | undefined) => void | undefined;
 }) {
 	return (
 		<Popover>
-			<PopoverTrigger asChild>
+			<PopoverTrigger asChild disabled={!onSelect}>
 				<Button
 					variant={'outline'}
 					className={cn(

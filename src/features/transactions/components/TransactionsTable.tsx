@@ -1,7 +1,7 @@
 'use client';
 import { useQueryClient } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
-import { PlusIcon, RefreshCwIcon } from 'lucide-react';
+import { EditIcon, PlusIcon, RefreshCwIcon } from 'lucide-react';
 import Link from 'next/link';
 
 import CurrencyAmount from '@/components/CurrencyAmount';
@@ -154,10 +154,19 @@ function getColumns(assetItem: AssetItemPortfolio): ColumnDef<TableItem>[] {
 		cell: ({ row }) => {
 			const item = row.original;
 			return (
-				<DeleteTransactionDialog
-					assetItem={item.assetItem}
-					transaction={item}
-				/>
+				<div className='flex gap-x-2'>
+					<DeleteTransactionDialog
+						assetItem={item.assetItem}
+						transaction={item}
+					/>
+					<Link
+						href={`/assetitems/${assetItem.id}/transactions/${item.id}/edit`}>
+						<Button className='cursor-pointer'>
+							<EditIcon />
+							Edit
+						</Button>
+					</Link>
+				</div>
 			);
 		},
 	});
