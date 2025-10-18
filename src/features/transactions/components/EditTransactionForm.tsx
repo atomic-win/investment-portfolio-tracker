@@ -56,7 +56,7 @@ export default function EditTransactionForm({
 	const router = useRouter();
 	const {
 		data: transaction,
-		isLoading,
+		isFetching,
 		isError,
 	} = useTransactionQuery(assetItem.id, transactionId, assetItem.currency);
 
@@ -69,7 +69,7 @@ export default function EditTransactionForm({
 		},
 	});
 
-	if (isLoading) {
+	if (isFetching) {
 		return <LoadingComponent loadingMessage='Fetching transaction' />;
 	}
 
