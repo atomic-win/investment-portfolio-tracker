@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-import { AssetClass, AssetType, TransactionType } from '@/types';
+import { AssetClass, AssetType } from '@/types';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -65,30 +65,5 @@ export function displayAssetClassText(assetClass: AssetClass) {
 			return 'Trading Account';
 		default:
 			throw new Error(`Unknown asset class: ${assetClass}`);
-	}
-}
-
-export function displayTransactionTypeText(transactionType: TransactionType) {
-	switch (transactionType) {
-		case TransactionType.Unknown:
-			return 'Unknown';
-		case TransactionType.Buy:
-			return 'Buy';
-		case TransactionType.Sell:
-			return 'Sell';
-		case TransactionType.Deposit:
-			return 'Deposit';
-		case TransactionType.Withdrawal:
-			return 'Withdrawal';
-		case TransactionType.Dividend:
-			return 'Dividend';
-		case TransactionType.Interest:
-			return 'Interest';
-		case TransactionType.SelfInterest:
-			return 'Self Interest';
-		case TransactionType.InterestPenalty:
-			return 'Interest Penalty';
-		default:
-			throw new Error(`Unknown transaction type: ${transactionType}`);
 	}
 }

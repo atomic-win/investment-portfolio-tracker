@@ -8,6 +8,11 @@ export type AddTransactionRequest = z.infer<typeof AddTransactionSchema> & {
 	assetItemId: string;
 };
 
+export type EditTransactionRequest = z.infer<typeof EditTransactionSchema> & {
+	assetItemId: string;
+	transactionId: string;
+};
+
 export const AddAssetItemSchema = z
 	.object({
 		name: z.string().min(3).max(50),
@@ -111,6 +116,10 @@ export const AddTransactionSchema = z.object({
 		message: 'Must be greater than 0',
 	}),
 });
+
+export const EditTransactionSchema = AddTransactionSchema.omit({
+	date: true,
+}).partial();
 
 export function isAssetClassInputSupported(assetType: AssetType) {
 	return (
