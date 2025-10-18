@@ -89,7 +89,6 @@ export function useEditTransactionMutation() {
 
 	return useMutation({
 		mutationFn: async (request: EditTransactionRequest) => {
-			console.log('Editing transaction with data :', request);
 			await primalApiClient.put(
 				`assetitems/${request.assetItemId}/transactions/${request.transactionId}`,
 				_.omit(request, ['assetItemId', 'transactionId'])
