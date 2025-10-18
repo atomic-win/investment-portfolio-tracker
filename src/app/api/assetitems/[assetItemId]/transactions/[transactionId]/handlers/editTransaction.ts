@@ -6,7 +6,10 @@ import {
 	getApplicableTransactionTypes,
 } from '@/features/assetItems/schema';
 import { getAssetItem } from '@/features/assetItems/server/db';
-import { transactionsTag } from '@/features/transactions/server/cacheTag';
+import {
+	transactionsTag,
+	transactionTag,
+} from '@/features/transactions/server/cacheTag';
 import {
 	editTransaction,
 	getTransaction,
@@ -49,7 +52,7 @@ export default async function handler(
 		const transactionType = parsedBody.data.type;
 
 		if (
-			!!!transactionType &&
+			transactionType !== undefined &&
 			!getApplicableTransactionTypes(assetType).includes(transactionType!)
 		) {
 			return NextResponse.json(
@@ -63,6 +66,7 @@ export default async function handler(
 		await editTransaction(transactionId, parsedBody.data);
 
 		expireTag(transactionsTag(assetItemId));
+		expireTag(transactionTag(assetItemId, transactionId));
 
 		return new NextResponse(null, { status: 200 });
 	} catch (error) {

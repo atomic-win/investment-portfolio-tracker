@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import _ from 'lodash';
 
 import { refreshAssetItem } from '@/features/assetItems/hooks/assetItems';
 import {
@@ -89,10 +90,10 @@ export function useEditTransactionMutation() {
 	return useMutation({
 		mutationFn: async (request: EditTransactionRequest) => {
 			console.log('Editing transaction with data :', request);
-			// await primalApiClient.put(
-			// 	`assetitems/${request.assetItemId}/transactions/${request.transactionId}`,
-			// 	request
-			// );
+			await primalApiClient.put(
+				`assetitems/${request.assetItemId}/transactions/${request.transactionId}`,
+				_.omit(request, ['assetItemId', 'transactionId'])
+			);
 		},
 		onSuccess: async (_data, variables) =>
 			await refreshAssetItem(queryClient, variables),

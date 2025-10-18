@@ -1,5 +1,6 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
+import _ from 'lodash';
 import { ChevronDown } from 'lucide-react';
 import { DateTime } from 'luxon';
 import { useRouter } from 'next/navigation';
@@ -64,12 +65,16 @@ export default function EditTransactionForm({
 		data: Omit<EditTransactionRequest, 'assetItemId' | 'transactionId'>
 	) {
 		await editTransactionAsync({
-			...data,
+			..._.pickBy(
+				data,
+				(value, key) =>
+					value !== form.formState.defaultValues![key as keyof typeof data]
+			),
 			assetItemId: assetItem.id,
 			transactionId: transaction.id,
 		});
 
-		router.back();
+		router.refresh();
 	}
 
 	return (
@@ -136,14 +141,25 @@ export default function EditTransactionForm({
 									{getUnitLabel(assetItem, form.watch('type')!)}
 								</FormLabel>
 								<FormControl>
-									<Input {...field} />
+									<Input
+										{...field}
+										type='number'
+										onChange={(e) =>
+											field.onChange(
+												e.target.value === '' ? '' : Number(e.target.value)
+											)
+										}
+									/>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
 						)}
 					/>
 					<div className='flex justify-end'>
-						<Button type='submit' className='cursor-pointer'>
+						<Button
+							type='submit'
+							className='cursor-pointer'
+							disabled={!form.formState.isDirty || form.formState.isSubmitting}>
 							Edit Transaction
 						</Button>
 					</div>
