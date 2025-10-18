@@ -1,42 +1,32 @@
 'use client';
-import withCurrency from '@/components/hoc/withCurrency';
 import { Modal } from '@/components/Modal';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
 import { DialogContent, DialogHeader } from '@/components/ui/dialog';
-import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
-import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
+import { withAssetItemPortfolio } from '@/features/portfolio/hoc/withAssetItemPortfolio';
 import EditTransactionForm from '@/features/transactions/components/EditTransactionForm';
 import { AssetItemPortfolio } from '@/types';
 
-export default function EditTransactionModalWrapper({
+export default function Page({
 	assetItemId,
 	transactionId,
 }: {
 	assetItemId: string;
 	transactionId: string;
 }) {
-	const WithEditTransactionFormWrapper = withAssetItems(
-		withCurrency(withAssetItemPortfolios(EditTransactionModal))
-	);
+	const WrappedComponent = withAssetItemPortfolio(PageComponent);
 
 	return (
-		<WithEditTransactionFormWrapper
-			assetItemIds={[assetItemId]}
-			transactionId={transactionId}
-			latest={true}
-		/>
+		<WrappedComponent assetItemId={assetItemId} transactionId={transactionId} />
 	);
 }
 
-function EditTransactionModal({
-	portfolios,
+function PageComponent({
+	assetItem,
 	transactionId,
 }: {
-	portfolios: AssetItemPortfolio[];
+	assetItem: AssetItemPortfolio;
 	transactionId: string;
 }) {
-	const assetItem = portfolios[0];
-
 	return (
 		<Modal>
 			<DialogContent>
