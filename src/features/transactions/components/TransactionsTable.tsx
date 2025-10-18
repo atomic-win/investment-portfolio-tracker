@@ -154,7 +154,7 @@ function getColumns(assetItem: AssetItemPortfolio): ColumnDef<TableItem>[] {
 		cell: ({ row }) => {
 			const item = row.original;
 			return (
-				<div className='flex gap-x-2'>
+				<div className={'flex gap-x-2 justify-center'}>
 					<DeleteTransactionDialog
 						assetItem={item.assetItem}
 						transaction={item}
