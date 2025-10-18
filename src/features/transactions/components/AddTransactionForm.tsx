@@ -31,8 +31,11 @@ import {
 	getApplicableTransactionTypes,
 } from '@/features/assetItems/schema';
 import { useAddTransactionMutation } from '@/features/transactions/hooks/transactions';
-import { displayTransactionTypeText } from '@/lib/utils';
-import { AssetItemPortfolio, AssetType, TransactionType } from '@/types';
+import {
+	displayTransactionTypeText,
+	getUnitLabelText,
+} from '@/features/transactions/lib/utils';
+import { AssetItemPortfolio, TransactionType } from '@/types';
 
 export default function AddTransactionForm({
 	assetItem,
@@ -132,7 +135,7 @@ export default function AddTransactionForm({
 						render={({ field }) => (
 							<FormItem>
 								<FormLabel>
-									{getUnitLabel(assetItem, form.watch('type'))}
+									{getUnitLabelText(assetItem, form.watch('type'))}
 								</FormLabel>
 								<FormControl>
 									<Input {...field} />
@@ -150,31 +153,4 @@ export default function AddTransactionForm({
 			</Form>
 		</CardContent>
 	);
-}
-
-function getUnitLabel(
-	assetItem: AssetItemPortfolio,
-	transactionType: TransactionType
-) {
-	switch (assetItem.assetType) {
-		case AssetType.BankAccount:
-		case AssetType.Wallet:
-		case AssetType.FixedDeposit:
-		case AssetType.EPF:
-		case AssetType.PPF:
-		case AssetType.TBill:
-			return getAmountLabel(assetItem);
-		case AssetType.MutualFund:
-			return 'Units';
-		case AssetType.Stock:
-			return transactionType === TransactionType.Dividend
-				? getAmountLabel(assetItem)
-				: 'Shares';
-		default:
-			throw new Error(`Unsupported asset type: ${assetItem.assetType}`);
-	}
-}
-
-function getAmountLabel(assetItem: AssetItemPortfolio) {
-	return `Amount (${assetItem.currency})`;
 }

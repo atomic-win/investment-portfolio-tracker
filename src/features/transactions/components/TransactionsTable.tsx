@@ -12,7 +12,7 @@ import { createColumnDef, DataTable } from '@/components/ui/data-table';
 import { refreshAssetItem } from '@/features/assetItems/hooks/assetItems';
 import DeleteTransactionDialog from '@/features/transactions/components/DeleteTransactionDialog';
 import { useAssetItemTransactionsQuery } from '@/features/transactions/hooks/transactions';
-import { displayTransactionTypeText } from '@/lib/utils';
+import { displayTransactionTypeText } from '@/features/transactions/lib/utils';
 import {
 	AssetItemPortfolio,
 	AssetType,
