@@ -57,7 +57,7 @@ export default function AddTransactionForm({
 			assetItemId: assetItem.id,
 		});
 
-		router.back();
+		router.refresh();
 	}
 
 	return (
