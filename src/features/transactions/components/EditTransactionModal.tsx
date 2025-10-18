@@ -1,13 +1,14 @@
 'use client';
 import withCurrency from '@/components/hoc/withCurrency';
+import { Modal } from '@/components/Modal';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
-import { Card } from '@/components/ui/card';
+import { DialogContent, DialogHeader } from '@/components/ui/dialog';
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
+import EditTransactionForm from '@/features/transactions/components/EditTransactionForm';
 import { AssetItemPortfolio } from '@/types';
-import EditTransactionForm from './EditTransactionForm';
 
-export default function Page({
+export default function EditTransactionModalWrapper({
 	assetItemId,
 	transactionId,
 }: {
@@ -15,19 +16,19 @@ export default function Page({
 	transactionId: string;
 }) {
 	const WithEditTransactionFormWrapper = withAssetItems(
-		withCurrency(withAssetItemPortfolios(PageComponent))
+		withCurrency(withAssetItemPortfolios(EditTransactionModal))
 	);
 
 	return (
 		<WithEditTransactionFormWrapper
 			assetItemIds={[assetItemId]}
-			latest={true}
 			transactionId={transactionId}
+			latest={true}
 		/>
 	);
 }
 
-function PageComponent({
+function EditTransactionModal({
 	portfolios,
 	transactionId,
 }: {
@@ -37,26 +38,30 @@ function PageComponent({
 	const assetItem = portfolios[0];
 
 	return (
-		<>
-			<title>Edit Transaction</title>
-			<SidebarTriggerWithBreadcrumb
-				breadcrumbs={[
-					{ title: 'Asset Items', href: '/assetitems' },
-					{ title: assetItem.name, href: `/assetitems/${assetItem.id}` },
-					{
-						title: 'Edit Transaction',
-						href: `/assetitems/${assetItem.id}/transactions/${transactionId}/edit`,
-					},
-				]}
-			/>
-			<div className='container mx-auto p-2 h-full'>
-				<Card className='p-8 max-w-screen-sm mx-auto'>
+		<Modal>
+			<DialogContent>
+				<DialogHeader>
+					<SidebarTriggerWithBreadcrumb
+						breadcrumbs={[
+							{ title: 'Asset Items', href: '/assetitems' },
+							{
+								title: assetItem.name,
+								href: `/assetitems/${assetItem.id}`,
+							},
+							{
+								title: 'Edit Transaction',
+								href: `/assetitems/${assetItem.id}/transactions/${transactionId}/edit`,
+							},
+						]}
+					/>
+				</DialogHeader>
+				<div className='p-2'>
 					<EditTransactionForm
 						assetItem={assetItem}
 						transactionId={transactionId}
 					/>
-				</Card>
-			</div>
-		</>
+				</div>
+			</DialogContent>
+		</Modal>
 	);
 }

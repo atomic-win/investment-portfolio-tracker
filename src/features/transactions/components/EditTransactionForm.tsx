@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import ErrorComponent from '@/components/ErrorComponent';
+import LoadingComponent from '@/components/LoadingComponent';
 import { Button } from '@/components/ui/button';
 import { CardContent } from '@/components/ui/card';
 import { DatePicker } from '@/components/ui/date-picker';
@@ -33,31 +35,47 @@ import {
 	EditTransactionSchema,
 	getApplicableTransactionTypes,
 } from '@/features/assetItems/schema';
-import { useEditTransactionMutation } from '@/features/transactions/hooks/transactions';
+import {
+	useEditTransactionMutation,
+	useTransactionQuery,
+} from '@/features/transactions/hooks/transactions';
 import {
 	displayTransactionTypeText,
 	getUnitLabelText,
 } from '@/features/transactions/lib/utils';
-import { AssetItemPortfolio, Transaction, TransactionType } from '@/types';
+import { AssetItemPortfolio, TransactionType } from '@/types';
 
 export default function EditTransactionForm({
 	assetItem,
-	transaction,
+	transactionId,
 }: {
 	assetItem: AssetItemPortfolio;
-	transaction: Transaction;
+	transactionId: string;
 }) {
 	const { mutateAsync: editTransactionAsync } = useEditTransactionMutation();
 	const router = useRouter();
+	const {
+		data: transaction,
+		isLoading,
+		isError,
+	} = useTransactionQuery(assetItem.id, transactionId, assetItem.currency);
 
 	const form = useForm<z.infer<typeof EditTransactionSchema>>({
 		resolver: zodResolver(EditTransactionSchema),
 		defaultValues: {
-			name: transaction.name,
-			type: transaction.type,
-			units: transaction.units,
+			name: transaction?.name,
+			type: transaction?.type,
+			units: transaction?.units,
 		},
 	});
+
+	if (isLoading) {
+		return <LoadingComponent loadingMessage='Fetching transaction' />;
+	}
+
+	if (isError || !transaction) {
+		return <ErrorComponent errorMessage='Failed while fetching transaction' />;
+	}
 
 	async function onSubmit(
 		data: Omit<EditTransactionRequest, 'assetItemId' | 'transactionId'>
@@ -69,7 +87,7 @@ export default function EditTransactionForm({
 					value !== form.formState.defaultValues![key as keyof typeof data]
 			),
 			assetItemId: assetItem.id,
-			transactionId: transaction.id,
+			transactionId: transactionId,
 		});
 
 		router.refresh();
