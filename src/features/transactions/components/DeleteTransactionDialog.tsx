@@ -1,3 +1,4 @@
+import { Trash2Icon } from 'lucide-react';
 import { DateTime } from 'luxon';
 import React from 'react';
 
@@ -31,6 +32,7 @@ export default function DeleteTransactionDialog({
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
 				<Button variant='destructive' className='cursor-pointer'>
+					<Trash2Icon />
 					Delete
 				</Button>
 			</AlertDialogTrigger>

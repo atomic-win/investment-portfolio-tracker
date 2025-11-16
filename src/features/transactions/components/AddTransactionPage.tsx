@@ -1,25 +1,16 @@
 'use client';
-import withCurrency from '@/components/hoc/withCurrency';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
 import { Card } from '@/components/ui/card';
-import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
-import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
+import { withAssetItemPortfolio } from '@/features/portfolio/hoc/withAssetItemPortfolio';
 import AddTransactionForm from '@/features/transactions/components/AddTransactionForm';
 import { AssetItemPortfolio } from '@/types';
 
 export default function Page({ assetItemId }: { assetItemId: string }) {
-	const WithAddTransactionFormWrapper = withAssetItems(
-		withCurrency(withAssetItemPortfolios(PageComponent))
-	);
-
-	return (
-		<WithAddTransactionFormWrapper assetItemIds={[assetItemId]} latest={true} />
-	);
+	const WrappedComponent = withAssetItemPortfolio(PageComponent);
+	return <WrappedComponent assetItemId={assetItemId} />;
 }
 
-function PageComponent({ portfolios }: { portfolios: AssetItemPortfolio[] }) {
-	const assetItem = portfolios[0];
-
+function PageComponent({ assetItem }: { assetItem: AssetItemPortfolio }) {
 	return (
 		<>
 			<title>Add Transaction</title>

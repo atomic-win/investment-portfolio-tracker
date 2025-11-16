@@ -1,7 +1,7 @@
 'use client';
 import { useQueryClient } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
-import { PlusIcon, RefreshCwIcon } from 'lucide-react';
+import { EditIcon, PlusIcon, RefreshCwIcon } from 'lucide-react';
 import Link from 'next/link';
 
 import CurrencyAmount from '@/components/CurrencyAmount';
@@ -12,7 +12,7 @@ import { createColumnDef, DataTable } from '@/components/ui/data-table';
 import { refreshAssetItem } from '@/features/assetItems/hooks/assetItems';
 import DeleteTransactionDialog from '@/features/transactions/components/DeleteTransactionDialog';
 import { useAssetItemTransactionsQuery } from '@/features/transactions/hooks/transactions';
-import { displayTransactionTypeText } from '@/lib/utils';
+import { displayTransactionTypeText } from '@/features/transactions/lib/utils';
 import {
 	AssetItemPortfolio,
 	AssetType,
@@ -154,10 +154,19 @@ function getColumns(assetItem: AssetItemPortfolio): ColumnDef<TableItem>[] {
 		cell: ({ row }) => {
 			const item = row.original;
 			return (
-				<DeleteTransactionDialog
-					assetItem={item.assetItem}
-					transaction={item}
-				/>
+				<div className={'flex gap-x-2 justify-center'}>
+					<DeleteTransactionDialog
+						assetItem={item.assetItem}
+						transaction={item}
+					/>
+					<Link
+						href={`/assetitems/${assetItem.id}/transactions/${item.id}/edit`}>
+						<Button className='cursor-pointer'>
+							<EditIcon />
+							Edit
+						</Button>
+					</Link>
+				</div>
 			);
 		},
 	});

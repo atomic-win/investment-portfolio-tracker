@@ -79,6 +79,17 @@ export async function addTransaction(
 		.returning();
 }
 
+export async function editTransaction(
+	id: string,
+	data: Partial<typeof TransactionTable.$inferInsert>
+) {
+	return await db
+		.update(TransactionTable)
+		.set(data)
+		.where(eq(TransactionTable.id, id))
+		.returning();
+}
+
 export async function deleteTransaction(id: string) {
 	return await db
 		.delete(TransactionTable)
