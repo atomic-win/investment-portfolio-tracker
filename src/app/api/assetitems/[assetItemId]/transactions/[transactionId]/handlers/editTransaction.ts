@@ -1,4 +1,4 @@
-import { unstable_expireTag as expireTag } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
 import {
@@ -43,7 +43,10 @@ export default async function handler(
 
 		if (!parsedBody.success) {
 			return NextResponse.json(
-				{ error: 'Invalid request body', issues: parsedBody.error.errors },
+				{
+					error: 'Invalid request body',
+					issues: parsedBody.error.errors,
+				},
 				{ status: 400 }
 			);
 		}
@@ -65,8 +68,8 @@ export default async function handler(
 
 		await editTransaction(transactionId, parsedBody.data);
 
-		expireTag(transactionsTag(assetItemId));
-		expireTag(transactionTag(assetItemId, transactionId));
+		revalidateTag(transactionsTag(assetItemId), 'max');
+		revalidateTag(transactionTag(assetItemId, transactionId), 'max');
 
 		return new NextResponse(null, { status: 200 });
 	} catch (error) {

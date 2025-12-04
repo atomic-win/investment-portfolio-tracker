@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { unstable_expireTag as expireTag } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
 import {
@@ -26,7 +26,10 @@ export default async function handler(
 
 		if (!parsedBody.success) {
 			return NextResponse.json(
-				{ error: 'Invalid request body', issues: parsedBody.error.errors },
+				{
+					error: 'Invalid request body',
+					issues: parsedBody.error.errors,
+				},
 				{ status: 400 }
 			);
 		}
@@ -40,7 +43,9 @@ export default async function handler(
 		const assetType = assetItem.assetType;
 		const transactionType = parsedBody.data.type;
 
-		if (!getApplicableTransactionTypes(assetType).includes(transactionType)) {
+		if (
+			!getApplicableTransactionTypes(assetType).includes(transactionType)
+		) {
 			return NextResponse.json(
 				{
 					error: `Transaction type ${transactionType} is not applicable for this asset item`,
@@ -55,7 +60,7 @@ export default async function handler(
 			date: DateTime.fromJSDate(parsedBody.data.date).toISODate()!,
 		});
 
-		expireTag(transactionsTag(assetItemId));
+		revalidateTag(transactionsTag(assetItemId), 'max');
 
 		return new NextResponse(null, { status: 200 });
 	} catch (error) {
