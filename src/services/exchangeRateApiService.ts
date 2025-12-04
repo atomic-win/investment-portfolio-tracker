@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
-import yahooFinance from 'yahoo-finance2';
 
 import { Currency, Rate } from '@/types';
+import { yahooFinance } from '@/services/yahooFinanceApiService';
 
 export async function getExchangeRates(from: Currency, to: Currency) {
 	const exchangeRates = await yahooFinance.chart(`${from}${to}=X`, {
