@@ -1,4 +1,4 @@
-import { unstable_expireTag as expireTag } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getAssetItem } from '@/features/assetItems/server/db';
@@ -35,8 +35,8 @@ export default async function handler(
 
 		await deleteTransaction(transactionId);
 
-		expireTag(transactionsTag(assetItemId));
-		expireTag(transactionTag(assetItemId, transactionId));
+		revalidateTag(transactionsTag(assetItemId), 'max');
+		revalidateTag(transactionTag(assetItemId, transactionId), 'max');
 
 		return new NextResponse(null, { status: 204 });
 	} catch (error) {

@@ -1,7 +1,7 @@
 import assert from 'assert';
 
 import { and, eq } from 'drizzle-orm';
-import { unstable_expireTag as expireTag } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 import { cacheLife } from 'next/dist/server/use-cache/cache-life';
 import { cacheTag } from 'next/dist/server/use-cache/cache-tag';
 
@@ -29,7 +29,10 @@ export async function getAssetId(type: AssetType, externalId: string) {
 		.select()
 		.from(AssetIdTable)
 		.where(
-			and(eq(AssetIdTable.type, type), eq(AssetIdTable.externalId, externalId))
+			and(
+				eq(AssetIdTable.type, type),
+				eq(AssetIdTable.externalId, externalId)
+			)
 		);
 
 	if (!assetIdMapping || assetIdMapping.length === 0) {
@@ -61,7 +64,9 @@ export async function getAssetItem(userId: string, id: string) {
 	const result = await db
 		.select()
 		.from(AssetItemTable)
-		.where(and(eq(AssetItemTable.userId, userId), eq(AssetItemTable.id, id)))
+		.where(
+			and(eq(AssetItemTable.userId, userId), eq(AssetItemTable.id, id))
+		)
 		.innerJoin(AssetTable, eq(AssetItemTable.assetId, AssetTable.id));
 
 	if (!result || result.length === 0) {
@@ -72,7 +77,7 @@ export async function getAssetItem(userId: string, id: string) {
 }
 
 export async function addAssetId(data: typeof AssetIdTable.$inferInsert) {
-	expireTag(assetIdTag(data.type, data.externalId));
+	revalidateTag(assetIdTag(data.type, data.externalId), 'max');
 	return await db.insert(AssetIdTable).values(data).returning();
 }
 

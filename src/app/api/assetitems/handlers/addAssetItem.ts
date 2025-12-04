@@ -1,4 +1,4 @@
-import { unstable_expireTag as expireTag } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -24,7 +24,10 @@ export default async function handler(req: NextRequest, claims: AuthClaims) {
 
 		if (!parsedBody.success) {
 			return NextResponse.json(
-				{ error: 'Invalid request body', issues: parsedBody.error.errors },
+				{
+					error: 'Invalid request body',
+					issues: parsedBody.error.errors,
+				},
 				{ status: 400 }
 			);
 		}
@@ -106,7 +109,10 @@ async function addMutualFundAssetItem({
 		currency: Currency.INR,
 	});
 
-	const assetId = await getAssetId(AssetType.MutualFund, schemeCode.toString());
+	const assetId = await getAssetId(
+		AssetType.MutualFund,
+		schemeCode.toString()
+	);
 
 	if (assetId) {
 		return await addAssetItemAndReturn({
@@ -243,7 +249,7 @@ async function addAssetItemAndReturn({
 		assetId,
 	});
 
-	expireTag(assetItemsTag(userId));
+	revalidateTag(assetItemsTag(userId), 'max');
 
 	return new NextResponse(null, { status: 201 });
 }
