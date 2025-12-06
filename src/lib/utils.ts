@@ -46,8 +46,8 @@ export function displayAssetTypeText(assetType: AssetType) {
 			return 'Mutual Fund';
 		case AssetType.Stock:
 			return 'Stock';
-		case AssetType.TBill:
-			return 'Treasury Bill';
+		case AssetType.Bond:
+			return 'Bond';
 		default:
 			throw new Error(`Unknown asset type: ${assetType}`);
 	}

@@ -33,7 +33,7 @@ export enum AssetType {
 	PPF = 'PPF',
 	MutualFund = 'MutualFund',
 	Stock = 'Stock',
-	TBill = 'TBill',
+	Bond = 'Bond',
 }
 
 export enum TransactionType {

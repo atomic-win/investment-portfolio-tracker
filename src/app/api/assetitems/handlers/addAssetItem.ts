@@ -50,7 +50,7 @@ export default async function handler(req: NextRequest, claims: AuthClaims) {
 			});
 		}
 
-		if (type === AssetType.TBill) {
+		if (type === AssetType.Bond) {
 			return addDefaultAssetItem({
 				userId,
 				name,

@@ -35,7 +35,7 @@ export function getUnitLabelText(
 		case AssetType.FixedDeposit:
 		case AssetType.EPF:
 		case AssetType.PPF:
-		case AssetType.TBill:
+		case AssetType.Bond:
 			return getAmountLabelText(assetItem);
 		case AssetType.MutualFund:
 			return 'Units';
