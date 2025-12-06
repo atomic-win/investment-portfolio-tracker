@@ -149,7 +149,7 @@ export function getApplicableAssetClasses(assetType: AssetType) {
 			return [AssetClass.TradingAccount];
 		case AssetType.EPF:
 		case AssetType.PPF:
-		case AssetType.TBill:
+		case AssetType.Bond:
 			return [AssetClass.Debt];
 		case AssetType.MutualFund:
 			return [AssetClass.Equity, AssetClass.Debt];
@@ -185,10 +185,10 @@ export function getApplicableTransactionTypes(
 			];
 		case AssetType.Wallet:
 			return [TransactionType.Deposit, TransactionType.Withdrawal];
-		case AssetType.TBill:
+		case AssetType.Bond:
 			return [
-				TransactionType.Deposit,
-				TransactionType.Withdrawal,
+				TransactionType.Buy,
+				TransactionType.Sell,
 				TransactionType.Interest,
 			];
 		default:
