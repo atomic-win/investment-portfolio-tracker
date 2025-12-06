@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
 			revalidate: 60 * 60, // 1 hour
 			expire: 60 * 60 * 24, // 1 day
 		},
+		expireNow: {
+			stale: 0,
+			revalidate: 0,
+			expire: 0,
+		},
 	},
 };
 

@@ -36,17 +36,18 @@ export default function TransactionsTable({
 
 	const {
 		data: transactions,
-		isLoading,
 		isFetching,
 		isError,
 	} = useAssetItemTransactionsQuery(assetItem.id, currency);
 
-	if (isLoading) {
+	if (isFetching) {
 		return <LoadingComponent loadingMessage='Fetching transactions' />;
 	}
 
 	if (isError || !transactions) {
-		return <ErrorComponent errorMessage='Failed while fetching transactions' />;
+		return (
+			<ErrorComponent errorMessage='Failed while fetching transactions' />
+		);
 	}
 
 	const items = transactions.map((transaction) => ({
@@ -70,7 +71,8 @@ export default function TransactionsTable({
 						await refreshAssetItem(queryClient, {
 							assetItemId: assetItem.id,
 						})
-					}>
+					}
+				>
 					<RefreshCwIcon />
 					Refresh
 				</Button>
@@ -132,7 +134,9 @@ function getColumns(assetItem: AssetItemPortfolio): ColumnDef<TableItem>[] {
 				accessorKey: 'units',
 				headerText: 'Units',
 				cellTextFn: (item) =>
-					item.type === TransactionType.Dividend ? '-' : item.units.toString(),
+					item.type === TransactionType.Dividend
+						? '-'
+						: item.units.toString(),
 				align: 'right',
 				enableHiding: false,
 			})
@@ -160,7 +164,8 @@ function getColumns(assetItem: AssetItemPortfolio): ColumnDef<TableItem>[] {
 						transaction={item}
 					/>
 					<Link
-						href={`/assetitems/${assetItem.id}/transactions/${item.id}/edit`}>
+						href={`/assetitems/${assetItem.id}/transactions/${item.id}/edit`}
+					>
 						<Button className='cursor-pointer'>
 							<EditIcon />
 							Edit

@@ -25,8 +25,8 @@ export default async function handler(
 
 		await deleteAssetItem(assetItemId);
 
-		revalidateTag(assetItemsTag(userId), 'max');
-		revalidateTag(assetItemTag(userId, assetItemId), 'max');
+		revalidateTag(assetItemsTag(userId), 'expireNow');
+		revalidateTag(assetItemTag(userId, assetItemId), 'expireNow');
 
 		return new NextResponse(null, { status: 204 });
 	} catch (error) {

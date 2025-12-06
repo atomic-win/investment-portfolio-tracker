@@ -77,7 +77,7 @@ export async function getAssetItem(userId: string, id: string) {
 }
 
 export async function addAssetId(data: typeof AssetIdTable.$inferInsert) {
-	revalidateTag(assetIdTag(data.type, data.externalId), 'max');
+	revalidateTag(assetIdTag(data.type, data.externalId), 'expireNow');
 	return await db.insert(AssetIdTable).values(data).returning();
 }
 

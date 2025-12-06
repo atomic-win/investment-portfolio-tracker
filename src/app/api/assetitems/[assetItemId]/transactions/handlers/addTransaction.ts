@@ -60,7 +60,7 @@ export default async function handler(
 			date: DateTime.fromJSDate(parsedBody.data.date).toISODate()!,
 		});
 
-		revalidateTag(transactionsTag(assetItemId), 'max');
+		revalidateTag(transactionsTag(assetItemId), 'expireNow');
 
 		return new NextResponse(null, { status: 200 });
 	} catch (error) {
