@@ -35,8 +35,8 @@ export default async function handler(
 
 		await deleteTransaction(transactionId);
 
-		revalidateTag(transactionsTag(assetItemId), 'max');
-		revalidateTag(transactionTag(assetItemId, transactionId), 'max');
+		revalidateTag(transactionsTag(assetItemId), 'expireNow');
+		revalidateTag(transactionTag(assetItemId, transactionId), 'expireNow');
 
 		return new NextResponse(null, { status: 204 });
 	} catch (error) {

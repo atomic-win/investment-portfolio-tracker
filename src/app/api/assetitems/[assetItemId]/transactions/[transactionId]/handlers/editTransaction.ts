@@ -68,8 +68,8 @@ export default async function handler(
 
 		await editTransaction(transactionId, parsedBody.data);
 
-		revalidateTag(transactionsTag(assetItemId), 'max');
-		revalidateTag(transactionTag(assetItemId, transactionId), 'max');
+		revalidateTag(transactionsTag(assetItemId), 'expireNow');
+		revalidateTag(transactionTag(assetItemId, transactionId), 'expireNow');
 
 		return new NextResponse(null, { status: 200 });
 	} catch (error) {

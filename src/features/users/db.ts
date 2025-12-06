@@ -54,7 +54,7 @@ export async function updateUserSettings(
 		throw new Error('Failed to update user settings');
 	}
 
-	revalidateTag(getUserSettingsTag(id), 'max');
+	revalidateTag(getUserSettingsTag(id), 'expireNow');
 
 	return updatedUserSettings;
 }

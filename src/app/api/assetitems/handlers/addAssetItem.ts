@@ -249,7 +249,7 @@ async function addAssetItemAndReturn({
 		assetId,
 	});
 
-	revalidateTag(assetItemsTag(userId), 'max');
+	revalidateTag(assetItemsTag(userId), 'expireNow');
 
 	return new NextResponse(null, { status: 201 });
 }
