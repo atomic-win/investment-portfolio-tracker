@@ -46,7 +46,7 @@ export default function SettingsSidebarGroup() {
 		},
 		{
 			name: 'locale',
-			title: 'Language',
+			title: 'Locale',
 			value: data.preferredLocale,
 			options: Object.values(Locale),
 		},
@@ -59,7 +59,7 @@ export default function SettingsSidebarGroup() {
 				{settings.map((setting) => (
 					<Select
 						key={setting.name}
-						onValueChange={(x) =>
+						onValueChange={(x: Currency | Locale) =>
 							updateSetting(
 								setting.name === 'currency'
 									? { preferredCurrency: x as Currency }
