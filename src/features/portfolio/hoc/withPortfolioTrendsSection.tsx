@@ -13,9 +13,9 @@ import {
 } from '@/components/ui/chart';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { displayPortfolioType } from '@/features/portfolio/lib/utils';
-import { useMySettingsQuery } from '@/hooks/useMySettingsQuery';
 import { displayPercentage, displayCurrencyAmountText } from '@/lib/utils';
 import { Portfolio, PortfolioType } from '@/types';
+import { useMyProfileQuery } from '@/hooks/useMyProfileQuery';
 
 enum TrendType {
 	InvestedValue = 'InvestedValue',
@@ -41,23 +41,23 @@ export default function withPortfolioTrendsSection<
 		portfolios: TPortfolio[];
 	}) {
 		const {
-			data: userSettings,
-			isFetching: isUserSettingsFetching,
+			data: profile,
+			isFetching: isUserProfileFetching,
 			error,
-		} = useMySettingsQuery();
+		} = useMyProfileQuery();
 
 		const searchParams = useSearchParams();
 		const pathname = usePathname();
 		const { replace } = useRouter();
 
-		if (isUserSettingsFetching || error || !userSettings) {
+		if (isUserProfileFetching || error || !profile) {
 			return null;
 		}
 
-		const { currency, language: locale } = userSettings;
-
+		const { preferredCurrency, preferredLocale } = profile;
 		const activeTrendType =
-			(searchParams.get('trendType') as TrendType) || TrendType.InvestedValue;
+			(searchParams.get('trendType') as TrendType) ||
+			TrendType.InvestedValue;
 
 		function handleTabChange(trendType: TrendType) {
 			const params = new URLSearchParams(searchParams);
@@ -86,7 +86,8 @@ export default function withPortfolioTrendsSection<
 		return (
 			<Tabs
 				value={activeTrendType}
-				onValueChange={(value) => handleTabChange(value as TrendType)}>
+				onValueChange={(value) => handleTabChange(value as TrendType)}
+			>
 				<TabsList className='grid w-full grid-cols-4'>
 					<TabsTrigger value={TrendType.InvestedValue}>
 						{displayTrendType(TrendType.InvestedValue)}
@@ -110,7 +111,13 @@ export default function withPortfolioTrendsSection<
 						chartTitle='Invested Value Trend'
 						valueFn={(portfolio) => portfolio.investedValue}
 						yAxisFormat={(value) =>
-							displayCurrencyAmountText(locale!, currency!, value, 'compact', 2)
+							displayCurrencyAmountText(
+								preferredLocale!,
+								preferredCurrency!,
+								value,
+								'compact',
+								2
+							)
 						}
 						showTotalInTooltip={showTotalInTooltip}
 					/>
@@ -124,7 +131,13 @@ export default function withPortfolioTrendsSection<
 						chartTitle='Current Value Trend'
 						valueFn={(portfolio) => portfolio.currentValue}
 						yAxisFormat={(value) =>
-							displayCurrencyAmountText(locale!, currency!, value, 'compact', 2)
+							displayCurrencyAmountText(
+								preferredLocale!,
+								preferredCurrency!,
+								value,
+								'compact',
+								2
+							)
 						}
 						showTotalInTooltip={showTotalInTooltip}
 					/>
@@ -149,7 +162,8 @@ export default function withPortfolioTrendsSection<
 						chartConfig={chartConfig}
 						chartTitle='Current Value / Invested Value Ratio Trend'
 						valueFn={(portfolio) =>
-							portfolio.currentValue / Math.max(1, portfolio.investedValue)
+							portfolio.currentValue /
+							Math.max(1, portfolio.investedValue)
 						}
 						yAxisFormat={(value) => displayNumber(value)}
 						showTotalInTooltip={false}
@@ -252,7 +266,8 @@ function TrendsChart<TPortfolio extends Portfolio>({
 												<div className='flex basis-full items-center pt-1.5 text-xs font-medium text-foreground'>
 													{
 														DateTime.fromMillis(
-															item.payload.date as number
+															item.payload
+																.date as number
 														).toISODate()!
 													}
 												</div>
@@ -261,25 +276,53 @@ function TrendsChart<TPortfolio extends Portfolio>({
 												className='h-2.5 w-2.5 shrink-0 rounded-[2px]'
 												style={{
 													backgroundColor:
-														chartConfig[name as keyof typeof chartConfig]!
-															.color,
+														chartConfig[
+															name as keyof typeof chartConfig
+														]!.color,
 												}}
 											/>
-											{chartConfig[name as keyof typeof chartConfig]!.label}
+											{
+												chartConfig[
+													name as keyof typeof chartConfig
+												]!.label
+											}
 											<div className='ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground'>
 												{yAxisFormat(value as number)}
 											</div>
 											{/* Add this after the last item */}
 											{showTotalInTooltip &&
-												index === Object.keys(item.payload).length - 2 && (
+												index ===
+													Object.keys(item.payload)
+														.length -
+														2 && (
 													<div className='mt-1.5 flex basis-full items-center border-t pt-1.5 text-xs font-medium text-foreground'>
 														Total
 														<div className='ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground'>
 															{yAxisFormat(
 																portfolioIds
-																	.map((id) => item.payload[id])
-																	.filter((value) => value !== undefined)
-																	.reduce((acc, value) => acc + value, 0)
+																	.map(
+																		(id) =>
+																			item
+																				.payload[
+																				id
+																			]
+																	)
+																	.filter(
+																		(
+																			value
+																		) =>
+																			value !==
+																			undefined
+																	)
+																	.reduce(
+																		(
+																			acc,
+																			value
+																		) =>
+																			acc +
+																			value,
+																		0
+																	)
 															)}
 														</div>
 													</div>
