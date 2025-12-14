@@ -36,6 +36,8 @@ export function displayAssetTypeText(assetType: AssetType) {
 			return 'Bank Account';
 		case AssetType.Wallet:
 			return 'Wallet';
+		case AssetType.TradingAccount:
+			return 'Trading Account';
 		case AssetType.FixedDeposit:
 			return 'Fixed Deposit';
 		case AssetType.EPF:
@@ -61,8 +63,6 @@ export function displayAssetClassText(assetClass: AssetClass) {
 			return 'Debt';
 		case AssetClass.EmergencyFund:
 			return 'Emergency Fund';
-		case AssetClass.TradingAccount:
-			return 'Trading Account';
 		default:
 			throw new Error(`Unknown asset class: ${assetClass}`);
 	}

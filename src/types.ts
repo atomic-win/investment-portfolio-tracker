@@ -59,19 +59,22 @@ export type User = {
 	preferredLocale: Locale;
 };
 
-export type AssetItem = Omit<
-	typeof AssetItemTable.$inferSelect,
-	'createdAt' | 'updatedAt' | 'userId' | 'assetId'
-> & {
+export type AssetItem = {
+	id: string;
+	name: string;
 	assetType: AssetType;
+	assetClass: AssetClass;
 	currency: Currency;
-	firstTransactionDate: string | null;
+	activityStartDate: string;
 };
 
-export type Transaction = Omit<
-	typeof TransactionTable.$inferSelect,
-	'createdAt' | 'updatedAt'
-> & {
+export type Transaction = {
+	id: string;
+	date: string;
+	name: string;
+	transactionType: TransactionType;
+	assetItemId: string;
+	units: number;
 	amount: number;
 };
 

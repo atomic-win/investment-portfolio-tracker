@@ -109,7 +109,7 @@ export const AddTransactionSchema = z.object({
 		.max(1000, {
 			message: 'Transaction name must be at most 1000 characters',
 		}),
-	type: z.nativeEnum(TransactionType, {
+	transactionType: z.nativeEnum(TransactionType, {
 		required_error: 'Transaction type is required',
 	}),
 	units: z.coerce.number().positive({
@@ -144,9 +144,9 @@ export function getApplicableAssetClasses(assetType: AssetType) {
 	switch (assetType) {
 		case AssetType.BankAccount:
 		case AssetType.FixedDeposit:
-			return [AssetClass.Debt, AssetClass.EmergencyFund];
 		case AssetType.Wallet:
-			return [AssetClass.TradingAccount];
+		case AssetType.TradingAccount:
+			return [AssetClass.Debt, AssetClass.EmergencyFund];
 		case AssetType.EPF:
 		case AssetType.PPF:
 		case AssetType.Bond:

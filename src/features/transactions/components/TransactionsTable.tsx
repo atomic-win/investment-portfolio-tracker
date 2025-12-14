@@ -122,7 +122,8 @@ function getColumns(assetItem: AssetItemPortfolio): ColumnDef<TableItem>[] {
 			accessorKey: 'transactionType',
 			id: 'Transaction Type',
 			headerText: 'Transaction Type',
-			cellTextFn: (item) => displayTransactionTypeText(item.type),
+			cellTextFn: (item) =>
+				displayTransactionTypeText(item.transactionType),
 			align: 'left',
 			enableHiding: false,
 		})
@@ -134,7 +135,7 @@ function getColumns(assetItem: AssetItemPortfolio): ColumnDef<TableItem>[] {
 				accessorKey: 'units',
 				headerText: 'Units',
 				cellTextFn: (item) =>
-					item.type === TransactionType.Dividend
+					item.transactionType === TransactionType.Dividend
 						? '-'
 						: item.units.toString(),
 				align: 'right',

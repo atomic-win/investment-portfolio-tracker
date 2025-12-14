@@ -95,12 +95,10 @@ function getQueryDates(
 		const earliestDate = DateTime.fromISO(
 			assetItems
 				.filter((x) => assetItemIds.includes(x.id))
-				.filter((x) => x.firstTransactionDate)
+				.filter((x) => x.activityStartDate)
 				.reduce(
 					(acc, x) =>
-						x.firstTransactionDate! < acc
-							? x.firstTransactionDate!
-							: acc,
+						x.activityStartDate! < acc ? x.activityStartDate! : acc,
 					dates[0]
 				)
 		);

@@ -49,7 +49,7 @@ export default function AddTransactionForm({
 		resolver: zodResolver(AddTransactionSchema),
 		defaultValues: {
 			date: new Date(),
-			type: TransactionType.Unknown,
+			transactionType: TransactionType.Unknown,
 			units: 0,
 		},
 	});
@@ -68,7 +68,8 @@ export default function AddTransactionForm({
 			<Form {...form}>
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
-					className='flex flex-col space-y-4'>
+					className='flex flex-col space-y-4'
+				>
 					<FormField
 						control={form.control}
 						name='date'
@@ -76,7 +77,10 @@ export default function AddTransactionForm({
 							<FormItem className='flex flex-col'>
 								<FormLabel>Transaction Date</FormLabel>
 								<FormControl>
-									<DatePicker date={field.value} onSelect={field.onChange} />
+									<DatePicker
+										date={field.value}
+										onSelect={field.onChange}
+									/>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -97,29 +101,42 @@ export default function AddTransactionForm({
 					/>
 					<FormField
 						control={form.control}
-						name='type'
+						name='transactionType'
 						render={({ field }) => (
 							<FormItem>
 								<FormLabel>Transaction Type</FormLabel>
 								<FormControl>
-									<Select onValueChange={field.onChange} value={field.value}>
+									<Select
+										onValueChange={field.onChange}
+										value={field.value}
+									>
 										<SelectTrigger
 											className='w-full rounded-lg sm:ml-auto'
-											aria-label='Select a value'>
+											aria-label='Select a value'
+										>
 											<SelectValue placeholder='Select a transaction type' />
 											<SelectIcon>
 												<ChevronDown className='h-4 w-4 opacity-50' />
 											</SelectIcon>
 										</SelectTrigger>
 										<SelectContent className='rounded-xl'>
-											{getApplicableTransactionTypes(assetItem.assetType)
-												.filter((type) => type !== TransactionType.Unknown)
+											{getApplicableTransactionTypes(
+												assetItem.assetType
+											)
+												.filter(
+													(type) =>
+														type !==
+														TransactionType.Unknown
+												)
 												.map((type) => (
 													<SelectItem
 														key={type}
 														value={type}
-														className='rounded-lg'>
-														{displayTransactionTypeText(type)}
+														className='rounded-lg'
+													>
+														{displayTransactionTypeText(
+															type
+														)}
 													</SelectItem>
 												))}
 										</SelectContent>
@@ -135,7 +152,10 @@ export default function AddTransactionForm({
 						render={({ field }) => (
 							<FormItem>
 								<FormLabel>
-									{getUnitLabelText(assetItem, form.watch('type'))}
+									{getUnitLabelText(
+										assetItem,
+										form.watch('transactionType')
+									)}
 								</FormLabel>
 								<FormControl>
 									<Input {...field} />

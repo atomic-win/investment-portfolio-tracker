@@ -64,7 +64,7 @@ export default function EditTransactionForm({
 		resolver: zodResolver(EditTransactionSchema),
 		defaultValues: {
 			name: transaction?.name,
-			type: transaction?.type,
+			transactionType: transaction?.transactionType,
 			units: transaction?.units,
 		},
 	});
@@ -74,7 +74,9 @@ export default function EditTransactionForm({
 	}
 
 	if (isError || !transaction) {
-		return <ErrorComponent errorMessage='Failed while fetching transaction' />;
+		return (
+			<ErrorComponent errorMessage='Failed while fetching transaction' />
+		);
 	}
 
 	async function onSubmit(
@@ -84,7 +86,8 @@ export default function EditTransactionForm({
 			..._.pickBy(
 				data,
 				(value, key) =>
-					value !== form.formState.defaultValues![key as keyof typeof data]
+					value !==
+					form.formState.defaultValues![key as keyof typeof data]
 			),
 			assetItemId: assetItem.id,
 			transactionId: transactionId,
@@ -98,9 +101,12 @@ export default function EditTransactionForm({
 			<Form {...form}>
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
-					className='flex flex-col space-y-4'>
+					className='flex flex-col space-y-4'
+				>
 					<Label>Transaction Date</Label>
-					<DatePicker date={DateTime.fromISO(transaction.date)!.toJSDate()} />
+					<DatePicker
+						date={DateTime.fromISO(transaction.date)!.toJSDate()}
+					/>
 					<FormField
 						control={form.control}
 						name='name'
@@ -116,29 +122,42 @@ export default function EditTransactionForm({
 					/>
 					<FormField
 						control={form.control}
-						name='type'
+						name='transactionType'
 						render={({ field }) => (
 							<FormItem>
 								<FormLabel>Transaction Type</FormLabel>
 								<FormControl>
-									<Select onValueChange={field.onChange} value={field.value}>
+									<Select
+										onValueChange={field.onChange}
+										value={field.value}
+									>
 										<SelectTrigger
 											className='w-full rounded-lg sm:ml-auto'
-											aria-label='Select a value'>
+											aria-label='Select a value'
+										>
 											<SelectValue placeholder='Select a transaction type' />
 											<SelectIcon>
 												<ChevronDown className='h-4 w-4 opacity-50' />
 											</SelectIcon>
 										</SelectTrigger>
 										<SelectContent className='rounded-xl'>
-											{getApplicableTransactionTypes(assetItem.assetType)
-												.filter((type) => type !== TransactionType.Unknown)
+											{getApplicableTransactionTypes(
+												assetItem.assetType
+											)
+												.filter(
+													(type) =>
+														type !==
+														TransactionType.Unknown
+												)
 												.map((type) => (
 													<SelectItem
 														key={type}
 														value={type}
-														className='rounded-lg'>
-														{displayTransactionTypeText(type)}
+														className='rounded-lg'
+													>
+														{displayTransactionTypeText(
+															type
+														)}
 													</SelectItem>
 												))}
 										</SelectContent>
@@ -154,7 +173,10 @@ export default function EditTransactionForm({
 						render={({ field }) => (
 							<FormItem>
 								<FormLabel>
-									{getUnitLabelText(assetItem, form.watch('type')!)}
+									{getUnitLabelText(
+										assetItem,
+										form.watch('transactionType')!
+									)}
 								</FormLabel>
 								<FormControl>
 									<Input
@@ -162,7 +184,9 @@ export default function EditTransactionForm({
 										type='number'
 										onChange={(e) =>
 											field.onChange(
-												e.target.value === '' ? '' : Number(e.target.value)
+												e.target.value === ''
+													? ''
+													: Number(e.target.value)
 											)
 										}
 									/>
@@ -175,7 +199,11 @@ export default function EditTransactionForm({
 						<Button
 							type='submit'
 							className='cursor-pointer'
-							disabled={!form.formState.isDirty || form.formState.isSubmitting}>
+							disabled={
+								!form.formState.isDirty ||
+								form.formState.isSubmitting
+							}
+						>
 							Edit Transaction
 						</Button>
 					</div>
