@@ -38,18 +38,29 @@ export default function DeleteTransactionDialog({
 			</AlertDialogTrigger>
 			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+					<AlertDialogTitle>
+						Are you absolutely sure?
+					</AlertDialogTitle>
 					<AlertDialogDescription>
-						This action cannot be undone. This will permanently delete the
-						transaction.
+						This action cannot be undone. This will permanently
+						delete the transaction.
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<div>
 					<InfoLine label='Date' value={transaction.date} />
-					<InfoLine label='Transaction Name' value={transaction.name} />
-					<InfoLine label='Transaction Type' value={transaction.type} />
+					<InfoLine
+						label='Transaction Name'
+						value={transaction.name}
+					/>
+					<InfoLine
+						label='Transaction Type'
+						value={transaction.transactionType}
+					/>
 					<InfoLine label='Asset Item Name' value={assetItem.name} />
-					<InfoLine label='Units' value={transaction.units.toString()} />
+					<InfoLine
+						label='Units'
+						value={transaction.units.toString()}
+					/>
 					<InfoLine
 						label='Transaction Amount'
 						value={<CurrencyAmount amount={transaction.amount} />}
@@ -57,15 +68,22 @@ export default function DeleteTransactionDialog({
 				</div>
 				<AlertDialogFooter>
 					<AlertDialogCancel>Cancel</AlertDialogCancel>
-					<Button variant='destructive' className='cursor-pointer' asChild>
+					<Button
+						variant='destructive'
+						className='cursor-pointer'
+						asChild
+					>
 						<AlertDialogAction
 							onClick={async () => {
 								await deleteTransactionAsync({
 									assetItemId: assetItem.id,
 									transactionId: transaction.id,
-									date: DateTime.fromISO(transaction.date).toJSDate(),
+									date: DateTime.fromISO(
+										transaction.date
+									).toJSDate(),
 								});
-							}}>
+							}}
+						>
 							Delete
 						</AlertDialogAction>
 					</Button>
