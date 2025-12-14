@@ -15,6 +15,8 @@ import {
 	SidebarMenuItem,
 	SidebarRail,
 } from '@/components/ui/sidebar';
+import { Suspense } from 'react';
+import LoadingComponent from '@/components/LoadingComponent';
 
 const data = [
 	{ title: 'Portfolio', url: '/portfolio' },
@@ -48,14 +50,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 					<SidebarMenu>
 						{data.map((item) => (
 							<SidebarMenuItem key={item.title}>
-								<SidebarMenuButton className='font-medium' asChild>
+								<SidebarMenuButton
+									className='font-medium'
+									asChild
+								>
 									<Link href={item.url}>{item.title}</Link>
 								</SidebarMenuButton>
 							</SidebarMenuItem>
 						))}
 					</SidebarMenu>
 				</SidebarGroup>
-				<SettingsSidebarGroup />
+				<Suspense
+					fallback={
+						<LoadingComponent loadingMessage='Loading User Profile...' />
+					}
+				>
+					<SettingsSidebarGroup />
+				</Suspense>
 			</SidebarContent>
 			<SidebarFooter className='mt-8'>
 				<SidebarMenu>
