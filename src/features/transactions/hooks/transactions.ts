@@ -8,6 +8,7 @@ import {
 } from '@/features/assetItems/schema';
 import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
 import { Transaction } from '@/types';
+import { DateTime } from 'luxon';
 
 export function useAssetItemTransactionsQuery(
 	assetItemId: string,
@@ -75,7 +76,10 @@ export function useAddTransactionMutation() {
 		mutationFn: async (transaction: AddTransactionRequest) => {
 			await primalApiClient.post(
 				`assetitems/${transaction.assetItemId}/transactions`,
-				transaction
+				{
+					...transaction,
+					date: DateTime.fromJSDate(transaction.date).toISODate(),
+				}
 			);
 		},
 		onSuccess: async (_data, variables) =>
