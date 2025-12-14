@@ -15,7 +15,7 @@ import {
 	SidebarMenu,
 	useSidebar,
 } from '@/components/ui/sidebar';
-import useUpdateSettingsMutation from '@/hooks/useUpdateSettingsMutation';
+import useUpdateProfileMutation from '@/hooks/useUpdateProfileMutation';
 import { Currency, Locale } from '@/types';
 import { useMyProfileQuery } from '@/hooks/useMyProfileQuery';
 
@@ -23,7 +23,7 @@ export default function SettingsSidebarGroup() {
 	const { isMobile } = useSidebar();
 
 	const { data, isFetching, error } = useMyProfileQuery();
-	const { mutate: updateSetting } = useUpdateSettingsMutation();
+	const { mutate: updateSetting } = useUpdateProfileMutation();
 
 	if (
 		isFetching ||
@@ -62,8 +62,8 @@ export default function SettingsSidebarGroup() {
 						onValueChange={(x) =>
 							updateSetting(
 								setting.name === 'currency'
-									? { currency: x as Currency }
-									: { language: x as Locale }
+									? { preferredCurrency: x as Currency }
+									: { preferredLocale: x as Locale }
 							)
 						}
 						value={setting.value}

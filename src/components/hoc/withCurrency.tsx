@@ -1,21 +1,25 @@
 import ErrorComponent from '@/components/ErrorComponent';
 import LoadingComponent from '@/components/LoadingComponent';
-import { useMySettingsQuery } from '@/hooks/useMySettingsQuery';
+import { useMyProfileQuery } from '@/hooks/useMyProfileQuery';
 
 export default function withCurrency<T extends { currency: string }>(
 	Component: React.ComponentType<T>
 ) {
 	return function WithCurrency(props: Omit<T, 'currency'>) {
-		const { data: settings, isFetching, error } = useMySettingsQuery();
+		const { data: profile, isFetching, error } = useMyProfileQuery();
 
 		if (isFetching) {
 			return <LoadingComponent loadingMessage='Fetching currency' />;
 		}
 
-		if (error || !settings || !settings.currency) {
-			return <ErrorComponent errorMessage='Failed while fetching currency' />;
+		if (error || !profile || !profile.preferredCurrency) {
+			return (
+				<ErrorComponent errorMessage='Failed while fetching currency' />
+			);
 		}
 
-		return <Component {...(props as T)} currency={settings.currency} />;
+		return (
+			<Component {...(props as T)} currency={profile.preferredCurrency} />
+		);
 	};
 }

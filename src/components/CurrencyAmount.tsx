@@ -1,4 +1,4 @@
-import { useMySettingsQuery } from '@/hooks/useMySettingsQuery';
+import { useMyProfileQuery } from '@/hooks/useMyProfileQuery';
 import { displayCurrencyAmountText } from '@/lib/utils';
 
 export default function CurrencyAmount({
@@ -10,15 +10,15 @@ export default function CurrencyAmount({
 	notation?: 'standard' | 'compact';
 	numberOfFractionDigits?: number;
 }) {
-	const { data: settings, isFetching, error } = useMySettingsQuery();
+	const { data: profile, isFetching, error } = useMyProfileQuery();
 
-	if (isFetching || error || !settings) {
+	if (isFetching || error || !profile) {
 		return '';
 	}
 
 	return displayCurrencyAmountText(
-		settings.language!,
-		settings.currency!,
+		profile.preferredLocale,
+		profile.preferredCurrency,
 		amount,
 		notation,
 		numberOfFractionDigits
