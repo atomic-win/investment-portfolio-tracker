@@ -91,27 +91,27 @@ function getQueryDates(
 ): string[] {
 	const dates = [DateTime.now().toISODate()];
 
-	if (!latest) {
-		const earliestDate = DateTime.fromISO(
-			assetItems
-				.filter((x) => assetItemIds.includes(x.id))
-				.filter((x) => x.activityStartDate)
-				.reduce(
-					(acc, x) =>
-						x.activityStartDate! < acc ? x.activityStartDate! : acc,
-					dates[0]
-				)
-		);
+	if (latest) {
+		return dates;
+	}
 
-		let date = DateTime.now().set({ month: 3, day: 31 }); // Set to the nearest March
-		if (date > DateTime.now()) {
-			date = date.minus({ years: 1 }); // Move to the previous March if the current date is past March
-		}
+	const earliestDate = DateTime.fromISO(
+		assetItems
+			.filter((x) => assetItemIds.includes(x.id))
+			.filter((x) => x.activityStartDate)
+			.reduce(
+				(acc, x) =>
+					x.activityStartDate! < acc ? x.activityStartDate! : acc,
+				dates[0]
+			)
+	);
 
-		while (date >= earliestDate) {
-			dates.push(date.toISODate());
-			date = date.minus({ years: 1 }); // Move back yearwise
-		}
+	// end of previous month
+	let date = DateTime.now().minus({ months: 1 }).endOf('month');
+
+	while (date >= earliestDate) {
+		dates.push(date.toISODate());
+		date = date.minus({ months: 1 }); // Move back monthwise
 	}
 
 	return dates;
