@@ -15,17 +15,23 @@ import {
 	SidebarMenu,
 	useSidebar,
 } from '@/components/ui/sidebar';
-import { useMySettingsQuery } from '@/hooks/useMySettingsQuery';
 import useUpdateSettingsMutation from '@/hooks/useUpdateSettingsMutation';
-import { Currency, Language } from '@/types';
+import { Currency, Locale } from '@/types';
+import { useMyProfileQuery } from '@/hooks/useMyProfileQuery';
 
 export default function SettingsSidebarGroup() {
 	const { isMobile } = useSidebar();
 
-	const { data, isFetching, error } = useMySettingsQuery();
+	const { data, isFetching, error } = useMyProfileQuery();
 	const { mutate: updateSetting } = useUpdateSettingsMutation();
 
-	if (isFetching || error || !data || !data.language || !data.currency) {
+	if (
+		isFetching ||
+		error ||
+		!data ||
+		!data.preferredLocale ||
+		!data.preferredCurrency
+	) {
 		return <SidebarGroup className='mt-auto' />;
 	}
 
@@ -33,14 +39,16 @@ export default function SettingsSidebarGroup() {
 		{
 			name: 'currency',
 			title: 'Currency',
-			value: data.currency,
-			options: Object.values(Currency).filter((x) => x !== Currency.Unknown),
+			value: data.preferredCurrency,
+			options: Object.values(Currency).filter(
+				(x) => x !== Currency.Unknown
+			),
 		},
 		{
 			name: 'locale',
 			title: 'Language',
-			value: data.language,
-			options: Object.values(Language),
+			value: data.preferredLocale,
+			options: Object.values(Locale),
 		},
 	];
 
@@ -55,13 +63,15 @@ export default function SettingsSidebarGroup() {
 							updateSetting(
 								setting.name === 'currency'
 									? { currency: x as Currency }
-									: { language: x as Language }
+									: { language: x as Locale }
 							)
 						}
-						value={setting.value}>
+						value={setting.value}
+					>
 						<SelectTrigger
 							className='w-full rounded-lg sm:ml-auto'
-							aria-label='Select a value'>
+							aria-label='Select a value'
+						>
 							<SelectValue>
 								{setting.title} - {setting.value}
 							</SelectValue>
@@ -72,9 +82,14 @@ export default function SettingsSidebarGroup() {
 						<SelectContent
 							className='rounded-xl'
 							side={isMobile ? 'bottom' : 'right'}
-							align={isMobile ? 'end' : 'start'}>
+							align={isMobile ? 'end' : 'start'}
+						>
 							{setting.options.map((option) => (
-								<SelectItem key={option} value={option} className='rounded-lg'>
+								<SelectItem
+									key={option}
+									value={option}
+									className='rounded-lg'
+								>
 									{option}
 								</SelectItem>
 							))}

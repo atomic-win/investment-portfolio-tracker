@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { UserTable } from '@/drizzle/schema';
 import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
+import { User } from '@/types';
 
 export const useMyProfileQuery = () => {
 	const primalApiClient = usePrimalApiClient();
@@ -9,11 +9,8 @@ export const useMyProfileQuery = () => {
 	return useQuery({
 		queryKey: ['users', 'me'],
 		queryFn: async () => {
-			const response = await primalApiClient.get('users/me');
-			return response.data as Omit<
-				typeof UserTable.$inferSelect,
-				'createdAt' | 'updatedAt'
-			>;
+			const response = await primalApiClient.get('users/profile');
+			return response.data as User;
 		},
 	});
 };

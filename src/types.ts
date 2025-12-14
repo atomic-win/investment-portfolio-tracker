@@ -1,19 +1,12 @@
 import { DateTime } from 'luxon';
 
-import { AssetItemTable, TransactionTable } from '@/drizzle/schema';
-
-export enum IdentityProvider {
-	Google = 'Google',
-}
-
 export enum Currency {
 	Unknown = 'UNKNOWN',
 	USD = 'USD',
 	INR = 'INR',
 }
 
-export enum Language {
-	EN = 'en',
+export enum Locale {
 	EN_US = 'en-US',
 	EN_IN = 'en-IN',
 }
@@ -22,12 +15,12 @@ export enum AssetClass {
 	Equity = 'Equity',
 	Debt = 'Debt',
 	EmergencyFund = 'EmergencyFund',
-	TradingAccount = 'TradingAccount',
 }
 
 export enum AssetType {
 	BankAccount = 'BankAccount',
 	Wallet = 'Wallet',
+	TradingAccount = 'TradingAccount',
 	FixedDeposit = 'FixedDeposit',
 	EPF = 'EPF',
 	PPF = 'PPF',
@@ -48,10 +41,6 @@ export enum TransactionType {
 	InterestPenalty = 'InterestPenalty',
 }
 
-export type AuthClaims = {
-	id: string;
-};
-
 export enum PortfolioType {
 	Unknown = 'Unknown',
 	Overall = 'Overall',
@@ -59,6 +48,16 @@ export enum PortfolioType {
 	PerAssetType = 'PerAssetType',
 	PerAssetItem = 'PerAsset',
 }
+
+export type User = {
+	id: string;
+	firstName: string;
+	lastName: string;
+	fullName: string;
+	email: string;
+	preferredCurrency: Currency;
+	preferredLocale: Locale;
+};
 
 export type AssetItem = Omit<
 	typeof AssetItemTable.$inferSelect,
