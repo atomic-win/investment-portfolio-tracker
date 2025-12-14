@@ -34,13 +34,14 @@ export default function useValuationQueries(
 			],
 			queryFn: async () => {
 				const response = await primalApiClient.get(
-					`valuation?${assetItemIds
-						.map((id) => `assetItemId=${id}`)
+					`assetItems/valuation?${assetItemIds
+						.map((id) => `assetItemIds=${id}`)
 						.join('&')}&date=${date}&currency=${currency}`
 				);
 				return response.data as Valuation;
 			},
-			enabled: !!currency && assetItemIds.length > 0 && assetItems.length > 0,
+			enabled:
+				!!currency && assetItemIds.length > 0 && assetItems.length > 0,
 			select: (data: Valuation) =>
 				({
 					...data,
@@ -73,12 +74,13 @@ function getQueryInputs(
 
 	const dates = getQueryDates(assetItems, assetItemIds, latest);
 
-	return Array.from(idToAssetItemIds.entries()).flatMap(([id, assetItemIds]) =>
-		dates.map((date) => ({
-			id,
-			assetItemIds,
-			date,
-		}))
+	return Array.from(idToAssetItemIds.entries()).flatMap(
+		([id, assetItemIds]) =>
+			dates.map((date) => ({
+				id,
+				assetItemIds,
+				date,
+			}))
 	);
 }
 
@@ -96,7 +98,9 @@ function getQueryDates(
 				.filter((x) => x.firstTransactionDate)
 				.reduce(
 					(acc, x) =>
-						x.firstTransactionDate! < acc ? x.firstTransactionDate! : acc,
+						x.firstTransactionDate! < acc
+							? x.firstTransactionDate!
+							: acc,
 					dates[0]
 				)
 		);
