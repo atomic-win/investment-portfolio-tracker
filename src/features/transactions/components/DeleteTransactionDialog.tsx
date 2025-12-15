@@ -30,7 +30,7 @@ export default function DeleteTransactionDialog({
 
 	return (
 		<AlertDialog>
-			<AlertDialogTrigger asChild>
+			<AlertDialogTrigger>
 				<Button variant='destructive' className='cursor-pointer'>
 					<Trash2Icon />
 					Delete
@@ -68,25 +68,21 @@ export default function DeleteTransactionDialog({
 				</div>
 				<AlertDialogFooter>
 					<AlertDialogCancel>Cancel</AlertDialogCancel>
-					<Button
+					<AlertDialogAction
 						variant='destructive'
 						className='cursor-pointer'
-						asChild
+						onClick={async () => {
+							await deleteTransactionAsync({
+								assetItemId: assetItem.id,
+								transactionId: transaction.id,
+								date: DateTime.fromISO(
+									transaction.date
+								).toJSDate(),
+							});
+						}}
 					>
-						<AlertDialogAction
-							onClick={async () => {
-								await deleteTransactionAsync({
-									assetItemId: assetItem.id,
-									transactionId: transaction.id,
-									date: DateTime.fromISO(
-										transaction.date
-									).toJSDate(),
-								});
-							}}
-						>
-							Delete
-						</AlertDialogAction>
-					</Button>
+						Delete
+					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>
 		</AlertDialog>

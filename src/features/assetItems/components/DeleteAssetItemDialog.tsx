@@ -30,17 +30,19 @@ export default function DeleteAssetItemDialog({
 
 	return (
 		<AlertDialog>
-			<AlertDialogTrigger asChild>
+			<AlertDialogTrigger>
 				<Button variant='destructive' className='cursor-pointer'>
 					Delete
 				</Button>
 			</AlertDialogTrigger>
 			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+					<AlertDialogTitle>
+						Are you absolutely sure?
+					</AlertDialogTitle>
 					<AlertDialogDescription>
-						This action cannot be undone. This will permanently delete the asset
-						item.
+						This action cannot be undone. This will permanently
+						delete the asset item.
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<div>
@@ -55,11 +57,15 @@ export default function DeleteAssetItemDialog({
 					/>
 					<InfoLine
 						label='Invested Value'
-						value={<CurrencyAmount amount={assetItem.investedValue} />}
+						value={
+							<CurrencyAmount amount={assetItem.investedValue} />
+						}
 					/>
 					<InfoLine
 						label='Current Value'
-						value={<CurrencyAmount amount={assetItem.currentValue} />}
+						value={
+							<CurrencyAmount amount={assetItem.currentValue} />
+						}
 					/>
 					<InfoLine
 						label='XIRR'
@@ -68,14 +74,15 @@ export default function DeleteAssetItemDialog({
 				</div>
 				<AlertDialogFooter>
 					<AlertDialogCancel>Cancel</AlertDialogCancel>
-					<Button variant='destructive' className='cursor-pointer' asChild>
-						<AlertDialogAction
-							onClick={async () => {
-								await deleteAssetItemAsync(assetItem.id);
-							}}>
-							Delete
-						</AlertDialogAction>
-					</Button>
+					<AlertDialogAction
+						variant='destructive'
+						className='cursor-pointer'
+						onClick={async () => {
+							await deleteAssetItemAsync(assetItem.id);
+						}}
+					>
+						Delete
+					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>
 		</AlertDialog>
