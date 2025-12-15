@@ -1,5 +1,9 @@
+'use client';
 import { DollarSignIcon } from 'lucide-react';
+import Link from 'next/link';
 
+import AccountMenu from '@/components/AccountMenu';
+import SettingsSidebarGroup from '@/components/SettingsSidebarGroup';
 import {
 	Sidebar,
 	SidebarContent,
@@ -11,13 +15,12 @@ import {
 	SidebarMenuItem,
 	SidebarRail,
 } from '@/components/ui/sidebar';
-import AccountMenu from '@/components/AccountMenu';
-import SettingsSidebarGroup from '@/components/SettingsSidebarGroup';
-import Link from 'next/link';
+import { Suspense } from 'react';
+import LoadingComponent from '@/components/LoadingComponent';
 
 const data = [
 	{ title: 'Portfolio', url: '/portfolio' },
-	{ title: 'Assets', url: '/assets' },
+	{ title: 'Asset Items', url: '/assetitems' },
 	{ title: 'Portfolio Trends', url: '/portfolio-trends' },
 ];
 
@@ -47,14 +50,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 					<SidebarMenu>
 						{data.map((item) => (
 							<SidebarMenuItem key={item.title}>
-								<SidebarMenuButton className='font-medium' asChild>
+								<SidebarMenuButton
+									className='font-medium'
+									asChild
+								>
 									<Link href={item.url}>{item.title}</Link>
 								</SidebarMenuButton>
 							</SidebarMenuItem>
 						))}
 					</SidebarMenu>
 				</SidebarGroup>
-				<SettingsSidebarGroup />
+				<Suspense
+					fallback={
+						<LoadingComponent loadingMessage='Loading User Profile...' />
+					}
+				>
+					<SettingsSidebarGroup />
+				</Suspense>
 			</SidebarContent>
 			<SidebarFooter className='mt-8'>
 				<SidebarMenu>

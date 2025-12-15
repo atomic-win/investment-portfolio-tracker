@@ -10,7 +10,14 @@ import {
 	useReactTable,
 	VisibilityState,
 } from '@tanstack/react-table';
+import { ArrowDown, ArrowUp, ArrowUpDown, ExternalLink } from 'lucide-react';
+import Link from 'next/link';
+import React, { useState } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 
+import { Button } from '@/components/ui/button';
+import { DataTablePagination } from '@/components/ui/data-table-pagination';
+import { DataTableToolbar } from '@/components/ui/data-table-toolbar';
 import {
 	Table,
 	TableBody,
@@ -19,15 +26,10 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { ArrowDown, ArrowUp, ArrowUpDown, ExternalLink } from 'lucide-react';
-import { DataTableToolbar } from '@/components/ui/data-table-toolbar';
 import { cn } from '@/lib/utils';
-import { DataTablePagination } from '@/components/ui/data-table-pagination';
-import Link from 'next/link';
 
 interface DataTableProps<TData, TValue> {
+	id: string;
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
 }
@@ -131,6 +133,7 @@ export function createColumnDef<TData>({
 }
 
 export function DataTable<TData, TValue>({
+	id,
 	columns,
 	data,
 	initialSorting,
@@ -150,10 +153,30 @@ export function DataTable<TData, TValue>({
 		doPagination = false;
 	}
 
-	const [pagination, setPagination] = useState({
-		pageIndex: 0,
-		pageSize: doPagination ? 8 : data.length,
-	});
+	const [pageIndex, setPageIndex] = useState(0);
+
+	const [pageSize, setPageSize] = useLocalStorage(
+		`data-table-page-size-${id}`,
+		!!doPagination ? 8 : data.length
+	);
+
+	const pagination = {
+		pageIndex,
+		pageSize,
+	};
+
+	const setPagination = (
+		updater: ((old: typeof pagination) => typeof pagination) | typeof pagination
+	) => {
+		if (typeof updater === 'function') {
+			const newPagination = updater(pagination);
+			setPageIndex(newPagination.pageIndex);
+			setPageSize(newPagination.pageSize);
+		} else {
+			setPageIndex(updater.pageIndex);
+			setPageSize(updater.pageSize);
+		}
+	};
 
 	const table = useReactTable({
 		data,
@@ -186,9 +209,9 @@ export function DataTable<TData, TValue>({
 											{header.isPlaceholder
 												? null
 												: flexRender(
-														header.column.columnDef.header,
-														header.getContext()
-												  )}
+													header.column.columnDef.header,
+													header.getContext()
+												)}
 										</TableHead>
 									);
 								})}
