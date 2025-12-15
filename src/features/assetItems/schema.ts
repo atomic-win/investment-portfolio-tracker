@@ -17,7 +17,7 @@ export const AddAssetItemSchema = z
 	.object({
 		name: z.string().min(3).max(50),
 		assetClass: z.nativeEnum(AssetClass).optional(),
-		type: z.nativeEnum(AssetType),
+		assetType: z.nativeEnum(AssetType),
 		schemeCode: z.number().int().min(100000).max(999999).optional(),
 		symbol: z.string().optional(),
 		currency: z
@@ -29,70 +29,70 @@ export const AddAssetItemSchema = z
 	})
 	.superRefine((data, ctx) => {
 		if (!!!data.assetClass) {
-			if (isAssetClassInputSupported(data.type)) {
+			if (isAssetClassInputSupported(data.assetType)) {
 				ctx.addIssue({
 					code: z.ZodIssueCode.custom,
-					message: `Asset Class is required for ${data.type}`,
+					message: `Asset Class is required for ${data.assetType}`,
 				});
 			}
 			return;
 		}
 
-		if (!isAssetClassInputSupported(data.type)) {
+		if (!isAssetClassInputSupported(data.assetType)) {
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
-				message: `Asset Class is not required for ${data.type}`,
+				message: `Asset Class is not required for ${data.assetType}`,
 			});
 		}
 	})
 	.superRefine((data, ctx) => {
 		if (!!!data.schemeCode) {
-			if (isSchemeCodeInputSupported(data.type)) {
+			if (isSchemeCodeInputSupported(data.assetType)) {
 				ctx.addIssue({
 					code: z.ZodIssueCode.custom,
-					message: `Scheme Code is required for ${data.type}`,
+					message: `Scheme Code is required for ${data.assetType}`,
 				});
 			}
 			return;
 		}
-		if (!isSchemeCodeInputSupported(data.type)) {
+		if (!isSchemeCodeInputSupported(data.assetType)) {
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
-				message: `Scheme Code is not required for ${data.type}`,
+				message: `Scheme Code is not required for ${data.assetType}`,
 			});
 		}
 	})
 	.superRefine((data, ctx) => {
 		if (!!!data.symbol) {
-			if (isSymbolInputSupported(data.type)) {
+			if (isSymbolInputSupported(data.assetType)) {
 				ctx.addIssue({
 					code: z.ZodIssueCode.custom,
-					message: `Symbol is required for ${data.type}`,
+					message: `Symbol is required for ${data.assetType}`,
 				});
 			}
 			return;
 		}
-		if (!isSymbolInputSupported(data.type)) {
+		if (!isSymbolInputSupported(data.assetType)) {
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
-				message: `Symbol is not required for ${data.type}`,
+				message: `Symbol is not required for ${data.assetType}`,
 			});
 		}
 	})
 	.superRefine((data, ctx) => {
 		if (!!!data.currency) {
-			if (isCurrencyInputSupported(data.type)) {
+			if (isCurrencyInputSupported(data.assetType)) {
 				ctx.addIssue({
 					code: z.ZodIssueCode.custom,
-					message: `Currency is required for ${data.type}`,
+					message: `Currency is required for ${data.assetType}`,
 				});
 			}
 			return;
 		}
-		if (!isCurrencyInputSupported(data.type)) {
+		if (!isCurrencyInputSupported(data.assetType)) {
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
-				message: `Currency is not required for ${data.type}`,
+				message: `Currency is not required for ${data.assetType}`,
 			});
 		}
 	});
