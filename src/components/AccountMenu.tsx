@@ -9,7 +9,6 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { SidebarMenuButton } from '@/components/ui/sidebar';
 import useAccessTokenQuery from '@/hooks/useAccessTokenQuery';
 import { useLogInMutation } from '@/hooks/useLogInMutation';
 import { useLogOutMutation } from '@/hooks/useLogOutMutation';
@@ -60,18 +59,21 @@ function LogOutMenu() {
 
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger asChild>
-				<SidebarMenuButton>
+			<DropdownMenuTrigger>
+				<div className='flex items-center space-x-2 px-3 py-2 hover:bg-accent hover:text-accent-foreground rounded-md cursor-pointer'>
 					<User2 />
 					{profile.fullName}
 					<ChevronUp className='ml-auto' />
-				</SidebarMenuButton>
+				</div>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent
 				side='top'
-				className='w-[--radix-popper-anchor-width]'>
+				className='w-[---dropdown-menu-width]'
+			>
 				<DropdownMenuItem
-					onClick={async () => await logoutMutation.mutateAsync()}>
+					className='w-[---dropdown-menu-width]'
+					onClick={async () => await logoutMutation.mutateAsync()}
+				>
 					<LogOut />
 					Sign out
 				</DropdownMenuItem>

@@ -30,7 +30,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			<SidebarHeader>
 				<SidebarMenu>
 					<SidebarMenuItem>
-						<SidebarMenuButton size='lg' asChild>
+						<SidebarMenuButton size='lg'>
 							<Link href='/'>
 								<div className='flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground'>
 									<DollarSignIcon className='size-4' />
@@ -50,10 +50,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 					<SidebarMenu>
 						{data.map((item) => (
 							<SidebarMenuItem key={item.title}>
-								<SidebarMenuButton
-									className='font-medium'
-									asChild
-								>
+								<SidebarMenuButton className='font-medium'>
 									<Link href={item.url}>{item.title}</Link>
 								</SidebarMenuButton>
 							</SidebarMenuItem>
