@@ -64,12 +64,8 @@ function LogOutMenu() {
 				{profile.fullName}
 				<ChevronUp className='ml-auto' />
 			</DropdownMenuTrigger>
-			<DropdownMenuContent
-				side='top'
-				className='w-[---dropdown-menu-width]'
-			>
+			<DropdownMenuContent side='top'>
 				<DropdownMenuItem
-					className='w-[---dropdown-menu-width]'
 					onClick={async () => await logoutMutation.mutateAsync()}
 				>
 					<LogOut />
