@@ -1,6 +1,5 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ChevronDown } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -20,7 +19,6 @@ import { Input } from '@/components/ui/input';
 import {
 	Select,
 	SelectContent,
-	SelectIcon,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
@@ -114,10 +112,7 @@ export default function AddTransactionForm({
 											className='w-full rounded-lg sm:ml-auto'
 											aria-label='Select a value'
 										>
-											<SelectValue placeholder='Select a transaction type' />
-											<SelectIcon>
-												<ChevronDown className='h-4 w-4 opacity-50' />
-											</SelectIcon>
+											<SelectValue title='Select a transaction type' />
 										</SelectTrigger>
 										<SelectContent className='rounded-xl'>
 											{getApplicableTransactionTypes(
