@@ -147,7 +147,11 @@ export default function EditTransactionForm({
 										id={field.name}
 										onBlur={field.onBlur}
 									>
-										<SelectValue title='Select a transaction type' />
+										<SelectValue title='Select a transaction type'>
+											{displayTransactionTypeText(
+												field.value as TransactionType
+											)}
+										</SelectValue>
 									</SelectTrigger>
 									<SelectContent className='rounded-xl'>
 										{getApplicableTransactionTypes(

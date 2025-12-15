@@ -24,7 +24,7 @@ import {
 	isSymbolInputSupported,
 } from '@/features/assetItems/schema';
 import { displayAssetClassText, displayAssetTypeText } from '@/lib/utils';
-import { AssetType, Currency } from '@/types';
+import { AssetClass, AssetType, Currency } from '@/types';
 import {
 	FieldGroup,
 	Field,
@@ -97,7 +97,11 @@ export default function AddAssetItemForm() {
 										id={field.name}
 										onBlur={field.onBlur}
 									>
-										<SelectValue title='Select an asset type' />
+										<SelectValue title='Select an asset type'>
+											{displayAssetTypeText(
+												field.value as AssetType
+											)}
+										</SelectValue>
 									</SelectTrigger>
 									<SelectContent className='rounded-xl'>
 										{Object.values(AssetType).map(
@@ -139,7 +143,13 @@ export default function AddAssetItemForm() {
 											id={field.name}
 											onBlur={field.onBlur}
 										>
-											<SelectValue title='Select an asset class' />
+											<SelectValue title='Select an asset class'>
+												{field.value === undefined
+													? ''
+													: displayAssetClassText(
+															field.value as AssetClass
+													  )}
+											</SelectValue>
 										</SelectTrigger>
 										<SelectContent className='rounded-xl'>
 											{getApplicableAssetClasses(
