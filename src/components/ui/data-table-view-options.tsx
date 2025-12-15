@@ -3,15 +3,17 @@
 import { Table } from '@tanstack/react-table';
 import { Settings2Icon } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
 	DropdownMenuContent,
+	DropdownMenuGroup,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/utils';
 
 interface DataTableViewOptionsProps<TData> {
 	table: Table<TData>;
@@ -33,25 +35,27 @@ export function DataTableViewOptions<TData>({
 
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger asChild>
-				<Button
-					variant='outline'
-					size='sm'
-					className='ml-auto hidden h-8 lg:flex'>
-					<Settings2Icon className='mr-2 h-4 w-4' />
-					View
-				</Button>
+			<DropdownMenuTrigger
+				className={cn('ml-auto h-8 lg:flex', buttonVariants())}
+			>
+				<Settings2Icon className='mr-2 h-4 w-4' />
+				View
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align='end'>
-				<DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
-				<DropdownMenuSeparator />
+				<DropdownMenuGroup>
+					<DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+					<DropdownMenuSeparator />
+				</DropdownMenuGroup>
 				{canHideColumns.map((column) => {
 					return (
 						<DropdownMenuCheckboxItem
 							key={column.id}
 							className='capitalize'
 							checked={column.getIsVisible()}
-							onCheckedChange={(value) => column.toggleVisibility(!!value)}>
+							onCheckedChange={(value) =>
+								column.toggleVisibility(!!value)
+							}
+						>
 							{column.id}
 						</DropdownMenuCheckboxItem>
 					);
