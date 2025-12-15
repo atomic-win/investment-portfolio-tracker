@@ -17,6 +17,8 @@ import {
 } from '@/components/ui/sidebar';
 import { Suspense } from 'react';
 import LoadingComponent from '@/components/LoadingComponent';
+import { buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 const data = [
 	{ title: 'Portfolio', url: '/portfolio' },
@@ -30,18 +32,21 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 			<SidebarHeader>
 				<SidebarMenu>
 					<SidebarMenuItem>
-						<SidebarMenuButton size='lg'>
-							<Link href='/'>
-								<div className='flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground'>
-									<DollarSignIcon className='size-4' />
-								</div>
-								<div className='flex flex-col gap-0.5 leading-none'>
-									<span className='font-semibold'>
-										Investment Portfolio Tracker
-									</span>
-								</div>
-							</Link>
-						</SidebarMenuButton>
+						<Link href='/'>
+							<SidebarMenuButton
+								size='lg'
+								className={cn(
+									buttonVariants(),
+									'cursor-pointer',
+									'size-12 w-full'
+								)}
+							>
+								<DollarSignIcon className='size-16 bold' />
+								<span className='font-semibold'>
+									Investment Portfolio Tracker
+								</span>
+							</SidebarMenuButton>
+						</Link>
 					</SidebarMenuItem>
 				</SidebarMenu>
 			</SidebarHeader>
@@ -50,9 +55,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 					<SidebarMenu>
 						{data.map((item) => (
 							<SidebarMenuItem key={item.title}>
-								<SidebarMenuButton className='font-medium'>
-									<Link href={item.url}>{item.title}</Link>
-								</SidebarMenuButton>
+								<Link href={item.url}>
+									<SidebarMenuButton className='font-medium size-10 w-full cursor-pointer'>
+										{item.title}
+									</SidebarMenuButton>
+								</Link>
 							</SidebarMenuItem>
 						))}
 					</SidebarMenu>

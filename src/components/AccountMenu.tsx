@@ -59,12 +59,10 @@ function LogOutMenu() {
 
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger>
-				<div className='flex items-center space-x-2 px-3 py-2 hover:bg-accent hover:text-accent-foreground rounded-md cursor-pointer'>
-					<User2 />
-					{profile.fullName}
-					<ChevronUp className='ml-auto' />
-				</div>
+			<DropdownMenuTrigger className='flex items-center space-x-2 px-3 py-2 hover:bg-accent hover:text-accent-foreground rounded-md cursor-pointer w-full'>
+				<User2 />
+				{profile.fullName}
+				<ChevronUp className='ml-auto' />
 			</DropdownMenuTrigger>
 			<DropdownMenuContent
 				side='top'
