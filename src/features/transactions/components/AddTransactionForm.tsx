@@ -45,7 +45,10 @@ export default function AddTransactionForm({
 		resolver: zodResolver(AddTransactionSchema),
 		defaultValues: {
 			date: new Date(),
-			transactionType: TransactionType.Unknown,
+			transactionType: getApplicableTransactionTypes(
+				assetItem.assetType
+			)[0],
+			name: '',
 			units: 0,
 		},
 	});
@@ -127,23 +130,17 @@ export default function AddTransactionForm({
 									<SelectContent className='rounded-xl'>
 										{getApplicableTransactionTypes(
 											assetItem.assetType
-										)
-											.filter(
-												(type) =>
-													type !==
-													TransactionType.Unknown
-											)
-											.map((type) => (
-												<SelectItem
-													key={type}
-													value={type}
-													className='rounded-lg'
-												>
-													{displayTransactionTypeText(
-														type
-													)}
-												</SelectItem>
-											))}
+										).map((type) => (
+											<SelectItem
+												key={type}
+												value={type}
+												className='rounded-lg'
+											>
+												{displayTransactionTypeText(
+													type
+												)}
+											</SelectItem>
+										))}
 									</SelectContent>
 								</Select>
 								{fieldState.invalid && (
@@ -165,6 +162,7 @@ export default function AddTransactionForm({
 								</FieldLabel>
 								<Input
 									{...field}
+									type='number'
 									id={field.name}
 									aria-invalid={fieldState.invalid}
 								/>
