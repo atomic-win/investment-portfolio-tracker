@@ -69,7 +69,7 @@ export default function SettingsSidebarGroup() {
 							</span>
 							<ChevronRight className='h-4 w-4 opacity-50' />
 						</DropdownMenuTrigger>
-						<DropdownMenuContent side='right'>
+						<DropdownMenuContent side='right' align='center'>
 							{setting.options.map((option) => (
 								<DropdownMenuCheckboxItem
 									key={option}
