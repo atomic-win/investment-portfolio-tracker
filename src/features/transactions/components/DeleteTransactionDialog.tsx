@@ -14,9 +14,10 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { useDeleteTransactionMutation } from '@/features/transactions/hooks/transactions';
 import { AssetItemPortfolio, Transaction } from '@/types';
+import { cn } from '@/lib/utils';
 
 export default function DeleteTransactionDialog({
 	assetItem,
@@ -30,11 +31,14 @@ export default function DeleteTransactionDialog({
 
 	return (
 		<AlertDialog>
-			<AlertDialogTrigger>
-				<Button variant='destructive' className='cursor-pointer'>
-					<Trash2Icon />
-					Delete
-				</Button>
+			<AlertDialogTrigger
+				className={cn(
+					'cursor-pointer',
+					buttonVariants({ variant: 'destructive' })
+				)}
+			>
+				<Trash2Icon />
+				Delete
 			</AlertDialogTrigger>
 			<AlertDialogContent>
 				<AlertDialogHeader>

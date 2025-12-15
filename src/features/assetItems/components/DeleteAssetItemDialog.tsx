@@ -12,9 +12,10 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { useDeleteAssetItemMutation } from '@/features/assetItems/hooks/assetItems';
 import {
+	cn,
 	displayAssetClassText,
 	displayAssetTypeText,
 	displayPercentage,
@@ -30,10 +31,13 @@ export default function DeleteAssetItemDialog({
 
 	return (
 		<AlertDialog>
-			<AlertDialogTrigger>
-				<Button variant='destructive' className='cursor-pointer'>
-					Delete
-				</Button>
+			<AlertDialogTrigger
+				className={cn(
+					'cursor-pointer',
+					buttonVariants({ variant: 'destructive' })
+				)}
+			>
+				Delete
 			</AlertDialogTrigger>
 			<AlertDialogContent>
 				<AlertDialogHeader>
