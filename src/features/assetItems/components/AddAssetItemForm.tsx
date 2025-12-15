@@ -97,7 +97,7 @@ export default function AddAssetItemForm() {
 										id={field.name}
 										onBlur={field.onBlur}
 									>
-										<SelectValue title='Select a transaction type' />
+										<SelectValue title='Select an asset type' />
 									</SelectTrigger>
 									<SelectContent className='rounded-xl'>
 										{Object.values(AssetType).map(
