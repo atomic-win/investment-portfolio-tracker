@@ -22,13 +22,14 @@ export function DatePicker({
 }) {
 	return (
 		<Popover>
-			<PopoverTrigger asChild disabled={!onSelect}>
+			<PopoverTrigger disabled={!onSelect}>
 				<Button
 					variant={'outline'}
 					className={cn(
 						'w-full justify-start text-left font-normal',
 						!date && 'text-muted-foreground'
-					)}>
+					)}
+				>
 					<CalendarIcon />
 					{date ? format(date, 'PPP') : <span>Pick a date</span>}
 				</Button>
