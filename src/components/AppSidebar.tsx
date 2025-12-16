@@ -30,25 +30,21 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 	return (
 		<Sidebar {...props}>
 			<SidebarHeader>
-				<SidebarMenu>
-					<SidebarMenuItem>
-						<Link href='/'>
-							<SidebarMenuButton
-								size='lg'
-								className={cn(
-									buttonVariants(),
-									'cursor-pointer',
-									'size-12 w-full'
-								)}
-							>
-								<DollarSignIcon className='size-16 bold' />
-								<span className='font-semibold'>
-									Investment Portfolio Tracker
-								</span>
-							</SidebarMenuButton>
-						</Link>
-					</SidebarMenuItem>
-				</SidebarMenu>
+				<Link href='/'>
+					<SidebarMenuButton
+						size='lg'
+						className={cn(
+							buttonVariants(),
+							'cursor-pointer',
+							'size-12 w-full'
+						)}
+					>
+						<DollarSignIcon className='size-16 bold' />
+						<span className='font-semibold'>
+							Investment Portfolio Tracker
+						</span>
+					</SidebarMenuButton>
+				</Link>
 			</SidebarHeader>
 			<SidebarContent>
 				<SidebarGroup>
