@@ -19,6 +19,7 @@ import { Suspense } from 'react';
 import LoadingComponent from '@/components/LoadingComponent';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { usePathname } from 'next/navigation';
 
 const data = [
 	{ title: 'Portfolio', url: '/portfolio' },
@@ -27,6 +28,8 @@ const data = [
 ];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+	const pathname = usePathname();
+
 	return (
 		<Sidebar {...props}>
 			<SidebarHeader>
@@ -52,7 +55,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 						{data.map((item) => (
 							<SidebarMenuItem key={item.title}>
 								<Link href={item.url}>
-									<SidebarMenuButton className='font-medium size-10 w-full cursor-pointer'>
+									<SidebarMenuButton
+										className={cn(
+											'font-medium size-10 w-full cursor-pointer',
+											(pathname === item.url ||
+												pathname.startsWith(
+													item.url + '/'
+												)) &&
+												'bg-primary text-primary-foreground'
+										)}
+									>
 										{item.title}
 									</SidebarMenuButton>
 								</Link>
