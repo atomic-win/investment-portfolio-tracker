@@ -107,11 +107,14 @@ function getQueryDates(
 	);
 
 	// end of previous month
-	let date = DateTime.now().minus({ months: 1 }).endOf('month');
+	let date = DateTime.now()
+		.startOf('month')
+		.minus({ months: 1 })
+		.endOf('month');
 
 	while (date >= earliestDate) {
 		dates.push(date.toISODate());
-		date = date.minus({ months: 1 }); // Move back monthwise
+		date = date.startOf('month').minus({ months: 1 }).endOf('month');
 	}
 
 	return dates;
