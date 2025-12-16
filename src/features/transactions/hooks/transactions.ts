@@ -93,7 +93,7 @@ export function useEditTransactionMutation() {
 
 	return useMutation({
 		mutationFn: async (request: EditTransactionRequest) => {
-			await primalApiClient.put(
+			await primalApiClient.patch(
 				`assetitems/${request.assetItemId}/transactions/${request.transactionId}`,
 				_.omit(request, ['assetItemId', 'transactionId'])
 			);

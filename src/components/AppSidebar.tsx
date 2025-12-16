@@ -17,6 +17,9 @@ import {
 } from '@/components/ui/sidebar';
 import { Suspense } from 'react';
 import LoadingComponent from '@/components/LoadingComponent';
+import { buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { usePathname } from 'next/navigation';
 
 const data = [
 	{ title: 'Portfolio', url: '/portfolio' },
@@ -25,37 +28,46 @@ const data = [
 ];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+	const pathname = usePathname();
+
 	return (
 		<Sidebar {...props}>
 			<SidebarHeader>
-				<SidebarMenu>
-					<SidebarMenuItem>
-						<SidebarMenuButton size='lg' asChild>
-							<Link href='/'>
-								<div className='flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground'>
-									<DollarSignIcon className='size-4' />
-								</div>
-								<div className='flex flex-col gap-0.5 leading-none'>
-									<span className='font-semibold'>
-										Investment Portfolio Tracker
-									</span>
-								</div>
-							</Link>
-						</SidebarMenuButton>
-					</SidebarMenuItem>
-				</SidebarMenu>
+				<Link href='/'>
+					<SidebarMenuButton
+						size='lg'
+						className={cn(
+							buttonVariants(),
+							'cursor-pointer',
+							'size-12 w-full'
+						)}
+					>
+						<DollarSignIcon className='size-16 bold' />
+						<span className='font-semibold'>
+							Investment Portfolio Tracker
+						</span>
+					</SidebarMenuButton>
+				</Link>
 			</SidebarHeader>
 			<SidebarContent>
 				<SidebarGroup>
 					<SidebarMenu>
 						{data.map((item) => (
 							<SidebarMenuItem key={item.title}>
-								<SidebarMenuButton
-									className='font-medium'
-									asChild
-								>
-									<Link href={item.url}>{item.title}</Link>
-								</SidebarMenuButton>
+								<Link href={item.url}>
+									<SidebarMenuButton
+										className={cn(
+											'font-medium size-10 w-full cursor-pointer',
+											(pathname === item.url ||
+												pathname.startsWith(
+													item.url + '/'
+												)) &&
+												'bg-primary text-primary-foreground'
+										)}
+									>
+										{item.title}
+									</SidebarMenuButton>
+								</Link>
 							</SidebarMenuItem>
 						))}
 					</SidebarMenu>

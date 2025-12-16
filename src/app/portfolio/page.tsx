@@ -1,6 +1,6 @@
 'use client';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
-import InvestmentsFilterForm from '@/features/assetItems/components/InvestmentsFilterForm';
+import InvestmentsFilterForm from '@/features/portfolio/components/InvestmentsFilterForm';
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import PortfolioOverallSection from '@/features/portfolio/components/PortfolioOverallSection';
 import PortfolioPageContainer from '@/features/portfolio/components/PortfolioPageContainer';
@@ -14,13 +14,17 @@ export default function Page() {
 		withInvestmentsFilter(PortfolioPageContainer)
 	);
 
-	const WithLoadedInvestmentsFilterForm = withAssetItems(InvestmentsFilterForm);
+	const WithLoadedInvestmentsFilterForm = withAssetItems(
+		InvestmentsFilterForm
+	);
 
 	return (
 		<>
 			<title>Portfolio</title>
 			<SidebarTriggerWithBreadcrumb
-				breadcrumbs={[{ title: 'Portfolio', href: '/investments/portfolio' }]}
+				breadcrumbs={[
+					{ title: 'Portfolio', href: '/investments/portfolio' },
+				]}
 			/>
 			<div className='container mx-auto p-2'>
 				<div className='grid grid-cols-3 gap-4'>

@@ -2,8 +2,6 @@ import { AssetItemPortfolio, TransactionType, AssetType } from '@/types';
 
 export function displayTransactionTypeText(transactionType: TransactionType) {
 	switch (transactionType) {
-		case TransactionType.Unknown:
-			return 'Unknown';
 		case TransactionType.Buy:
 			return 'Buy';
 		case TransactionType.Sell:

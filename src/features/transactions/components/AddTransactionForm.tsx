@@ -1,26 +1,16 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ChevronDown } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { CardContent } from '@/components/ui/card';
 import { DatePicker } from '@/components/ui/date-picker';
-import {
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-	Form,
-	FormControl,
-} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import {
 	Select,
 	SelectContent,
-	SelectIcon,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
@@ -36,6 +26,12 @@ import {
 	getUnitLabelText,
 } from '@/features/transactions/lib/utils';
 import { AssetItemPortfolio, TransactionType } from '@/types';
+import {
+	Field,
+	FieldError,
+	FieldGroup,
+	FieldLabel,
+} from '@/components/ui/field';
 
 export default function AddTransactionForm({
 	assetItem,
@@ -49,7 +45,10 @@ export default function AddTransactionForm({
 		resolver: zodResolver(AddTransactionSchema),
 		defaultValues: {
 			date: new Date(),
-			transactionType: TransactionType.Unknown,
+			transactionType: getApplicableTransactionTypes(
+				assetItem.assetType
+			)[0],
+			name: '',
 			units: 0,
 		},
 	});
@@ -65,112 +64,125 @@ export default function AddTransactionForm({
 
 	return (
 		<CardContent className='p-0'>
-			<Form {...form}>
-				<form
-					onSubmit={form.handleSubmit(onSubmit)}
-					className='flex flex-col space-y-4'
-				>
-					<FormField
+			<form
+				onSubmit={form.handleSubmit(onSubmit)}
+				className='flex flex-col space-y-4'
+			>
+				<FieldGroup>
+					<Controller
 						control={form.control}
 						name='date'
-						render={({ field }) => (
-							<FormItem className='flex flex-col'>
-								<FormLabel>Transaction Date</FormLabel>
-								<FormControl>
-									<DatePicker
-										date={field.value}
-										onSelect={field.onChange}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
+						render={({ field, fieldState }) => (
+							<Field data-invalid={fieldState.invalid}>
+								<FieldLabel htmlFor={field.name}>
+									Transaction Date
+								</FieldLabel>
+								<DatePicker
+									date={field.value}
+									onSelect={field.onChange}
+								/>
+								{fieldState.invalid && (
+									<FieldError errors={[fieldState.error]} />
+								)}
+							</Field>
 						)}
 					/>
-					<FormField
+					<Controller
 						control={form.control}
 						name='name'
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Transaction Name</FormLabel>
-								<FormControl>
-									<Input {...field} />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
+						render={({ field, fieldState }) => (
+							<Field data-invalid={fieldState.invalid}>
+								<FieldLabel htmlFor={field.name}>
+									Transaction Name
+								</FieldLabel>
+								<Input
+									{...field}
+									id={field.name}
+									aria-invalid={fieldState.invalid}
+								/>
+								{fieldState.invalid && (
+									<FieldError errors={[fieldState.error]} />
+								)}
+							</Field>
 						)}
 					/>
-					<FormField
+					<Controller
 						control={form.control}
 						name='transactionType'
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Transaction Type</FormLabel>
-								<FormControl>
-									<Select
-										onValueChange={field.onChange}
-										value={field.value}
+						render={({
+							field: { onChange, ...field },
+							fieldState,
+						}) => (
+							<Field data-invalid={fieldState.invalid}>
+								<FieldLabel htmlFor={field.name}>
+									Transaction Type
+								</FieldLabel>
+								<Select {...field} onValueChange={onChange}>
+									<SelectTrigger
+										className='w-full rounded-lg sm:ml-auto'
+										aria-label='Select a value'
+										aria-invalid={fieldState.invalid}
+										id={field.name}
+										onBlur={field.onBlur}
 									>
-										<SelectTrigger
-											className='w-full rounded-lg sm:ml-auto'
-											aria-label='Select a value'
-										>
-											<SelectValue placeholder='Select a transaction type' />
-											<SelectIcon>
-												<ChevronDown className='h-4 w-4 opacity-50' />
-											</SelectIcon>
-										</SelectTrigger>
-										<SelectContent className='rounded-xl'>
-											{getApplicableTransactionTypes(
-												assetItem.assetType
-											)
-												.filter(
-													(type) =>
-														type !==
-														TransactionType.Unknown
-												)
-												.map((type) => (
-													<SelectItem
-														key={type}
-														value={type}
-														className='rounded-lg'
-													>
-														{displayTransactionTypeText(
-															type
-														)}
-													</SelectItem>
-												))}
-										</SelectContent>
-									</Select>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
+										<SelectValue title='Select a transaction type'>
+											{displayTransactionTypeText(
+												field.value as TransactionType
+											)}
+										</SelectValue>
+									</SelectTrigger>
+									<SelectContent className='rounded-xl'>
+										{getApplicableTransactionTypes(
+											assetItem.assetType
+										).map((type) => (
+											<SelectItem
+												key={type}
+												value={type}
+												className='rounded-lg'
+											>
+												{displayTransactionTypeText(
+													type
+												)}
+											</SelectItem>
+										))}
+									</SelectContent>
+								</Select>
+								{fieldState.invalid && (
+									<FieldError errors={[fieldState.error]} />
+								)}
+							</Field>
 						)}
 					/>
-					<FormField
+					<Controller
 						control={form.control}
 						name='units'
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>
+						render={({ field, fieldState }) => (
+							<Field data-invalid={fieldState.invalid}>
+								<FieldLabel htmlFor={field.name}>
 									{getUnitLabelText(
 										assetItem,
 										form.watch('transactionType')
 									)}
-								</FormLabel>
-								<FormControl>
-									<Input {...field} />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
+								</FieldLabel>
+								<Input
+									{...field}
+									type='number'
+									id={field.name}
+									aria-invalid={fieldState.invalid}
+								/>
+								{fieldState.invalid && (
+									<FieldError errors={[fieldState.error]} />
+								)}
+							</Field>
 						)}
 					/>
-					<div className='flex justify-end'>
-						<Button type='submit' className='cursor-pointer'>
-							Add Transaction
-						</Button>
-					</div>
-				</form>
-			</Form>
+				</FieldGroup>
+				<div className='flex justify-end'>
+					<Button type='submit' className='cursor-pointer'>
+						Add Transaction
+					</Button>
+				</div>
+			</form>
 		</CardContent>
 	);
 }
