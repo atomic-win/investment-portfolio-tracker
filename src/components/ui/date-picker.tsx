@@ -14,9 +14,11 @@ import { cn } from '@/lib/utils';
 
 export function DatePicker({
 	date,
+	toDate,
 	onSelect,
 }: {
 	date: Date | undefined;
+	toDate?: Date | undefined;
 	onSelect?: (date: Date | undefined) => void | undefined;
 }) {
 	return (
@@ -36,6 +38,7 @@ export function DatePicker({
 				<Calendar
 					mode='single'
 					selected={date}
+					hidden={toDate ? { after: toDate } : undefined}
 					onSelect={onSelect}
 					autoFocus
 					fixedWeeks
