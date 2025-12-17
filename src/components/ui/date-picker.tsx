@@ -15,10 +15,12 @@ import { cn } from '@/lib/utils';
 export function DatePicker({
 	date,
 	toDate,
+	endMonth,
 	onSelect,
 }: {
 	date: Date | undefined;
 	toDate?: Date | undefined;
+	endMonth?: Date | undefined;
 	onSelect?: (date: Date | undefined) => void | undefined;
 }) {
 	return (
@@ -39,6 +41,7 @@ export function DatePicker({
 					mode='single'
 					selected={date}
 					hidden={toDate ? { after: toDate } : undefined}
+					endMonth={endMonth}
 					onSelect={onSelect}
 					autoFocus
 					fixedWeeks

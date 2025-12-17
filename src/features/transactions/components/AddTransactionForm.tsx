@@ -87,6 +87,7 @@ export default function AddTransactionForm({
 								<DatePicker
 									date={field.value}
 									toDate={endOfLastMonth}
+									endMonth={endOfLastMonth}
 									onSelect={field.onChange}
 								/>
 								{fieldState.invalid && (
