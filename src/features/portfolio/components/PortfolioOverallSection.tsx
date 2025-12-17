@@ -15,7 +15,7 @@ const columns: ColumnDef<OverallPortfolio>[] = [
 	}),
 	createColumnDef({
 		accessorKey: 'currentValue',
-		headerText: 'Current Value',
+		headerText: 'Last Month Value',
 		cellTextFn: (data) => <CurrencyAmount amount={data.currentValue} />,
 		align: 'left',
 		enableHiding: false,
@@ -36,7 +36,11 @@ export default function PortfolioOverallSection({
 }) {
 	return (
 		<div className='mx-auto'>
-			<DataTable id='portfolio-overall' columns={columns} data={portfolios} />
+			<DataTable
+				id='portfolio-overall'
+				columns={columns}
+				data={portfolios}
+			/>
 		</div>
 	);
 }

@@ -31,15 +31,15 @@ const columns: ColumnDef<AssetClassPortfolio>[] = [
 	}),
 	createColumnDef({
 		accessorKey: 'currentValue',
-		id: 'Current Value',
-		headerText: 'Current Value',
+		id: 'Last Month Value',
+		headerText: 'Last Month Value',
 		cellTextFn: (data) => <CurrencyAmount amount={data.currentValue} />,
 		sortingFnCompare: (data) => data.currentValue,
 		enableHiding: false,
 	}),
 	createColumnDef({
 		accessorKey: 'currentValuePercent',
-		headerText: 'Current Value (%)',
+		headerText: 'Last Month Value (%)',
 		cellTextFn: (data) => displayPercentage(data.currentValuePercent),
 		sortingFnCompare: (data) => data.currentValuePercent,
 		enableHiding: false,

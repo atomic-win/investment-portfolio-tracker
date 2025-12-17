@@ -89,10 +89,13 @@ function getQueryDates(
 	assetItemIds: string[],
 	latest: boolean
 ): string[] {
-	const dates = [DateTime.now().toISODate()];
+	let monthEndDate = DateTime.now()
+		.startOf('month')
+		.minus({ months: 1 })
+		.endOf('month');
 
 	if (latest) {
-		return dates;
+		return [monthEndDate.toISODate()!];
 	}
 
 	const earliestDate = DateTime.fromISO(
@@ -102,19 +105,18 @@ function getQueryDates(
 			.reduce(
 				(acc, x) =>
 					x.activityStartDate! < acc ? x.activityStartDate! : acc,
-				dates[0]
+				monthEndDate.toISODate()!
 			)
 	);
 
-	// end of previous month
-	let date = DateTime.now()
-		.startOf('month')
-		.minus({ months: 1 })
-		.endOf('month');
+	const dates: string[] = [];
 
-	while (date >= earliestDate) {
-		dates.push(date.toISODate());
-		date = date.startOf('month').minus({ months: 1 }).endOf('month');
+	while (monthEndDate >= earliestDate) {
+		dates.push(monthEndDate.toISODate()!);
+		monthEndDate = monthEndDate
+			.startOf('month')
+			.minus({ months: 1 })
+			.endOf('month');
 	}
 
 	return dates;

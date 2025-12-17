@@ -66,7 +66,7 @@ export default function DeleteAssetItemDialog({
 						}
 					/>
 					<InfoLine
-						label='Current Value'
+						label='Last Month Value'
 						value={
 							<CurrencyAmount amount={assetItem.currentValue} />
 						}
