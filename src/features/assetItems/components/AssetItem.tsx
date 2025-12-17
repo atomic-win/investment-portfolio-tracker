@@ -35,11 +35,15 @@ export default function AssetItem({
 					/>
 					<InfoLine
 						label='Invested Value'
-						value={<CurrencyAmount amount={assetItem.investedValue} />}
+						value={
+							<CurrencyAmount amount={assetItem.investedValue} />
+						}
 					/>
 					<InfoLine
-						label='Current Value'
-						value={<CurrencyAmount amount={assetItem.currentValue} />}
+						label='Last Month Value'
+						value={
+							<CurrencyAmount amount={assetItem.currentValue} />
+						}
 					/>
 					<InfoLine
 						label='XIRR'
