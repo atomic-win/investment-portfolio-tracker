@@ -6,9 +6,8 @@ import {
 	SidebarGroupLabel,
 	SidebarMenu,
 } from '@/components/ui/sidebar';
-import useUpdateProfileMutation from '@/hooks/useUpdateProfileMutation';
 import { Currency, Locale } from '@/types';
-import { useMyProfileQuery } from '@/hooks/useMyProfileQuery';
+import { useUserQuery, useUpdateUserMutation } from '@/hooks/users';
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
@@ -19,8 +18,8 @@ import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 
 export default function SettingsSidebarGroup() {
-	const { data, isFetching, error } = useMyProfileQuery();
-	const { mutate: updateSetting } = useUpdateProfileMutation();
+	const { data, isFetching, error } = useUserQuery();
+	const { mutate: updateUser } = useUpdateUserMutation();
 
 	if (
 		isFetching ||
@@ -75,7 +74,7 @@ export default function SettingsSidebarGroup() {
 									key={option}
 									checked={option === setting.value}
 									onCheckedChange={() =>
-										updateSetting(
+										updateUser(
 											setting.name === 'currency'
 												? {
 														preferredCurrency:
