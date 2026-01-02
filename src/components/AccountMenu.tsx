@@ -3,6 +3,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { ChevronUp, LogOut, User2 } from 'lucide-react';
 
 import LoadingComponent from '@/components/LoadingComponent';
+import ErrorComponent from '@/components/ErrorComponent';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -12,7 +13,7 @@ import {
 import useAccessTokenQuery from '@/hooks/useAccessTokenQuery';
 import { useLogInMutation } from '@/hooks/useLogInMutation';
 import { useLogOutMutation } from '@/hooks/useLogOutMutation';
-import { useMyProfileQuery } from '@/hooks/useMyProfileQuery';
+import { useUserQuery } from '@/hooks/users';
 
 export default function AccountMenu() {
 	const { data: accessToken, isLoading } = useAccessTokenQuery();
@@ -46,15 +47,15 @@ function LogInMenu() {
 }
 
 function LogOutMenu() {
-	const { data: profile, isFetching, error } = useMyProfileQuery();
+	const { data: profile, isFetching, error } = useUserQuery();
 	const logoutMutation = useLogOutMutation();
 
 	if (isFetching) {
-		return <div>Fetching Profile...</div>;
+		return <LoadingComponent loadingMessage='Fetching profile...' />;
 	}
 
 	if (error || !!!profile) {
-		return <div>Error fetching profile</div>;
+		return <ErrorComponent errorMessage='Failed while fetching profile' />;
 	}
 
 	return (

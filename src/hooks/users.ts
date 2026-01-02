@@ -1,11 +1,26 @@
-'use client';
-
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
 import { Locale, User } from '@/types';
 
-export default function useUpdateProfileMutation() {
+export function useUserQuery() {
+	const primalApiClient = usePrimalApiClient();
+
+	return useQuery({
+		queryKey: ['users', 'me'],
+		queryFn: async () => {
+			const response = await primalApiClient.get<User>('users/me');
+			return {
+				...response.data,
+				preferredLocale: convertToClientLocale(
+					response.data.preferredLocale
+				),
+			};
+		},
+	});
+}
+
+export function useUpdateUserMutation() {
 	const queryClient = useQueryClient();
 	const primalApiClient = usePrimalApiClient();
 
@@ -26,7 +41,7 @@ export default function useUpdateProfileMutation() {
 						),
 				  }
 				: settings;
-			await primalApiClient.patch('users/profile', data);
+			await primalApiClient.patch('users/me', data);
 		},
 		async onSuccess() {
 			await queryClient.invalidateQueries({
@@ -34,6 +49,17 @@ export default function useUpdateProfileMutation() {
 			});
 		},
 	});
+}
+
+function convertToClientLocale(localeStr: string) {
+	switch (localeStr) {
+		case 'EN_US':
+			return 'en-US';
+		case 'EN_IN':
+			return 'en-IN';
+		default:
+			throw new Error(`Unsupported locale from server: ${localeStr}`);
+	}
 }
 
 function convertToServerLocale(locale: Locale) {

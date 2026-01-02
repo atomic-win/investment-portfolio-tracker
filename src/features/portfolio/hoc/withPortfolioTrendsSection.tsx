@@ -15,7 +15,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { displayPortfolioType } from '@/features/portfolio/lib/utils';
 import { displayPercentage, displayCurrencyAmountText } from '@/lib/utils';
 import { Portfolio, PortfolioType } from '@/types';
-import { useMyProfileQuery } from '@/hooks/useMyProfileQuery';
+import { useUserQuery } from '@/hooks/users';
 
 enum TrendType {
 	InvestedValue = 'InvestedValue',
@@ -44,7 +44,7 @@ export default function withPortfolioTrendsSection<
 			data: profile,
 			isFetching: isUserProfileFetching,
 			error,
-		} = useMyProfileQuery();
+		} = useUserQuery();
 
 		const searchParams = useSearchParams();
 		const pathname = usePathname();

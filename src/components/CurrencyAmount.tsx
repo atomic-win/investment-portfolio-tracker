@@ -1,4 +1,4 @@
-import { useMyProfileQuery } from '@/hooks/useMyProfileQuery';
+import { useUserQuery } from '@/hooks/users';
 import { displayCurrencyAmountText } from '@/lib/utils';
 
 export default function CurrencyAmount({
@@ -10,7 +10,7 @@ export default function CurrencyAmount({
 	notation?: 'standard' | 'compact';
 	numberOfFractionDigits?: number;
 }) {
-	const { data: profile, isFetching, error } = useMyProfileQuery();
+	const { data: profile, isFetching, error } = useUserQuery();
 
 	if (isFetching || error || !profile) {
 		return '';
