@@ -10,15 +10,15 @@ export default function CurrencyAmount({
 	notation?: 'standard' | 'compact';
 	numberOfFractionDigits?: number;
 }) {
-	const { data: profile, isFetching, error } = useUserQuery();
+	const { data: user, isFetching, error } = useUserQuery();
 
-	if (isFetching || error || !profile) {
+	if (isFetching || error || !user) {
 		return '';
 	}
 
 	return displayCurrencyAmountText(
-		profile.preferredLocale,
-		profile.preferredCurrency,
+		user.preferredLocale,
+		user.preferredCurrency,
 		amount,
 		notation,
 		numberOfFractionDigits

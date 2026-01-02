@@ -41,8 +41,8 @@ export default function withPortfolioTrendsSection<
 		portfolios: TPortfolio[];
 	}) {
 		const {
-			data: profile,
-			isFetching: isUserProfileFetching,
+			data: user,
+			isFetching: isUserFetching,
 			error,
 		} = useUserQuery();
 
@@ -50,11 +50,11 @@ export default function withPortfolioTrendsSection<
 		const pathname = usePathname();
 		const { replace } = useRouter();
 
-		if (isUserProfileFetching || error || !profile) {
+		if (isUserFetching || error || !user) {
 			return null;
 		}
 
-		const { preferredCurrency, preferredLocale } = profile;
+		const { preferredCurrency, preferredLocale } = user;
 		const activeTrendType =
 			(searchParams.get('trendType') as TrendType) ||
 			TrendType.InvestedValue;

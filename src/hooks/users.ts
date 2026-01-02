@@ -26,21 +26,21 @@ export function useUpdateUserMutation() {
 
 	return useMutation({
 		mutationFn: async (
-			settings: Partial<
+			user: Partial<
 				Omit<
 					User,
 					'id' | 'firstName' | 'lastName' | 'fullName' | 'email'
 				>
 			>
 		) => {
-			const data = settings.preferredLocale
+			const data = user.preferredLocale
 				? {
-						...settings,
+						...user,
 						preferredLocale: convertToServerLocale(
-							settings.preferredLocale
+							user.preferredLocale
 						),
 				  }
-				: settings;
+				: user;
 			await primalApiClient.patch('users/me', data);
 		},
 		async onSuccess() {

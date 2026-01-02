@@ -74,7 +74,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 				</SidebarGroup>
 				<Suspense
 					fallback={
-						<LoadingComponent loadingMessage='Loading User Profile...' />
+						<LoadingComponent loadingMessage='Loading User...' />
 					}
 				>
 					<SettingsSidebarGroup />

@@ -47,22 +47,22 @@ function LogInMenu() {
 }
 
 function LogOutMenu() {
-	const { data: profile, isFetching, error } = useUserQuery();
+	const { data: user, isFetching, error } = useUserQuery();
 	const logoutMutation = useLogOutMutation();
 
 	if (isFetching) {
-		return <LoadingComponent loadingMessage='Fetching profile...' />;
+		return <LoadingComponent loadingMessage='Fetching user...' />;
 	}
 
-	if (error || !!!profile) {
-		return <ErrorComponent errorMessage='Failed while fetching profile' />;
+	if (error || !!!user) {
+		return <ErrorComponent errorMessage='Failed while fetching user' />;
 	}
 
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger className='flex items-center space-x-2 px-3 py-2 hover:bg-accent hover:text-accent-foreground rounded-md cursor-pointer w-full'>
 				<User2 />
-				{profile.fullName}
+				{user.fullName}
 				<ChevronUp className='ml-auto' />
 			</DropdownMenuTrigger>
 			<DropdownMenuContent side='top'>

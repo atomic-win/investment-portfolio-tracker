@@ -19,7 +19,7 @@ import { buttonVariants } from '@/components/ui/button';
 
 export default function SettingsSidebarGroup() {
 	const { data, isFetching, error } = useUserQuery();
-	const { mutate: updateSetting } = useUpdateUserMutation();
+	const { mutate: updateUser } = useUpdateUserMutation();
 
 	if (
 		isFetching ||
@@ -74,7 +74,7 @@ export default function SettingsSidebarGroup() {
 									key={option}
 									checked={option === setting.value}
 									onCheckedChange={() =>
-										updateSetting(
+										updateUser(
 											setting.name === 'currency'
 												? {
 														preferredCurrency:
