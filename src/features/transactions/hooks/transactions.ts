@@ -29,8 +29,7 @@ export function useAssetItemTransactionsQuery(
 			const response = await primalApiClient.get(
 				`assetitems/${assetItemId}/transactions?currency=${currency}`
 			);
-			const transactions = response.data as Transaction[];
-			return transactions.sort((a, b) => b.date.localeCompare(a.date));
+			return response.data as Transaction[];
 		},
 		select: (data: Transaction[]) =>
 			data.map((x) => ({
