@@ -20,6 +20,7 @@ import {
 	Transaction,
 	TransactionType,
 } from '@/types';
+import _ from 'lodash';
 
 type TableItem = Transaction & {
 	assetItem: AssetItemPortfolio;
@@ -50,7 +51,13 @@ export default function TransactionsTable({
 		);
 	}
 
-	const items = transactions.map((transaction) => ({
+	const sortedTransactions = _.orderBy(
+		transactions,
+		['date', 'id'],
+		['desc', 'desc']
+	);
+
+	const items = sortedTransactions.map((transaction) => ({
 		...transaction,
 		assetItem,
 	}));
