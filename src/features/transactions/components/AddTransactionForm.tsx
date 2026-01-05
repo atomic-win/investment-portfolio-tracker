@@ -32,26 +32,19 @@ import {
 	FieldGroup,
 	FieldLabel,
 } from '@/components/ui/field';
-import { DateTime } from 'luxon';
 
 export default function AddTransactionForm({
 	assetItem,
 }: {
 	assetItem: AssetItemPortfolio;
 }) {
-	const endOfLastMonth = DateTime.now()
-		.startOf('month')
-		.minus({ months: 1 })
-		.endOf('month')
-		.toJSDate();
-
 	const { mutateAsync: addTransactionAsync } = useAddTransactionMutation();
 	const router = useRouter();
 
 	const form = useForm<z.infer<typeof AddTransactionSchema>>({
 		resolver: zodResolver(AddTransactionSchema),
 		defaultValues: {
-			date: endOfLastMonth,
+			date: new Date(),
 			transactionType: getApplicableTransactionTypes(
 				assetItem.assetType
 			)[0],
@@ -86,8 +79,6 @@ export default function AddTransactionForm({
 								</FieldLabel>
 								<DatePicker
 									date={field.value}
-									toDate={endOfLastMonth}
-									endMonth={endOfLastMonth}
 									onSelect={field.onChange}
 								/>
 								{fieldState.invalid && (

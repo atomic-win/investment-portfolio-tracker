@@ -31,15 +31,15 @@ const columns: ColumnDef<AssetTypePortfolio>[] = [
 	}),
 	createColumnDef({
 		accessorKey: 'currentValue',
-		id: 'Last Month Value',
-		headerText: 'Last Month Value',
+		id: 'Current Value',
+		headerText: 'Current Value',
 		cellTextFn: (data) => <CurrencyAmount amount={data.currentValue} />,
 		sortingFnCompare: (data) => data.currentValue,
 		enableHiding: false,
 	}),
 	createColumnDef({
 		accessorKey: 'currentValuePercent',
-		headerText: 'Last Month Value (%)',
+		headerText: 'Current Value (%)',
 		cellTextFn: (data) => displayPercentage(data.currentValuePercent),
 		sortingFnCompare: (data) => data.currentValuePercent,
 		enableHiding: false,
@@ -62,9 +62,7 @@ export default function PortfolioPerAssetTypeSection({
 		<div className='mx-auto'>
 			<PortfolioCharts
 				portfolios={portfolios}
-				labelFn={(portfolio) =>
-					displayAssetTypeText(portfolio.id as AssetType)
-				}
+				labelFn={(portfolio) => displayAssetTypeText(portfolio.id as AssetType)}
 			/>
 			<DataTable
 				id='portfolio-per-asset-type'

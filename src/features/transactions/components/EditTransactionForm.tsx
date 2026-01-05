@@ -64,7 +64,7 @@ export default function EditTransactionForm({
 		},
 	});
 
-	if (isFetching || !form.formState.defaultValues?.transactionType) {
+	if (isFetching) {
 		return <LoadingComponent loadingMessage='Fetching transaction' />;
 	}
 
