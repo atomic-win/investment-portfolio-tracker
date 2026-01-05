@@ -64,7 +64,6 @@ export type AssetItem = {
 	assetType: AssetType;
 	assetClass: AssetClass;
 	currency: Currency;
-	activityStartDate: string;
 };
 
 export type Transaction = {
