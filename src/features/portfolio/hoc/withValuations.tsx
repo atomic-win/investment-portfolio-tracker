@@ -1,7 +1,8 @@
 import ErrorComponent from '@/components/ErrorComponent';
 import LoadingComponent from '@/components/LoadingComponent';
-import useValuationQueries from '@/features/portfolio/hooks/valuation';
+import useValuationsQueries from '@/features/portfolio/hooks/valuations';
 import { AssetItem, Portfolio, PortfolioType, Valuation } from '@/types';
+import _ from 'lodash';
 
 export function withValuations<
 	TPortfolio extends Portfolio,
@@ -21,12 +22,11 @@ export function withValuations<
 			currency: string;
 		}
 	) {
-		const valuationQueryResults = useValuationQueries(
+		const valuationQueryResults = useValuationsQueries(
 			props.assetItems,
 			props.assetItemIds.length > 0
 				? props.assetItemIds
 				: props.assetItems.map((assetItem) => assetItem.id),
-			props.latest,
 			props.currency,
 			idSelector
 		);
@@ -36,14 +36,16 @@ export function withValuations<
 		}
 
 		if (valuationQueryResults.some((result) => result.isError)) {
-			return <ErrorComponent errorMessage='Failed while fetching valuations' />;
+			return (
+				<ErrorComponent errorMessage='Failed while fetching valuations' />
+			);
 		}
 
 		return (
 			<Component
 				{...(props as unknown as T)}
 				portfolios={calculatePortfolios(
-					valuationQueryResults.map((result) => result.data!),
+					valuationQueryResults.flatMap((result) => result.data!),
 					props.latest
 				).map((portfolio) =>
 					portfolioFn
@@ -60,6 +62,7 @@ function calculatePortfolios(
 	isLatest: boolean
 ): Portfolio[] {
 	const dateToValuations = new Map<string, Valuation[]>();
+	const latestDate = _.max(valuations.map((valuation) => valuation.date));
 
 	for (const valuation of valuations) {
 		if (
@@ -70,6 +73,11 @@ function calculatePortfolios(
 		) {
 			continue;
 		}
+
+		if (isLatest && valuation.date !== latestDate) {
+			continue;
+		}
+
 		const valuations = dateToValuations.get(valuation.date) || [];
 		valuations.push(valuation);
 		dateToValuations.set(valuation.date, valuations);
@@ -96,7 +104,8 @@ function calculatePortfolio(valuations: Valuation[]): Portfolio[] {
 			type: PortfolioType.Unknown,
 			investedValue: valuation.investedValue,
 			investedValuePercent:
-				(valuation.investedValue / Math.max(totalInvestedValue, 1)) * 100,
+				(valuation.investedValue / Math.max(totalInvestedValue, 1)) *
+				100,
 			currentValue: valuation.currentValue,
 			currentValuePercent:
 				(valuation.currentValue / Math.max(totalCurrentValue, 1)) * 100,
