@@ -49,7 +49,8 @@ export function useDeleteAssetItemMutation() {
 		},
 		onSuccess: async (_data, assetItemId) => {
 			queryClient.removeQueries({
-				predicate: (query) => isQueryRelatedToAssetItem(query, { assetItemId }),
+				predicate: (query) =>
+					isQueryRelatedToAssetItem(query, { assetItemId }),
 			});
 
 			await refreshAssetItems(queryClient);
@@ -60,7 +61,8 @@ export function useDeleteAssetItemMutation() {
 export async function refreshAssetItems(queryClient: QueryClient) {
 	return await queryClient.invalidateQueries({
 		predicate: (query) =>
-			query.queryKey[0] === 'assetitems' || query.queryKey[0] === 'valuation',
+			query.queryKey[0] === 'assetitems' ||
+			query.queryKey[0] === 'valuations',
 	});
 }
 
@@ -80,7 +82,10 @@ function isQueryRelatedToAssetItem(
 	query: Query<unknown, Error, unknown, readonly unknown[]>,
 	request: { assetItemId: string; date?: Date | undefined }
 ) {
-	if (query.queryKey[0] !== 'assetitems' && query.queryKey[0] !== 'valuation') {
+	if (
+		query.queryKey[0] !== 'assetitems' &&
+		query.queryKey[0] !== 'valuations'
+	) {
 		return false;
 	}
 
@@ -91,7 +96,7 @@ function isQueryRelatedToAssetItem(
 		return true;
 	}
 
-	if (query.queryKey[0] !== 'valuation') {
+	if (query.queryKey[0] !== 'valuations') {
 		return false;
 	}
 
@@ -103,6 +108,7 @@ function isQueryRelatedToAssetItem(
 	return (
 		valuationQueryData.assetItemIds.includes(request.assetItemId) &&
 		(request.date === undefined ||
-			valuationQueryData.date >= DateTime.fromJSDate(request.date).toISODate()!)
+			valuationQueryData.date >=
+				DateTime.fromJSDate(request.date).toISODate()!)
 	);
 }
