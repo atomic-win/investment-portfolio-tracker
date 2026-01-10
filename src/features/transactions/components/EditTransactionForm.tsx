@@ -32,7 +32,7 @@ import {
 	displayTransactionTypeText,
 	getUnitLabelText,
 } from '@/features/transactions/lib/utils';
-import { AssetItemPortfolio, TransactionType } from '@/types';
+import { AssetItemPortfolio, Transaction, TransactionType } from '@/types';
 import {
 	Field,
 	FieldError,
@@ -47,22 +47,11 @@ export default function EditTransactionForm({
 	assetItem: AssetItemPortfolio;
 	transactionId: string;
 }) {
-	const { mutateAsync: editTransactionAsync } = useEditTransactionMutation();
-	const router = useRouter();
 	const {
 		data: transaction,
 		isFetching,
 		isError,
 	} = useTransactionQuery(assetItem.id, transactionId, assetItem.currency);
-
-	const form = useForm<z.infer<typeof EditTransactionSchema>>({
-		resolver: zodResolver(EditTransactionSchema),
-		defaultValues: {
-			name: transaction?.name,
-			transactionType: transaction?.transactionType,
-			units: transaction?.units,
-		},
-	});
 
 	if (isFetching) {
 		return <LoadingComponent loadingMessage='Fetching transaction' />;
@@ -73,6 +62,28 @@ export default function EditTransactionForm({
 			<ErrorComponent errorMessage='Failed while fetching transaction' />
 		);
 	}
+
+	return <Form assetItem={assetItem} transaction={transaction} />;
+}
+
+function Form({
+	assetItem,
+	transaction,
+}: {
+	assetItem: AssetItemPortfolio;
+	transaction: Transaction;
+}) {
+	const { mutateAsync: editTransactionAsync } = useEditTransactionMutation();
+	const router = useRouter();
+
+	const form = useForm<z.infer<typeof EditTransactionSchema>>({
+		resolver: zodResolver(EditTransactionSchema),
+		defaultValues: {
+			name: transaction.name,
+			transactionType: transaction.transactionType,
+			units: transaction.units,
+		},
+	});
 
 	async function onSubmit(
 		data: Omit<EditTransactionRequest, 'assetItemId' | 'transactionId'>
@@ -85,7 +96,7 @@ export default function EditTransactionForm({
 					form.formState.defaultValues![key as keyof typeof data]
 			),
 			assetItemId: assetItem.id,
-			transactionId: transactionId,
+			transactionId: transaction.id,
 		});
 
 		router.refresh();
