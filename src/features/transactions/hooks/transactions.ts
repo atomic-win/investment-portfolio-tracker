@@ -5,7 +5,7 @@ import { refreshAssetItem } from '@/features/assetItems/hooks/assetItems';
 import {
 	AddTransactionRequest,
 	EditTransactionRequest,
-} from '@/features/assetItems/schema';
+} from '@/features/transactions/schema';
 import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
 import { Transaction } from '@/types';
 import { DateTime } from 'luxon';
@@ -94,7 +94,7 @@ export function useEditTransactionMutation() {
 		mutationFn: async (request: EditTransactionRequest) => {
 			await primalApiClient.patch(
 				`assetitems/${request.assetItemId}/transactions/${request.transactionId}`,
-				_.omit(request, ['assetItemId', 'transactionId'])
+				_.omit(request, ['assetItemId', 'transactionId', 'date'])
 			);
 		},
 		onSuccess: async (_data, variables) =>

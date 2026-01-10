@@ -1,5 +1,48 @@
 import { AssetItemPortfolio, TransactionType, AssetType } from '@/types';
 
+export function getApplicableTransactionTypes(
+	assetType: AssetType
+): TransactionType[] {
+	switch (assetType) {
+		case AssetType.BankAccount:
+		case AssetType.FixedDeposit:
+		case AssetType.EPF:
+		case AssetType.PPF:
+			return [
+				TransactionType.Deposit,
+				TransactionType.Withdrawal,
+				TransactionType.Interest,
+				TransactionType.SelfInterest,
+				TransactionType.InterestPenalty,
+			];
+		case AssetType.MutualFund:
+			return [TransactionType.Buy, TransactionType.Sell];
+		case AssetType.Stock:
+			return [
+				TransactionType.Buy,
+				TransactionType.Sell,
+				TransactionType.Dividend,
+			];
+		case AssetType.Wallet:
+			return [TransactionType.Deposit, TransactionType.Withdrawal];
+		case AssetType.Bond:
+			return [
+				TransactionType.Buy,
+				TransactionType.Sell,
+				TransactionType.Interest,
+			];
+		default:
+			throw new Error(`Unsupported asset type: ${assetType}`);
+	}
+}
+
+export function isAmountRequired(transactionType: TransactionType) {
+	return (
+		transactionType !== TransactionType.Buy &&
+		transactionType !== TransactionType.Sell
+	);
+}
+
 export function displayTransactionTypeText(transactionType: TransactionType) {
 	switch (transactionType) {
 		case TransactionType.Buy:
