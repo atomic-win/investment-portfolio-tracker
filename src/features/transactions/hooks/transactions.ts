@@ -94,7 +94,7 @@ export function useEditTransactionMutation() {
 		mutationFn: async (request: EditTransactionRequest) => {
 			await primalApiClient.patch(
 				`assetitems/${request.assetItemId}/transactions/${request.transactionId}`,
-				_.omit(request, ['assetItemId', 'transactionId'])
+				_.omit(request, ['assetItemId', 'transactionId', 'date'])
 			);
 		},
 		onSuccess: async (_data, variables) =>

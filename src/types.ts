@@ -73,6 +73,7 @@ export type Transaction = {
 	transactionType: TransactionType;
 	assetItemId: string;
 	units: number;
+	price: number;
 	amount: number;
 };
 

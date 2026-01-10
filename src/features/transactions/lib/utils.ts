@@ -1,5 +1,12 @@
 import { AssetItemPortfolio, TransactionType, AssetType } from '@/types';
 
+export function isAmountRequired(transactionType: TransactionType) {
+	return (
+		transactionType !== TransactionType.Buy &&
+		transactionType !== TransactionType.Sell
+	);
+}
+
 export function displayTransactionTypeText(transactionType: TransactionType) {
 	switch (transactionType) {
 		case TransactionType.Buy:

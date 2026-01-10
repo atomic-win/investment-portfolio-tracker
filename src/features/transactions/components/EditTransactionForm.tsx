@@ -21,8 +21,8 @@ import {
 } from '@/components/ui/select';
 import {
 	EditTransactionRequest,
-	EditTransactionSchema,
 	getApplicableTransactionTypes,
+	TransactionFormSchema,
 } from '@/features/assetItems/schema';
 import {
 	useEditTransactionMutation,
@@ -31,6 +31,7 @@ import {
 import {
 	displayTransactionTypeText,
 	getUnitLabelText,
+	isAmountRequired,
 } from '@/features/transactions/lib/utils';
 import { AssetItemPortfolio, Transaction, TransactionType } from '@/types';
 import {
@@ -76,12 +77,15 @@ function Form({
 	const { mutateAsync: editTransactionAsync } = useEditTransactionMutation();
 	const router = useRouter();
 
-	const form = useForm<z.infer<typeof EditTransactionSchema>>({
-		resolver: zodResolver(EditTransactionSchema),
+	const form = useForm<z.infer<typeof TransactionFormSchema>>({
+		resolver: zodResolver(TransactionFormSchema),
 		defaultValues: {
+			date: new Date(transaction.date),
 			name: transaction.name,
 			transactionType: transaction.transactionType,
 			units: transaction.units,
+			price: transaction.price,
+			amount: transaction.amount,
 		},
 	});
 
@@ -97,7 +101,7 @@ function Form({
 			),
 			assetItemId: assetItem.id,
 			transactionId: transaction.id,
-		});
+		} as EditTransactionRequest);
 
 		router.refresh();
 	}
@@ -186,36 +190,81 @@ function Form({
 							</Field>
 						)}
 					/>
-					<Controller
-						control={form.control}
-						name='units'
-						render={({ field, fieldState }) => (
-							<Field data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor={field.name}>
-									{getUnitLabelText(
-										assetItem,
-										form.watch('transactionType')!
-									)}
-								</FieldLabel>
-								<Input
-									{...field}
-									type='number'
-									onChange={(e) =>
-										field.onChange(
-											e.target.value === ''
-												? ''
-												: Number(e.target.value)
-										)
-									}
-									id={field.name}
-									aria-invalid={fieldState.invalid}
-								/>
-								{fieldState.invalid && (
-									<FieldError errors={[fieldState.error]} />
+					{!isAmountRequired(form.watch('transactionType')) && (
+						<>
+							<Controller
+								control={form.control}
+								name='units'
+								render={({ field, fieldState }) => (
+									<Field data-invalid={fieldState.invalid}>
+										<FieldLabel htmlFor={field.name}>
+											{getUnitLabelText(
+												assetItem,
+												form.watch('transactionType')
+											)}
+										</FieldLabel>
+										<Input
+											{...field}
+											type='number'
+											id={field.name}
+											aria-invalid={fieldState.invalid}
+										/>
+										{fieldState.invalid && (
+											<FieldError
+												errors={[fieldState.error]}
+											/>
+										)}
+									</Field>
 								)}
-							</Field>
-						)}
-					/>
+							/>
+							<Controller
+								control={form.control}
+								name='price'
+								render={({ field, fieldState }) => (
+									<Field data-invalid={fieldState.invalid}>
+										<FieldLabel htmlFor={field.name}>
+											Price ({assetItem.currency})
+										</FieldLabel>
+										<Input
+											{...field}
+											type='number'
+											id={field.name}
+											aria-invalid={fieldState.invalid}
+										/>
+										{fieldState.invalid && (
+											<FieldError
+												errors={[fieldState.error]}
+											/>
+										)}
+									</Field>
+								)}
+							/>
+						</>
+					)}
+					{isAmountRequired(form.watch('transactionType')) && (
+						<Controller
+							control={form.control}
+							name='amount'
+							render={({ field, fieldState }) => (
+								<Field data-invalid={fieldState.invalid}>
+									<FieldLabel htmlFor={field.name}>
+										Amount ({assetItem.currency})
+									</FieldLabel>
+									<Input
+										{...field}
+										type='number'
+										id={field.name}
+										aria-invalid={fieldState.invalid}
+									/>
+									{fieldState.invalid && (
+										<FieldError
+											errors={[fieldState.error]}
+										/>
+									)}
+								</Field>
+							)}
+						/>
+					)}
 					<div className='flex justify-end'>
 						<Button
 							type='submit'
