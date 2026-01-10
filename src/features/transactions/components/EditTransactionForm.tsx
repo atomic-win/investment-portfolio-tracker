@@ -20,16 +20,12 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import {
-	EditTransactionRequest,
-	getApplicableTransactionTypes,
-	TransactionFormSchema,
-} from '@/features/assetItems/schema';
-import {
 	useEditTransactionMutation,
 	useTransactionQuery,
 } from '@/features/transactions/hooks/transactions';
 import {
 	displayTransactionTypeText,
+	getApplicableTransactionTypes,
 	getUnitLabelText,
 	isAmountRequired,
 } from '@/features/transactions/lib/utils';
@@ -40,6 +36,10 @@ import {
 	FieldGroup,
 	FieldLabel,
 } from '@/components/ui/field';
+import {
+	TransactionFormSchema,
+	EditTransactionRequest,
+} from '@/features/transactions/schema';
 
 export default function EditTransactionForm({
 	assetItem,

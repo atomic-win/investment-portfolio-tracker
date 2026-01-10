@@ -15,14 +15,10 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import {
-	AddTransactionRequest,
-	TransactionFormSchema,
-	getApplicableTransactionTypes,
-} from '@/features/assetItems/schema';
 import { useAddTransactionMutation } from '@/features/transactions/hooks/transactions';
 import {
 	displayTransactionTypeText,
+	getApplicableTransactionTypes,
 	getUnitLabelText,
 	isAmountRequired,
 } from '@/features/transactions/lib/utils';
@@ -33,6 +29,10 @@ import {
 	FieldGroup,
 	FieldLabel,
 } from '@/components/ui/field';
+import {
+	TransactionFormSchema,
+	AddTransactionRequest,
+} from '@/features/transactions/schema';
 
 export default function AddTransactionForm({
 	assetItem,

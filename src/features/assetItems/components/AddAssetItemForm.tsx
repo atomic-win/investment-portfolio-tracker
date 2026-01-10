@@ -17,11 +17,6 @@ import { useAddAssetItemMutation } from '@/features/assetItems/hooks/assetItems'
 import {
 	AddAssetItemRequest,
 	AddAssetItemSchema,
-	getApplicableAssetClasses,
-	isAssetClassInputSupported,
-	isCurrencyInputSupported,
-	isSchemeCodeInputSupported,
-	isSymbolInputSupported,
 } from '@/features/assetItems/schema';
 import { displayAssetClassText, displayAssetTypeText } from '@/lib/utils';
 import { AssetClass, AssetType, Currency } from '@/types';
@@ -32,6 +27,13 @@ import {
 	FieldError,
 	FieldDescription,
 } from '@/components/ui/field';
+import {
+	isAssetClassInputSupported,
+	getApplicableAssetClasses,
+	isSchemeCodeInputSupported,
+	isSymbolInputSupported,
+	isCurrencyInputSupported,
+} from '@/features/assetItems/lib/utils';
 
 export default function AddAssetItemForm() {
 	const { mutateAsync: addAssetItemAsync } = useAddAssetItemMutation();

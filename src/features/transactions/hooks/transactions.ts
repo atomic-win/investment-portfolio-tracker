@@ -5,7 +5,7 @@ import { refreshAssetItem } from '@/features/assetItems/hooks/assetItems';
 import {
 	AddTransactionRequest,
 	EditTransactionRequest,
-} from '@/features/assetItems/schema';
+} from '@/features/transactions/schema';
 import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
 import { Transaction } from '@/types';
 import { DateTime } from 'luxon';
