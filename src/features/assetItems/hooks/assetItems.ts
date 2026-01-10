@@ -70,7 +70,6 @@ export async function refreshAssetItem(
 	queryClient: QueryClient,
 	request: {
 		assetItemId: string;
-		date?: Date | undefined;
 	}
 ) {
 	return await queryClient.invalidateQueries({
@@ -80,7 +79,7 @@ export async function refreshAssetItem(
 
 function isQueryRelatedToAssetItem(
 	query: Query<unknown, Error, unknown, readonly unknown[]>,
-	request: { assetItemId: string; date?: Date | undefined }
+	request: { assetItemId: string }
 ) {
 	if (
 		query.queryKey[0] !== 'assetitems' &&
@@ -102,13 +101,7 @@ function isQueryRelatedToAssetItem(
 
 	const valuationQueryData = query.queryKey[1] as {
 		assetItemIds: string[];
-		date: string;
 	};
 
-	return (
-		valuationQueryData.assetItemIds.includes(request.assetItemId) &&
-		(request.date === undefined ||
-			valuationQueryData.date >=
-				DateTime.fromJSDate(request.date).toISODate()!)
-	);
+	return valuationQueryData.assetItemIds.includes(request.assetItemId);
 }
