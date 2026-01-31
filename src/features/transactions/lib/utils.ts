@@ -1,7 +1,7 @@
 import { AssetItemPortfolio, TransactionType, AssetType } from '@/types';
 
 export function getApplicableTransactionTypes(
-	assetType: AssetType
+	assetType: AssetType,
 ): TransactionType[] {
 	switch (assetType) {
 		case AssetType.BankAccount:
@@ -24,6 +24,7 @@ export function getApplicableTransactionTypes(
 				TransactionType.Dividend,
 			];
 		case AssetType.Wallet:
+		case AssetType.TradingAccount:
 			return [TransactionType.Deposit, TransactionType.Withdrawal];
 		case AssetType.Bond:
 			return [
@@ -68,7 +69,7 @@ export function displayTransactionTypeText(transactionType: TransactionType) {
 
 export function getUnitLabelText(
 	assetItem: AssetItemPortfolio,
-	transactionType: TransactionType
+	transactionType: TransactionType,
 ) {
 	switch (assetItem.assetType) {
 		case AssetType.BankAccount:
