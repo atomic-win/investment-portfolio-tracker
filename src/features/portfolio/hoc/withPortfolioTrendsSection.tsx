@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { CartesianGrid, XAxis, YAxis, Line, LineChart } from 'recharts';
 
@@ -16,6 +15,7 @@ import { displayPortfolioType } from '@/features/portfolio/lib/utils';
 import { displayPercentage, displayCurrencyAmountText } from '@/lib/utils';
 import { Portfolio, PortfolioType } from '@/types';
 import { useUserQuery } from '@/hooks/users';
+import { formatISO, parseISO } from 'date-fns';
 
 enum TrendType {
 	InvestedValue = 'InvestedValue',
@@ -25,7 +25,7 @@ enum TrendType {
 }
 
 export default function withPortfolioTrendsSection<
-	TPortfolio extends Portfolio
+	TPortfolio extends Portfolio,
 >({
 	portfolioType,
 	labelFn,
@@ -78,7 +78,7 @@ export default function withPortfolioTrendsSection<
 						color: `var(--chart-${i + 1})`,
 					},
 				}),
-				{}
+				{},
 			) satisfies ChartConfig;
 
 		const portfolioIds = latestPortfolios.map((p) => p.id);
@@ -116,7 +116,7 @@ export default function withPortfolioTrendsSection<
 								preferredCurrency!,
 								value,
 								'compact',
-								2
+								2,
 							)
 						}
 						showTotalInTooltip={showTotalInTooltip}
@@ -136,7 +136,7 @@ export default function withPortfolioTrendsSection<
 								preferredCurrency!,
 								value,
 								'compact',
-								2
+								2,
 							)
 						}
 						showTotalInTooltip={showTotalInTooltip}
@@ -201,7 +201,7 @@ function TrendsChart<TPortfolio extends Portfolio>({
 	>();
 
 	portfolios.forEach((portfolio) => {
-		const date = DateTime.fromISO(portfolio.date).toMillis();
+		const date = parseISO(portfolio.date).getTime();
 
 		if (!chartDataMap.has(date)) {
 			chartDataMap.set(date, {
@@ -217,7 +217,7 @@ function TrendsChart<TPortfolio extends Portfolio>({
 	});
 
 	const chartData = Array.from(chartDataMap.values()).sort(
-		(a, b) => a.date - b.date
+		(a, b) => a.date - b.date,
 	);
 
 	return (
@@ -239,7 +239,9 @@ function TrendsChart<TPortfolio extends Portfolio>({
 							scale='time'
 							domain={['dataMin', 'dataMax']}
 							tickFormatter={(date) =>
-								DateTime.fromMillis(date as number).toISODate()!
+								formatISO(new Date(date as number), {
+									representation: 'date',
+								})
 							}
 							tickLine={true}
 							axisLine={true}
@@ -264,12 +266,16 @@ function TrendsChart<TPortfolio extends Portfolio>({
 											{/* Add this before the first item */}
 											{index === 0 && (
 												<div className='flex basis-full items-center pt-1.5 text-xs font-medium text-foreground'>
-													{
-														DateTime.fromMillis(
+													{formatISO(
+														new Date(
 															item.payload
-																.date as number
-														).toISODate()!
-													}
+																.date as number,
+														),
+														{
+															representation:
+																'date',
+														},
+													)}
 												</div>
 											)}
 											<div
@@ -305,24 +311,24 @@ function TrendsChart<TPortfolio extends Portfolio>({
 																			item
 																				.payload[
 																				id
-																			]
+																			],
 																	)
 																	.filter(
 																		(
-																			value
+																			value,
 																		) =>
 																			value !==
-																			undefined
+																			undefined,
 																	)
 																	.reduce(
 																		(
 																			acc,
-																			value
+																			value,
 																		) =>
 																			acc +
 																			value,
-																		0
-																	)
+																		0,
+																	),
 															)}
 														</div>
 													</div>
@@ -354,7 +360,7 @@ function TrendsChart<TPortfolio extends Portfolio>({
 }
 
 function filterLatestPortfolios<TPortfolio extends Portfolio>(
-	portfolios: TPortfolio[]
+	portfolios: TPortfolio[],
 ) {
 	const latestDate = portfolios
 		.map((p) => p.date)

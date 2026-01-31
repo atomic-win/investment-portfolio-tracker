@@ -41,7 +41,6 @@
 		"@stylistic/eslint-plugin": "^4.4.1",
 		"@tailwindcss/postcss": "^4",
 		"@types/lodash": "^4.17.16",
-		"@types/luxon": "^3.4.2",
 		"@types/node": "^20",
 		"@types/react": "19.2.7",
 		"@types/react-dom": "19.2.3",

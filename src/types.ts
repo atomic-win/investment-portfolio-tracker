@@ -1,5 +1,3 @@
-import { DateTime } from 'luxon';
-
 export enum Currency {
 	Unknown = 'UNKNOWN',
 	USD = 'USD',
@@ -106,9 +104,4 @@ export type Valuation = {
 	investedValue: number;
 	currentValue: number;
 	xirrPercent: number;
-};
-
-export type Rate = {
-	date: DateTime;
-	rate: number;
 };
