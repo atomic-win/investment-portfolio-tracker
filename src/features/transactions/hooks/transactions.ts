@@ -8,11 +8,11 @@ import {
 } from '@/features/transactions/schema';
 import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
 import { Transaction } from '@/types';
-import { DateTime } from 'luxon';
+import { formatISO } from 'date-fns';
 
 export function useAssetItemTransactionsQuery(
 	assetItemId: string,
-	currency: string | undefined
+	currency: string | undefined,
 ) {
 	const primalApiClient = usePrimalApiClient();
 
@@ -27,7 +27,7 @@ export function useAssetItemTransactionsQuery(
 		],
 		queryFn: async () => {
 			const response = await primalApiClient.get(
-				`assetitems/${assetItemId}/transactions?currency=${currency}`
+				`assetitems/${assetItemId}/transactions?currency=${currency}`,
 			);
 			return response.data as Transaction[];
 		},
@@ -43,7 +43,7 @@ export function useAssetItemTransactionsQuery(
 export function useTransactionQuery(
 	assetItemId: string,
 	transactionId: string,
-	currency: string | undefined
+	currency: string | undefined,
 ) {
 	const primalApiClient = usePrimalApiClient();
 
@@ -59,7 +59,7 @@ export function useTransactionQuery(
 		],
 		queryFn: async () => {
 			const response = await primalApiClient.get(
-				`assetitems/${assetItemId}/transactions/${transactionId}?currency=${currency}`
+				`assetitems/${assetItemId}/transactions/${transactionId}?currency=${currency}`,
 			);
 			return response.data as Transaction;
 		},
@@ -77,8 +77,10 @@ export function useAddTransactionMutation() {
 				`assetitems/${transaction.assetItemId}/transactions`,
 				{
 					...transaction,
-					date: DateTime.fromJSDate(transaction.date).toISODate(),
-				}
+					date: formatISO(transaction.date, {
+						representation: 'date',
+					}),
+				},
 			);
 		},
 		onSuccess: async (_data, variables) =>
@@ -94,7 +96,7 @@ export function useEditTransactionMutation() {
 		mutationFn: async (request: EditTransactionRequest) => {
 			await primalApiClient.patch(
 				`assetitems/${request.assetItemId}/transactions/${request.transactionId}`,
-				_.omit(request, ['assetItemId', 'transactionId', 'date'])
+				_.omit(request, ['assetItemId', 'transactionId', 'date']),
 			);
 		},
 		onSuccess: async (_data, variables) =>
@@ -113,7 +115,7 @@ export function useDeleteTransactionMutation() {
 			date: Date;
 		}) => {
 			await primalApiClient.delete(
-				`assetitems/${request.assetItemId}/transactions/${request.transactionId}`
+				`assetitems/${request.assetItemId}/transactions/${request.transactionId}`,
 			);
 		},
 		onSuccess: async (_data, variables) =>

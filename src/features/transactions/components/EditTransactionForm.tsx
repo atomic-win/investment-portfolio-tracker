@@ -1,7 +1,6 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import _ from 'lodash';
-import { DateTime } from 'luxon';
 import { useRouter } from 'next/navigation';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -40,6 +39,7 @@ import {
 	TransactionFormSchema,
 	EditTransactionRequest,
 } from '@/features/transactions/schema';
+import { parseISO } from 'date-fns';
 
 export default function EditTransactionForm({
 	assetItem,
@@ -90,14 +90,14 @@ function Form({
 	});
 
 	async function onSubmit(
-		data: Omit<EditTransactionRequest, 'assetItemId' | 'transactionId'>
+		data: Omit<EditTransactionRequest, 'assetItemId' | 'transactionId'>,
 	) {
 		await editTransactionAsync({
 			..._.pickBy(
 				data,
 				(value, key) =>
 					value !==
-					form.formState.defaultValues![key as keyof typeof data]
+					form.formState.defaultValues![key as keyof typeof data],
 			),
 			assetItemId: assetItem.id,
 			transactionId: transaction.id,
@@ -114,12 +114,8 @@ function Form({
 			>
 				<FieldGroup>
 					<Field data-invalid={false}>
-						<FieldLabel>Transaction Date </FieldLabel>
-						<DatePicker
-							date={DateTime.fromISO(
-								transaction.date
-							)!.toJSDate()}
-						/>
+						<FieldLabel>Transaction Date</FieldLabel>
+						<DatePicker date={parseISO(transaction.date)} />
 					</Field>
 					<Controller
 						control={form.control}
@@ -164,13 +160,13 @@ function Form({
 									>
 										<SelectValue title='Select a transaction type'>
 											{displayTransactionTypeText(
-												field.value as TransactionType
+												field.value as TransactionType,
 											)}
 										</SelectValue>
 									</SelectTrigger>
 									<SelectContent className='rounded-xl'>
 										{getApplicableTransactionTypes(
-											assetItem.assetType
+											assetItem.assetType,
 										).map((type) => (
 											<SelectItem
 												key={type}
@@ -178,7 +174,7 @@ function Form({
 												className='rounded-lg'
 											>
 												{displayTransactionTypeText(
-													type
+													type,
 												)}
 											</SelectItem>
 										))}
@@ -200,7 +196,7 @@ function Form({
 										<FieldLabel htmlFor={field.name}>
 											{getUnitLabelText(
 												assetItem,
-												form.watch('transactionType')
+												form.watch('transactionType'),
 											)}
 										</FieldLabel>
 										<Input

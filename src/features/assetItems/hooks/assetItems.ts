@@ -5,7 +5,6 @@ import {
 	useQuery,
 	useQueryClient,
 } from '@tanstack/react-query';
-import { DateTime } from 'luxon';
 
 import { AddAssetItemRequest } from '@/features/assetItems/schema';
 import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
@@ -70,7 +69,7 @@ export async function refreshAssetItem(
 	queryClient: QueryClient,
 	request: {
 		assetItemId: string;
-	}
+	},
 ) {
 	return await queryClient.invalidateQueries({
 		predicate: (query) => isQueryRelatedToAssetItem(query, request),
@@ -79,7 +78,7 @@ export async function refreshAssetItem(
 
 function isQueryRelatedToAssetItem(
 	query: Query<unknown, Error, unknown, readonly unknown[]>,
-	request: { assetItemId: string }
+	request: { assetItemId: string },
 ) {
 	if (
 		query.queryKey[0] !== 'assetitems' &&
