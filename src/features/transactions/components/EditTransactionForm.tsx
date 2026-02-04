@@ -39,7 +39,7 @@ import {
 	TransactionFormSchema,
 	EditTransactionRequest,
 } from '@/features/transactions/schema';
-import { parseISO } from 'date-fns';
+import { DateTime } from 'luxon';
 
 export default function EditTransactionForm({
 	assetItem,
@@ -80,7 +80,7 @@ function Form({
 	const form = useForm<z.infer<typeof TransactionFormSchema>>({
 		resolver: zodResolver(TransactionFormSchema),
 		defaultValues: {
-			date: new Date(transaction.date),
+			date: DateTime.fromISO(transaction.date).toJSDate(),
 			name: transaction.name,
 			transactionType: transaction.transactionType,
 			units: transaction.units,
@@ -115,7 +115,9 @@ function Form({
 				<FieldGroup>
 					<Field data-invalid={false}>
 						<FieldLabel>Transaction Date</FieldLabel>
-						<DatePicker date={parseISO(transaction.date)} />
+						<DatePicker
+							date={DateTime.fromISO(transaction.date).toJSDate()}
+						/>
 					</Field>
 					<Controller
 						control={form.control}

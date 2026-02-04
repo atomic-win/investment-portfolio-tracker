@@ -17,7 +17,6 @@ import { buttonVariants } from '@/components/ui/button';
 import { useDeleteTransactionMutation } from '@/features/transactions/hooks/transactions';
 import { AssetItemPortfolio, Transaction } from '@/types';
 import { cn } from '@/lib/utils';
-import { parseISO } from 'date-fns';
 
 export default function DeleteTransactionDialog({
 	assetItem,
@@ -79,7 +78,6 @@ export default function DeleteTransactionDialog({
 							await deleteTransactionAsync({
 								assetItemId: assetItem.id,
 								transactionId: transaction.id,
-								date: parseISO(transaction.date),
 							});
 						}}
 					>
