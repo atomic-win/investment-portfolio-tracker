@@ -8,7 +8,7 @@ import {
 } from '@/features/transactions/schema';
 import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
 import { Transaction } from '@/types';
-import { formatISO } from 'date-fns';
+import { DateTime } from 'luxon';
 
 export function useAssetItemTransactionsQuery(
 	assetItemId: string,
@@ -77,9 +77,7 @@ export function useAddTransactionMutation() {
 				`assetitems/${transaction.assetItemId}/transactions`,
 				{
 					...transaction,
-					date: formatISO(transaction.date, {
-						representation: 'date',
-					}),
+					date: DateTime.fromJSDate(transaction.date).toISODate(),
 				},
 			);
 		},
@@ -112,7 +110,6 @@ export function useDeleteTransactionMutation() {
 		mutationFn: async (request: {
 			assetItemId: string;
 			transactionId: string;
-			date: Date;
 		}) => {
 			await primalApiClient.delete(
 				`assetitems/${request.assetItemId}/transactions/${request.transactionId}`,

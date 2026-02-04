@@ -1,6 +1,5 @@
 'use client';
 
-import { format } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
 
 import { buttonVariants } from '@/components/ui/button';
@@ -11,6 +10,7 @@ import {
 	PopoverTrigger,
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
+import { DateTime } from 'luxon';
 
 export function DatePicker({
 	date,
@@ -26,11 +26,15 @@ export function DatePicker({
 				className={cn(
 					!date && 'text-muted-foreground',
 					buttonVariants({ variant: 'outline' }),
-					'w-full justify-start font-normal items-center'
+					'w-full justify-start font-normal items-center',
 				)}
 			>
 				<CalendarIcon />
-				{date ? format(date, 'PPP') : <span>Pick a date</span>}
+				{date ? (
+					DateTime.fromJSDate(date).toLocaleString(DateTime.DATE_FULL)
+				) : (
+					<span>Pick a date</span>
+				)}
 			</PopoverTrigger>
 			<PopoverContent className='w-auto p-0'>
 				<Calendar

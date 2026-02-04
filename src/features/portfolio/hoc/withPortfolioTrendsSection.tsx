@@ -15,7 +15,7 @@ import { displayPortfolioType } from '@/features/portfolio/lib/utils';
 import { displayPercentage, displayCurrencyAmountText } from '@/lib/utils';
 import { Portfolio, PortfolioType } from '@/types';
 import { useUserQuery } from '@/hooks/users';
-import { formatISO, parseISO } from 'date-fns';
+import { DateTime } from 'luxon';
 
 enum TrendType {
 	InvestedValue = 'InvestedValue',
@@ -201,7 +201,7 @@ function TrendsChart<TPortfolio extends Portfolio>({
 	>();
 
 	portfolios.forEach((portfolio) => {
-		const date = parseISO(portfolio.date).getTime();
+		const date = DateTime.fromISO(portfolio.date).toMillis();
 
 		if (!chartDataMap.has(date)) {
 			chartDataMap.set(date, {
@@ -239,9 +239,7 @@ function TrendsChart<TPortfolio extends Portfolio>({
 							scale='time'
 							domain={['dataMin', 'dataMax']}
 							tickFormatter={(date) =>
-								formatISO(new Date(date as number), {
-									representation: 'date',
-								})
+								DateTime.fromMillis(date).toISODate()!
 							}
 							tickLine={true}
 							axisLine={true}
@@ -266,16 +264,12 @@ function TrendsChart<TPortfolio extends Portfolio>({
 											{/* Add this before the first item */}
 											{index === 0 && (
 												<div className='flex basis-full items-center pt-1.5 text-xs font-medium text-foreground'>
-													{formatISO(
-														new Date(
+													{
+														DateTime.fromMillis(
 															item.payload
 																.date as number,
-														),
-														{
-															representation:
-																'date',
-														},
-													)}
+														).toISODate()!
+													}
 												</div>
 											)}
 											<div
