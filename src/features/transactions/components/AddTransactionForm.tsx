@@ -75,7 +75,7 @@ export default function AddTransactionForm({
 						name='date'
 						render={({ field, fieldState }) => (
 							<Field data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor={field.name}>Transaction Date</FieldLabel>
+								<FieldLabel>Transaction Date</FieldLabel>
 								<DatePicker date={field.value} onSelect={field.onChange} />
 								{fieldState.invalid && (
 									<FieldError errors={[fieldState.error]} />
@@ -88,7 +88,7 @@ export default function AddTransactionForm({
 						name='name'
 						render={({ field, fieldState }) => (
 							<Field data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor={field.name}>Transaction Name</FieldLabel>
+								<FieldLabel>Transaction Name</FieldLabel>
 								<Input
 									{...field}
 									id={field.name}
@@ -105,7 +105,7 @@ export default function AddTransactionForm({
 						name='transactionType'
 						render={({ field: { onChange, ...field }, fieldState }) => (
 							<Field data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor={field.name}>Transaction Type</FieldLabel>
+								<FieldLabel>Transaction Type</FieldLabel>
 								<Select {...field} onValueChange={onChange}>
 									<SelectTrigger
 										className='w-full rounded-lg sm:ml-auto'
@@ -147,7 +147,7 @@ export default function AddTransactionForm({
 								name='units'
 								render={({ field, fieldState }) => (
 									<Field data-invalid={fieldState.invalid}>
-										<FieldLabel htmlFor={field.name}>
+										<FieldLabel>
 											{getUnitLabelText(
 												assetItem,
 												form.watch('transactionType')
@@ -170,9 +170,7 @@ export default function AddTransactionForm({
 								name='price'
 								render={({ field, fieldState }) => (
 									<Field data-invalid={fieldState.invalid}>
-										<FieldLabel htmlFor={field.name}>
-											Price ({assetItem.currency})
-										</FieldLabel>
+										<FieldLabel>Price ({assetItem.currency})</FieldLabel>
 										<Input
 											{...field}
 											type='number'
@@ -193,9 +191,7 @@ export default function AddTransactionForm({
 							name='amount'
 							render={({ field, fieldState }) => (
 								<Field data-invalid={fieldState.invalid}>
-									<FieldLabel htmlFor={field.name}>
-										Amount ({assetItem.currency})
-									</FieldLabel>
+									<FieldLabel>Amount ({assetItem.currency})</FieldLabel>
 									<Input
 										{...field}
 										type='number'

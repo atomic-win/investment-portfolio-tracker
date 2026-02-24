@@ -63,7 +63,7 @@ export default function AddAssetItemForm() {
 						name='name'
 						render={({ field, fieldState }) => (
 							<Field data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor={field.name}>Asset Item Name</FieldLabel>
+								<FieldLabel>Asset Item Name</FieldLabel>
 								<Input
 									{...field}
 									id={field.name}
@@ -80,7 +80,7 @@ export default function AddAssetItemForm() {
 						name='assetType'
 						render={({ field: { onChange, ...field }, fieldState }) => (
 							<Field data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor={field.name}>Asset Item Type</FieldLabel>
+								<FieldLabel>Asset Item Type</FieldLabel>
 								<Select {...field} onValueChange={onChange}>
 									<SelectTrigger
 										className='w-full rounded-lg sm:ml-auto'
@@ -117,7 +117,7 @@ export default function AddAssetItemForm() {
 							name='assetClass'
 							render={({ field: { onChange, ...field }, fieldState }) => (
 								<Field data-invalid={fieldState.invalid}>
-									<FieldLabel htmlFor={field.name}>Asset Class</FieldLabel>
+									<FieldLabel>Asset Class</FieldLabel>
 									<Select {...field} onValueChange={onChange}>
 										<SelectTrigger
 											className='w-full rounded-lg sm:ml-auto'
@@ -157,7 +157,7 @@ export default function AddAssetItemForm() {
 							name='schemeCode'
 							render={({ field, fieldState }) => (
 								<Field data-invalid={fieldState.invalid}>
-									<FieldLabel htmlFor={field.name}>Scheme Code</FieldLabel>
+									<FieldLabel>Scheme Code</FieldLabel>
 									<Input
 										type='number'
 										min={100000}
@@ -182,7 +182,7 @@ export default function AddAssetItemForm() {
 							name='symbol'
 							render={({ field, fieldState }) => (
 								<Field data-invalid={fieldState.invalid}>
-									<FieldLabel htmlFor={field.name}>Symbol</FieldLabel>
+									<FieldLabel>Symbol</FieldLabel>
 									<Input
 										{...field}
 										id={field.name}
@@ -204,7 +204,7 @@ export default function AddAssetItemForm() {
 							name='currency'
 							render={({ field: { onChange, ...field }, fieldState }) => (
 								<Field data-invalid={fieldState.invalid}>
-									<FieldLabel htmlFor={field.name}>Currency</FieldLabel>
+									<FieldLabel>Currency</FieldLabel>
 									<Select {...field} onValueChange={onChange}>
 										<SelectTrigger
 											className='w-full rounded-lg sm:ml-auto'
