@@ -1,22 +1,16 @@
 {
 	// Format
 	"editor.formatOnSave": true,
-	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.defaultFormatter": "biomejs.biome",
 
 	// Use tabs instead of spaces
 	"editor.insertSpaces": false,
 	"editor.tabSize": 2,
-	"prettier.useTabs": true,
-	"prettier.tabWidth": 4,
-
-	// Use single quotes
-	"prettier.singleQuote": true,
-	"prettier.jsxSingleQuote": true,
 
 	// ESLint: Auto-fix on save
 	"editor.codeActionsOnSave": {
-		"source.fixAll": "always",
-		"source.fixAll.eslint": "always"
+		"source.fixAll.biome": "explicit",
+		"source.organizeImports.biome": "explicit"
 	},
 
 	// TypeScript + JavaScript
