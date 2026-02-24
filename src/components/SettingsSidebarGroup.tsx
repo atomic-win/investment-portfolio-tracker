@@ -1,21 +1,20 @@
 'use client';
 import { ChevronRight } from 'lucide-react';
-
-import {
-	SidebarGroup,
-	SidebarGroupLabel,
-	SidebarMenu,
-} from '@/components/ui/sidebar';
-import { Currency, Locale } from '@/types';
-import { useUserQuery, useUpdateUserMutation } from '@/hooks/users';
+import { buttonVariants } from '@/components/ui/button';
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
 	DropdownMenuContent,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+	SidebarGroup,
+	SidebarGroupLabel,
+	SidebarMenu,
+} from '@/components/ui/sidebar';
+import { useUpdateUserMutation, useUserQuery } from '@/hooks/users';
 import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button';
+import { Currency, Locale } from '@/types';
 
 export default function SettingsSidebarGroup() {
 	const { data, isFetching, error } = useUserQuery();
@@ -36,9 +35,7 @@ export default function SettingsSidebarGroup() {
 			name: 'currency',
 			title: 'Currency',
 			value: data.preferredCurrency,
-			options: Object.values(Currency).filter(
-				(x) => x !== Currency.Unknown
-			),
+			options: Object.values(Currency).filter((x) => x !== Currency.Unknown),
 		},
 		{
 			name: 'locale',
@@ -77,13 +74,11 @@ export default function SettingsSidebarGroup() {
 										updateUser(
 											setting.name === 'currency'
 												? {
-														preferredCurrency:
-															option as Currency,
-												  }
+														preferredCurrency: option as Currency,
+													}
 												: {
-														preferredLocale:
-															option as Locale,
-												  }
+														preferredLocale: option as Locale,
+													}
 										)
 									}
 								>

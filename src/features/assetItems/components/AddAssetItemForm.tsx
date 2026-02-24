@@ -1,10 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { Controller, useForm } from 'react-hook-form';
-import { z } from 'zod';
+import type { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { CardContent } from '@/components/ui/card';
+import {
+	Field,
+	FieldDescription,
+	FieldError,
+	FieldGroup,
+	FieldLabel,
+} from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import {
 	Select,
@@ -15,25 +22,18 @@ import {
 } from '@/components/ui/select';
 import { useAddAssetItemMutation } from '@/features/assetItems/hooks/assetItems';
 import {
-	AddAssetItemRequest,
+	getApplicableAssetClasses,
+	isAssetClassInputSupported,
+	isCurrencyInputSupported,
+	isSchemeCodeInputSupported,
+	isSymbolInputSupported,
+} from '@/features/assetItems/lib/utils';
+import {
+	type AddAssetItemRequest,
 	AddAssetItemSchema,
 } from '@/features/assetItems/schema';
 import { displayAssetClassText, displayAssetTypeText } from '@/lib/utils';
-import { AssetClass, AssetType, Currency } from '@/types';
-import {
-	FieldGroup,
-	Field,
-	FieldLabel,
-	FieldError,
-	FieldDescription,
-} from '@/components/ui/field';
-import {
-	isAssetClassInputSupported,
-	getApplicableAssetClasses,
-	isSchemeCodeInputSupported,
-	isSymbolInputSupported,
-	isCurrencyInputSupported,
-} from '@/features/assetItems/lib/utils';
+import { type AssetClass, AssetType, Currency } from '@/types';
 
 export default function AddAssetItemForm() {
 	const { mutateAsync: addAssetItemAsync } = useAddAssetItemMutation();
@@ -56,19 +56,14 @@ export default function AddAssetItemForm() {
 
 	return (
 		<CardContent className='p-0'>
-			<form
-				onSubmit={form.handleSubmit(onSubmit)}
-				className='flex flex-col'
-			>
+			<form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col'>
 				<FieldGroup>
 					<Controller
 						control={form.control}
 						name='name'
 						render={({ field, fieldState }) => (
 							<Field data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor={field.name}>
-									Asset Item Name
-								</FieldLabel>
+								<FieldLabel htmlFor={field.name}>Asset Item Name</FieldLabel>
 								<Input
 									{...field}
 									id={field.name}
@@ -83,14 +78,9 @@ export default function AddAssetItemForm() {
 					<Controller
 						control={form.control}
 						name='assetType'
-						render={({
-							field: { onChange, ...field },
-							fieldState,
-						}) => (
+						render={({ field: { onChange, ...field }, fieldState }) => (
 							<Field data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor={field.name}>
-									Asset Item Type
-								</FieldLabel>
+								<FieldLabel htmlFor={field.name}>Asset Item Type</FieldLabel>
 								<Select {...field} onValueChange={onChange}>
 									<SelectTrigger
 										className='w-full rounded-lg sm:ml-auto'
@@ -100,23 +90,19 @@ export default function AddAssetItemForm() {
 										onBlur={field.onBlur}
 									>
 										<SelectValue title='Select an asset type'>
-											{displayAssetTypeText(
-												field.value as AssetType
-											)}
+											{displayAssetTypeText(field.value as AssetType)}
 										</SelectValue>
 									</SelectTrigger>
 									<SelectContent className='rounded-xl'>
-										{Object.values(AssetType).map(
-											(type) => (
-												<SelectItem
-													key={type}
-													value={type}
-													className='rounded-lg'
-												>
-													{displayAssetTypeText(type)}
-												</SelectItem>
-											)
-										)}
+										{Object.values(AssetType).map((type) => (
+											<SelectItem
+												key={type}
+												value={type}
+												className='rounded-lg'
+											>
+												{displayAssetTypeText(type)}
+											</SelectItem>
+										))}
 									</SelectContent>
 								</Select>
 								{fieldState.invalid && (
@@ -129,14 +115,9 @@ export default function AddAssetItemForm() {
 						<Controller
 							control={form.control}
 							name='assetClass'
-							render={({
-								field: { onChange, ...field },
-								fieldState,
-							}) => (
+							render={({ field: { onChange, ...field }, fieldState }) => (
 								<Field data-invalid={fieldState.invalid}>
-									<FieldLabel htmlFor={field.name}>
-										Asset Class
-									</FieldLabel>
+									<FieldLabel htmlFor={field.name}>Asset Class</FieldLabel>
 									<Select {...field} onValueChange={onChange}>
 										<SelectTrigger
 											className='w-full rounded-lg sm:ml-auto'
@@ -148,25 +129,21 @@ export default function AddAssetItemForm() {
 											<SelectValue title='Select an asset class'>
 												{field.value === undefined
 													? ''
-													: displayAssetClassText(
-															field.value as AssetClass
-													  )}
+													: displayAssetClassText(field.value as AssetClass)}
 											</SelectValue>
 										</SelectTrigger>
 										<SelectContent className='rounded-xl'>
-											{getApplicableAssetClasses(
-												assetType
-											).map((assetClass) => (
-												<SelectItem
-													key={assetClass}
-													value={assetClass}
-													className='rounded-lg'
-												>
-													{displayAssetClassText(
-														assetClass
-													)}
-												</SelectItem>
-											))}
+											{getApplicableAssetClasses(assetType).map(
+												(assetClass) => (
+													<SelectItem
+														key={assetClass}
+														value={assetClass}
+														className='rounded-lg'
+													>
+														{displayAssetClassText(assetClass)}
+													</SelectItem>
+												)
+											)}
 										</SelectContent>
 									</Select>
 									{}
@@ -180,9 +157,7 @@ export default function AddAssetItemForm() {
 							name='schemeCode'
 							render={({ field, fieldState }) => (
 								<Field data-invalid={fieldState.invalid}>
-									<FieldLabel htmlFor={field.name}>
-										Scheme Code
-									</FieldLabel>
+									<FieldLabel htmlFor={field.name}>Scheme Code</FieldLabel>
 									<Input
 										type='number'
 										min={100000}
@@ -192,13 +167,10 @@ export default function AddAssetItemForm() {
 										aria-invalid={fieldState.invalid}
 									/>
 									<FieldDescription>
-										Scheme code is a 6-digit number for
-										mutual funds.
+										Scheme code is a 6-digit number for mutual funds.
 									</FieldDescription>
 									{fieldState.invalid && (
-										<FieldError
-											errors={[fieldState.error]}
-										/>
+										<FieldError errors={[fieldState.error]} />
 									)}
 								</Field>
 							)}
@@ -210,22 +182,17 @@ export default function AddAssetItemForm() {
 							name='symbol'
 							render={({ field, fieldState }) => (
 								<Field data-invalid={fieldState.invalid}>
-									<FieldLabel htmlFor={field.name}>
-										Symbol
-									</FieldLabel>
+									<FieldLabel htmlFor={field.name}>Symbol</FieldLabel>
 									<Input
 										{...field}
 										id={field.name}
 										aria-invalid={fieldState.invalid}
 									/>
 									<FieldDescription>
-										Symbol is the stock symbol for the
-										asset.
+										Symbol is the stock symbol for the asset.
 									</FieldDescription>
 									{fieldState.invalid && (
-										<FieldError
-											errors={[fieldState.error]}
-										/>
+										<FieldError errors={[fieldState.error]} />
 									)}
 								</Field>
 							)}
@@ -235,14 +202,9 @@ export default function AddAssetItemForm() {
 						<Controller
 							control={form.control}
 							name='currency'
-							render={({
-								field: { onChange, ...field },
-								fieldState,
-							}) => (
+							render={({ field: { onChange, ...field }, fieldState }) => (
 								<Field data-invalid={fieldState.invalid}>
-									<FieldLabel htmlFor={field.name}>
-										Currency
-									</FieldLabel>
+									<FieldLabel htmlFor={field.name}>Currency</FieldLabel>
 									<Select {...field} onValueChange={onChange}>
 										<SelectTrigger
 											className='w-full rounded-lg sm:ml-auto'
@@ -255,14 +217,8 @@ export default function AddAssetItemForm() {
 										</SelectTrigger>
 										<SelectContent className='rounded-xl'>
 											{Object.values(Currency)
-												.filter(
-													(currency) =>
-														currency !==
-														Currency.Unknown
-												)
-												.sort((a, b) =>
-													a.localeCompare(b)
-												)
+												.filter((currency) => currency !== Currency.Unknown)
+												.sort((a, b) => a.localeCompare(b))
 												.map((currency) => (
 													<SelectItem
 														key={currency}
@@ -275,9 +231,7 @@ export default function AddAssetItemForm() {
 										</SelectContent>
 									</Select>
 									{fieldState.invalid && (
-										<FieldError
-											errors={[fieldState.error]}
-										/>
+										<FieldError errors={[fieldState.error]} />
 									)}
 								</Field>
 							)}

@@ -3,7 +3,7 @@ import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcr
 import { Card } from '@/components/ui/card';
 import { withAssetItemPortfolio } from '@/features/portfolio/hoc/withAssetItemPortfolio';
 import AddTransactionForm from '@/features/transactions/components/AddTransactionForm';
-import { AssetItemPortfolio } from '@/types';
+import type { AssetItemPortfolio } from '@/types';
 
 export default function Page({ assetItemId }: { assetItemId: string }) {
 	const WrappedComponent = withAssetItemPortfolio(PageComponent);

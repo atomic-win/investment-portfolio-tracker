@@ -1,10 +1,9 @@
 'use client';
 
-import * as React from 'react';
 import { Menu as MenuPrimitive } from '@base-ui/react/menu';
-
+import { CheckIcon, ChevronRightIcon } from 'lucide-react';
+import type * as React from 'react';
 import { cn } from '@/lib/utils';
-import { ChevronRightIcon, CheckIcon } from 'lucide-react';
 
 function DropdownMenu({ ...props }: MenuPrimitive.Root.Props) {
 	return <MenuPrimitive.Root data-slot='dropdown-menu' {...props} />;
@@ -15,9 +14,7 @@ function DropdownMenuPortal({ ...props }: MenuPrimitive.Portal.Props) {
 }
 
 function DropdownMenuTrigger({ ...props }: MenuPrimitive.Trigger.Props) {
-	return (
-		<MenuPrimitive.Trigger data-slot='dropdown-menu-trigger' {...props} />
-	);
+	return <MenuPrimitive.Trigger data-slot='dropdown-menu-trigger' {...props} />;
 }
 
 function DropdownMenuContent({
@@ -102,9 +99,7 @@ function DropdownMenuItem({
 }
 
 function DropdownMenuSub({ ...props }: MenuPrimitive.SubmenuRoot.Props) {
-	return (
-		<MenuPrimitive.SubmenuRoot data-slot='dropdown-menu-sub' {...props} />
-	);
+	return <MenuPrimitive.SubmenuRoot data-slot='dropdown-menu-sub' {...props} />;
 }
 
 function DropdownMenuSubTrigger({

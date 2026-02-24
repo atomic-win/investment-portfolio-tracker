@@ -1,9 +1,9 @@
 'use client';
 import { useQueryClient } from '@tanstack/react-query';
-import { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef } from '@tanstack/react-table';
+import _ from 'lodash';
 import { EditIcon, PlusIcon, RefreshCwIcon } from 'lucide-react';
 import Link from 'next/link';
-
 import CurrencyAmount from '@/components/CurrencyAmount';
 import ErrorComponent from '@/components/ErrorComponent';
 import LoadingComponent from '@/components/LoadingComponent';
@@ -14,13 +14,12 @@ import DeleteTransactionDialog from '@/features/transactions/components/DeleteTr
 import { useAssetItemTransactionsQuery } from '@/features/transactions/hooks/transactions';
 import { displayTransactionTypeText } from '@/features/transactions/lib/utils';
 import {
-	AssetItemPortfolio,
+	type AssetItemPortfolio,
 	AssetType,
-	Currency,
-	Transaction,
+	type Currency,
+	type Transaction,
 	TransactionType,
 } from '@/types';
-import _ from 'lodash';
 
 type TableItem = Transaction & {
 	assetItem: AssetItemPortfolio;
@@ -46,9 +45,7 @@ export default function TransactionsTable({
 	}
 
 	if (isError || !transactions) {
-		return (
-			<ErrorComponent errorMessage='Failed while fetching transactions' />
-		);
+		return <ErrorComponent errorMessage='Failed while fetching transactions' />;
 	}
 
 	const sortedTransactions = _.orderBy(
@@ -129,8 +126,7 @@ function getColumns(assetItem: AssetItemPortfolio): ColumnDef<TableItem>[] {
 			accessorKey: 'transactionType',
 			id: 'Transaction Type',
 			headerText: 'Transaction Type',
-			cellTextFn: (item) =>
-				displayTransactionTypeText(item.transactionType),
+			cellTextFn: (item) => displayTransactionTypeText(item.transactionType),
 			align: 'left',
 			enableHiding: false,
 		})

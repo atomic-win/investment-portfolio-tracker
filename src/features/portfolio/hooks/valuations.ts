@@ -1,7 +1,7 @@
 import { useQueries } from '@tanstack/react-query';
 
 import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
-import { AssetItem, Valuation } from '@/types';
+import type { AssetItem, Valuation } from '@/types';
 
 export default function useValuationsQueries(
 	assetItems: AssetItem[],
@@ -32,15 +32,14 @@ export default function useValuationsQueries(
 				);
 				return response.data as Valuation[];
 			},
-			enabled:
-				!!currency && assetItemIds.length > 0 && assetItems.length > 0,
+			enabled: !!currency && assetItemIds.length > 0 && assetItems.length > 0,
 			select: (valuations: Valuation[]) =>
 				valuations.map(
 					(valuation) =>
 						({
 							...valuation,
 							id,
-						} as Valuation)
+						}) as Valuation
 				),
 		})),
 	});
@@ -54,6 +53,7 @@ function getQueryInputs(
 	const idToAssetItemIds = new Map<string, string[]>();
 
 	for (const assetItemId of assetItemIds) {
+		// biome-ignore lint/style/noNonNullAssertion: we assume that all assetItemIds are valid and exist in assetItems
 		const assetItem = assetItems.find((x) => x.id === assetItemId)!;
 
 		const id = idSelector(assetItem);
@@ -62,6 +62,7 @@ function getQueryInputs(
 			idToAssetItemIds.set(id, []);
 		}
 
+		// biome-ignore lint/style/noNonNullAssertion: we assume that all assetItemIds are valid and exist in assetItems
 		idToAssetItemIds.get(id)!.push(assetItemId);
 	}
 

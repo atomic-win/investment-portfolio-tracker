@@ -10,7 +10,8 @@ export default function Page({
 }) {
 	return (
 		<Suspense
-			fallback={<LoadingComponent loadingMessage='Loading asset item...' />}>
+			fallback={<LoadingComponent loadingMessage='Loading asset item...' />}
+		>
 			<SuspendedPage params={params} />
 		</Suspense>
 	);

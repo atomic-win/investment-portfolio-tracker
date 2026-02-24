@@ -1,4 +1,4 @@
-import { Table } from '@tanstack/react-table';
+import type { Table } from '@tanstack/react-table';
 import {
 	ChevronLeftIcon,
 	ChevronRightIcon,
@@ -35,17 +35,12 @@ export function DataTablePagination<TData>({
 					>
 						<SelectTrigger className='h-8 w-[70px]'>
 							<SelectValue
-								title={table
-									.getState()
-									.pagination.pageSize.toString()}
+								title={table.getState().pagination.pageSize.toString()}
 							/>
 						</SelectTrigger>
 						<SelectContent side='top'>
 							{[5, 8, 10, 20, 30, 40, 50].map((pageSize) => (
-								<SelectItem
-									key={pageSize}
-									value={`${pageSize}`}
-								>
+								<SelectItem key={pageSize} value={`${pageSize}`}>
 									{pageSize}
 								</SelectItem>
 							))}
@@ -87,9 +82,7 @@ export function DataTablePagination<TData>({
 					<Button
 						variant='outline'
 						className='hidden h-8 w-8 p-0 lg:flex'
-						onClick={() =>
-							table.setPageIndex(table.getPageCount() - 1)
-						}
+						onClick={() => table.setPageIndex(table.getPageCount() - 1)}
 						disabled={!table.getCanNextPage()}
 					>
 						<span className='sr-only'>Go to last page</span>

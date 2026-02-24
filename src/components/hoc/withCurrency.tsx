@@ -13,13 +13,9 @@ export default function withCurrency<T extends { currency: string }>(
 		}
 
 		if (error || !user || !user.preferredCurrency) {
-			return (
-				<ErrorComponent errorMessage='Failed while fetching currency' />
-			);
+			return <ErrorComponent errorMessage='Failed while fetching currency' />;
 		}
 
-		return (
-			<Component {...(props as T)} currency={user.preferredCurrency} />
-		);
+		return <Component {...(props as T)} currency={user.preferredCurrency} />;
 	};
 }

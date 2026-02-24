@@ -78,12 +78,9 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
 		return null;
 	}
 
-	return (
-		<style
-			dangerouslySetInnerHTML={{
-				__html: Object.entries(THEMES)
-					.map(
-						([theme, prefix]) => `
+	const styleContent = Object.entries(THEMES)
+		.map(
+			([theme, prefix]) => `
 ${prefix} [data-chart=${id}] {
 ${colorConfig
 	.map(([key, itemConfig]) => {
@@ -95,11 +92,10 @@ ${colorConfig
 	.join('\n')}
 }
 `
-					)
-					.join('\n'),
-			}}
-		/>
-	);
+		)
+		.join('\n');
+
+	return <style>{styleContent}</style>;
 };
 
 const ChartTooltip = RechartsPrimitive.Tooltip;
@@ -173,7 +169,7 @@ function ChartTooltipContent({
 	return (
 		<div
 			className={cn(
-				'border-border/50 bg-background gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs shadow-xl grid min-w-[8rem] items-start',
+				'border-border/50 bg-background gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs shadow-xl grid min-w-32 items-start',
 				className
 			)}
 		>
@@ -182,16 +178,9 @@ function ChartTooltipContent({
 				{payload
 					.filter((item) => item.type !== 'none')
 					.map((item, index) => {
-						const key = `${
-							nameKey || item.name || item.dataKey || 'value'
-						}`;
-						const itemConfig = getPayloadConfigFromPayload(
-							config,
-							item,
-							key
-						);
-						const indicatorColor =
-							color || item.payload.fill || item.color;
+						const key = `${nameKey || item.name || item.dataKey || 'value'}`;
+						const itemConfig = getPayloadConfigFromPayload(config, item, key);
+						const indicatorColor = color || item.payload.fill || item.color;
 
 						return (
 							<div
@@ -201,16 +190,8 @@ function ChartTooltipContent({
 									indicator === 'dot' && 'items-center'
 								)}
 							>
-								{formatter &&
-								item?.value !== undefined &&
-								item.name ? (
-									formatter(
-										item.value,
-										item.name,
-										item,
-										index,
-										item.payload
-									)
+								{formatter && item?.value !== undefined && item.name ? (
+									formatter(item.value, item.name, item, index, item.payload)
 								) : (
 									<>
 										{itemConfig?.icon ? (
@@ -221,27 +202,17 @@ function ChartTooltipContent({
 													className={cn(
 														'shrink-0 rounded-[2px] border-(--color-border) bg-(--color-bg)',
 														{
-															'h-2.5 w-2.5':
-																indicator ===
-																'dot',
-															'w-1':
-																indicator ===
-																'line',
+															'h-2.5 w-2.5': indicator === 'dot',
+															'w-1': indicator === 'line',
 															'w-0 border-[1.5px] border-dashed bg-transparent':
-																indicator ===
-																'dashed',
-															'my-0.5':
-																nestLabel &&
-																indicator ===
-																	'dashed',
+																indicator === 'dashed',
+															'my-0.5': nestLabel && indicator === 'dashed',
 														}
 													)}
 													style={
 														{
-															'--color-bg':
-																indicatorColor,
-															'--color-border':
-																indicatorColor,
+															'--color-bg': indicatorColor,
+															'--color-border': indicatorColor,
 														} as React.CSSProperties
 													}
 												/>
@@ -250,18 +221,13 @@ function ChartTooltipContent({
 										<div
 											className={cn(
 												'flex flex-1 justify-between leading-none',
-												nestLabel
-													? 'items-end'
-													: 'items-center'
+												nestLabel ? 'items-end' : 'items-center'
 											)}
 										>
 											<div className='grid gap-1.5'>
-												{nestLabel
-													? tooltipLabel
-													: null}
+												{nestLabel ? tooltipLabel : null}
 												<span className='text-muted-foreground'>
-													{itemConfig?.label ||
-														item.name}
+													{itemConfig?.label || item.name}
 												</span>
 											</div>
 											{item.value && (
@@ -311,11 +277,7 @@ function ChartLegendContent({
 				.filter((item) => item.type !== 'none')
 				.map((item) => {
 					const key = `${nameKey || item.dataKey || 'value'}`;
-					const itemConfig = getPayloadConfigFromPayload(
-						config,
-						item,
-						key
-					);
+					const itemConfig = getPayloadConfigFromPayload(config, item, key);
 
 					return (
 						<div

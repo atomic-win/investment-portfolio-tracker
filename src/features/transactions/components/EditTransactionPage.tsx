@@ -1,9 +1,9 @@
 'use client';
 import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcrumb';
 import { Card } from '@/components/ui/card';
-import { AssetItemPortfolio } from '@/types';
-import EditTransactionForm from './EditTransactionForm';
 import { withAssetItemPortfolio } from '@/features/portfolio/hoc/withAssetItemPortfolio';
+import type { AssetItemPortfolio } from '@/types';
+import EditTransactionForm from './EditTransactionForm';
 
 export default function Page({
 	assetItemId,

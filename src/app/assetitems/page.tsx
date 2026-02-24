@@ -40,7 +40,8 @@ export default function Page() {
 							</Link>
 							<Button
 								className='cursor-pointer'
-								onClick={async () => await refreshAssetItems(queryClient)}>
+								onClick={async () => await refreshAssetItems(queryClient)}
+							>
 								<RefreshCwIcon />
 								Refresh
 							</Button>

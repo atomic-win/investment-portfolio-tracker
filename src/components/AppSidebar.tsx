@@ -1,9 +1,12 @@
 'use client';
 import { DollarSignIcon } from 'lucide-react';
 import Link from 'next/link';
-
+import { usePathname } from 'next/navigation';
+import { Suspense } from 'react';
 import AccountMenu from '@/components/AccountMenu';
+import LoadingComponent from '@/components/LoadingComponent';
 import SettingsSidebarGroup from '@/components/SettingsSidebarGroup';
+import { buttonVariants } from '@/components/ui/button';
 import {
 	Sidebar,
 	SidebarContent,
@@ -15,11 +18,7 @@ import {
 	SidebarMenuItem,
 	SidebarRail,
 } from '@/components/ui/sidebar';
-import { Suspense } from 'react';
-import LoadingComponent from '@/components/LoadingComponent';
-import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { usePathname } from 'next/navigation';
 
 const data = [
 	{ title: 'Portfolio', url: '/portfolio' },
@@ -36,16 +35,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 				<Link href='/'>
 					<SidebarMenuButton
 						size='lg'
-						className={cn(
-							buttonVariants(),
-							'cursor-pointer',
-							'size-12 w-full'
-						)}
+						className={cn(buttonVariants(), 'cursor-pointer', 'size-12 w-full')}
 					>
 						<DollarSignIcon className='size-16 bold' />
-						<span className='font-semibold'>
-							Investment Portfolio Tracker
-						</span>
+						<span className='font-semibold'>Investment Portfolio Tracker</span>
 					</SidebarMenuButton>
 				</Link>
 			</SidebarHeader>
@@ -59,9 +52,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 										className={cn(
 											'font-medium size-10 w-full cursor-pointer',
 											(pathname === item.url ||
-												pathname.startsWith(
-													item.url + '/'
-												)) &&
+												pathname.startsWith(`${item.url}/`)) &&
 												'bg-primary text-primary-foreground'
 										)}
 									>
@@ -73,9 +64,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 					</SidebarMenu>
 				</SidebarGroup>
 				<Suspense
-					fallback={
-						<LoadingComponent loadingMessage='Loading User...' />
-					}
+					fallback={<LoadingComponent loadingMessage='Loading User...' />}
 				>
 					<SettingsSidebarGroup />
 				</Suspense>

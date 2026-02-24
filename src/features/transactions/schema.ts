@@ -1,6 +1,6 @@
+import z from 'zod';
 import { isAmountRequired } from '@/features/transactions/lib/utils';
 import { TransactionType } from '@/types';
-import z from 'zod';
 
 export type AddTransactionRequest = z.infer<typeof TransactionFormSchema> & {
 	assetItemId: string;

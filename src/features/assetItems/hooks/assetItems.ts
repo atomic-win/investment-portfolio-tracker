@@ -1,14 +1,14 @@
 import {
-	Query,
-	QueryClient,
+	type Query,
+	type QueryClient,
 	useMutation,
 	useQuery,
 	useQueryClient,
 } from '@tanstack/react-query';
 
-import { AddAssetItemRequest } from '@/features/assetItems/schema';
+import type { AddAssetItemRequest } from '@/features/assetItems/schema';
 import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
-import { AssetItem } from '@/types';
+import type { AssetItem } from '@/types';
 
 export function useAllAssetItemsQuery() {
 	const primalApiClient = usePrimalApiClient();
@@ -48,8 +48,7 @@ export function useDeleteAssetItemMutation() {
 		},
 		onSuccess: async (_data, assetItemId) => {
 			queryClient.removeQueries({
-				predicate: (query) =>
-					isQueryRelatedToAssetItem(query, { assetItemId }),
+				predicate: (query) => isQueryRelatedToAssetItem(query, { assetItemId }),
 			});
 
 			await refreshAssetItems(queryClient);
@@ -60,8 +59,7 @@ export function useDeleteAssetItemMutation() {
 export async function refreshAssetItems(queryClient: QueryClient) {
 	return await queryClient.invalidateQueries({
 		predicate: (query) =>
-			query.queryKey[0] === 'assetitems' ||
-			query.queryKey[0] === 'valuations',
+			query.queryKey[0] === 'assetitems' || query.queryKey[0] === 'valuations',
 	});
 }
 
@@ -69,7 +67,7 @@ export async function refreshAssetItem(
 	queryClient: QueryClient,
 	request: {
 		assetItemId: string;
-	},
+	}
 ) {
 	return await queryClient.invalidateQueries({
 		predicate: (query) => isQueryRelatedToAssetItem(query, request),
@@ -78,7 +76,7 @@ export async function refreshAssetItem(
 
 function isQueryRelatedToAssetItem(
 	query: Query<unknown, Error, unknown, readonly unknown[]>,
-	request: { assetItemId: string },
+	request: { assetItemId: string }
 ) {
 	if (
 		query.queryKey[0] !== 'assetitems' &&

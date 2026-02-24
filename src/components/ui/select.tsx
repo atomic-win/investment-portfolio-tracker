@@ -1,10 +1,9 @@
 'use client';
 
-import * as React from 'react';
 import { Select as SelectPrimitive } from '@base-ui/react/select';
-
+import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
+import type * as React from 'react';
 import { cn } from '@/lib/utils';
-import { ChevronDownIcon, CheckIcon, ChevronUpIcon } from 'lucide-react';
 
 const Select = SelectPrimitive.Root;
 
@@ -104,10 +103,7 @@ function SelectLabel({
 	return (
 		<SelectPrimitive.GroupLabel
 			data-slot='select-label'
-			className={cn(
-				'text-muted-foreground px-2 py-1.5 text-xs',
-				className
-			)}
+			className={cn('text-muted-foreground px-2 py-1.5 text-xs', className)}
 			{...props}
 		/>
 	);
@@ -148,10 +144,7 @@ function SelectSeparator({
 	return (
 		<SelectPrimitive.Separator
 			data-slot='select-separator'
-			className={cn(
-				'bg-border -mx-1 my-1 h-px pointer-events-none',
-				className
-			)}
+			className={cn('bg-border -mx-1 my-1 h-px pointer-events-none', className)}
 			{...props}
 		/>
 	);

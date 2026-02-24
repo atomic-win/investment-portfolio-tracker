@@ -1,14 +1,14 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
-import React from 'react';
+import type React from 'react';
 
-import { AssetItem, AssetClass, AssetType } from '@/types';
+import type { AssetClass, AssetItem, AssetType } from '@/types';
 
 export default function withInvestmentsFilter<
 	T extends {
 		assetItemIds: string[];
 		assetItems: AssetItem[];
-	}
+	},
 >(Component: React.ComponentType<T>) {
 	return function WithInvestmentsFilter(props: Omit<T, 'assetItemIds'>) {
 		const { assetItems } = props;

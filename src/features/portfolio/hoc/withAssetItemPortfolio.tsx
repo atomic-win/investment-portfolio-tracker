@@ -1,17 +1,19 @@
-import React from 'react';
+import type React from 'react';
 
 import withCurrency from '@/components/hoc/withCurrency';
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
-import { AssetItemPortfolio } from '@/types';
+import type { AssetItemPortfolio } from '@/types';
 
 export function withAssetItemPortfolio<
 	T extends {
 		assetItem: AssetItemPortfolio;
-	}
+	},
 >(Component: React.ComponentType<T>) {
 	return function Wrapper(
-		props: Omit<T, 'assetItem' | 'portfolios' | 'assetItems' | 'currency'> & { assetItemId: string }
+		props: Omit<T, 'assetItem' | 'portfolios' | 'assetItems' | 'currency'> & {
+			assetItemId: string;
+		}
 	) {
 		const WrappedComponent = withAssetItems(
 			withCurrency(withAssetItemPortfolios(WithAssetItemPortfolios(Component)))
@@ -23,18 +25,14 @@ export function withAssetItemPortfolio<
 			latest: true,
 		} as unknown as React.ComponentProps<typeof WrappedComponent>;
 
-		return (
-			<WrappedComponent
-				{...wrappedProps}
-			/>
-		);
+		return <WrappedComponent {...wrappedProps} />;
 	};
 }
 
 function WithAssetItemPortfolios<
 	T extends {
 		assetItem: AssetItemPortfolio;
-	}
+	},
 >(Component: React.ComponentType<T>) {
 	return function Wrapper(
 		props: Omit<T, 'assetItem'> & { portfolios: AssetItemPortfolio[] }

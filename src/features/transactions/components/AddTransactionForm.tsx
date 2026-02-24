@@ -2,11 +2,17 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { Controller, useForm } from 'react-hook-form';
-import { z } from 'zod';
+import type { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import { CardContent } from '@/components/ui/card';
 import { DatePicker } from '@/components/ui/date-picker';
+import {
+	Field,
+	FieldError,
+	FieldGroup,
+	FieldLabel,
+} from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import {
 	Select,
@@ -22,17 +28,11 @@ import {
 	getUnitLabelText,
 	isAmountRequired,
 } from '@/features/transactions/lib/utils';
-import { AssetItemPortfolio, TransactionType } from '@/types';
 import {
-	Field,
-	FieldError,
-	FieldGroup,
-	FieldLabel,
-} from '@/components/ui/field';
-import {
+	type AddTransactionRequest,
 	TransactionFormSchema,
-	AddTransactionRequest,
 } from '@/features/transactions/schema';
+import type { AssetItemPortfolio, TransactionType } from '@/types';
 
 export default function AddTransactionForm({
 	assetItem,
@@ -46,9 +46,7 @@ export default function AddTransactionForm({
 		resolver: zodResolver(TransactionFormSchema),
 		defaultValues: {
 			date: new Date(),
-			transactionType: getApplicableTransactionTypes(
-				assetItem.assetType
-			)[0],
+			transactionType: getApplicableTransactionTypes(assetItem.assetType)[0],
 			name: '',
 			units: 0,
 			price: 0,
@@ -77,13 +75,8 @@ export default function AddTransactionForm({
 						name='date'
 						render={({ field, fieldState }) => (
 							<Field data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor={field.name}>
-									Transaction Date
-								</FieldLabel>
-								<DatePicker
-									date={field.value}
-									onSelect={field.onChange}
-								/>
+								<FieldLabel htmlFor={field.name}>Transaction Date</FieldLabel>
+								<DatePicker date={field.value} onSelect={field.onChange} />
 								{fieldState.invalid && (
 									<FieldError errors={[fieldState.error]} />
 								)}
@@ -95,9 +88,7 @@ export default function AddTransactionForm({
 						name='name'
 						render={({ field, fieldState }) => (
 							<Field data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor={field.name}>
-									Transaction Name
-								</FieldLabel>
+								<FieldLabel htmlFor={field.name}>Transaction Name</FieldLabel>
 								<Input
 									{...field}
 									id={field.name}
@@ -112,14 +103,9 @@ export default function AddTransactionForm({
 					<Controller
 						control={form.control}
 						name='transactionType'
-						render={({
-							field: { onChange, ...field },
-							fieldState,
-						}) => (
+						render={({ field: { onChange, ...field }, fieldState }) => (
 							<Field data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor={field.name}>
-									Transaction Type
-								</FieldLabel>
+								<FieldLabel htmlFor={field.name}>Transaction Type</FieldLabel>
 								<Select {...field} onValueChange={onChange}>
 									<SelectTrigger
 										className='w-full rounded-lg sm:ml-auto'
@@ -135,19 +121,17 @@ export default function AddTransactionForm({
 										</SelectValue>
 									</SelectTrigger>
 									<SelectContent className='rounded-xl'>
-										{getApplicableTransactionTypes(
-											assetItem.assetType
-										).map((type) => (
-											<SelectItem
-												key={type}
-												value={type}
-												className='rounded-lg'
-											>
-												{displayTransactionTypeText(
-													type
-												)}
-											</SelectItem>
-										))}
+										{getApplicableTransactionTypes(assetItem.assetType).map(
+											(type) => (
+												<SelectItem
+													key={type}
+													value={type}
+													className='rounded-lg'
+												>
+													{displayTransactionTypeText(type)}
+												</SelectItem>
+											)
+										)}
 									</SelectContent>
 								</Select>
 								{fieldState.invalid && (
@@ -176,9 +160,7 @@ export default function AddTransactionForm({
 											aria-invalid={fieldState.invalid}
 										/>
 										{fieldState.invalid && (
-											<FieldError
-												errors={[fieldState.error]}
-											/>
+											<FieldError errors={[fieldState.error]} />
 										)}
 									</Field>
 								)}
@@ -198,9 +180,7 @@ export default function AddTransactionForm({
 											aria-invalid={fieldState.invalid}
 										/>
 										{fieldState.invalid && (
-											<FieldError
-												errors={[fieldState.error]}
-											/>
+											<FieldError errors={[fieldState.error]} />
 										)}
 									</Field>
 								)}
@@ -223,9 +203,7 @@ export default function AddTransactionForm({
 										aria-invalid={fieldState.invalid}
 									/>
 									{fieldState.invalid && (
-										<FieldError
-											errors={[fieldState.error]}
-										/>
+										<FieldError errors={[fieldState.error]} />
 									)}
 								</Field>
 							)}

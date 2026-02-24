@@ -1,9 +1,8 @@
 'use client';
 import { GoogleLogin } from '@react-oauth/google';
 import { ChevronUp, LogOut, User2 } from 'lucide-react';
-
-import LoadingComponent from '@/components/LoadingComponent';
 import ErrorComponent from '@/components/ErrorComponent';
+import LoadingComponent from '@/components/LoadingComponent';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -22,7 +21,7 @@ export default function AccountMenu() {
 		return <LoadingComponent loadingMessage='Checking login status...' />;
 	}
 
-	if (!!!accessToken) {
+	if (!accessToken) {
 		return <LogInMenu />;
 	}
 
@@ -36,6 +35,7 @@ function LogInMenu() {
 		<div className='flex flex-col items-center'>
 			<GoogleLogin
 				onSuccess={(response) => {
+					// biome-ignore lint/style/noNonNullAssertion: The GoogleLogin response is guaranteed to have a credential
 					loginMutation.mutate(response.credential!);
 				}}
 				onError={() => {
@@ -54,7 +54,7 @@ function LogOutMenu() {
 		return <LoadingComponent loadingMessage='Fetching user...' />;
 	}
 
-	if (error || !!!user) {
+	if (error || !user) {
 		return <ErrorComponent errorMessage='Failed while fetching user' />;
 	}
 

@@ -1,19 +1,18 @@
 'use client';
 
-import * as React from 'react';
 import {
-	DayPicker,
-	getDefaultClassNames,
-	type DayButton,
-} from 'react-day-picker';
-
-import { cn } from '@/lib/utils';
-import { Button, buttonVariants } from '@/components/ui/button';
-import {
+	ChevronDownIcon,
 	ChevronLeftIcon,
 	ChevronRightIcon,
-	ChevronDownIcon,
 } from 'lucide-react';
+import * as React from 'react';
+import {
+	type DayButton,
+	DayPicker,
+	getDefaultClassNames,
+} from 'react-day-picker';
+import { Button, buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 function Calendar({
 	className,
@@ -50,10 +49,7 @@ function Calendar({
 					'flex gap-4 flex-col md:flex-row relative',
 					defaultClassNames.months
 				),
-				month: cn(
-					'flex flex-col w-full gap-4',
-					defaultClassNames.month
-				),
+				month: cn('flex flex-col w-full gap-4', defaultClassNames.month),
 				nav: cn(
 					'flex items-center gap-1 w-full absolute top-0 inset-x-0 justify-between',
 					defaultClassNames.nav
@@ -117,10 +113,7 @@ function Calendar({
 					'rounded-l-(--cell-radius) bg-muted elative after:bg-muted after:absolute after:inset-y-0 after:w-4 after:right-0 -z-0 isolate',
 					defaultClassNames.range_start
 				),
-				range_middle: cn(
-					'rounded-none',
-					defaultClassNames.range_middle
-				),
+				range_middle: cn('rounded-none', defaultClassNames.range_middle),
 				range_end: cn(
 					'rounded-r-(--cell-radius) bg-muted relative after:bg-muted after:absolute after:inset-y-0 after:w-4 after:left-0 -z-0 isolate',
 					defaultClassNames.range_end
@@ -154,10 +147,7 @@ function Calendar({
 				Chevron: ({ className, orientation, ...props }) => {
 					if (orientation === 'left') {
 						return (
-							<ChevronLeftIcon
-								className={cn('size-4', className)}
-								{...props}
-							/>
+							<ChevronLeftIcon className={cn('size-4', className)} {...props} />
 						);
 					}
 
@@ -171,10 +161,7 @@ function Calendar({
 					}
 
 					return (
-						<ChevronDownIcon
-							className={cn('size-4', className)}
-							{...props}
-						/>
+						<ChevronDownIcon className={cn('size-4', className)} {...props} />
 					);
 				},
 				DayButton: CalendarDayButton,

@@ -3,9 +3,6 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-
-import { cn, displayAssetClassText, displayAssetTypeText } from '@/lib/utils';
-import { AssetItem, AssetClass, AssetType } from '@/types';
 import {
 	FieldDescription,
 	FieldGroup,
@@ -14,6 +11,8 @@ import {
 	FieldSeparator,
 	FieldSet,
 } from '@/components/ui/field';
+import { cn, displayAssetClassText, displayAssetTypeText } from '@/lib/utils';
+import { AssetClass, type AssetItem, AssetType } from '@/types';
 
 export default function InvestmentsFilterForm({
 	assetItems,
@@ -45,10 +44,7 @@ export default function InvestmentsFilterForm({
 		const currentValueList = currentValues[data.filterType] as string[];
 
 		if (currentValueList.includes(data.toggledValue)) {
-			currentValueList.splice(
-				currentValueList.indexOf(data.toggledValue),
-				1
-			);
+			currentValueList.splice(currentValueList.indexOf(data.toggledValue), 1);
 		} else {
 			currentValueList.push(data.toggledValue);
 		}
@@ -85,9 +81,7 @@ export default function InvestmentsFilterForm({
 							className='flex flex-row items-start space-x-3 space-y-0'
 						>
 							<Checkbox
-								checked={selectedAssetClasses.includes(
-									assetClass
-								)}
+								checked={selectedAssetClasses.includes(assetClass)}
 								onCheckedChange={() =>
 									onCheckedChange({
 										filterType: 'assetClass',
@@ -166,9 +160,7 @@ export default function InvestmentsFilterForm({
 						>
 							<Checkbox
 								checked={
-									selectedAssetItemIds.includes(
-										assetItem.id
-									) &&
+									selectedAssetItemIds.includes(assetItem.id) &&
 									!isAssetItemDisabled(
 										selectedAssetClasses,
 										selectedAssetTypes,
@@ -187,9 +179,7 @@ export default function InvestmentsFilterForm({
 									assetItem
 								)}
 							/>
-							<FieldLabel className='font-normal'>
-								{assetItem.name}
-							</FieldLabel>
+							<FieldLabel className='font-normal'>{assetItem.name}</FieldLabel>
 						</div>
 					))}
 				</FieldSet>

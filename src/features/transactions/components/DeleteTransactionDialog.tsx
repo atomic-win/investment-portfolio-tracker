@@ -1,5 +1,5 @@
 import { Trash2Icon } from 'lucide-react';
-import React from 'react';
+import type React from 'react';
 
 import CurrencyAmount from '@/components/CurrencyAmount';
 import {
@@ -15,8 +15,8 @@ import {
 } from '@/components/ui/alert-dialog';
 import { buttonVariants } from '@/components/ui/button';
 import { useDeleteTransactionMutation } from '@/features/transactions/hooks/transactions';
-import { AssetItemPortfolio, Transaction } from '@/types';
 import { cn } from '@/lib/utils';
+import type { AssetItemPortfolio, Transaction } from '@/types';
 
 export default function DeleteTransactionDialog({
 	assetItem,
@@ -33,7 +33,7 @@ export default function DeleteTransactionDialog({
 			<AlertDialogTrigger
 				className={cn(
 					'cursor-pointer',
-					buttonVariants({ variant: 'destructive' }),
+					buttonVariants({ variant: 'destructive' })
 				)}
 			>
 				<Trash2Icon />
@@ -41,29 +41,21 @@ export default function DeleteTransactionDialog({
 			</AlertDialogTrigger>
 			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle>
-						Are you absolutely sure?
-					</AlertDialogTitle>
+					<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
 					<AlertDialogDescription>
-						This action cannot be undone. This will permanently
-						delete the transaction.
+						This action cannot be undone. This will permanently delete the
+						transaction.
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<div>
 					<InfoLine label='Date' value={transaction.date} />
-					<InfoLine
-						label='Transaction Name'
-						value={transaction.name}
-					/>
+					<InfoLine label='Transaction Name' value={transaction.name} />
 					<InfoLine
 						label='Transaction Type'
 						value={transaction.transactionType}
 					/>
 					<InfoLine label='Asset Item Name' value={assetItem.name} />
-					<InfoLine
-						label='Units'
-						value={transaction.units.toString()}
-					/>
+					<InfoLine label='Units' value={transaction.units.toString()} />
 					<InfoLine
 						label='Transaction Amount'
 						value={<CurrencyAmount amount={transaction.amount} />}

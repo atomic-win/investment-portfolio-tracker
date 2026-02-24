@@ -1,7 +1,7 @@
-import { AssetItemPortfolio, TransactionType, AssetType } from '@/types';
+import { type AssetItemPortfolio, AssetType, TransactionType } from '@/types';
 
 export function getApplicableTransactionTypes(
-	assetType: AssetType,
+	assetType: AssetType
 ): TransactionType[] {
 	switch (assetType) {
 		case AssetType.BankAccount:
@@ -69,7 +69,7 @@ export function displayTransactionTypeText(transactionType: TransactionType) {
 
 export function getUnitLabelText(
 	assetItem: AssetItemPortfolio,
-	transactionType: TransactionType,
+	transactionType: TransactionType
 ) {
 	switch (assetItem.assetType) {
 		case AssetType.BankAccount:
