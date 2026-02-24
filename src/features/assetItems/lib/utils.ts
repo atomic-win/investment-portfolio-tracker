@@ -1,4 +1,4 @@
-import { AssetType, AssetClass } from '@/types';
+import { AssetClass, AssetType } from '@/types';
 
 export function isAssetClassInputSupported(assetType: AssetType) {
 	return (

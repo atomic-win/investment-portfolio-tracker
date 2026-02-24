@@ -1,18 +1,19 @@
 'use client';
 
 import {
-	ColumnDef,
+	type ColumnDef,
 	flexRender,
 	getCoreRowModel,
 	getPaginationRowModel,
 	getSortedRowModel,
-	SortingState,
+	type SortingState,
 	useReactTable,
-	VisibilityState,
+	type VisibilityState,
 } from '@tanstack/react-table';
 import { ArrowDown, ArrowUp, ArrowUpDown, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 
 import { Button } from '@/components/ui/button';
@@ -68,7 +69,8 @@ export function createColumnDef<TData>({
 						'p-0 w-full',
 						align === 'left' && 'justify-start',
 						align === 'right' && 'justify-end'
-					)}>
+					)}
+				>
 					{headerText}
 					{sortingFnCompare && (
 						<>
@@ -93,12 +95,14 @@ export function createColumnDef<TData>({
 						'font-medium',
 						align === 'left' && 'text-left',
 						align === 'right' && 'text-right'
-					)}>
+					)}
+				>
 					{linkFn ? (
 						<Link
 							href={linkFn(row.original)}
 							target='_blank'
-							className='underline'>
+							className='underline'
+						>
 							<div className='flex items-center'>
 								{cellTextFn(row.original)}
 								<ExternalLink className='h-4 w-4 ml-1' />
@@ -157,7 +161,7 @@ export function DataTable<TData, TValue>({
 
 	const [pageSize, setPageSize] = useLocalStorage(
 		`data-table-page-size-${id}`,
-		!!doPagination ? 8 : data.length
+		doPagination ? 8 : data.length
 	);
 
 	const pagination = {
@@ -209,9 +213,9 @@ export function DataTable<TData, TValue>({
 											{header.isPlaceholder
 												? null
 												: flexRender(
-													header.column.columnDef.header,
-													header.getContext()
-												)}
+														header.column.columnDef.header,
+														header.getContext()
+													)}
 										</TableHead>
 									);
 								})}
@@ -223,7 +227,8 @@ export function DataTable<TData, TValue>({
 							table.getRowModel().rows.map((row) => (
 								<TableRow
 									key={row.id}
-									data-state={row.getIsSelected() && 'selected'}>
+									data-state={row.getIsSelected() && 'selected'}
+								>
 									{row.getVisibleCells().map((cell) => (
 										<TableCell key={cell.id}>
 											{flexRender(
@@ -238,7 +243,8 @@ export function DataTable<TData, TValue>({
 							<TableRow>
 								<TableCell
 									colSpan={columns.length}
-									className='h-24 text-center'>
+									className='h-24 text-center'
+								>
 									No results.
 								</TableCell>
 							</TableRow>

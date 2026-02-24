@@ -1,10 +1,10 @@
 import { withValuations } from '@/features/portfolio/hoc/withValuations';
-import { AssetItemPortfolio, AssetItem, Portfolio } from '@/types';
+import type { AssetItem, AssetItemPortfolio, Portfolio } from '@/types';
 
 export function withAssetItemPortfolios<
 	T extends {
 		portfolios: AssetItemPortfolio[];
-	}
+	},
 >(Component: React.ComponentType<T>) {
 	return withValuations(
 		Component,
@@ -17,6 +17,7 @@ function calculateAssetItemPortfolio(
 	assetItems: AssetItem[],
 	portfolio: Portfolio
 ): AssetItemPortfolio {
+	// biome-ignore lint/style/noNonNullAssertion: we assume that all portfolio ids are valid and exist in assetItems
 	const assetItem = (assetItems || []).find(
 		(assetItem) => assetItem.id === portfolio.id
 	)!;

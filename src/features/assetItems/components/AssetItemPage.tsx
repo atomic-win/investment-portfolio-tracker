@@ -5,7 +5,7 @@ import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcr
 import AssetItem from '@/features/assetItems/components/AssetItem';
 import withAssetItems from '@/features/assetItems/hoc/withAssetItems';
 import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
-import { AssetItemPortfolio } from '@/types';
+import type { AssetItemPortfolio } from '@/types';
 
 export default function AssetItemPage({
 	assetItemId,

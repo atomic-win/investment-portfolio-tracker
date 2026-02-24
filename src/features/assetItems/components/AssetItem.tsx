@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import type React from 'react';
 
 import CurrencyAmount from '@/components/CurrencyAmount';
 import withCurrency from '@/components/hoc/withCurrency';
@@ -11,7 +11,7 @@ import {
 	displayAssetTypeText,
 	displayPercentage,
 } from '@/lib/utils';
-import { AssetItemPortfolio } from '@/types';
+import type { AssetItemPortfolio } from '@/types';
 
 export default function AssetItem({
 	assetItem,

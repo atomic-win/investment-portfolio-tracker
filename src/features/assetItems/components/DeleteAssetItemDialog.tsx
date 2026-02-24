@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 
 import CurrencyAmount from '@/components/CurrencyAmount';
 import {
@@ -20,7 +20,7 @@ import {
 	displayAssetTypeText,
 	displayPercentage,
 } from '@/lib/utils';
-import { AssetItemPortfolio } from '@/types';
+import type { AssetItemPortfolio } from '@/types';
 
 export default function DeleteAssetItemDialog({
 	assetItem,
@@ -41,12 +41,10 @@ export default function DeleteAssetItemDialog({
 			</AlertDialogTrigger>
 			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle>
-						Are you absolutely sure?
-					</AlertDialogTitle>
+					<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
 					<AlertDialogDescription>
-						This action cannot be undone. This will permanently
-						delete the asset item.
+						This action cannot be undone. This will permanently delete the asset
+						item.
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<div>
@@ -61,15 +59,11 @@ export default function DeleteAssetItemDialog({
 					/>
 					<InfoLine
 						label='Invested Value'
-						value={
-							<CurrencyAmount amount={assetItem.investedValue} />
-						}
+						value={<CurrencyAmount amount={assetItem.investedValue} />}
 					/>
 					<InfoLine
 						label='Current Value'
-						value={
-							<CurrencyAmount amount={assetItem.currentValue} />
-						}
+						value={<CurrencyAmount amount={assetItem.currentValue} />}
 					/>
 					<InfoLine
 						label='XIRR'

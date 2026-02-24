@@ -1,15 +1,15 @@
 import { Pie, PieChart } from 'recharts';
 
-import { Card, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import {
-	ChartConfig,
+	type ChartConfig,
 	ChartContainer,
-	ChartTooltip,
-	ChartTooltipContent,
 	ChartLegend,
 	ChartLegendContent,
+	ChartTooltip,
+	ChartTooltipContent,
 } from '@/components/ui/chart';
-import { Portfolio } from '@/types';
+import type { Portfolio } from '@/types';
 
 export default function PortfolioCharts<TPortfolio extends Portfolio>({
 	portfolios,
@@ -23,6 +23,7 @@ export default function PortfolioCharts<TPortfolio extends Portfolio>({
 		.reverse()
 		.reduce(
 			(acc, portfolio, i) => ({
+				// biome-ignore lint/performance/noAccumulatingSpread: we need to accumulate the config for all portfolios
 				...acc,
 				[portfolio.id]: {
 					label: labelFn(portfolio),
@@ -73,7 +74,8 @@ function PortfolioChart<TPortfolio extends Portfolio>({
 			<CardContent className='p-2'>
 				<ChartContainer
 					config={chartConfig}
-					className='mx-auto aspect-square w-full'>
+					className='mx-auto aspect-square w-full'
+				>
 					<PieChart>
 						<ChartTooltip
 							content={

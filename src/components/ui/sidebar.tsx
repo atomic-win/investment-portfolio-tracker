@@ -1,11 +1,10 @@
 'use client';
 
-import * as React from 'react';
 import { mergeProps } from '@base-ui/react/merge-props';
 import { useRender } from '@base-ui/react/use-render';
 import { cva, type VariantProps } from 'class-variance-authority';
-
-import { cn } from '@/lib/utils';
+import { PanelLeftIcon } from 'lucide-react';
+import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
@@ -23,7 +22,7 @@ import {
 	TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { PanelLeftIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const SIDEBAR_COOKIE_NAME = 'sidebar_state';
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -82,7 +81,7 @@ function SidebarProvider({
 				_setOpen(openState);
 			}
 
-			// This sets the cookie to keep the sidebar state.
+			// biome-ignore lint/suspicious/noDocumentCookie: We are intentionally setting a cookie to persist the sidebar state.
 			document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
 		},
 		[setOpenProp, open]
@@ -90,10 +89,8 @@ function SidebarProvider({
 
 	// Helper to toggle the sidebar.
 	const toggleSidebar = React.useCallback(() => {
-		return isMobile
-			? setOpenMobile((open) => !open)
-			: setOpen((open) => !open);
-	}, [isMobile, setOpen, setOpenMobile]);
+		return isMobile ? setOpenMobile((open) => !open) : setOpen((open) => !open);
+	}, [isMobile, setOpen]);
 
 	// Adds a keyboard shortcut to toggle the sidebar.
 	React.useEffect(() => {
@@ -125,15 +122,7 @@ function SidebarProvider({
 			setOpenMobile,
 			toggleSidebar,
 		}),
-		[
-			state,
-			open,
-			setOpen,
-			isMobile,
-			openMobile,
-			setOpenMobile,
-			toggleSidebar,
-		]
+		[state, open, setOpen, isMobile, openMobile, toggleSidebar]
 	);
 
 	return (
@@ -205,13 +194,9 @@ function Sidebar({
 				>
 					<SheetHeader className='sr-only'>
 						<SheetTitle>Sidebar</SheetTitle>
-						<SheetDescription>
-							Displays the mobile sidebar.
-						</SheetDescription>
+						<SheetDescription>Displays the mobile sidebar.</SheetDescription>
 					</SheetHeader>
-					<div className='flex h-full w-full flex-col'>
-						{children}
-					</div>
+					<div className='flex h-full w-full flex-col'>{children}</div>
 				</SheetContent>
 			</Sheet>
 		);
@@ -303,7 +288,7 @@ function SidebarRail({ className, ...props }: React.ComponentProps<'button'>) {
 			onClick={toggleSidebar}
 			title='Toggle Sidebar'
 			className={cn(
-				'hover:after:bg-sidebar-border absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear group-data-[side=left]:-right-4 group-data-[side=right]:left-0 after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] sm:flex',
+				'hover:after:bg-sidebar-border absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear group-data-[side=left]:-right-4 group-data-[side=right]:left-0 after:absolute after:inset-y-0 after:left-1/2 after:w-0.5 sm:flex',
 				'in-data-[side=left]:cursor-w-resize in-data-[side=right]:cursor-e-resize',
 				'[[data-side=left][data-state=collapsed]_&]:cursor-e-resize [[data-side=right][data-state=collapsed]_&]:cursor-w-resize',
 				'hover:group-data-[collapsible=offExamples]:bg-sidebar group-data-[collapsible=offExamples]:translate-x-0 group-data-[collapsible=offExamples]:after:left-full',
@@ -398,10 +383,7 @@ function SidebarGroup({ className, ...props }: React.ComponentProps<'div'>) {
 		<div
 			data-slot='sidebar-group'
 			data-sidebar='group'
-			className={cn(
-				'p-2 relative flex w-full min-w-0 flex-col',
-				className
-			)}
+			className={cn('p-2 relative flex w-full min-w-0 flex-col', className)}
 			{...props}
 		/>
 	);
@@ -496,8 +478,7 @@ const sidebarMenuButtonVariants = cva(
 	{
 		variants: {
 			variant: {
-				default:
-					'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
+				default: 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
 				outline:
 					'bg-background hover:bg-sidebar-accent hover:text-sidebar-accent-foreground shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]',
 			},
@@ -532,10 +513,7 @@ function SidebarMenuButton({
 		defaultTagName: 'button',
 		props: mergeProps<'button'>(
 			{
-				className: cn(
-					sidebarMenuButtonVariants({ variant, size }),
-					className
-				),
+				className: cn(sidebarMenuButtonVariants({ variant, size }), className),
 			},
 			props
 		),
@@ -610,7 +588,7 @@ function SidebarMenuBadge({
 			data-slot='sidebar-menu-badge'
 			data-sidebar='menu-badge'
 			className={cn(
-				'text-sidebar-foreground peer-hover/menu-button:text-sidebar-accent-foreground peer-data-active/menu-button:text-sidebar-accent-foreground pointer-events-none absolute right-1 flex h-5 min-w-5 rounded-md px-1 text-xs font-medium peer-data-[size=default]/menu-button:top-1.5 peer-data-[size=lg]/menu-button:top-2.5 peer-data-[size=sm]/menu-button:top-1 flex items-center justify-center tabular-nums select-none group-data-[collapsible=icon]:hidden',
+				'text-sidebar-foreground peer-hover/menu-button:text-sidebar-accent-foreground peer-data-active/menu-button:text-sidebar-accent-foreground pointer-events-none absolute right-1 flex h-5 min-w-5 rounded-md px-1 text-xs font-medium peer-data-[size=default]/menu-button:top-1.5 peer-data-[size=lg]/menu-button:top-2.5 peer-data-[size=sm]/menu-button:top-1 items-center justify-center tabular-nums select-none group-data-[collapsible=icon]:hidden',
 				className
 			)}
 			{...props}
@@ -634,10 +612,7 @@ function SidebarMenuSkeleton({
 		<div
 			data-slot='sidebar-menu-skeleton'
 			data-sidebar='menu-skeleton'
-			className={cn(
-				'h-8 gap-2 rounded-md px-2 flex items-center',
-				className
-			)}
+			className={cn('h-8 gap-2 rounded-md px-2 flex items-center', className)}
 			{...props}
 		>
 			{showIcon && (

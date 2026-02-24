@@ -4,7 +4,7 @@ import SidebarTriggerWithBreadcrumb from '@/components/SidebarTriggerWithBreadcr
 import { DialogContent, DialogHeader } from '@/components/ui/dialog';
 import { withAssetItemPortfolio } from '@/features/portfolio/hoc/withAssetItemPortfolio';
 import EditTransactionForm from '@/features/transactions/components/EditTransactionForm';
-import { AssetItemPortfolio } from '@/types';
+import type { AssetItemPortfolio } from '@/types';
 
 export default function Page({
 	assetItemId,

@@ -1,21 +1,20 @@
+import { DateTime } from 'luxon';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { CartesianGrid, XAxis, YAxis, Line, LineChart } from 'recharts';
-
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-	ChartConfig,
+	type ChartConfig,
 	ChartContainer,
 	ChartLegend,
 	ChartLegendContent,
 	ChartTooltip,
 	ChartTooltipContent,
 } from '@/components/ui/chart';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { displayPortfolioType } from '@/features/portfolio/lib/utils';
-import { displayPercentage, displayCurrencyAmountText } from '@/lib/utils';
-import { Portfolio, PortfolioType } from '@/types';
 import { useUserQuery } from '@/hooks/users';
-import { DateTime } from 'luxon';
+import { displayCurrencyAmountText, displayPercentage } from '@/lib/utils';
+import type { Portfolio, PortfolioType } from '@/types';
 
 enum TrendType {
 	InvestedValue = 'InvestedValue',
@@ -40,11 +39,7 @@ export default function withPortfolioTrendsSection<
 	}: {
 		portfolios: TPortfolio[];
 	}) {
-		const {
-			data: user,
-			isFetching: isUserFetching,
-			error,
-		} = useUserQuery();
+		const { data: user, isFetching: isUserFetching, error } = useUserQuery();
 
 		const searchParams = useSearchParams();
 		const pathname = usePathname();
@@ -56,8 +51,7 @@ export default function withPortfolioTrendsSection<
 
 		const { preferredCurrency, preferredLocale } = user;
 		const activeTrendType =
-			(searchParams.get('trendType') as TrendType) ||
-			TrendType.InvestedValue;
+			(searchParams.get('trendType') as TrendType) || TrendType.InvestedValue;
 
 		function handleTabChange(trendType: TrendType) {
 			const params = new URLSearchParams(searchParams);
@@ -72,13 +66,14 @@ export default function withPortfolioTrendsSection<
 			.reverse()
 			.reduce(
 				(acc, portfolio, i) => ({
+					// biome-ignore lint/performance/noAccumulatingSpread: this is more readable and the performance impact is negligible since the number of portfolios is expected to be small
 					...acc,
 					[portfolio.id]: {
 						label: labelFn(portfolio),
 						color: `var(--chart-${i + 1})`,
 					},
 				}),
-				{},
+				{}
 			) satisfies ChartConfig;
 
 		const portfolioIds = latestPortfolios.map((p) => p.id);
@@ -112,11 +107,13 @@ export default function withPortfolioTrendsSection<
 						valueFn={(portfolio) => portfolio.investedValue}
 						yAxisFormat={(value) =>
 							displayCurrencyAmountText(
+								// biome-ignore lint/style/noNonNullAssertion: we know that preferredLocale will be defined since we check for user and error states above
 								preferredLocale!,
+								// biome-ignore lint/style/noNonNullAssertion: we know that preferredCurrency will be defined since we check for user and error states above
 								preferredCurrency!,
 								value,
 								'compact',
-								2,
+								2
 							)
 						}
 						showTotalInTooltip={showTotalInTooltip}
@@ -132,11 +129,13 @@ export default function withPortfolioTrendsSection<
 						valueFn={(portfolio) => portfolio.currentValue}
 						yAxisFormat={(value) =>
 							displayCurrencyAmountText(
+								// biome-ignore lint/style/noNonNullAssertion: we know that preferredLocale will be defined since we check for user and error states above
 								preferredLocale!,
+								// biome-ignore lint/style/noNonNullAssertion: we know that preferredCurrency will be defined since we check for user and error states above
 								preferredCurrency!,
 								value,
 								'compact',
-								2,
+								2
 							)
 						}
 						showTotalInTooltip={showTotalInTooltip}
@@ -162,8 +161,7 @@ export default function withPortfolioTrendsSection<
 						chartConfig={chartConfig}
 						chartTitle='Current Value / Invested Value Ratio Trend'
 						valueFn={(portfolio) =>
-							portfolio.currentValue /
-							Math.max(1, portfolio.investedValue)
+							portfolio.currentValue / Math.max(1, portfolio.investedValue)
 						}
 						yAxisFormat={(value) => displayNumber(value)}
 						showTotalInTooltip={false}
@@ -209,6 +207,7 @@ function TrendsChart<TPortfolio extends Portfolio>({
 			});
 		}
 
+		// biome-ignore lint/style/noNonNullAssertion: we know that data will be defined since we just set it above if it wasn't
 		const data = chartDataMap.get(date)!;
 		chartDataMap.set(date, {
 			...data,
@@ -217,7 +216,7 @@ function TrendsChart<TPortfolio extends Portfolio>({
 	});
 
 	const chartData = Array.from(chartDataMap.values()).sort(
-		(a, b) => a.date - b.date,
+		(a, b) => a.date - b.date
 	);
 
 	return (
@@ -238,9 +237,8 @@ function TrendsChart<TPortfolio extends Portfolio>({
 							type='number'
 							scale='time'
 							domain={['dataMin', 'dataMax']}
-							tickFormatter={(date) =>
-								DateTime.fromMillis(date).toISODate()!
-							}
+							// biome-ignore lint/style/noNonNullAssertion: we know that toISODate will return a string since the input is a valid date
+							tickFormatter={(date) => DateTime.fromMillis(date).toISODate()!}
 							tickLine={true}
 							axisLine={true}
 							tickMargin={8}
@@ -265,9 +263,9 @@ function TrendsChart<TPortfolio extends Portfolio>({
 											{index === 0 && (
 												<div className='flex basis-full items-center pt-1.5 text-xs font-medium text-foreground'>
 													{
+														// biome-ignore lint/style/noNonNullAssertion: we know that date will be defined since it's the x-axis data key
 														DateTime.fromMillis(
-															item.payload
-																.date as number,
+															item.payload.date as number
 														).toISODate()!
 													}
 												</div>
@@ -276,53 +274,25 @@ function TrendsChart<TPortfolio extends Portfolio>({
 												className='h-2.5 w-2.5 shrink-0 rounded-[2px]'
 												style={{
 													backgroundColor:
-														chartConfig[
-															name as keyof typeof chartConfig
-														]!.color,
+														chartConfig[name as keyof typeof chartConfig]
+															?.color,
 												}}
 											/>
-											{
-												chartConfig[
-													name as keyof typeof chartConfig
-												]!.label
-											}
+											{chartConfig[name as keyof typeof chartConfig]?.label}
 											<div className='ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground'>
 												{yAxisFormat(value as number)}
 											</div>
 											{/* Add this after the last item */}
 											{showTotalInTooltip &&
-												index ===
-													Object.keys(item.payload)
-														.length -
-														2 && (
+												index === Object.keys(item.payload).length - 2 && (
 													<div className='mt-1.5 flex basis-full items-center border-t pt-1.5 text-xs font-medium text-foreground'>
 														Total
 														<div className='ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground'>
 															{yAxisFormat(
 																portfolioIds
-																	.map(
-																		(id) =>
-																			item
-																				.payload[
-																				id
-																			],
-																	)
-																	.filter(
-																		(
-																			value,
-																		) =>
-																			value !==
-																			undefined,
-																	)
-																	.reduce(
-																		(
-																			acc,
-																			value,
-																		) =>
-																			acc +
-																			value,
-																		0,
-																	),
+																	.map((id) => item.payload[id])
+																	.filter((value) => value !== undefined)
+																	.reduce((acc, value) => acc + value, 0)
 															)}
 														</div>
 													</div>
@@ -337,7 +307,7 @@ function TrendsChart<TPortfolio extends Portfolio>({
 								key={id}
 								type='monotone'
 								dataKey={id}
-								stroke={chartConfig[id].color}
+								stroke={chartConfig[id]?.color}
 								dot={false}
 								strokeWidth={2}
 							/>
@@ -354,7 +324,7 @@ function TrendsChart<TPortfolio extends Portfolio>({
 }
 
 function filterLatestPortfolios<TPortfolio extends Portfolio>(
-	portfolios: TPortfolio[],
+	portfolios: TPortfolio[]
 ) {
 	const latestDate = portfolios
 		.map((p) => p.date)

@@ -9,16 +9,16 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
 import { withValuations } from '@/features/portfolio/hoc/withValuations';
 import { displayPortfolioType } from '@/features/portfolio/lib/utils';
 import {
-	OverallPortfolio,
-	AssetClassPortfolio,
-	AssetTypePortfolio,
-	AssetItemPortfolio,
-	AssetItem,
+	type AssetClassPortfolio,
+	type AssetItem,
+	type AssetItemPortfolio,
+	type AssetTypePortfolio,
+	type OverallPortfolio,
 	PortfolioType,
 } from '@/types';
 
@@ -82,7 +82,8 @@ export default function PortfolioPageContainer({
 			<CardContent className='p-4'>
 				<Tabs
 					value={activeTab}
-					onValueChange={(value) => handleTabChange(value as PortfolioType)}>
+					onValueChange={(value) => handleTabChange(value as PortfolioType)}
+				>
 					<TabsList className='grid w-full grid-cols-4'>
 						<TabsTrigger value={PortfolioType.Overall}>
 							{displayPortfolioType(PortfolioType.Overall)}
@@ -100,7 +101,8 @@ export default function PortfolioPageContainer({
 					<PortfolioTabsContent
 						portfolioType={PortfolioType.Overall}
 						title='Overall'
-						description='Stats for the portfolio'>
+						description='Stats for the portfolio'
+					>
 						<WithLoadedOverallSection
 							assetItemIds={assetItemIds}
 							assetItems={assetItems}
@@ -110,7 +112,8 @@ export default function PortfolioPageContainer({
 					<PortfolioTabsContent
 						portfolioType={PortfolioType.PerAssetClass}
 						title='Per Asset Class'
-						description='Stats for each asset class in the portfolio'>
+						description='Stats for each asset class in the portfolio'
+					>
 						<WithLoadedAssetClassSection
 							assetItemIds={assetItemIds}
 							assetItems={assetItems}
@@ -120,7 +123,8 @@ export default function PortfolioPageContainer({
 					<PortfolioTabsContent
 						portfolioType={PortfolioType.PerAssetType}
 						title='Per Asset Type'
-						description='Stats for each asset type in the portfolio'>
+						description='Stats for each asset type in the portfolio'
+					>
 						<WithLoadedAssetTypeSection
 							assetItemIds={assetItemIds}
 							assetItems={assetItems}
@@ -130,7 +134,8 @@ export default function PortfolioPageContainer({
 					<PortfolioTabsContent
 						portfolioType={PortfolioType.PerAssetItem}
 						title='Per Asset'
-						description='Stats for each asset item in the portfolio'>
+						description='Stats for each asset item in the portfolio'
+					>
 						<WithLoadedAssetItemSection
 							assetItemIds={assetItemIds}
 							assetItems={assetItems}

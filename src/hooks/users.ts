@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
-import { Locale, User } from '@/types';
+import type { Locale, User } from '@/types';
 
 export function useUserQuery() {
 	const primalApiClient = usePrimalApiClient();
@@ -12,9 +12,7 @@ export function useUserQuery() {
 			const response = await primalApiClient.get<User>('users/me');
 			return {
 				...response.data,
-				preferredLocale: convertToClientLocale(
-					response.data.preferredLocale
-				),
+				preferredLocale: convertToClientLocale(response.data.preferredLocale),
 			};
 		},
 	});
@@ -27,19 +25,14 @@ export function useUpdateUserMutation() {
 	return useMutation({
 		mutationFn: async (
 			user: Partial<
-				Omit<
-					User,
-					'id' | 'firstName' | 'lastName' | 'fullName' | 'email'
-				>
+				Omit<User, 'id' | 'firstName' | 'lastName' | 'fullName' | 'email'>
 			>
 		) => {
 			const data = user.preferredLocale
 				? {
 						...user,
-						preferredLocale: convertToServerLocale(
-							user.preferredLocale
-						),
-				  }
+						preferredLocale: convertToServerLocale(user.preferredLocale),
+					}
 				: user;
 			await primalApiClient.patch('users/me', data);
 		},

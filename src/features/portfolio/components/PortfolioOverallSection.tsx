@@ -1,9 +1,9 @@
-import { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef } from '@tanstack/react-table';
 
 import CurrencyAmount from '@/components/CurrencyAmount';
 import { createColumnDef, DataTable } from '@/components/ui/data-table';
 import { displayPercentage } from '@/lib/utils';
-import { OverallPortfolio } from '@/types';
+import type { OverallPortfolio } from '@/types';
 
 const columns: ColumnDef<OverallPortfolio>[] = [
 	createColumnDef({

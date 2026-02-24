@@ -1,10 +1,9 @@
 'use client';
 
-import * as React from 'react';
 import { AlertDialog as AlertDialogPrimitive } from '@base-ui/react/alert-dialog';
-
-import { cn } from '@/lib/utils';
+import type * as React from 'react';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 function AlertDialog({ ...props }: AlertDialogPrimitive.Root.Props) {
 	return <AlertDialogPrimitive.Root data-slot='alert-dialog' {...props} />;
@@ -12,19 +11,13 @@ function AlertDialog({ ...props }: AlertDialogPrimitive.Root.Props) {
 
 function AlertDialogTrigger({ ...props }: AlertDialogPrimitive.Trigger.Props) {
 	return (
-		<AlertDialogPrimitive.Trigger
-			data-slot='alert-dialog-trigger'
-			{...props}
-		/>
+		<AlertDialogPrimitive.Trigger data-slot='alert-dialog-trigger' {...props} />
 	);
 }
 
 function AlertDialogPortal({ ...props }: AlertDialogPrimitive.Portal.Props) {
 	return (
-		<AlertDialogPrimitive.Portal
-			data-slot='alert-dialog-portal'
-			{...props}
-		/>
+		<AlertDialogPrimitive.Portal data-slot='alert-dialog-portal' {...props} />
 	);
 }
 

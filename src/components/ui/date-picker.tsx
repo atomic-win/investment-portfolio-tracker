@@ -1,7 +1,7 @@
 'use client';
 
 import { Calendar as CalendarIcon } from 'lucide-react';
-
+import { DateTime } from 'luxon';
 import { buttonVariants } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import {
@@ -10,13 +10,13 @@ import {
 	PopoverTrigger,
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-import { DateTime } from 'luxon';
 
 export function DatePicker({
 	date,
 	onSelect,
 }: {
 	date: Date | undefined;
+	// biome-ignore lint/suspicious/noConfusingVoidType: onSelect can return void, but it can also return undefined, so the return type is void | undefined
 	onSelect?: (date: Date | undefined) => void | undefined;
 }) {
 	return (
@@ -26,7 +26,7 @@ export function DatePicker({
 				className={cn(
 					!date && 'text-muted-foreground',
 					buttonVariants({ variant: 'outline' }),
-					'w-full justify-start font-normal items-center',
+					'w-full justify-start font-normal items-center'
 				)}
 			>
 				<CalendarIcon />

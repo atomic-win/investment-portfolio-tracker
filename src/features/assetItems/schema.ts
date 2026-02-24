@@ -1,12 +1,11 @@
 import { z } from 'zod';
-
-import { AssetClass, AssetType, Currency } from '@/types';
 import {
 	isAssetClassInputSupported,
+	isCurrencyInputSupported,
 	isSchemeCodeInputSupported,
 	isSymbolInputSupported,
-	isCurrencyInputSupported,
 } from '@/features/assetItems/lib/utils';
+import { AssetClass, AssetType, Currency } from '@/types';
 
 export type AddAssetItemRequest = z.infer<typeof AddAssetItemSchema>;
 
@@ -25,7 +24,7 @@ export const AddAssetItemSchema = z
 			.optional(),
 	})
 	.superRefine((data, ctx) => {
-		if (!!!data.assetClass) {
+		if (!data.assetClass) {
 			if (isAssetClassInputSupported(data.assetType)) {
 				ctx.addIssue({
 					code: z.ZodIssueCode.custom,
@@ -43,7 +42,7 @@ export const AddAssetItemSchema = z
 		}
 	})
 	.superRefine((data, ctx) => {
-		if (!!!data.schemeCode) {
+		if (!data.schemeCode) {
 			if (isSchemeCodeInputSupported(data.assetType)) {
 				ctx.addIssue({
 					code: z.ZodIssueCode.custom,
@@ -60,7 +59,7 @@ export const AddAssetItemSchema = z
 		}
 	})
 	.superRefine((data, ctx) => {
-		if (!!!data.symbol) {
+		if (!data.symbol) {
 			if (isSymbolInputSupported(data.assetType)) {
 				ctx.addIssue({
 					code: z.ZodIssueCode.custom,
@@ -77,7 +76,7 @@ export const AddAssetItemSchema = z
 		}
 	})
 	.superRefine((data, ctx) => {
-		if (!!!data.currency) {
+		if (!data.currency) {
 			if (isCurrencyInputSupported(data.assetType)) {
 				ctx.addIssue({
 					code: z.ZodIssueCode.custom,

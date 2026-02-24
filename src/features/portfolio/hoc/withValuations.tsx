@@ -1,14 +1,19 @@
+import _ from 'lodash';
 import ErrorComponent from '@/components/ErrorComponent';
 import LoadingComponent from '@/components/LoadingComponent';
 import useValuationsQueries from '@/features/portfolio/hooks/valuations';
-import { AssetItem, Portfolio, PortfolioType, Valuation } from '@/types';
-import _ from 'lodash';
+import {
+	type AssetItem,
+	type Portfolio,
+	PortfolioType,
+	type Valuation,
+} from '@/types';
 
 export function withValuations<
 	TPortfolio extends Portfolio,
 	T extends {
 		portfolios: TPortfolio[];
-	}
+	},
 >(
 	Component: React.ComponentType<T>,
 	idSelector: (assetItem: AssetItem) => string,
@@ -36,16 +41,14 @@ export function withValuations<
 		}
 
 		if (valuationQueryResults.some((result) => result.isError)) {
-			return (
-				<ErrorComponent errorMessage='Failed while fetching valuations' />
-			);
+			return <ErrorComponent errorMessage='Failed while fetching valuations' />;
 		}
 
 		return (
 			<Component
 				{...(props as unknown as T)}
 				portfolios={calculatePortfolios(
-					valuationQueryResults.flatMap((result) => result.data!),
+					valuationQueryResults.flatMap((result) => result.data || []),
 					props.latest
 				).map((portfolio) =>
 					portfolioFn
@@ -104,8 +107,7 @@ function calculatePortfolio(valuations: Valuation[]): Portfolio[] {
 			type: PortfolioType.Unknown,
 			investedValue: valuation.investedValue,
 			investedValuePercent:
-				(valuation.investedValue / Math.max(totalInvestedValue, 1)) *
-				100,
+				(valuation.investedValue / Math.max(totalInvestedValue, 1)) * 100,
 			currentValue: valuation.currentValue,
 			currentValuePercent:
 				(valuation.currentValue / Math.max(totalCurrentValue, 1)) * 100,

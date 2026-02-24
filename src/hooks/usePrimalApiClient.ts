@@ -1,5 +1,5 @@
 'use client';
-import { QueryClient, useQueryClient } from '@tanstack/react-query';
+import { type QueryClient, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { usePathname, useRouter } from 'next/navigation';
 
