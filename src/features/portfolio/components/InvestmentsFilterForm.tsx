@@ -78,7 +78,7 @@ export default function InvestmentsFilterForm({
 					{Object.values(AssetClass).map((assetClass) => (
 						<div
 							key={assetClass}
-							className='flex flex-row items-start space-x-3 space-y-0'
+							className='flex flex-row items-center space-x-3 space-y-0'
 						>
 							<Checkbox
 								checked={selectedAssetClasses.includes(assetClass)}
@@ -105,7 +105,7 @@ export default function InvestmentsFilterForm({
 						<div
 							key={assetType}
 							className={cn(
-								'flex flex-row items-start space-x-3 space-y-0',
+								'flex flex-row items-center space-x-3 space-y-0',
 								isAssetTypeDisabled(
 									selectedAssetClasses,
 									assetItems,
@@ -150,7 +150,7 @@ export default function InvestmentsFilterForm({
 						<div
 							key={assetItem.id}
 							className={cn(
-								'flex flex-row items-start space-x-3 space-y-0',
+								'flex flex-row items-center space-x-3 space-y-0',
 								isAssetItemDisabled(
 									selectedAssetClasses,
 									selectedAssetTypes,
