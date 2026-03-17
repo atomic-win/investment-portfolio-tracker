@@ -14,12 +14,11 @@
 	},
 
 	// TypeScript + JavaScript
-	"typescript.tsdk": "node_modules/typescript/lib",
-	"javascript.updateImportsOnFileMove.enabled": "always",
-	"typescript.updateImportsOnFileMove.enabled": "always",
+	"#js/ts.tsdk.path#": "node_modules/typescript/lib",
+	"#js/ts.updateImportsOnFileMove.enabled#": "always",
 
 	// Next.js style imports
-	"typescript.preferences.importModuleSpecifier": "non-relative",
+	"#js/ts.preferences.importModuleSpecifier#": "non-relative",
 
 	// Tailwind CSS
 	"css.validate": false,
@@ -38,8 +37,5 @@
 		"**/node_modules": true,
 		"**/.next": true,
 		"**/dist": true
-	},
-
-	// Explorer sorting
-	"explorer.sortOrder": "type"
+	}
 }
