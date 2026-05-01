@@ -1,10 +1,7 @@
 import { AssetClass, AssetType } from '@/types';
 
 export function isAssetClassInputSupported(assetType: AssetType) {
-	return (
-		assetType !== AssetType.MutualFund &&
-		getApplicableAssetClasses(assetType).length > 1
-	);
+	return getApplicableAssetClasses(assetType).length > 1;
 }
 
 export function isSchemeCodeInputSupported(assetType: AssetType) {
@@ -31,7 +28,7 @@ export function getApplicableAssetClasses(assetType: AssetType) {
 		case AssetType.Bond:
 			return [AssetClass.Debt];
 		case AssetType.MutualFund:
-			return [AssetClass.Equity, AssetClass.Debt];
+			return [AssetClass.Equity, AssetClass.Debt, AssetClass.Commodities];
 		case AssetType.Stock:
 			return [AssetClass.Equity];
 		default:

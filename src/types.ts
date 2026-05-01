@@ -12,6 +12,7 @@ export enum Locale {
 export enum AssetClass {
 	Equity = 'Equity',
 	Debt = 'Debt',
+	Commodities = 'Commodities',
 	EmergencyFund = 'EmergencyFund',
 }
 
