@@ -5,10 +5,10 @@ import {
 	useQuery,
 	useQueryClient,
 } from '@tanstack/react-query';
-
+import _ from 'lodash';
 import type { AddAssetItemRequest } from '@/features/assetItems/schema';
 import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
-import type { AssetItem } from '@/types';
+import { type AssetItem, AssetType } from '@/types';
 
 export function useAllAssetItemsQuery() {
 	const primalApiClient = usePrimalApiClient();
@@ -28,7 +28,23 @@ export function useAddAssetItemMutation() {
 
 	return useMutation({
 		mutationFn: async (assetItem: AddAssetItemRequest) => {
-			await primalApiClient.post('assetitems', assetItem);
+			const requestBody =
+				assetItem.assetType !== AssetType.MutualFund &&
+				assetItem.assetType !== AssetType.Stock
+					? assetItem
+					: {
+							...assetItem,
+							externalId:
+								assetItem.assetType === AssetType.MutualFund
+									? // biome-ignore lint/style/noNonNullAssertion: schemeCode is required for Mutual Fund, so it will never be null or undefined here
+										assetItem.schemeCode!.toString()
+									: assetItem.symbol,
+						};
+
+			await primalApiClient.post(
+				'assetitems',
+				_.omit(requestBody, ['schemeCode', 'symbol'])
+			);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
