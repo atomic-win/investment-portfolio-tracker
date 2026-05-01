@@ -14,7 +14,7 @@ export const AddAssetItemSchema = z
 		name: z.string().min(3).max(50),
 		assetClass: z.nativeEnum(AssetClass).optional(),
 		assetType: z.nativeEnum(AssetType),
-		schemeCode: z.number().int().min(100000).max(999999).optional(),
+		schemeCode: z.coerce.number().int().min(100000).max(999999).optional(),
 		symbol: z.string().optional(),
 		currency: z
 			.nativeEnum(Currency)

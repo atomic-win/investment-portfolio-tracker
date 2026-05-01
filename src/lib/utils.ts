@@ -61,6 +61,8 @@ export function displayAssetClassText(assetClass: AssetClass) {
 			return 'Equity';
 		case AssetClass.Debt:
 			return 'Debt';
+		case AssetClass.Commodities:
+			return 'Commodities';
 		case AssetClass.EmergencyFund:
 			return 'Emergency Fund';
 		default:
