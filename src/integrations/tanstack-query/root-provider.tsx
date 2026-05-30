@@ -1,6 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 
-import { setupQueryClientPersistence } from "@/components/Providers";
+import { setupQueryClientPersistence } from "@/components/providers";
 
 export function getContext() {
 	const queryClient = new QueryClient({

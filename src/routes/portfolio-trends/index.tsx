@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import SidebarTriggerWithBreadcrumb from "@/components/SidebarTriggerWithBreadcrumb";
-import withAssetItems from "@/features/assetItems/hoc/withAssetItems";
-import InvestmentsFilterForm from "@/features/portfolio/components/InvestmentsFilterForm";
-import PortfolioPageContainer from "@/features/portfolio/components/PortfolioPageContainer";
-import withInvestmentsFilter from "@/features/portfolio/hoc/withInvestmentsFilter";
-import withPortfolioTrendsSection from "@/features/portfolio/hoc/withPortfolioTrendsSection";
+import SidebarTriggerWithBreadcrumb from "@/components/sidebar-trigger-with-breadcrumb";
+import withAssetItems from "@/features/asset-items/hoc/with-asset-items";
+import InvestmentsFilterForm from "@/features/portfolio/components/investments-filter-form";
+import PortfolioPageContainer from "@/features/portfolio/components/portfolio-page-container";
+import withInvestmentsFilter from "@/features/portfolio/hoc/with-investments-filter";
+import withPortfolioTrendsSection from "@/features/portfolio/hoc/with-portfolio-trends-section";
 import { displayAssetClassText, displayAssetTypeText } from "@/lib/utils";
 import {
 	type AssetClass,

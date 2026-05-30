@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { usePrimalApiClient } from "@/hooks/usePrimalApiClient";
+import { usePrimalApiClient } from "@/hooks/use-primal-api-client";
 import type { Locale, User } from "@/types";
 
 export function useUserQuery() {

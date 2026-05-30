@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import SidebarTriggerWithBreadcrumb from "@/components/SidebarTriggerWithBreadcrumb";
+import SidebarTriggerWithBreadcrumb from "@/components/sidebar-trigger-with-breadcrumb";
 
 export const Route = createFileRoute("/")({
 	head: () => ({

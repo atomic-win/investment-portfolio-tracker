@@ -1,13 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import SidebarTriggerWithBreadcrumb from "@/components/SidebarTriggerWithBreadcrumb";
-import withAssetItems from "@/features/assetItems/hoc/withAssetItems";
-import InvestmentsFilterForm from "@/features/portfolio/components/InvestmentsFilterForm";
-import PortfolioOverallSection from "@/features/portfolio/components/PortfolioOverallSection";
-import PortfolioPageContainer from "@/features/portfolio/components/PortfolioPageContainer";
-import PortfolioPerAssetClassSection from "@/features/portfolio/components/PortfolioPerAssetClassSection";
-import PortfolioPerAssetItemSection from "@/features/portfolio/components/PortfolioPerAssetItemSection";
-import PortfolioPerAssetTypeSection from "@/features/portfolio/components/PortfolioPerAssetTypeSection";
-import withInvestmentsFilter from "@/features/portfolio/hoc/withInvestmentsFilter";
+import SidebarTriggerWithBreadcrumb from "@/components/sidebar-trigger-with-breadcrumb";
+import withAssetItems from "@/features/asset-items/hoc/with-asset-items";
+import InvestmentsFilterForm from "@/features/portfolio/components/investments-filter-form";
+import PortfolioOverallSection from "@/features/portfolio/components/portfolio-overall-section";
+import PortfolioPageContainer from "@/features/portfolio/components/portfolio-page-container";
+import PortfolioPerAssetClassSection from "@/features/portfolio/components/portfolio-per-asset-class-section";
+import PortfolioPerAssetItemSection from "@/features/portfolio/components/portfolio-per-asset-item-section";
+import PortfolioPerAssetTypeSection from "@/features/portfolio/components/portfolio-per-asset-type-section";
+import withInvestmentsFilter from "@/features/portfolio/hoc/with-investments-filter";
 
 export const Route = createFileRoute("/portfolio/")({
 	head: () => ({

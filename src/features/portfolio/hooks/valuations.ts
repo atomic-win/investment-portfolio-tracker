@@ -1,6 +1,6 @@
 import { useQueries } from "@tanstack/react-query";
 
-import { usePrimalApiClient } from "@/hooks/usePrimalApiClient";
+import { usePrimalApiClient } from "@/hooks/use-primal-api-client";
 import type { AssetItem, Valuation } from "@/types";
 
 export default function useValuationsQueries(
