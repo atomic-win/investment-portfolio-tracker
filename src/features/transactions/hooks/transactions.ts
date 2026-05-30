@@ -26,7 +26,7 @@ export function useAssetItemTransactionsQuery(
 		],
 		queryFn: async () => {
 			const response = await primalApiClient.get(
-				`assetitems/${assetItemId}/transactions?currency=${currency}`,
+				`asset-items/${assetItemId}/transactions?currency=${currency}`,
 			);
 			return response.data as Transaction[];
 		},
@@ -58,7 +58,7 @@ export function useTransactionQuery(
 		],
 		queryFn: async () => {
 			const response = await primalApiClient.get(
-				`assetitems/${assetItemId}/transactions/${transactionId}?currency=${currency}`,
+				`asset-items/${assetItemId}/transactions/${transactionId}?currency=${currency}`,
 			);
 			return response.data as Transaction;
 		},
@@ -73,7 +73,7 @@ export function useAddTransactionMutation() {
 	return useMutation({
 		mutationFn: async (transaction: AddTransactionRequest) => {
 			await primalApiClient.post(
-				`assetitems/${transaction.assetItemId}/transactions`,
+				`asset-items/${transaction.assetItemId}/transactions`,
 				{
 					...transaction,
 					date: DateTime.fromJSDate(transaction.date).toISODate(),
@@ -92,7 +92,7 @@ export function useEditTransactionMutation() {
 	return useMutation({
 		mutationFn: async (request: EditTransactionRequest) => {
 			await primalApiClient.patch(
-				`assetitems/${request.assetItemId}/transactions/${request.transactionId}`,
+				`asset-items/${request.assetItemId}/transactions/${request.transactionId}`,
 				_.omit(request, ["assetItemId", "transactionId", "date"]),
 			);
 		},
@@ -111,7 +111,7 @@ export function useDeleteTransactionMutation() {
 			transactionId: string;
 		}) => {
 			await primalApiClient.delete(
-				`assetitems/${request.assetItemId}/transactions/${request.transactionId}`,
+				`asset-items/${request.assetItemId}/transactions/${request.transactionId}`,
 			);
 		},
 		onSuccess: async (_data, variables) =>

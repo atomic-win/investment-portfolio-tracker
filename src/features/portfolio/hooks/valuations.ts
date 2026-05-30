@@ -26,7 +26,7 @@ export default function useValuationsQueries(
 			],
 			queryFn: async () => {
 				const response = await primalApiClient.get(
-					`assetItems/valuations?${assetItemIds
+					`asset-items/valuations?${assetItemIds
 						.map((id) => `assetItemIds=${id}`)
 						.join("&")}&currency=${currency}`,
 				);

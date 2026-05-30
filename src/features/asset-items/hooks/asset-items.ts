@@ -16,7 +16,7 @@ export function useAllAssetItemsQuery() {
 	return useQuery({
 		queryKey: ["assetitems", "all"],
 		queryFn: async () => {
-			const response = await primalApiClient.get("assetitems");
+			const response = await primalApiClient.get("asset-items");
 			return response.data as AssetItem[];
 		},
 	});
@@ -42,7 +42,7 @@ export function useAddAssetItemMutation() {
 						};
 
 			await primalApiClient.post(
-				"assetitems",
+				"asset-items",
 				_.omit(requestBody, ["schemeCode", "symbol"]),
 			);
 		},
@@ -60,7 +60,7 @@ export function useDeleteAssetItemMutation() {
 
 	return useMutation({
 		mutationFn: async (assetItemId: string) => {
-			await primalApiClient.delete(`assetitems/${assetItemId}`);
+			await primalApiClient.delete(`asset-items/${assetItemId}`);
 		},
 		onSuccess: async (_data, assetItemId) => {
 			queryClient.removeQueries({
