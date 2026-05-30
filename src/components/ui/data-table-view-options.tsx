@@ -1,9 +1,7 @@
-'use client';
+import type { Table } from "@tanstack/react-table";
+import { Settings2Icon } from "lucide-react";
 
-import type { Table } from '@tanstack/react-table';
-import { Settings2Icon } from 'lucide-react';
-
-import { buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from "@/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
@@ -12,8 +10,8 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 
 interface DataTableViewOptionsProps<TData> {
 	table: Table<TData>;
@@ -26,7 +24,7 @@ export function DataTableViewOptions<TData>({
 		.getAllColumns()
 		.filter(
 			(column) =>
-				typeof column.accessorFn !== 'undefined' && column.getCanHide()
+				typeof column.accessorFn !== "undefined" && column.getCanHide(),
 		);
 
 	if (canHideColumns.length === 0) {
@@ -36,12 +34,12 @@ export function DataTableViewOptions<TData>({
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger
-				className={cn('ml-auto h-8 lg:flex', buttonVariants())}
+				className={cn("ml-auto h-8 lg:flex", buttonVariants())}
 			>
-				<Settings2Icon className='mr-2 h-4 w-4' />
+				<Settings2Icon className="mr-2 h-4 w-4" />
 				View
 			</DropdownMenuTrigger>
-			<DropdownMenuContent align='end'>
+			<DropdownMenuContent align="end">
 				<DropdownMenuGroup>
 					<DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
 					<DropdownMenuSeparator />
@@ -50,7 +48,7 @@ export function DataTableViewOptions<TData>({
 					return (
 						<DropdownMenuCheckboxItem
 							key={column.id}
-							className='capitalize'
+							className="capitalize"
 							checked={column.getIsVisible()}
 							onCheckedChange={(value) => column.toggleVisibility(!!value)}
 						>

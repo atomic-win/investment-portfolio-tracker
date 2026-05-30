@@ -1,50 +1,50 @@
 export enum Currency {
-	Unknown = 'UNKNOWN',
-	USD = 'USD',
-	INR = 'INR',
+	Unknown = "UNKNOWN",
+	USD = "USD",
+	INR = "INR",
 }
 
 export enum Locale {
-	EN_US = 'en-US',
-	EN_IN = 'en-IN',
+	EN_US = "en-US",
+	EN_IN = "en-IN",
 }
 
 export enum AssetClass {
-	Equity = 'Equity',
-	Debt = 'Debt',
-	Commodities = 'Commodities',
-	EmergencyFund = 'EmergencyFund',
+	Equity = "Equity",
+	Debt = "Debt",
+	Commodities = "Commodities",
+	EmergencyFund = "EmergencyFund",
 }
 
 export enum AssetType {
-	BankAccount = 'BankAccount',
-	Wallet = 'Wallet',
-	TradingAccount = 'TradingAccount',
-	FixedDeposit = 'FixedDeposit',
-	EPF = 'EPF',
-	PPF = 'PPF',
-	MutualFund = 'MutualFund',
-	Stock = 'Stock',
-	Bond = 'Bond',
+	BankAccount = "BankAccount",
+	Wallet = "Wallet",
+	TradingAccount = "TradingAccount",
+	FixedDeposit = "FixedDeposit",
+	EPF = "EPF",
+	PPF = "PPF",
+	MutualFund = "MutualFund",
+	Stock = "Stock",
+	Bond = "Bond",
 }
 
 export enum TransactionType {
-	Buy = 'Buy',
-	Sell = 'Sell',
-	Deposit = 'Deposit',
-	Withdrawal = 'Withdrawal',
-	Dividend = 'Dividend',
-	Interest = 'Interest',
-	SelfInterest = 'SelfInterest',
-	InterestPenalty = 'InterestPenalty',
+	Buy = "Buy",
+	Sell = "Sell",
+	Deposit = "Deposit",
+	Withdrawal = "Withdrawal",
+	Dividend = "Dividend",
+	Interest = "Interest",
+	SelfInterest = "SelfInterest",
+	InterestPenalty = "InterestPenalty",
 }
 
 export enum PortfolioType {
-	Unknown = 'Unknown',
-	Overall = 'Overall',
-	PerAssetClass = 'PerAssetClass',
-	PerAssetType = 'PerAssetType',
-	PerAssetItem = 'PerAsset',
+	Unknown = "Unknown",
+	Overall = "Overall",
+	PerAssetClass = "PerAssetClass",
+	PerAssetType = "PerAssetType",
+	PerAssetItem = "PerAsset",
 }
 
 export type User = {

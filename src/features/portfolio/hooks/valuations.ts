@@ -1,13 +1,13 @@
-import { useQueries } from '@tanstack/react-query';
+import { useQueries } from "@tanstack/react-query";
 
-import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
-import type { AssetItem, Valuation } from '@/types';
+import { usePrimalApiClient } from "@/hooks/use-primal-api-client";
+import type { AssetItem, Valuation } from "@/types";
 
 export default function useValuationsQueries(
 	assetItems: AssetItem[],
 	assetItemIds: string[] | undefined,
 	currency: string | undefined,
-	idSelector: (assetItem: AssetItem) => string
+	idSelector: (assetItem: AssetItem) => string,
 ) {
 	const primalApiClient = usePrimalApiClient();
 	assetItemIds = (assetItemIds || []).sort();
@@ -18,7 +18,7 @@ export default function useValuationsQueries(
 	return useQueries({
 		queries: queryInputs.map(({ id, assetItemIds }) => ({
 			queryKey: [
-				'valuations',
+				"valuations",
 				{
 					assetItemIds,
 					currency,
@@ -28,7 +28,7 @@ export default function useValuationsQueries(
 				const response = await primalApiClient.get(
 					`assetItems/valuations?${assetItemIds
 						.map((id) => `assetItemIds=${id}`)
-						.join('&')}&currency=${currency}`
+						.join("&")}&currency=${currency}`,
 				);
 				return response.data as Valuation[];
 			},
@@ -39,7 +39,7 @@ export default function useValuationsQueries(
 						({
 							...valuation,
 							id,
-						}) as Valuation
+						}) as Valuation,
 				),
 		})),
 	});
@@ -48,7 +48,7 @@ export default function useValuationsQueries(
 function getQueryInputs(
 	assetItems: AssetItem[],
 	assetItemIds: string[],
-	idSelector: (assetItem: AssetItem) => string
+	idSelector: (assetItem: AssetItem) => string,
 ): { id: string; assetItemIds: string[] }[] {
 	const idToAssetItemIds = new Map<string, string[]>();
 

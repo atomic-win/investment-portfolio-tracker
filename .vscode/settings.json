@@ -7,18 +7,34 @@
 	"editor.insertSpaces": false,
 	"editor.tabSize": 2,
 
-	// ESLint: Auto-fix on save
+	// Biome: Auto-fix & organize imports on save
 	"editor.codeActionsOnSave": {
 		"source.fixAll.biome": "explicit",
 		"source.organizeImports.biome": "explicit"
 	},
 
-	// TypeScript + JavaScript
-	"#js/ts.tsdk.path#": "node_modules/typescript/lib",
-	"#js/ts.updateImportsOnFileMove.enabled#": "always",
-
-	// Next.js style imports
-	"#js/ts.preferences.importModuleSpecifier#": "non-relative",
+	// Per-language formatter overrides
+	"[javascript]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[javascriptreact]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[json]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[jsonc]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[css]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
 
 	// Tailwind CSS
 	"css.validate": false,
@@ -32,10 +48,18 @@
 		"typescriptreact": "javascriptreact"
 	},
 
+	// TanStack Router: generated route tree
+	"files.watcherExclude": {
+		"**/routeTree.gen.ts": true
+	},
+	"files.readonlyInclude": {
+		"**/routeTree.gen.ts": true
+	},
+
 	// Disable search noise
 	"search.exclude": {
 		"**/node_modules": true,
-		"**/.next": true,
-		"**/dist": true
+		"**/dist": true,
+		"**/routeTree.gen.ts": true
 	}
 }

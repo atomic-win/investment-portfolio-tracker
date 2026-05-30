@@ -1,15 +1,15 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
-import type { Locale, User } from '@/types';
+import { usePrimalApiClient } from "@/hooks/use-primal-api-client";
+import type { Locale, User } from "@/types";
 
 export function useUserQuery() {
 	const primalApiClient = usePrimalApiClient();
 
 	return useQuery({
-		queryKey: ['users', 'me'],
+		queryKey: ["users", "me"],
 		queryFn: async () => {
-			const response = await primalApiClient.get<User>('users/me');
+			const response = await primalApiClient.get<User>("users/me");
 			return {
 				...response.data,
 				preferredLocale: convertToClientLocale(response.data.preferredLocale),
@@ -25,8 +25,8 @@ export function useUpdateUserMutation() {
 	return useMutation({
 		mutationFn: async (
 			user: Partial<
-				Omit<User, 'id' | 'firstName' | 'lastName' | 'fullName' | 'email'>
-			>
+				Omit<User, "id" | "firstName" | "lastName" | "fullName" | "email">
+			>,
 		) => {
 			const data = user.preferredLocale
 				? {
@@ -34,11 +34,11 @@ export function useUpdateUserMutation() {
 						preferredLocale: convertToServerLocale(user.preferredLocale),
 					}
 				: user;
-			await primalApiClient.patch('users/me', data);
+			await primalApiClient.patch("users/me", data);
 		},
 		async onSuccess() {
 			await queryClient.invalidateQueries({
-				queryKey: ['users', 'me'],
+				queryKey: ["users", "me"],
 			});
 		},
 	});
@@ -46,10 +46,10 @@ export function useUpdateUserMutation() {
 
 function convertToClientLocale(localeStr: string) {
 	switch (localeStr) {
-		case 'EN_US':
-			return 'en-US';
-		case 'EN_IN':
-			return 'en-IN';
+		case "EN_US":
+			return "en-US";
+		case "EN_IN":
+			return "en-IN";
 		default:
 			throw new Error(`Unsupported locale from server: ${localeStr}`);
 	}
@@ -57,10 +57,10 @@ function convertToClientLocale(localeStr: string) {
 
 function convertToServerLocale(locale: Locale) {
 	switch (locale) {
-		case 'en-US':
-			return 'EN_US';
-		case 'en-IN':
-			return 'EN_IN';
+		case "en-US":
+			return "EN_US";
+		case "en-IN":
+			return "EN_IN";
 		default:
 			throw new Error(`Unsupported locale: ${locale}`);
 	}
