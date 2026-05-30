@@ -1,4 +1,4 @@
-import { AssetClass, AssetType } from '@/types';
+import { AssetClass, AssetType } from "@/types";
 
 export function isAssetClassInputSupported(assetType: AssetType) {
 	return getApplicableAssetClasses(assetType).length > 1;

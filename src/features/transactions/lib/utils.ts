@@ -1,7 +1,7 @@
-import { type AssetItemPortfolio, AssetType, TransactionType } from '@/types';
+import { type AssetItemPortfolio, AssetType, TransactionType } from "@/types";
 
 export function getApplicableTransactionTypes(
-	assetType: AssetType
+	assetType: AssetType,
 ): TransactionType[] {
 	switch (assetType) {
 		case AssetType.BankAccount:
@@ -47,21 +47,21 @@ export function isAmountRequired(transactionType: TransactionType) {
 export function displayTransactionTypeText(transactionType: TransactionType) {
 	switch (transactionType) {
 		case TransactionType.Buy:
-			return 'Buy';
+			return "Buy";
 		case TransactionType.Sell:
-			return 'Sell';
+			return "Sell";
 		case TransactionType.Deposit:
-			return 'Deposit';
+			return "Deposit";
 		case TransactionType.Withdrawal:
-			return 'Withdrawal';
+			return "Withdrawal";
 		case TransactionType.Dividend:
-			return 'Dividend';
+			return "Dividend";
 		case TransactionType.Interest:
-			return 'Interest';
+			return "Interest";
 		case TransactionType.SelfInterest:
-			return 'Self Interest';
+			return "Self Interest";
 		case TransactionType.InterestPenalty:
-			return 'Interest Penalty';
+			return "Interest Penalty";
 		default:
 			throw new Error(`Unknown transaction type: ${transactionType}`);
 	}
@@ -69,7 +69,7 @@ export function displayTransactionTypeText(transactionType: TransactionType) {
 
 export function getUnitLabelText(
 	assetItem: AssetItemPortfolio,
-	transactionType: TransactionType
+	transactionType: TransactionType,
 ) {
 	switch (assetItem.assetType) {
 		case AssetType.BankAccount:
@@ -80,11 +80,11 @@ export function getUnitLabelText(
 		case AssetType.Bond:
 			return getAmountLabelText(assetItem);
 		case AssetType.MutualFund:
-			return 'Units';
+			return "Units";
 		case AssetType.Stock:
 			return transactionType === TransactionType.Dividend
 				? getAmountLabelText(assetItem)
-				: 'Shares';
+				: "Shares";
 		default:
 			throw new Error(`Unsupported asset type: ${assetItem.assetType}`);
 	}

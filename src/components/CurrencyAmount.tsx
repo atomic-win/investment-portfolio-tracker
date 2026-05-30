@@ -1,19 +1,19 @@
-import { useUserQuery } from '@/hooks/users';
-import { displayCurrencyAmountText } from '@/lib/utils';
+import { useUserQuery } from "@/hooks/users";
+import { displayCurrencyAmountText } from "@/lib/utils";
 
 export default function CurrencyAmount({
 	amount,
-	notation = 'standard',
+	notation = "standard",
 	numberOfFractionDigits = 2,
 }: {
 	amount: number;
-	notation?: 'standard' | 'compact';
+	notation?: "standard" | "compact";
 	numberOfFractionDigits?: number;
 }) {
 	const { data: user, isFetching, error } = useUserQuery();
 
 	if (isFetching || error || !user) {
-		return '';
+		return "";
 	}
 
 	return displayCurrencyAmountText(
@@ -21,6 +21,6 @@ export default function CurrencyAmount({
 		user.preferredCurrency,
 		amount,
 		notation,
-		numberOfFractionDigits
+		numberOfFractionDigits,
 	);
 }

@@ -1,18 +1,17 @@
-'use client';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useNavigate, useSearch } from "@tanstack/react-router";
 
-import withCurrency from '@/components/hoc/withCurrency';
+import withCurrency from "@/components/hoc/withCurrency";
 import {
 	Card,
 	CardContent,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-} from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { withAssetItemPortfolios } from '@/features/portfolio/hoc/withAssetItemPortfolios';
-import { withValuations } from '@/features/portfolio/hoc/withValuations';
-import { displayPortfolioType } from '@/features/portfolio/lib/utils';
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { withAssetItemPortfolios } from "@/features/portfolio/hoc/withAssetItemPortfolios";
+import { withValuations } from "@/features/portfolio/hoc/withValuations";
+import { displayPortfolioType } from "@/features/portfolio/lib/utils";
 import {
 	type AssetClassPortfolio,
 	type AssetItem,
@@ -20,7 +19,7 @@ import {
 	type AssetTypePortfolio,
 	type OverallPortfolio,
 	PortfolioType,
-} from '@/types';
+} from "@/types";
 
 export default function PortfolioPageContainer({
 	assetItemIds,
@@ -47,44 +46,42 @@ export default function PortfolioPageContainer({
 		portfolios: AssetItemPortfolio[];
 	}>;
 }) {
-	const searchParams = useSearchParams();
-	const pathname = usePathname();
-	const { replace } = useRouter();
-
+	const search = useSearch({ strict: false }) as Record<string, unknown>;
+	const navigate = useNavigate();
 	const activeTab =
-		(searchParams.get('portfolioType') as PortfolioType) ||
-		PortfolioType.Overall;
+		(search.portfolioType as PortfolioType) || PortfolioType.Overall;
 
 	function handleTabChange(portfolioType: PortfolioType) {
-		const params = new URLSearchParams(searchParams);
-		params.set('portfolioType', portfolioType);
-		replace(`${pathname}?${params.toString()}`);
+		navigate({
+			// @ts-expect-error shared component - search params not bound to a specific route
+			search: (prev: Record<string, unknown>) => ({ ...prev, portfolioType }),
+		});
 	}
 
 	const WithLoadedOverallSection = withCurrency(
-		withValuations(OverallSection, () => 'overall')
+		withValuations(OverallSection, () => "overall"),
 	);
 
 	const WithLoadedAssetClassSection = withCurrency(
-		withValuations(AssetClassSection, (assetItem) => assetItem.assetClass)
+		withValuations(AssetClassSection, (assetItem) => assetItem.assetClass),
 	);
 
 	const WithLoadedAssetTypeSection = withCurrency(
-		withValuations(AssetTypeSection, (assetItem) => assetItem.assetType)
+		withValuations(AssetTypeSection, (assetItem) => assetItem.assetType),
 	);
 
 	const WithLoadedAssetItemSection = withCurrency(
-		withAssetItemPortfolios(AssetItemSection)
+		withAssetItemPortfolios(AssetItemSection),
 	);
 
 	return (
-		<Card className='mx-auto my-2 p-2 rounded-lg shadow-md'>
-			<CardContent className='p-4'>
+		<Card className="mx-auto my-2 p-2 rounded-lg shadow-md">
+			<CardContent className="p-4">
 				<Tabs
 					value={activeTab}
 					onValueChange={(value) => handleTabChange(value as PortfolioType)}
 				>
-					<TabsList className='grid w-full grid-cols-4'>
+					<TabsList className="grid w-full grid-cols-4">
 						<TabsTrigger value={PortfolioType.Overall}>
 							{displayPortfolioType(PortfolioType.Overall)}
 						</TabsTrigger>
@@ -100,8 +97,8 @@ export default function PortfolioPageContainer({
 					</TabsList>
 					<PortfolioTabsContent
 						portfolioType={PortfolioType.Overall}
-						title='Overall'
-						description='Stats for the portfolio'
+						title="Overall"
+						description="Stats for the portfolio"
 					>
 						<WithLoadedOverallSection
 							assetItemIds={assetItemIds}
@@ -111,8 +108,8 @@ export default function PortfolioPageContainer({
 					</PortfolioTabsContent>
 					<PortfolioTabsContent
 						portfolioType={PortfolioType.PerAssetClass}
-						title='Per Asset Class'
-						description='Stats for each asset class in the portfolio'
+						title="Per Asset Class"
+						description="Stats for each asset class in the portfolio"
 					>
 						<WithLoadedAssetClassSection
 							assetItemIds={assetItemIds}
@@ -122,8 +119,8 @@ export default function PortfolioPageContainer({
 					</PortfolioTabsContent>
 					<PortfolioTabsContent
 						portfolioType={PortfolioType.PerAssetType}
-						title='Per Asset Type'
-						description='Stats for each asset type in the portfolio'
+						title="Per Asset Type"
+						description="Stats for each asset type in the portfolio"
 					>
 						<WithLoadedAssetTypeSection
 							assetItemIds={assetItemIds}
@@ -133,8 +130,8 @@ export default function PortfolioPageContainer({
 					</PortfolioTabsContent>
 					<PortfolioTabsContent
 						portfolioType={PortfolioType.PerAssetItem}
-						title='Per Asset'
-						description='Stats for each asset item in the portfolio'
+						title="Per Asset"
+						description="Stats for each asset item in the portfolio"
 					>
 						<WithLoadedAssetItemSection
 							assetItemIds={assetItemIds}
@@ -161,13 +158,13 @@ function PortfolioTabsContent({
 }) {
 	return (
 		<TabsContent value={portfolioType}>
-			<CardHeader className='flex items-center gap-4 space-y-0 border-b py-2 pt-4 sm:flex-row'>
-				<div className='grid text-center sm:text-left w-full gap-2'>
+			<CardHeader className="flex items-center gap-4 space-y-0 border-b py-2 pt-4 sm:flex-row">
+				<div className="grid text-center sm:text-left w-full gap-2">
 					<CardTitle>{title}</CardTitle>
 					<CardDescription>{description}</CardDescription>
 				</div>
 			</CardHeader>
-			<CardContent className='p-4'>{children}</CardContent>
+			<CardContent className="p-4">{children}</CardContent>
 		</TabsContent>
 	);
 }

@@ -1,5 +1,5 @@
-import { withValuations } from '@/features/portfolio/hoc/withValuations';
-import type { AssetItem, AssetItemPortfolio, Portfolio } from '@/types';
+import { withValuations } from "@/features/portfolio/hoc/withValuations";
+import type { AssetItem, AssetItemPortfolio, Portfolio } from "@/types";
 
 export function withAssetItemPortfolios<
 	T extends {
@@ -9,17 +9,17 @@ export function withAssetItemPortfolios<
 	return withValuations(
 		Component,
 		(assetItem: AssetItem) => assetItem.id,
-		calculateAssetItemPortfolio
+		calculateAssetItemPortfolio,
 	);
 }
 
 function calculateAssetItemPortfolio(
 	assetItems: AssetItem[],
-	portfolio: Portfolio
+	portfolio: Portfolio,
 ): AssetItemPortfolio {
 	// biome-ignore lint/style/noNonNullAssertion: we assume that all portfolio ids are valid and exist in assetItems
 	const assetItem = (assetItems || []).find(
-		(assetItem) => assetItem.id === portfolio.id
+		(assetItem) => assetItem.id === portfolio.id,
 	)!;
 
 	return {

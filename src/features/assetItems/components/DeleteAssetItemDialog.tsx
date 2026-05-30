@@ -1,6 +1,6 @@
-import type React from 'react';
+import type React from "react";
 
-import CurrencyAmount from '@/components/CurrencyAmount';
+import CurrencyAmount from "@/components/CurrencyAmount";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -11,16 +11,16 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { buttonVariants } from '@/components/ui/button';
-import { useDeleteAssetItemMutation } from '@/features/assetItems/hooks/assetItems';
+} from "@/components/ui/alert-dialog";
+import { buttonVariants } from "@/components/ui/button";
+import { useDeleteAssetItemMutation } from "@/features/assetItems/hooks/assetItems";
 import {
 	cn,
 	displayAssetClassText,
 	displayAssetTypeText,
 	displayPercentage,
-} from '@/lib/utils';
-import type { AssetItemPortfolio } from '@/types';
+} from "@/lib/utils";
+import type { AssetItemPortfolio } from "@/types";
 
 export default function DeleteAssetItemDialog({
 	assetItem,
@@ -33,8 +33,8 @@ export default function DeleteAssetItemDialog({
 		<AlertDialog>
 			<AlertDialogTrigger
 				className={cn(
-					'cursor-pointer',
-					buttonVariants({ variant: 'destructive' })
+					"cursor-pointer",
+					buttonVariants({ variant: "destructive" }),
 				)}
 			>
 				Delete
@@ -48,33 +48,33 @@ export default function DeleteAssetItemDialog({
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<div>
-					<InfoLine label='Asset Name' value={assetItem.name} />
+					<InfoLine label="Asset Name" value={assetItem.name} />
 					<InfoLine
-						label='Asset Type'
+						label="Asset Type"
 						value={displayAssetTypeText(assetItem.assetType)}
 					/>
 					<InfoLine
-						label='Asset Class'
+						label="Asset Class"
 						value={displayAssetClassText(assetItem.assetClass)}
 					/>
 					<InfoLine
-						label='Invested Value'
+						label="Invested Value"
 						value={<CurrencyAmount amount={assetItem.investedValue} />}
 					/>
 					<InfoLine
-						label='Current Value'
+						label="Current Value"
 						value={<CurrencyAmount amount={assetItem.currentValue} />}
 					/>
 					<InfoLine
-						label='XIRR'
+						label="XIRR"
 						value={displayPercentage(assetItem.xirrPercent)}
 					/>
 				</div>
 				<AlertDialogFooter>
 					<AlertDialogCancel>Cancel</AlertDialogCancel>
 					<AlertDialogAction
-						variant='destructive'
-						className='cursor-pointer'
+						variant="destructive"
+						className="cursor-pointer"
 						onClick={async () => {
 							await deleteAssetItemAsync(assetItem.id);
 						}}
@@ -89,9 +89,9 @@ export default function DeleteAssetItemDialog({
 
 function InfoLine({ label, value }: { label: string; value: React.ReactNode }) {
 	return (
-		<div className='flex'>
-			<div className='text-sm font-semibold mr-2'>{label}:</div>
-			<div className='text-sm'>{value}</div>
+		<div className="flex">
+			<div className="text-sm font-semibold mr-2">{label}:</div>
+			<div className="text-sm">{value}</div>
 		</div>
 	);
 }

@@ -1,5 +1,4 @@
-'use client';
-
+import { Link } from "@tanstack/react-router";
 import {
 	type ColumnDef,
 	flexRender,
@@ -9,16 +8,15 @@ import {
 	type SortingState,
 	useReactTable,
 	type VisibilityState,
-} from '@tanstack/react-table';
-import { ArrowDown, ArrowUp, ArrowUpDown, ExternalLink } from 'lucide-react';
-import Link from 'next/link';
-import type React from 'react';
-import { useState } from 'react';
-import { useLocalStorage } from 'usehooks-ts';
+} from "@tanstack/react-table";
+import { ArrowDown, ArrowUp, ArrowUpDown, ExternalLink } from "lucide-react";
+import type React from "react";
+import { useState } from "react";
+import { useLocalStorage } from "usehooks-ts";
 
-import { Button } from '@/components/ui/button';
-import { DataTablePagination } from '@/components/ui/data-table-pagination';
-import { DataTableToolbar } from '@/components/ui/data-table-toolbar';
+import { Button } from "@/components/ui/button";
+import { DataTablePagination } from "@/components/ui/data-table-pagination";
+import { DataTableToolbar } from "@/components/ui/data-table-toolbar";
 import {
 	Table,
 	TableBody,
@@ -26,8 +24,8 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from '@/components/ui/table';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/table";
+import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
 	id: string;
@@ -42,7 +40,7 @@ export function createColumnDef<TData>({
 	linkFn,
 	cellTextFn,
 	sortingFnCompare,
-	align = 'right',
+	align = "right",
 	enableHiding = true,
 }: {
 	accessorKey: (string & {}) | keyof TData;
@@ -51,7 +49,7 @@ export function createColumnDef<TData>({
 	linkFn?: (data: TData) => string;
 	cellTextFn: (data: TData) => React.ReactNode;
 	sortingFnCompare?: (data: TData) => string | number;
-	align?: 'left' | 'right';
+	align?: "left" | "right";
 	enableHiding?: boolean;
 }): ColumnDef<TData> {
 	return {
@@ -60,28 +58,28 @@ export function createColumnDef<TData>({
 		header: ({ column }) => {
 			return (
 				<Button
-					variant='ghost'
+					variant="ghost"
 					onClick={() =>
 						sortingFnCompare &&
-						column.toggleSorting(column.getIsSorted() === 'asc')
+						column.toggleSorting(column.getIsSorted() === "asc")
 					}
 					className={cn(
-						'p-0 w-full',
-						align === 'left' && 'justify-start',
-						align === 'right' && 'justify-end'
+						"p-0 w-full",
+						align === "left" && "justify-start",
+						align === "right" && "justify-end",
 					)}
 				>
 					{headerText}
 					{sortingFnCompare && (
 						<>
-							{column.getIsSorted() === 'asc' && (
-								<ArrowDown className='h-4 w-4' />
+							{column.getIsSorted() === "asc" && (
+								<ArrowDown className="h-4 w-4" />
 							)}
-							{column.getIsSorted() === 'desc' && (
-								<ArrowUp className='h-4 w-4' />
+							{column.getIsSorted() === "desc" && (
+								<ArrowUp className="h-4 w-4" />
 							)}
 							{column.getIsSorted() === false && (
-								<ArrowUpDown className='h-4 w-4' />
+								<ArrowUpDown className="h-4 w-4" />
 							)}
 						</>
 					)}
@@ -92,20 +90,20 @@ export function createColumnDef<TData>({
 			return (
 				<div
 					className={cn(
-						'font-medium',
-						align === 'left' && 'text-left',
-						align === 'right' && 'text-right'
+						"font-medium",
+						align === "left" && "text-left",
+						align === "right" && "text-right",
 					)}
 				>
 					{linkFn ? (
 						<Link
-							href={linkFn(row.original)}
-							target='_blank'
-							className='underline'
+							to={linkFn(row.original)}
+							target="_blank"
+							className="underline"
 						>
-							<div className='flex items-center'>
+							<div className="flex items-center">
 								{cellTextFn(row.original)}
-								<ExternalLink className='h-4 w-4 ml-1' />
+								<ExternalLink className="h-4 w-4 ml-1" />
 							</div>
 						</Link>
 					) : (
@@ -150,7 +148,7 @@ export function DataTable<TData, TValue>({
 }) {
 	const [sorting, setSorting] = useState<SortingState>(initialSorting || []);
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
-		initialColumnVisibility || {}
+		initialColumnVisibility || {},
 	);
 
 	if (data.length === 1) {
@@ -161,7 +159,7 @@ export function DataTable<TData, TValue>({
 
 	const [pageSize, setPageSize] = useLocalStorage(
 		`data-table-page-size-${id}`,
-		doPagination ? 8 : data.length
+		doPagination ? 8 : data.length,
 	);
 
 	const pagination = {
@@ -170,9 +168,11 @@ export function DataTable<TData, TValue>({
 	};
 
 	const setPagination = (
-		updater: ((old: typeof pagination) => typeof pagination) | typeof pagination
+		updater:
+			| ((old: typeof pagination) => typeof pagination)
+			| typeof pagination,
 	) => {
-		if (typeof updater === 'function') {
+		if (typeof updater === "function") {
 			const newPagination = updater(pagination);
 			setPageIndex(newPagination.pageIndex);
 			setPageSize(newPagination.pageSize);
@@ -199,10 +199,10 @@ export function DataTable<TData, TValue>({
 	});
 
 	return (
-		<div className='space-y-2'>
+		<div className="space-y-2">
 			<DataTableToolbar table={table} />
 
-			<div className='rounded-md border'>
+			<div className="rounded-md border">
 				<Table>
 					<TableHeader>
 						{table.getHeaderGroups().map((headerGroup) => (
@@ -214,7 +214,7 @@ export function DataTable<TData, TValue>({
 												? null
 												: flexRender(
 														header.column.columnDef.header,
-														header.getContext()
+														header.getContext(),
 													)}
 										</TableHead>
 									);
@@ -227,13 +227,13 @@ export function DataTable<TData, TValue>({
 							table.getRowModel().rows.map((row) => (
 								<TableRow
 									key={row.id}
-									data-state={row.getIsSelected() && 'selected'}
+									data-state={row.getIsSelected() && "selected"}
 								>
 									{row.getVisibleCells().map((cell) => (
 										<TableCell key={cell.id}>
 											{flexRender(
 												cell.column.columnDef.cell,
-												cell.getContext()
+												cell.getContext(),
 											)}
 										</TableCell>
 									))}
@@ -243,7 +243,7 @@ export function DataTable<TData, TValue>({
 							<TableRow>
 								<TableCell
 									colSpan={columns.length}
-									className='h-24 text-center'
+									className="h-24 text-center"
 								>
 									No results.
 								</TableCell>

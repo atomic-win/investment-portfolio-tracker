@@ -1,8 +1,8 @@
-import { SlidersHorizontalIcon } from 'lucide-react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useNavigate, useSearch } from "@tanstack/react-router";
+import { SlidersHorizontalIcon } from "lucide-react";
 
-import { Card } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Card } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
 	FieldDescription,
 	FieldGroup,
@@ -10,31 +10,26 @@ import {
 	FieldLegend,
 	FieldSeparator,
 	FieldSet,
-} from '@/components/ui/field';
-import { cn, displayAssetClassText, displayAssetTypeText } from '@/lib/utils';
-import { AssetClass, type AssetItem, AssetType } from '@/types';
+} from "@/components/ui/field";
+import { cn, displayAssetClassText, displayAssetTypeText } from "@/lib/utils";
+import { AssetClass, type AssetItem, AssetType } from "@/types";
 
 export default function InvestmentsFilterForm({
 	assetItems,
 }: {
 	assetItems: AssetItem[];
 }) {
-	const searchParams = useSearchParams();
-	const pathname = usePathname();
-	const { replace } = useRouter();
+	const search = useSearch({ strict: false }) as Record<string, unknown>;
+	const navigate = useNavigate();
 
-	const selectedAssetClasses =
-		(searchParams.getAll('assetClass') as AssetClass[]) || [];
-	const selectedAssetTypes =
-		(searchParams.getAll('assetType') as AssetType[]) || [];
-	const selectedAssetItemIds = searchParams.getAll('assetItemId') || [];
+	const selectedAssetClasses = (search.assetClass as AssetClass[]) || [];
+	const selectedAssetTypes = (search.assetType as AssetType[]) || [];
+	const selectedAssetItemIds = (search.assetItemId as string[]) || [];
 
 	function onCheckedChange(data: {
-		filterType: 'assetClass' | 'assetType' | 'assetItemId';
+		filterType: "assetClass" | "assetType" | "assetItemId";
 		toggledValue: string;
 	}) {
-		const params = new URLSearchParams(searchParams);
-
 		const currentValues = {
 			assetClass: selectedAssetClasses,
 			assetType: selectedAssetTypes,
@@ -49,28 +44,30 @@ export default function InvestmentsFilterForm({
 			currentValueList.push(data.toggledValue);
 		}
 
-		params.delete(data.filterType); // remove existing params
-		currentValueList.forEach((value) => {
-			params.append(data.filterType, value);
+		navigate({
+			// @ts-expect-error shared component - search params not bound to a specific route
+			search: (prev: Record<string, unknown>) => ({
+				...prev,
+				[data.filterType]:
+					currentValueList.length > 0 ? currentValueList : undefined,
+			}),
 		});
-
-		replace(`${pathname}?${params.toString()}`);
 	}
 
 	return (
-		<Card className='mx-auto my-2 p-4 rounded-lg shadow-md'>
-			<FieldGroup className='px-2 gap-y-4'>
+		<Card className="mx-auto my-2 p-4 rounded-lg shadow-md">
+			<FieldGroup className="px-2 gap-y-4">
 				<FieldSet>
-					<FieldLegend className='flex items-center '>
-						<SlidersHorizontalIcon className='h-4 w-4' />
-						<span className='ml-2'>Filters</span>
+					<FieldLegend className="flex items-center ">
+						<SlidersHorizontalIcon className="h-4 w-4" />
+						<span className="ml-2">Filters</span>
 					</FieldLegend>
 					<FieldDescription>
 						Select filters to apply for portfolio calculation
 					</FieldDescription>
 				</FieldSet>
 				<FieldSeparator />
-				<FieldSet className='gap-y-3'>
+				<FieldSet className="gap-y-3">
 					<FieldLegend>Asset Class</FieldLegend>
 					<FieldDescription>
 						Select the Asset Classes for portfolio calculation
@@ -78,25 +75,25 @@ export default function InvestmentsFilterForm({
 					{Object.values(AssetClass).map((assetClass) => (
 						<div
 							key={assetClass}
-							className='flex flex-row items-center space-x-3 space-y-0'
+							className="flex flex-row items-center space-x-3 space-y-0"
 						>
 							<Checkbox
 								checked={selectedAssetClasses.includes(assetClass)}
 								onCheckedChange={() =>
 									onCheckedChange({
-										filterType: 'assetClass',
+										filterType: "assetClass",
 										toggledValue: assetClass,
 									})
 								}
 							/>
-							<FieldLabel className='font-normal'>
+							<FieldLabel className="font-normal">
 								{displayAssetClassText(assetClass)}
 							</FieldLabel>
 						</div>
 					))}
 				</FieldSet>
 				<FieldSeparator />
-				<FieldSet className='gap-y-3'>
+				<FieldSet className="gap-y-3">
 					<FieldLegend>Asset Type</FieldLegend>
 					<FieldDescription>
 						Select the Asset Types for portfolio calculation
@@ -105,12 +102,12 @@ export default function InvestmentsFilterForm({
 						<div
 							key={assetType}
 							className={cn(
-								'flex flex-row items-center space-x-3 space-y-0',
+								"flex flex-row items-center space-x-3 space-y-0",
 								isAssetTypeDisabled(
 									selectedAssetClasses,
 									assetItems,
-									assetType
-								) && 'opacity-50'
+									assetType,
+								) && "opacity-50",
 							)}
 						>
 							<Checkbox
@@ -119,29 +116,29 @@ export default function InvestmentsFilterForm({
 									!isAssetTypeDisabled(
 										selectedAssetClasses,
 										assetItems,
-										assetType
+										assetType,
 									)
 								}
 								onCheckedChange={() =>
 									onCheckedChange({
-										filterType: 'assetType',
+										filterType: "assetType",
 										toggledValue: assetType,
 									})
 								}
 								disabled={isAssetTypeDisabled(
 									selectedAssetClasses,
 									assetItems,
-									assetType
+									assetType,
 								)}
 							/>
-							<FieldLabel className='font-normal'>
+							<FieldLabel className="font-normal">
 								{displayAssetTypeText(assetType)}
 							</FieldLabel>
 						</div>
 					))}
 				</FieldSet>
 				<FieldSeparator />
-				<FieldSet className='gap-y-3'>
+				<FieldSet className="gap-y-3">
 					<FieldLegend>Asset Items</FieldLegend>
 					<FieldDescription>
 						Select the Asset Items for portfolio calculation
@@ -150,12 +147,12 @@ export default function InvestmentsFilterForm({
 						<div
 							key={assetItem.id}
 							className={cn(
-								'flex flex-row items-center space-x-3 space-y-0',
+								"flex flex-row items-center space-x-3 space-y-0",
 								isAssetItemDisabled(
 									selectedAssetClasses,
 									selectedAssetTypes,
-									assetItem
-								) && 'opacity-50'
+									assetItem,
+								) && "opacity-50",
 							)}
 						>
 							<Checkbox
@@ -164,22 +161,22 @@ export default function InvestmentsFilterForm({
 									!isAssetItemDisabled(
 										selectedAssetClasses,
 										selectedAssetTypes,
-										assetItem
+										assetItem,
 									)
 								}
 								onCheckedChange={() =>
 									onCheckedChange({
-										filterType: 'assetItemId',
+										filterType: "assetItemId",
 										toggledValue: assetItem.id,
 									})
 								}
 								disabled={isAssetItemDisabled(
 									selectedAssetClasses,
 									selectedAssetTypes,
-									assetItem
+									assetItem,
 								)}
 							/>
-							<FieldLabel className='font-normal'>{assetItem.name}</FieldLabel>
+							<FieldLabel className="font-normal">{assetItem.name}</FieldLabel>
 						</div>
 					))}
 				</FieldSet>
@@ -191,12 +188,12 @@ export default function InvestmentsFilterForm({
 function isAssetTypeDisabled(
 	selectedAssetClasses: AssetClass[],
 	assetItems: AssetItem[],
-	assetType: AssetType
+	assetType: AssetType,
 ): boolean {
 	const filteredAssetItems = assetItems.filter((assetItem) =>
 		selectedAssetClasses.length
 			? selectedAssetClasses.includes(assetItem.assetClass)
-			: true
+			: true,
 	);
 
 	return !filteredAssetItems
@@ -207,7 +204,7 @@ function isAssetTypeDisabled(
 function isAssetItemDisabled(
 	selectedAssetClasses: AssetClass[],
 	selectedAssetTypes: AssetType[],
-	assetItem: AssetItem
+	assetItem: AssetItem,
 ): boolean {
 	if (
 		selectedAssetClasses.length > 0 &&

@@ -1,13 +1,13 @@
-import _ from 'lodash';
-import ErrorComponent from '@/components/ErrorComponent';
-import LoadingComponent from '@/components/LoadingComponent';
-import useValuationsQueries from '@/features/portfolio/hooks/valuations';
+import _ from "lodash";
+import ErrorComponent from "@/components/ErrorComponent";
+import LoadingComponent from "@/components/LoadingComponent";
+import useValuationsQueries from "@/features/portfolio/hooks/valuations";
 import {
 	type AssetItem,
 	type Portfolio,
 	PortfolioType,
 	type Valuation,
-} from '@/types';
+} from "@/types";
 
 export function withValuations<
 	TPortfolio extends Portfolio,
@@ -17,15 +17,15 @@ export function withValuations<
 >(
 	Component: React.ComponentType<T>,
 	idSelector: (assetItem: AssetItem) => string,
-	portfolioFn?: (assetItems: AssetItem[], portfolio: Portfolio) => TPortfolio
+	portfolioFn?: (assetItems: AssetItem[], portfolio: Portfolio) => TPortfolio,
 ) {
 	return function WithValuations(
-		props: Omit<T, 'portfolios'> & {
+		props: Omit<T, "portfolios"> & {
 			assetItems: AssetItem[];
 			assetItemIds: string[];
 			latest: boolean;
 			currency: string;
-		}
+		},
 	) {
 		const valuationQueryResults = useValuationsQueries(
 			props.assetItems,
@@ -33,15 +33,15 @@ export function withValuations<
 				? props.assetItemIds
 				: props.assetItems.map((assetItem) => assetItem.id),
 			props.currency,
-			idSelector
+			idSelector,
 		);
 
 		if (valuationQueryResults.some((result) => result.isFetching)) {
-			return <LoadingComponent loadingMessage='Fetching valuations' />;
+			return <LoadingComponent loadingMessage="Fetching valuations" />;
 		}
 
 		if (valuationQueryResults.some((result) => result.isError)) {
-			return <ErrorComponent errorMessage='Failed while fetching valuations' />;
+			return <ErrorComponent errorMessage="Failed while fetching valuations" />;
 		}
 
 		return (
@@ -49,11 +49,11 @@ export function withValuations<
 				{...(props as unknown as T)}
 				portfolios={calculatePortfolios(
 					valuationQueryResults.flatMap((result) => result.data || []),
-					props.latest
+					props.latest,
 				).map((portfolio) =>
 					portfolioFn
 						? portfolioFn(props.assetItems, portfolio)
-						: (portfolio as TPortfolio)
+						: (portfolio as TPortfolio),
 				)}
 			/>
 		);
@@ -62,7 +62,7 @@ export function withValuations<
 
 function calculatePortfolios(
 	valuations: Valuation[],
-	isLatest: boolean
+	isLatest: boolean,
 ): Portfolio[] {
 	const dateToValuations = new Map<string, Valuation[]>();
 	const latestDate = _.max(valuations.map((valuation) => valuation.date));

@@ -1,25 +1,24 @@
-'use client';
-import { useQueryClient } from '@tanstack/react-query';
-import type { ColumnDef } from '@tanstack/react-table';
-import _ from 'lodash';
-import { EditIcon, PlusIcon, RefreshCwIcon } from 'lucide-react';
-import Link from 'next/link';
-import CurrencyAmount from '@/components/CurrencyAmount';
-import ErrorComponent from '@/components/ErrorComponent';
-import LoadingComponent from '@/components/LoadingComponent';
-import { Button } from '@/components/ui/button';
-import { createColumnDef, DataTable } from '@/components/ui/data-table';
-import { refreshAssetItem } from '@/features/assetItems/hooks/assetItems';
-import DeleteTransactionDialog from '@/features/transactions/components/DeleteTransactionDialog';
-import { useAssetItemTransactionsQuery } from '@/features/transactions/hooks/transactions';
-import { displayTransactionTypeText } from '@/features/transactions/lib/utils';
+import { useQueryClient } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
+import type { ColumnDef } from "@tanstack/react-table";
+import _ from "lodash";
+import { EditIcon, PlusIcon, RefreshCwIcon } from "lucide-react";
+import CurrencyAmount from "@/components/CurrencyAmount";
+import ErrorComponent from "@/components/ErrorComponent";
+import LoadingComponent from "@/components/LoadingComponent";
+import { Button } from "@/components/ui/button";
+import { createColumnDef, DataTable } from "@/components/ui/data-table";
+import { refreshAssetItem } from "@/features/assetItems/hooks/assetItems";
+import DeleteTransactionDialog from "@/features/transactions/components/DeleteTransactionDialog";
+import { useAssetItemTransactionsQuery } from "@/features/transactions/hooks/transactions";
+import { displayTransactionTypeText } from "@/features/transactions/lib/utils";
 import {
 	type AssetItemPortfolio,
 	AssetType,
 	type Currency,
 	type Transaction,
 	TransactionType,
-} from '@/types';
+} from "@/types";
 
 type TableItem = Transaction & {
 	assetItem: AssetItemPortfolio;
@@ -41,17 +40,17 @@ export default function TransactionsTable({
 	} = useAssetItemTransactionsQuery(assetItem.id, currency);
 
 	if (isFetching) {
-		return <LoadingComponent loadingMessage='Fetching transactions' />;
+		return <LoadingComponent loadingMessage="Fetching transactions" />;
 	}
 
 	if (isError || !transactions) {
-		return <ErrorComponent errorMessage='Failed while fetching transactions' />;
+		return <ErrorComponent errorMessage="Failed while fetching transactions" />;
 	}
 
 	const sortedTransactions = _.orderBy(
 		transactions,
-		['date', 'id'],
-		['desc', 'desc']
+		["date", "id"],
+		["desc", "desc"],
 	);
 
 	const items = sortedTransactions.map((transaction) => ({
@@ -60,16 +59,16 @@ export default function TransactionsTable({
 	}));
 
 	return (
-		<div className='mx-auto'>
-			<div className='flex justify-end text-xl font-semibold items-center gap-x-2'>
-				<Link href={`/assetitems/${assetItem.id}/transactions/add`}>
-					<Button className='cursor-pointer' disabled={isFetching}>
+		<div className="mx-auto">
+			<div className="flex justify-end text-xl font-semibold items-center gap-x-2">
+				<Link to="/assetitems/$assetItemId/transactions/add" params={{ assetItemId: assetItem.id }}>
+					<Button className="cursor-pointer" disabled={isFetching}>
 						<PlusIcon />
 						Add Transaction
 					</Button>
 				</Link>
 				<Button
-					className='cursor-pointer'
+					className="cursor-pointer"
 					disabled={isFetching}
 					onClick={async () =>
 						await refreshAssetItem(queryClient, {
@@ -82,12 +81,12 @@ export default function TransactionsTable({
 				</Button>
 			</div>
 			<DataTable
-				id='transactions'
+				id="transactions"
 				columns={getColumns(assetItem)}
 				data={items}
 				initialSorting={[
 					{
-						id: 'date',
+						id: "date",
 						desc: true,
 					},
 				]}
@@ -102,75 +101,73 @@ function getColumns(assetItem: AssetItemPortfolio): ColumnDef<TableItem>[] {
 
 	columns.push(
 		createColumnDef({
-			accessorKey: 'date',
-			headerText: 'Date',
+			accessorKey: "date",
+			headerText: "Date",
 			cellTextFn: (item) => item.date,
-			align: 'left',
+			align: "left",
 			enableHiding: false,
-		})
+		}),
 	);
 
 	columns.push(
 		createColumnDef({
-			accessorKey: 'transactionName',
-			id: 'Transaction Name',
-			headerText: 'Transaction Name',
+			accessorKey: "transactionName",
+			id: "Transaction Name",
+			headerText: "Transaction Name",
 			cellTextFn: (item) => item.name,
-			align: 'left',
+			align: "left",
 			enableHiding: false,
-		})
+		}),
 	);
 
 	columns.push(
 		createColumnDef({
-			accessorKey: 'transactionType',
-			id: 'Transaction Type',
-			headerText: 'Transaction Type',
+			accessorKey: "transactionType",
+			id: "Transaction Type",
+			headerText: "Transaction Type",
 			cellTextFn: (item) => displayTransactionTypeText(item.transactionType),
-			align: 'left',
+			align: "left",
 			enableHiding: false,
-		})
+		}),
 	);
 
 	if (shouldShowUnitsColumn(assetItem)) {
 		columns.push(
 			createColumnDef({
-				accessorKey: 'units',
-				headerText: 'Units',
+				accessorKey: "units",
+				headerText: "Units",
 				cellTextFn: (item) =>
 					item.transactionType === TransactionType.Dividend
-						? '-'
+						? "-"
 						: item.units.toString(),
-				align: 'right',
+				align: "right",
 				enableHiding: false,
-			})
+			}),
 		);
 	}
 
 	columns.push(
 		createColumnDef({
-			accessorKey: 'transactionAmount',
-			headerText: 'Transaction Amount',
+			accessorKey: "transactionAmount",
+			headerText: "Transaction Amount",
 			cellTextFn: (item) => <CurrencyAmount amount={item.amount} />,
-			align: 'right',
+			align: "right",
 			enableHiding: false,
-		})
+		}),
 	);
 
 	columns.push({
-		id: 'actions',
+		id: "actions",
 		cell: ({ row }) => {
 			const item = row.original;
 			return (
-				<div className={'flex gap-x-2 justify-center'}>
+				<div className={"flex gap-x-2 justify-center"}>
 					<DeleteTransactionDialog
 						assetItem={item.assetItem}
 						transaction={item}
 					/>
-					<Link
-						href={`/assetitems/${assetItem.id}/transactions/${item.id}/edit`}
-					>
-						<Button className='cursor-pointer'>
+					<Link to="/assetitems/$assetItemId/transactions/$transactionId/edit" params={{ assetItemId: assetItem.id, transactionId: item.id }}>
+						<Button className="cursor-pointer">
 							<EditIcon />
 							Edit
 						</Button>

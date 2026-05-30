@@ -1,40 +1,51 @@
-'use client';
-import { type QueryClient, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
-import { usePathname, useRouter } from 'next/navigation';
+import { type QueryClient, useQueryClient } from "@tanstack/react-query";
+import {
+	type RegisteredRouter,
+	useLocation,
+	useNavigate,
+} from "@tanstack/react-router";
+import axios from "axios";
 
-import useAccessTokenQuery from '@/hooks/useAccessTokenQuery';
+import useAccessTokenQuery from "@/hooks/useAccessTokenQuery";
 
 export const usePrimalApiClient = () => {
 	const { data: accessToken } = useAccessTokenQuery();
 	const queryClient = useQueryClient();
-	const router = useRouter();
-	const pathname = usePathname();
-
-	const headers = {
-		'Content-type': 'application/json',
-		Authorization: accessToken ? `Bearer ${accessToken}` : '',
-	};
+	const navigate = useNavigate();
+	const { pathname } = useLocation();
 
 	const apiClient = axios.create({
-		baseURL: 'http://localhost:5185/api',
-		headers: headers,
+		baseURL: "http://localhost:5185/api",
+		headers: {
+			"Content-type": "application/json",
+		},
 		validateStatus: () => true,
+	});
+
+	apiClient.interceptors.request.use((config) => {
+		const token = accessToken || localStorage.getItem("accessToken");
+		if (token) {
+			config.headers.Authorization = `Bearer ${token}`;
+		}
+		return config;
 	});
 
 	apiClient.interceptors.response.use(
 		async (response) => {
-			if (response.status === 401) {
-				return await handleUnauthorized(queryClient, pathname, router);
+			if (response.status === 401 && response.config.headers.Authorization) {
+				return await handleUnauthorized(queryClient, pathname, navigate);
 			}
 			return response;
 		},
 		async (error) => {
-			if (error.response.status === 401) {
-				return await handleUnauthorized(queryClient, pathname, router);
+			if (
+				error.response?.status === 401 &&
+				error.config?.headers?.Authorization
+			) {
+				return await handleUnauthorized(queryClient, pathname, navigate);
 			}
 			return error;
-		}
+		},
 	);
 
 	return apiClient;
@@ -43,14 +54,14 @@ export const usePrimalApiClient = () => {
 async function handleUnauthorized(
 	queryClient: QueryClient,
 	pathname: string,
-	router: ReturnType<typeof useRouter>
+	navigate: ReturnType<typeof useNavigate<RegisteredRouter>>,
 ) {
-	localStorage.removeItem('accessToken');
+	localStorage.removeItem("accessToken");
 	queryClient.clear();
 
-	if (!pathname && pathname !== '/') {
-		router.push('/');
+	if (pathname && pathname !== "/") {
+		navigate({ to: "/" });
 	}
 
-	return Promise.reject(new Error('Unauthorized'));
+	return Promise.reject(new Error("Unauthorized"));
 }

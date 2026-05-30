@@ -1,48 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Investment Portfolio Tracker
+
+A client-heavy SPA for tracking investment portfolios, built with TanStack Start. Migrated from a Next.js App Router application.
+
+## Stack
+
+| Layer         | Technology                                       |
+| ------------- | ------------------------------------------------ |
+| Framework     | TanStack Start (`@tanstack/react-start`)         |
+| Router        | TanStack Router (file-based routing)             |
+| Data fetching | TanStack Query + axios                           |
+| Tables        | TanStack Table                                   |
+| Toolchain     | Biome (lint + format)                            |
+| Bundler       | Vite 8                                           |
+| Styling       | Tailwind CSS 4 + shadcn/ui                       |
+| Forms         | react-hook-form + zod                            |
+| Charts        | Recharts                                         |
+| Auth          | Google OAuth (`@react-oauth/google`)             |
+| Package mgr   | npm                                             |
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app runs at `http://localhost:3000` and expects an external API at `http://localhost:5185/api`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Script            | Description                              |
+| ----------------- | ---------------------------------------- |
+| `npm run dev`     | Start dev server on port 3000            |
+| `npm run build`   | Type-check with tsc + production build   |
+| `npm run preview` | Preview production build                 |
+| `npm run start`   | Run production server                    |
+| `npm run test`    | Run tests with Vitest                    |
+| `npm run lint`    | Lint with Biome                          |
+| `npm run format`  | Format with Biome                        |
+| `npm run check`   | Lint + format check with Biome           |
 
-## Learn More
+## Architecture
 
-To learn more about Next.js, take a look at the following resources:
+- **Client-heavy SPA** — all data fetching via React Query + axios to an external API
+- **Auth** — Google OAuth token stored in localStorage, sent as Bearer token
+- **No server components or server functions** — fully client-rendered
+- **HOC composition pattern** — `withAssetItems`, `withCurrency`, `withValuations`, etc.
+- **File-based routing** via TanStack Router in `src/routes/`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Routes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Path                                                        | File                                                                         |
+| ----------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `/`                                                         | `src/routes/index.tsx`                                                       |
+| `/assetitems`                                               | `src/routes/assetitems/index.tsx`                                            |
+| `/assetitems/add`                                           | `src/routes/assetitems/add.tsx`                                              |
+| `/assetitems/:assetItemId`                                  | `src/routes/assetitems/$assetItemId.index.tsx`                               |
+| `/assetitems/:assetItemId/transactions/add`                 | `src/routes/assetitems/$assetItemId.transactions.add.tsx`                    |
+| `/assetitems/:assetItemId/transactions/:transactionId/edit` | `src/routes/assetitems/$assetItemId.transactions.$transactionId.edit.tsx`    |
+| `/portfolio`                                                | `src/routes/portfolio/index.tsx`                                             |
+| `/portfolio-trends`                                         | `src/routes/portfolio-trends/index.tsx`                                      |
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-## License & Usage Notice
-
-This repository is made public **for viewing purposes only**.  
-At this time, the code is **not licensed for copying, modification, or redistribution**.  
-
-You may **browse and read** the source code, but you **do not have permission** to:  
-- Copy or reuse the code in your own projects  
-- Fork or redistribute the repository  
-- Modify and share derivative works  
-
-A license may be added in the future, but until then, **all rights are reserved**.
+Source-available — view only. See [LICENSE](LICENSE) for details.

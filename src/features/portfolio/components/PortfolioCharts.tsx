@@ -1,6 +1,6 @@
-import { Pie, PieChart } from 'recharts';
+import { Pie, PieChart } from "recharts";
 
-import { Card, CardContent, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import {
 	type ChartConfig,
 	ChartContainer,
@@ -8,8 +8,8 @@ import {
 	ChartLegendContent,
 	ChartTooltip,
 	ChartTooltipContent,
-} from '@/components/ui/chart';
-import type { Portfolio } from '@/types';
+} from "@/components/ui/chart";
+import type { Portfolio } from "@/types";
 
 export default function PortfolioCharts<TPortfolio extends Portfolio>({
 	portfolios,
@@ -30,21 +30,21 @@ export default function PortfolioCharts<TPortfolio extends Portfolio>({
 					color: `var(--chart-${i + 1})`,
 				},
 			}),
-			{}
+			{},
 		) satisfies ChartConfig;
 
 	return (
-		<div className='grid grid-cols-2 gap-2 mb-2'>
+		<div className="grid grid-cols-2 gap-2 mb-2">
 			<PortfolioChart
 				portfolios={portfolios}
 				chartConfig={chartConfig}
-				title='Invested Value Allocation (%)'
+				title="Invested Value Allocation (%)"
 				valuePercentFn={(portfolio) => portfolio.investedValuePercent}
 			/>
 			<PortfolioChart
 				portfolios={portfolios}
 				chartConfig={chartConfig}
-				title='Current Value Allocation (%)'
+				title="Current Value Allocation (%)"
 				valuePercentFn={(portfolio) => portfolio.currentValuePercent}
 			/>
 		</div>
@@ -69,34 +69,34 @@ function PortfolioChart<TPortfolio extends Portfolio>({
 	}));
 
 	return (
-		<Card className='m-auto rounded-lg w-full'>
-			<CardTitle className='text-center m-2 text-base'>{title}</CardTitle>
-			<CardContent className='p-2'>
+		<Card className="m-auto rounded-lg w-full">
+			<CardTitle className="text-center m-2 text-base">{title}</CardTitle>
+			<CardContent className="p-2">
 				<ChartContainer
 					config={chartConfig}
-					className='mx-auto aspect-square w-full'
+					className="mx-auto aspect-square w-full"
 				>
 					<PieChart>
 						<ChartTooltip
 							content={
 								<ChartTooltipContent
 									hideLabel
-									className='w-full'
+									className="w-full"
 									formatter={(value, name) => (
 										<>
 											<div
-												className='h-2.5 w-2.5 shrink-0 rounded-[2px] bg-[--color-bg]'
+												className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-[--color-bg]"
 												style={
 													{
-														'--color-bg': `var(--color-${name})`,
+														"--color-bg": `var(--color-${name})`,
 													} as React.CSSProperties
 												}
 											/>
 											{chartConfig[name as keyof typeof chartConfig]?.label ||
 												name}
-											<div className='ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground'>
+											<div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
 												{value}
-												<span className='font-normal text-muted-foreground'>
+												<span className="font-normal text-muted-foreground">
 													%
 												</span>
 											</div>
@@ -108,14 +108,14 @@ function PortfolioChart<TPortfolio extends Portfolio>({
 						/>
 						<Pie
 							data={chartData}
-							dataKey='data'
-							nameKey='id'
+							dataKey="data"
+							nameKey="id"
 							innerRadius={40}
-							width='100%'
+							width="100%"
 						/>
 						<ChartLegend
 							content={<ChartLegendContent />}
-							className='grid grid-cols-2 gap-2 p-0'
+							className="grid grid-cols-2 gap-2 p-0"
 						/>
 					</PieChart>
 				</ChartContainer>

@@ -1,8 +1,7 @@
-'use client';
-import { useSearchParams } from 'next/navigation';
-import type React from 'react';
+import { useSearch } from "@tanstack/react-router";
+import type React from "react";
 
-import type { AssetClass, AssetItem, AssetType } from '@/types';
+import type { AssetClass, AssetItem, AssetType } from "@/types";
 
 export default function withInvestmentsFilter<
 	T extends {
@@ -10,23 +9,19 @@ export default function withInvestmentsFilter<
 		assetItems: AssetItem[];
 	},
 >(Component: React.ComponentType<T>) {
-	return function WithInvestmentsFilter(props: Omit<T, 'assetItemIds'>) {
+	return function WithInvestmentsFilter(props: Omit<T, "assetItemIds">) {
 		const { assetItems } = props;
-		const searchParams = useSearchParams();
+		const search = useSearch({ strict: false }) as Record<string, unknown>;
 
-		const filteredAssetClasses = (searchParams.getAll('assetClass') ||
-			[]) as AssetClass[];
-
-		const filteredAssetTypes = (searchParams.getAll('assetType') ||
-			[]) as AssetType[];
-
-		const filteredAssetItemIds = searchParams.getAll('assetItemId') || [];
+		const filteredAssetClasses = (search.assetClass as AssetClass[]) || [];
+		const filteredAssetTypes = (search.assetType as AssetType[]) || [];
+		const filteredAssetItemIds = (search.assetItemId as string[]) || [];
 
 		const applicableAssetItemIds = calculateApplicableAssetItemIds(
 			filteredAssetClasses,
 			filteredAssetTypes,
 			filteredAssetItemIds,
-			assetItems
+			assetItems,
 		);
 
 		return (
@@ -43,7 +38,7 @@ function calculateApplicableAssetItemIds(
 	filteredAssetClasses: AssetClass[],
 	filteredAssetTypes: AssetType[],
 	filteredAssetItemIds: string[],
-	assetItems: AssetItem[]
+	assetItems: AssetItem[],
 ): string[] {
 	if (filteredAssetItemIds.length !== 0) {
 		return filteredAssetItemIds;
@@ -53,12 +48,12 @@ function calculateApplicableAssetItemIds(
 		.filter(
 			(assetItem) =>
 				filteredAssetClasses.length === 0 ||
-				filteredAssetClasses.includes(assetItem.assetClass)
+				filteredAssetClasses.includes(assetItem.assetClass),
 		)
 		.filter(
 			(assetItem) =>
 				filteredAssetTypes.length === 0 ||
-				filteredAssetTypes.includes(assetItem.assetType)
+				filteredAssetTypes.includes(assetItem.assetType),
 		)
 		.map((assetItem) => assetItem.id);
 }

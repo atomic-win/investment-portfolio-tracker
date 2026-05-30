@@ -4,19 +4,19 @@ import {
 	useMutation,
 	useQuery,
 	useQueryClient,
-} from '@tanstack/react-query';
-import _ from 'lodash';
-import type { AddAssetItemRequest } from '@/features/assetItems/schema';
-import { usePrimalApiClient } from '@/hooks/usePrimalApiClient';
-import { type AssetItem, AssetType } from '@/types';
+} from "@tanstack/react-query";
+import _ from "lodash";
+import type { AddAssetItemRequest } from "@/features/assetItems/schema";
+import { usePrimalApiClient } from "@/hooks/usePrimalApiClient";
+import { type AssetItem, AssetType } from "@/types";
 
 export function useAllAssetItemsQuery() {
 	const primalApiClient = usePrimalApiClient();
 
 	return useQuery({
-		queryKey: ['assetitems', 'all'],
+		queryKey: ["assetitems", "all"],
 		queryFn: async () => {
-			const response = await primalApiClient.get('assetitems');
+			const response = await primalApiClient.get("assetitems");
 			return response.data as AssetItem[];
 		},
 	});
@@ -42,13 +42,13 @@ export function useAddAssetItemMutation() {
 						};
 
 			await primalApiClient.post(
-				'assetitems',
-				_.omit(requestBody, ['schemeCode', 'symbol'])
+				"assetitems",
+				_.omit(requestBody, ["schemeCode", "symbol"]),
 			);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ['assetitems', 'all'],
+				queryKey: ["assetitems", "all"],
 			});
 		},
 	});
@@ -75,7 +75,7 @@ export function useDeleteAssetItemMutation() {
 export async function refreshAssetItems(queryClient: QueryClient) {
 	return await queryClient.invalidateQueries({
 		predicate: (query) =>
-			query.queryKey[0] === 'assetitems' || query.queryKey[0] === 'valuations',
+			query.queryKey[0] === "assetitems" || query.queryKey[0] === "valuations",
 	});
 }
 
@@ -83,7 +83,7 @@ export async function refreshAssetItem(
 	queryClient: QueryClient,
 	request: {
 		assetItemId: string;
-	}
+	},
 ) {
 	return await queryClient.invalidateQueries({
 		predicate: (query) => isQueryRelatedToAssetItem(query, request),
@@ -92,23 +92,23 @@ export async function refreshAssetItem(
 
 function isQueryRelatedToAssetItem(
 	query: Query<unknown, Error, unknown, readonly unknown[]>,
-	request: { assetItemId: string }
+	request: { assetItemId: string },
 ) {
 	if (
-		query.queryKey[0] !== 'assetitems' &&
-		query.queryKey[0] !== 'valuations'
+		query.queryKey[0] !== "assetitems" &&
+		query.queryKey[0] !== "valuations"
 	) {
 		return false;
 	}
 
 	if (
 		query.queryKey[1] === request.assetItemId &&
-		query.queryKey[2] === 'transactions'
+		query.queryKey[2] === "transactions"
 	) {
 		return true;
 	}
 
-	if (query.queryKey[0] !== 'valuations') {
+	if (query.queryKey[0] !== "valuations") {
 		return false;
 	}
 

@@ -40,3 +40,17 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+dist
+dist-ssr
+*.local
+.env.local
+.nitro
+.tanstack
+.wrangler
+.output
+.vinxi
+__unconfig*
+
+.DS_Store
+**/*:Zone.Identifier

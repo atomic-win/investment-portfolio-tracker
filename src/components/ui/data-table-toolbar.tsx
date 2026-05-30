@@ -1,8 +1,6 @@
-'use client';
+import type { Table } from "@tanstack/react-table";
 
-import type { Table } from '@tanstack/react-table';
-
-import { DataTableViewOptions } from '@/components/ui/data-table-view-options';
+import { DataTableViewOptions } from "@/components/ui/data-table-view-options";
 
 interface DataTableToolbarProps<TData> {
 	table: Table<TData>;
@@ -12,7 +10,7 @@ export function DataTableToolbar<TData>({
 	table,
 }: DataTableToolbarProps<TData>) {
 	return (
-		<div className='flex items-center justify-between'>
+		<div className="flex items-center justify-between">
 			<DataTableViewOptions table={table} />
 		</div>
 	);

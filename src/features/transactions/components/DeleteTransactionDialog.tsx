@@ -1,7 +1,7 @@
-import { Trash2Icon } from 'lucide-react';
-import type React from 'react';
+import { Trash2Icon } from "lucide-react";
+import type React from "react";
 
-import CurrencyAmount from '@/components/CurrencyAmount';
+import CurrencyAmount from "@/components/CurrencyAmount";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -12,11 +12,11 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { buttonVariants } from '@/components/ui/button';
-import { useDeleteTransactionMutation } from '@/features/transactions/hooks/transactions';
-import { cn } from '@/lib/utils';
-import type { AssetItemPortfolio, Transaction } from '@/types';
+} from "@/components/ui/alert-dialog";
+import { buttonVariants } from "@/components/ui/button";
+import { useDeleteTransactionMutation } from "@/features/transactions/hooks/transactions";
+import { cn } from "@/lib/utils";
+import type { AssetItemPortfolio, Transaction } from "@/types";
 
 export default function DeleteTransactionDialog({
 	assetItem,
@@ -32,8 +32,8 @@ export default function DeleteTransactionDialog({
 		<AlertDialog>
 			<AlertDialogTrigger
 				className={cn(
-					'cursor-pointer',
-					buttonVariants({ variant: 'destructive' })
+					"cursor-pointer",
+					buttonVariants({ variant: "destructive" }),
 				)}
 			>
 				<Trash2Icon />
@@ -48,24 +48,24 @@ export default function DeleteTransactionDialog({
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<div>
-					<InfoLine label='Date' value={transaction.date} />
-					<InfoLine label='Transaction Name' value={transaction.name} />
+					<InfoLine label="Date" value={transaction.date} />
+					<InfoLine label="Transaction Name" value={transaction.name} />
 					<InfoLine
-						label='Transaction Type'
+						label="Transaction Type"
 						value={transaction.transactionType}
 					/>
-					<InfoLine label='Asset Item Name' value={assetItem.name} />
-					<InfoLine label='Units' value={transaction.units.toString()} />
+					<InfoLine label="Asset Item Name" value={assetItem.name} />
+					<InfoLine label="Units" value={transaction.units.toString()} />
 					<InfoLine
-						label='Transaction Amount'
+						label="Transaction Amount"
 						value={<CurrencyAmount amount={transaction.amount} />}
 					/>
 				</div>
 				<AlertDialogFooter>
 					<AlertDialogCancel>Cancel</AlertDialogCancel>
 					<AlertDialogAction
-						variant='destructive'
-						className='cursor-pointer'
+						variant="destructive"
+						className="cursor-pointer"
 						onClick={async () => {
 							await deleteTransactionAsync({
 								assetItemId: assetItem.id,
@@ -83,9 +83,9 @@ export default function DeleteTransactionDialog({
 
 function InfoLine({ label, value }: { label: string; value: React.ReactNode }) {
 	return (
-		<div className='flex'>
-			<div className='text-sm font-semibold mr-2'>{label}:</div>
-			<div className='text-sm'>{value}</div>
+		<div className="flex">
+			<div className="text-sm font-semibold mr-2">{label}:</div>
+			<div className="text-sm">{value}</div>
 		</div>
 	);
 }

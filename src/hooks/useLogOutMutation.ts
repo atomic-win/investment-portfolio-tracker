@@ -1,17 +1,16 @@
-'use client';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
 
 export const useLogOutMutation = () => {
 	const queryClient = useQueryClient();
-	const { replace } = useRouter();
+	const navigate = useNavigate();
 
 	return useMutation({
 		mutationFn: async () => {
-			localStorage.removeItem('accessToken');
+			localStorage.removeItem("accessToken");
 			queryClient.removeQueries();
 			queryClient.clear();
-			replace('/');
+			navigate({ to: "/", replace: true });
 		},
 	});
 };

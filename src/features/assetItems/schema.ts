@@ -1,11 +1,11 @@
-import { z } from 'zod';
+import { z } from "zod";
 import {
 	isAssetClassInputSupported,
 	isCurrencyInputSupported,
 	isSchemeCodeInputSupported,
 	isSymbolInputSupported,
-} from '@/features/assetItems/lib/utils';
-import { AssetClass, AssetType, Currency } from '@/types';
+} from "@/features/assetItems/lib/utils";
+import { AssetClass, AssetType, Currency } from "@/types";
 
 export type AddAssetItemRequest = z.infer<typeof AddAssetItemSchema>;
 
@@ -19,7 +19,7 @@ export const AddAssetItemSchema = z
 		currency: z
 			.nativeEnum(Currency)
 			.refine((val) => val !== Currency.Unknown, {
-				message: 'Currency cannot be Unknown',
+				message: "Currency cannot be Unknown",
 			})
 			.optional(),
 	})
