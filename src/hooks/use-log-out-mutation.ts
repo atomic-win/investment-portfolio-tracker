@@ -1,16 +1,19 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 
+import { useAccessToken } from "@/hooks/use-access-token";
+
 export const useLogOutMutation = () => {
+	const [, , removeAccessToken] = useAccessToken();
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 
 	return useMutation({
 		mutationFn: async () => {
-			localStorage.removeItem("accessToken");
+			removeAccessToken();
 			queryClient.removeQueries();
 			queryClient.clear();
-			navigate({ to: "/", replace: true });
+			await navigate({ to: "/", replace: true });
 		},
 	});
 };

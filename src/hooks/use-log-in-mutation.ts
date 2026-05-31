@@ -1,12 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
+import { useRouter } from "@tanstack/react-router";
 
+import { useAccessToken } from "@/hooks/use-access-token";
 import { usePrimalApiClient } from "@/hooks/use-primal-api-client";
 
 export const useLogInMutation = () => {
 	const primalApiClient = usePrimalApiClient();
+	const [, setAccessToken] = useAccessToken();
 	const queryClient = useQueryClient();
-	const navigate = useNavigate();
+	const router = useRouter();
 
 	return useMutation({
 		mutationFn: async (idToken: string) => {
@@ -14,13 +16,12 @@ export const useLogInMutation = () => {
 				idToken,
 			});
 
-			const accessToken = response.data.accessToken;
-			localStorage.setItem("accessToken", accessToken);
+			setAccessToken(response.data.accessToken);
 
 			queryClient.removeQueries();
 			queryClient.clear();
 
-			await navigate({ to: "/", replace: true });
+			router.history.back();
 		},
 	});
 };

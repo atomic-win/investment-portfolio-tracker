@@ -8,17 +8,13 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import useAccessTokenQuery from "@/hooks/use-access-token-query";
+import { useAccessToken } from "@/hooks/use-access-token";
 import { useLogInMutation } from "@/hooks/use-log-in-mutation";
 import { useLogOutMutation } from "@/hooks/use-log-out-mutation";
 import { useUserQuery } from "@/hooks/users";
 
 export default function AccountMenu() {
-	const { data: accessToken, isLoading } = useAccessTokenQuery();
-
-	if (isLoading) {
-		return <LoadingComponent loadingMessage="Checking login status..." />;
-	}
+	const [accessToken] = useAccessToken();
 
 	if (!accessToken) {
 		return <LogInMenu />;

@@ -6,10 +6,10 @@ import {
 } from "@tanstack/react-router";
 import axios from "axios";
 
-import useAccessTokenQuery from "@/hooks/use-access-token-query";
+import { useAccessToken } from "@/hooks/use-access-token";
 
 export const usePrimalApiClient = () => {
-	const { data: accessToken } = useAccessTokenQuery();
+	const [accessToken, , removeAccessToken] = useAccessToken();
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 	const { pathname } = useLocation();
@@ -23,26 +23,38 @@ export const usePrimalApiClient = () => {
 	});
 
 	apiClient.interceptors.request.use((config) => {
-		const token = accessToken || localStorage.getItem("accessToken");
-		if (token) {
-			config.headers.Authorization = `Bearer ${token}`;
+		if (accessToken) {
+			config.headers.Authorization = `Bearer ${accessToken}`;
 		}
 		return config;
 	});
 
 	apiClient.interceptors.response.use(
 		async (response) => {
-			if (response.status === 401 && response.config.headers.Authorization) {
-				return await handleUnauthorized(queryClient, pathname, navigate);
+			if (
+				response.status === 401 &&
+				!response.config.url?.startsWith("auth/login")
+			) {
+				return await handleUnauthorized(
+					removeAccessToken,
+					queryClient,
+					pathname,
+					navigate,
+				);
 			}
 			return response;
 		},
 		async (error) => {
 			if (
 				error.response?.status === 401 &&
-				error.config?.headers?.Authorization
+				!error.config.url?.startsWith("auth/login")
 			) {
-				return await handleUnauthorized(queryClient, pathname, navigate);
+				return await handleUnauthorized(
+					removeAccessToken,
+					queryClient,
+					pathname,
+					navigate,
+				);
 			}
 			return error;
 		},
@@ -52,15 +64,16 @@ export const usePrimalApiClient = () => {
 };
 
 async function handleUnauthorized(
+	removeAccessToken: () => void,
 	queryClient: QueryClient,
 	pathname: string,
 	navigate: ReturnType<typeof useNavigate<RegisteredRouter>>,
 ) {
-	localStorage.removeItem("accessToken");
+	removeAccessToken();
 	queryClient.clear();
 
 	if (pathname && pathname !== "/") {
-		navigate({ to: "/" });
+		await navigate({ to: "/" });
 	}
 
 	return Promise.reject(new Error("Unauthorized"));
