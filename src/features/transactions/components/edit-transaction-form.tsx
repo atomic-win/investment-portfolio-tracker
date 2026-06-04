@@ -135,7 +135,7 @@ function Form({
 						render={({ field: { onChange, ...field }, fieldState }) => (
 							<Field data-invalid={fieldState.invalid}>
 								<FieldLabel>Transaction Type</FieldLabel>
-								<Select onValueChange={onChange} value={field.value}>
+								<Select {...field} onValueChange={onChange}>
 									<SelectTrigger
 										className="w-full rounded-lg sm:ml-auto"
 										aria-label="Select a value"
