@@ -15,6 +15,7 @@ import { Route as PortfolioTrendsIndexRouteImport } from './routes/portfolio-tre
 import { Route as AssetItemsIndexRouteImport } from './routes/asset-items/index'
 import { Route as AssetItemsAddRouteImport } from './routes/asset-items/add'
 import { Route as AssetItemsAssetItemIdIndexRouteImport } from './routes/asset-items/$assetItemId.index'
+import { Route as AssetItemsAssetItemIdEditRouteImport } from './routes/asset-items/$assetItemId.edit'
 import { Route as AssetItemsAssetItemIdTransactionsAddRouteImport } from './routes/asset-items/$assetItemId.transactions.add'
 import { Route as AssetItemsAssetItemIdTransactionsTransactionIdEditRouteImport } from './routes/asset-items/$assetItemId.transactions.$transactionId.edit'
 
@@ -49,6 +50,12 @@ const AssetItemsAssetItemIdIndexRoute =
     path: '/asset-items/$assetItemId/',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AssetItemsAssetItemIdEditRoute =
+  AssetItemsAssetItemIdEditRouteImport.update({
+    id: '/asset-items/$assetItemId/edit',
+    path: '/asset-items/$assetItemId/edit',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AssetItemsAssetItemIdTransactionsAddRoute =
   AssetItemsAssetItemIdTransactionsAddRouteImport.update({
     id: '/asset-items/$assetItemId/transactions/add',
@@ -68,6 +75,7 @@ export interface FileRoutesByFullPath {
   '/asset-items/': typeof AssetItemsIndexRoute
   '/portfolio-trends/': typeof PortfolioTrendsIndexRoute
   '/portfolio/': typeof PortfolioIndexRoute
+  '/asset-items/$assetItemId/edit': typeof AssetItemsAssetItemIdEditRoute
   '/asset-items/$assetItemId/': typeof AssetItemsAssetItemIdIndexRoute
   '/asset-items/$assetItemId/transactions/add': typeof AssetItemsAssetItemIdTransactionsAddRoute
   '/asset-items/$assetItemId/transactions/$transactionId/edit': typeof AssetItemsAssetItemIdTransactionsTransactionIdEditRoute
@@ -78,6 +86,7 @@ export interface FileRoutesByTo {
   '/asset-items': typeof AssetItemsIndexRoute
   '/portfolio-trends': typeof PortfolioTrendsIndexRoute
   '/portfolio': typeof PortfolioIndexRoute
+  '/asset-items/$assetItemId/edit': typeof AssetItemsAssetItemIdEditRoute
   '/asset-items/$assetItemId': typeof AssetItemsAssetItemIdIndexRoute
   '/asset-items/$assetItemId/transactions/add': typeof AssetItemsAssetItemIdTransactionsAddRoute
   '/asset-items/$assetItemId/transactions/$transactionId/edit': typeof AssetItemsAssetItemIdTransactionsTransactionIdEditRoute
@@ -89,6 +98,7 @@ export interface FileRoutesById {
   '/asset-items/': typeof AssetItemsIndexRoute
   '/portfolio-trends/': typeof PortfolioTrendsIndexRoute
   '/portfolio/': typeof PortfolioIndexRoute
+  '/asset-items/$assetItemId/edit': typeof AssetItemsAssetItemIdEditRoute
   '/asset-items/$assetItemId/': typeof AssetItemsAssetItemIdIndexRoute
   '/asset-items/$assetItemId/transactions/add': typeof AssetItemsAssetItemIdTransactionsAddRoute
   '/asset-items/$assetItemId/transactions/$transactionId/edit': typeof AssetItemsAssetItemIdTransactionsTransactionIdEditRoute
@@ -101,6 +111,7 @@ export interface FileRouteTypes {
     | '/asset-items/'
     | '/portfolio-trends/'
     | '/portfolio/'
+    | '/asset-items/$assetItemId/edit'
     | '/asset-items/$assetItemId/'
     | '/asset-items/$assetItemId/transactions/add'
     | '/asset-items/$assetItemId/transactions/$transactionId/edit'
@@ -111,6 +122,7 @@ export interface FileRouteTypes {
     | '/asset-items'
     | '/portfolio-trends'
     | '/portfolio'
+    | '/asset-items/$assetItemId/edit'
     | '/asset-items/$assetItemId'
     | '/asset-items/$assetItemId/transactions/add'
     | '/asset-items/$assetItemId/transactions/$transactionId/edit'
@@ -121,6 +133,7 @@ export interface FileRouteTypes {
     | '/asset-items/'
     | '/portfolio-trends/'
     | '/portfolio/'
+    | '/asset-items/$assetItemId/edit'
     | '/asset-items/$assetItemId/'
     | '/asset-items/$assetItemId/transactions/add'
     | '/asset-items/$assetItemId/transactions/$transactionId/edit'
@@ -132,6 +145,7 @@ export interface RootRouteChildren {
   AssetItemsIndexRoute: typeof AssetItemsIndexRoute
   PortfolioTrendsIndexRoute: typeof PortfolioTrendsIndexRoute
   PortfolioIndexRoute: typeof PortfolioIndexRoute
+  AssetItemsAssetItemIdEditRoute: typeof AssetItemsAssetItemIdEditRoute
   AssetItemsAssetItemIdIndexRoute: typeof AssetItemsAssetItemIdIndexRoute
   AssetItemsAssetItemIdTransactionsAddRoute: typeof AssetItemsAssetItemIdTransactionsAddRoute
   AssetItemsAssetItemIdTransactionsTransactionIdEditRoute: typeof AssetItemsAssetItemIdTransactionsTransactionIdEditRoute
@@ -181,6 +195,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AssetItemsAssetItemIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/asset-items/$assetItemId/edit': {
+      id: '/asset-items/$assetItemId/edit'
+      path: '/asset-items/$assetItemId/edit'
+      fullPath: '/asset-items/$assetItemId/edit'
+      preLoaderRoute: typeof AssetItemsAssetItemIdEditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/asset-items/$assetItemId/transactions/add': {
       id: '/asset-items/$assetItemId/transactions/add'
       path: '/asset-items/$assetItemId/transactions/add'
@@ -204,6 +225,7 @@ const rootRouteChildren: RootRouteChildren = {
   AssetItemsIndexRoute: AssetItemsIndexRoute,
   PortfolioTrendsIndexRoute: PortfolioTrendsIndexRoute,
   PortfolioIndexRoute: PortfolioIndexRoute,
+  AssetItemsAssetItemIdEditRoute: AssetItemsAssetItemIdEditRoute,
   AssetItemsAssetItemIdIndexRoute: AssetItemsAssetItemIdIndexRoute,
   AssetItemsAssetItemIdTransactionsAddRoute:
     AssetItemsAssetItemIdTransactionsAddRoute,
