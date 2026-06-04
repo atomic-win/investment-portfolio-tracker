@@ -44,7 +44,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 						</main>
 					</SidebarProvider>
 				</Providers>
-				<Toaster />
+				<Toaster position="bottom-right" richColors />
 				<TanStackDevtools
 					config={{ position: "bottom-right" }}
 					plugins={[
