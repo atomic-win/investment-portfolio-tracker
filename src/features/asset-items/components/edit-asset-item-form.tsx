@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "@tanstack/react-router";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import type { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -24,11 +25,7 @@ export default function EditAssetItemForm({
 }: {
 	assetItem: AssetItem;
 }) {
-	const {
-		mutateAsync: editAssetItemAsync,
-		error: mutationError,
-		reset: resetMutation,
-	} = useEditAssetItemMutation();
+	const { mutateAsync: editAssetItemAsync } = useEditAssetItemMutation();
 	const router = useRouter();
 
 	const form = useForm<z.infer<typeof EditAssetItemSchema>>({
@@ -39,12 +36,18 @@ export default function EditAssetItemForm({
 	});
 
 	async function onSubmit(data: Omit<EditAssetItemRequest, "assetItemId">) {
-		resetMutation();
-		await editAssetItemAsync({
-			...data,
-			assetItemId: assetItem.id,
-		});
-		router.history.back();
+		try {
+			await editAssetItemAsync({
+				...data,
+				assetItemId: assetItem.id,
+			});
+			toast.success("Asset item updated successfully");
+			router.history.back();
+		} catch (error) {
+			toast.error(
+				error instanceof Error ? error.message : "Failed to update asset item",
+			);
+		}
 	}
 
 	return (
@@ -68,9 +71,6 @@ export default function EditAssetItemForm({
 							</Field>
 						)}
 					/>
-					{mutationError && (
-						<p className="text-sm text-destructive">{mutationError.message}</p>
-					)}
 					<div className="flex justify-end">
 						<Button
 							type="submit"

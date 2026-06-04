@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "@tanstack/react-router";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import type { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -36,11 +37,7 @@ import { displayAssetClassText, displayAssetTypeText } from "@/lib/utils";
 import { type AssetClass, AssetType, Currency } from "@/types";
 
 export default function AddAssetItemForm() {
-	const {
-		mutateAsync: addAssetItemAsync,
-		error: mutationError,
-		reset: resetMutation,
-	} = useAddAssetItemMutation();
+	const { mutateAsync: addAssetItemAsync } = useAddAssetItemMutation();
 	const router = useRouter();
 
 	const form = useForm<z.infer<typeof AddAssetItemSchema>>({
@@ -52,9 +49,15 @@ export default function AddAssetItemForm() {
 	});
 
 	async function onSubmit(data: AddAssetItemRequest) {
-		resetMutation();
-		await addAssetItemAsync(data);
-		router.history.back();
+		try {
+			await addAssetItemAsync(data);
+			toast.success("Asset item added successfully");
+			router.history.back();
+		} catch (error) {
+			toast.error(
+				error instanceof Error ? error.message : "Failed to add asset item",
+			);
+		}
 	}
 
 	const assetType = form.watch("assetType");
@@ -242,9 +245,6 @@ export default function AddAssetItemForm() {
 								</Field>
 							)}
 						/>
-					)}
-					{mutationError && (
-						<p className="text-sm text-destructive">{mutationError.message}</p>
 					)}
 					<div className="flex justify-end">
 						<Button

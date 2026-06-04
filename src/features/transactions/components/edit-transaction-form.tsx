@@ -3,6 +3,7 @@ import { useRouter } from "@tanstack/react-router";
 import _ from "lodash";
 import { DateTime } from "luxon";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import type { z } from "zod";
 import ErrorComponent from "@/components/error-component";
 import LoadingComponent from "@/components/loading-component";
@@ -70,11 +71,7 @@ function Form({
 	assetItem: AssetItemPortfolio;
 	transaction: Transaction;
 }) {
-	const {
-		mutateAsync: editTransactionAsync,
-		error: mutationError,
-		reset: resetMutation,
-	} = useEditTransactionMutation();
+	const { mutateAsync: editTransactionAsync } = useEditTransactionMutation();
 	const router = useRouter();
 
 	const form = useForm<z.infer<typeof TransactionFormSchema>>({
@@ -92,18 +89,23 @@ function Form({
 	async function onSubmit(
 		data: Omit<EditTransactionRequest, "assetItemId" | "transactionId">,
 	) {
-		resetMutation();
-		await editTransactionAsync({
-			..._.pickBy(
-				data,
-				(value, key) =>
-					value !== form.formState.defaultValues?.[key as keyof typeof data],
-			),
-			assetItemId: assetItem.id,
-			transactionId: transaction.id,
-		} as EditTransactionRequest);
-
-		router.history.back();
+		try {
+			await editTransactionAsync({
+				..._.pickBy(
+					data,
+					(value, key) =>
+						value !== form.formState.defaultValues?.[key as keyof typeof data],
+				),
+				assetItemId: assetItem.id,
+				transactionId: transaction.id,
+			} as EditTransactionRequest);
+			toast.success("Transaction updated successfully");
+			router.history.back();
+		} catch (error) {
+			toast.error(
+				error instanceof Error ? error.message : "Failed to update transaction",
+			);
+		}
 	}
 
 	return (
@@ -238,9 +240,6 @@ function Form({
 								</Field>
 							)}
 						/>
-					)}
-					{mutationError && (
-						<p className="text-sm text-destructive">{mutationError.message}</p>
 					)}
 					<div className="flex justify-end">
 						<Button

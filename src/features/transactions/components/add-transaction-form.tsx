@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "@tanstack/react-router";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import type { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -38,11 +39,7 @@ export default function AddTransactionForm({
 }: {
 	assetItem: AssetItemPortfolio;
 }) {
-	const {
-		mutateAsync: addTransactionAsync,
-		error: mutationError,
-		reset: resetMutation,
-	} = useAddTransactionMutation();
+	const { mutateAsync: addTransactionAsync } = useAddTransactionMutation();
 	const router = useRouter();
 
 	const form = useForm<z.infer<typeof TransactionFormSchema>>({
@@ -58,13 +55,18 @@ export default function AddTransactionForm({
 	});
 
 	async function onSubmit(data: Omit<AddTransactionRequest, "assetItemId">) {
-		resetMutation();
-		await addTransactionAsync({
-			...data,
-			assetItemId: assetItem.id,
-		});
-
-		router.history.back();
+		try {
+			await addTransactionAsync({
+				...data,
+				assetItemId: assetItem.id,
+			});
+			toast.success("Transaction added successfully");
+			router.history.back();
+		} catch (error) {
+			toast.error(
+				error instanceof Error ? error.message : "Failed to add transaction",
+			);
+		}
 	}
 
 	return (
@@ -208,9 +210,6 @@ export default function AddTransactionForm({
 								</Field>
 							)}
 						/>
-					)}
-					{mutationError && (
-						<p className="text-sm text-destructive">{mutationError.message}</p>
 					)}
 					<div className="flex justify-end">
 						<Button

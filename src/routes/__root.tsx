@@ -9,6 +9,7 @@ import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { AppSidebar } from "@/components/app-sidebar";
 import Providers from "@/components/providers";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 import appCss from "@/globals.css?url";
 import TanStackQueryDevtools from "@/integrations/tanstack-query/devtools";
 
@@ -43,6 +44,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 						</main>
 					</SidebarProvider>
 				</Providers>
+				<Toaster />
 				<TanStackDevtools
 					config={{ position: "bottom-right" }}
 					plugins={[
