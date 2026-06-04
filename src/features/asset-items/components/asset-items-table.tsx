@@ -1,6 +1,9 @@
+import { Link } from "@tanstack/react-router";
 import type { ColumnDef } from "@tanstack/react-table";
+import { EditIcon } from "lucide-react";
 
 import CurrencyAmount from "@/components/currency-amount";
+import { Button } from "@/components/ui/button";
 import { createColumnDef, DataTable } from "@/components/ui/data-table";
 import DeleteAssetItemDialog from "@/features/asset-items/components/delete-asset-item-dialog";
 import {
@@ -75,7 +78,20 @@ const columns: ColumnDef<AssetItemPortfolio>[] = [
 		id: "actions",
 		cell: ({ row }) => {
 			const item = row.original;
-			return <DeleteAssetItemDialog assetItem={item} />;
+			return (
+				<div className="flex gap-x-2 justify-center">
+					<Link
+						to="/asset-items/$assetItemId/edit"
+						params={{ assetItemId: item.id }}
+					>
+						<Button className="cursor-pointer">
+							<EditIcon />
+							Edit
+						</Button>
+					</Link>
+					<DeleteAssetItemDialog assetItem={item} />
+				</div>
+			);
 		},
 	},
 ];

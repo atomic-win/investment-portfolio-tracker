@@ -104,6 +104,7 @@ src/
 | `/asset-items`                                              | `src/routes/asset-items/index.tsx`                                        |
 | `/asset-items/add`                                          | `src/routes/asset-items/add.tsx`                                          |
 | `/asset-items/:assetItemId`                                 | `src/routes/asset-items/$assetItemId.index.tsx`                           |
+| `/asset-items/:assetItemId/edit`                             | `src/routes/asset-items/$assetItemId.edit.tsx`                            |
 | `/asset-items/:assetItemId/transactions/add`                | `src/routes/asset-items/$assetItemId.transactions.add.tsx`                |
 | `/asset-items/:assetItemId/transactions/:transactionId/edit`| `src/routes/asset-items/$assetItemId.transactions.$transactionId.edit.tsx` |
 | `/portfolio`                                                | `src/routes/portfolio/index.tsx`                                          |
@@ -138,7 +139,7 @@ Available HOCs: `withAssetItems`, `withCurrency`, `withValuations`, `withAssetIt
 ### React Query Hooks
 
 Each feature has its own hooks file exporting query/mutation hooks:
-- `src/features/asset-items/hooks/asset-items.ts` — `useAllAssetItemsQuery`, `useAddAssetItemMutation`, `useDeleteAssetItemMutation`, `refreshAssetItems`, `refreshAssetItem`
+- `src/features/asset-items/hooks/asset-items.ts` — `useAllAssetItemsQuery`, `useAddAssetItemMutation`, `useEditAssetItemMutation`, `useDeleteAssetItemMutation`, `refreshAssetItems`, `refreshAssetItem`
 - `src/features/transactions/hooks/transactions.ts` — `useAssetItemTransactionsQuery`, `useTransactionQuery`, `useAddTransactionMutation`, `useEditTransactionMutation`, `useDeleteTransactionMutation`
 - `src/features/portfolio/hooks/valuations.ts` — `useValuationsQueries` (default export, uses `useQueries` for parallel fetching)
 

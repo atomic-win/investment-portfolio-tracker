@@ -8,6 +8,13 @@ import {
 import { AssetClass, AssetType, Currency } from "@/types";
 
 export type AddAssetItemRequest = z.infer<typeof AddAssetItemSchema>;
+export type EditAssetItemRequest = z.infer<typeof EditAssetItemSchema> & {
+	assetItemId: string;
+};
+
+export const EditAssetItemSchema = z.object({
+	name: z.string().min(3).max(50),
+});
 
 export const AddAssetItemSchema = z
 	.object({

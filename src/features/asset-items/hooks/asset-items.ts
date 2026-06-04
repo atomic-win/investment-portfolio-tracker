@@ -6,7 +6,10 @@ import {
 	useQueryClient,
 } from "@tanstack/react-query";
 import _ from "lodash";
-import type { AddAssetItemRequest } from "@/features/asset-items/schema";
+import type {
+	AddAssetItemRequest,
+	EditAssetItemRequest,
+} from "@/features/asset-items/schema";
 import { usePrimalApiClient } from "@/hooks/use-primal-api-client";
 import { type AssetItem, AssetType } from "@/types";
 
@@ -68,6 +71,23 @@ export function useDeleteAssetItemMutation() {
 			});
 
 			await refreshAssetItems(queryClient);
+		},
+	});
+}
+
+export function useEditAssetItemMutation() {
+	const queryClient = useQueryClient();
+	const primalApiClient = usePrimalApiClient();
+
+	return useMutation({
+		mutationFn: async ({ assetItemId, ...data }: EditAssetItemRequest) => {
+			await primalApiClient.patch(`asset-items/${assetItemId}`, data);
+		},
+		onSuccess: async (_data, { assetItemId }) => {
+			await refreshAssetItem(queryClient, { assetItemId });
+			await queryClient.invalidateQueries({
+				queryKey: ["assetitems", "all"],
+			});
 		},
 	});
 }

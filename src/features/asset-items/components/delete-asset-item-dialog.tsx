@@ -1,5 +1,5 @@
+import { Trash2Icon } from "lucide-react";
 import type React from "react";
-
 import CurrencyAmount from "@/components/currency-amount";
 import {
 	AlertDialog,
@@ -37,6 +37,7 @@ export default function DeleteAssetItemDialog({
 					buttonVariants({ variant: "destructive" }),
 				)}
 			>
+				<Trash2Icon />
 				Delete
 			</AlertDialogTrigger>
 			<AlertDialogContent>
