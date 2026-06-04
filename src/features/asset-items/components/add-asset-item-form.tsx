@@ -36,7 +36,11 @@ import { displayAssetClassText, displayAssetTypeText } from "@/lib/utils";
 import { type AssetClass, AssetType, Currency } from "@/types";
 
 export default function AddAssetItemForm() {
-	const { mutateAsync: addAssetItemAsync } = useAddAssetItemMutation();
+	const {
+		mutateAsync: addAssetItemAsync,
+		error: mutationError,
+		reset: resetMutation,
+	} = useAddAssetItemMutation();
 	const router = useRouter();
 
 	const form = useForm<z.infer<typeof AddAssetItemSchema>>({
@@ -48,6 +52,7 @@ export default function AddAssetItemForm() {
 	});
 
 	async function onSubmit(data: AddAssetItemRequest) {
+		resetMutation();
 		await addAssetItemAsync(data);
 		router.history.back();
 	}
@@ -237,6 +242,9 @@ export default function AddAssetItemForm() {
 								</Field>
 							)}
 						/>
+					)}
+					{mutationError && (
+						<p className="text-sm text-destructive">{mutationError.message}</p>
 					)}
 					<div className="flex justify-end">
 						<Button

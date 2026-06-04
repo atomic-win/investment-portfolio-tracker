@@ -19,7 +19,6 @@ export const usePrimalApiClient = () => {
 		headers: {
 			"Content-type": "application/json",
 		},
-		validateStatus: () => true,
 	});
 
 	apiClient.interceptors.request.use((config) => {
@@ -29,36 +28,20 @@ export const usePrimalApiClient = () => {
 		return config;
 	});
 
-	apiClient.interceptors.response.use(
-		async (response) => {
-			if (
-				response.status === 401 &&
-				!response.config.url?.startsWith("auth/login")
-			) {
-				return await handleUnauthorized(
-					removeAccessToken,
-					queryClient,
-					pathname,
-					navigate,
-				);
-			}
-			return response;
-		},
-		async (error) => {
-			if (
-				error.response?.status === 401 &&
-				!error.config.url?.startsWith("auth/login")
-			) {
-				return await handleUnauthorized(
-					removeAccessToken,
-					queryClient,
-					pathname,
-					navigate,
-				);
-			}
-			return error;
-		},
-	);
+	apiClient.interceptors.response.use(undefined, async (error) => {
+		if (
+			error.response?.status === 401 &&
+			!error.config.url?.startsWith("auth/login")
+		) {
+			return await handleUnauthorized(
+				removeAccessToken,
+				queryClient,
+				pathname,
+				navigate,
+			);
+		}
+		return Promise.reject(error);
+	});
 
 	return apiClient;
 };

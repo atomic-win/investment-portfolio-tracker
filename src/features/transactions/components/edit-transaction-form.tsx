@@ -70,7 +70,11 @@ function Form({
 	assetItem: AssetItemPortfolio;
 	transaction: Transaction;
 }) {
-	const { mutateAsync: editTransactionAsync } = useEditTransactionMutation();
+	const {
+		mutateAsync: editTransactionAsync,
+		error: mutationError,
+		reset: resetMutation,
+	} = useEditTransactionMutation();
 	const router = useRouter();
 
 	const form = useForm<z.infer<typeof TransactionFormSchema>>({
@@ -88,6 +92,7 @@ function Form({
 	async function onSubmit(
 		data: Omit<EditTransactionRequest, "assetItemId" | "transactionId">,
 	) {
+		resetMutation();
 		await editTransactionAsync({
 			..._.pickBy(
 				data,
@@ -233,6 +238,9 @@ function Form({
 								</Field>
 							)}
 						/>
+					)}
+					{mutationError && (
+						<p className="text-sm text-destructive">{mutationError.message}</p>
 					)}
 					<div className="flex justify-end">
 						<Button

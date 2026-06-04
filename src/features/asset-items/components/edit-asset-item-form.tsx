@@ -24,7 +24,11 @@ export default function EditAssetItemForm({
 }: {
 	assetItem: AssetItem;
 }) {
-	const { mutateAsync: editAssetItemAsync } = useEditAssetItemMutation();
+	const {
+		mutateAsync: editAssetItemAsync,
+		error: mutationError,
+		reset: resetMutation,
+	} = useEditAssetItemMutation();
 	const router = useRouter();
 
 	const form = useForm<z.infer<typeof EditAssetItemSchema>>({
@@ -35,6 +39,7 @@ export default function EditAssetItemForm({
 	});
 
 	async function onSubmit(data: Omit<EditAssetItemRequest, "assetItemId">) {
+		resetMutation();
 		await editAssetItemAsync({
 			...data,
 			assetItemId: assetItem.id,
@@ -63,6 +68,9 @@ export default function EditAssetItemForm({
 							</Field>
 						)}
 					/>
+					{mutationError && (
+						<p className="text-sm text-destructive">{mutationError.message}</p>
+					)}
 					<div className="flex justify-end">
 						<Button
 							type="submit"

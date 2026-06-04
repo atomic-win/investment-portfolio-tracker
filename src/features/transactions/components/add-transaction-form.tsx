@@ -38,7 +38,11 @@ export default function AddTransactionForm({
 }: {
 	assetItem: AssetItemPortfolio;
 }) {
-	const { mutateAsync: addTransactionAsync } = useAddTransactionMutation();
+	const {
+		mutateAsync: addTransactionAsync,
+		error: mutationError,
+		reset: resetMutation,
+	} = useAddTransactionMutation();
 	const router = useRouter();
 
 	const form = useForm<z.infer<typeof TransactionFormSchema>>({
@@ -54,6 +58,7 @@ export default function AddTransactionForm({
 	});
 
 	async function onSubmit(data: Omit<AddTransactionRequest, "assetItemId">) {
+		resetMutation();
 		await addTransactionAsync({
 			...data,
 			assetItemId: assetItem.id,
@@ -203,6 +208,9 @@ export default function AddTransactionForm({
 								</Field>
 							)}
 						/>
+					)}
+					{mutationError && (
+						<p className="text-sm text-destructive">{mutationError.message}</p>
 					)}
 					<div className="flex justify-end">
 						<Button
