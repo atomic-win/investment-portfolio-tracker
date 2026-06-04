@@ -148,7 +148,6 @@ export default function AddAssetItemForm() {
 											)}
 										</SelectContent>
 									</Select>
-									{}
 								</Field>
 							)}
 						/>
