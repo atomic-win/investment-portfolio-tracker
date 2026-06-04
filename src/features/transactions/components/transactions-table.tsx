@@ -61,7 +61,10 @@ export default function TransactionsTable({
 	return (
 		<div className="mx-auto">
 			<div className="flex justify-end text-xl font-semibold items-center gap-x-2">
-				<Link to="/asset-items/$assetItemId/transactions/add" params={{ assetItemId: assetItem.id }}>
+				<Link
+					to="/asset-items/$assetItemId/transactions/add"
+					params={{ assetItemId: assetItem.id }}
+				>
 					<Button className="cursor-pointer" disabled={isFetching}>
 						<PlusIcon />
 						Add Transaction
@@ -166,7 +169,10 @@ function getColumns(assetItem: AssetItemPortfolio): ColumnDef<TableItem>[] {
 						assetItem={item.assetItem}
 						transaction={item}
 					/>
-					<Link to="/asset-items/$assetItemId/transactions/$transactionId/edit" params={{ assetItemId: assetItem.id, transactionId: item.id }}>
+					<Link
+						to="/asset-items/$assetItemId/transactions/$transactionId/edit"
+						params={{ assetItemId: assetItem.id, transactionId: item.id }}
+					>
 						<Button className="cursor-pointer">
 							<EditIcon />
 							Edit
@@ -183,6 +189,7 @@ function getColumns(assetItem: AssetItemPortfolio): ColumnDef<TableItem>[] {
 function shouldShowUnitsColumn(assetItem: AssetItemPortfolio) {
 	return (
 		assetItem.assetType === AssetType.MutualFund ||
-		assetItem.assetType === AssetType.Stock
+		assetItem.assetType === AssetType.Stock ||
+		assetItem.assetType === AssetType.ETF
 	);
 }

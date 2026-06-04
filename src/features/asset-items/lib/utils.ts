@@ -9,11 +9,15 @@ export function isSchemeCodeInputSupported(assetType: AssetType) {
 }
 
 export function isSymbolInputSupported(assetType: AssetType) {
-	return assetType === AssetType.Stock;
+	return assetType === AssetType.Stock || assetType === AssetType.ETF;
 }
 
 export function isCurrencyInputSupported(assetType: AssetType) {
-	return assetType !== AssetType.MutualFund && assetType !== AssetType.Stock;
+	return (
+		assetType !== AssetType.MutualFund &&
+		assetType !== AssetType.Stock &&
+		assetType !== AssetType.ETF
+	);
 }
 
 export function getApplicableAssetClasses(assetType: AssetType) {
@@ -30,6 +34,7 @@ export function getApplicableAssetClasses(assetType: AssetType) {
 		case AssetType.MutualFund:
 			return [AssetClass.Equity, AssetClass.Debt, AssetClass.Commodities];
 		case AssetType.Stock:
+		case AssetType.ETF:
 			return [AssetClass.Equity];
 		default:
 			throw new Error(`Unsupported asset type: ${assetType}`);

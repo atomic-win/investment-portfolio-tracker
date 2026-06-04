@@ -116,6 +116,7 @@ Defined in `src/types.ts`:
 - **Enums**: `Currency`, `Locale`, `AssetClass`, `AssetType`, `TransactionType`, `PortfolioType`
 - **Entities**: `User`, `AssetItem`, `Transaction`, `Portfolio`, `Valuation`
 - **Portfolio variants**: `OverallPortfolio`, `AssetClassPortfolio`, `AssetTypePortfolio`, `AssetItemPortfolio`
+- **Server-determined types**: `AssetType.ETF` is not user-selectable in the add form — it is assigned by the server. ETF behaves like Stock (equity, symbol-based, buy/sell/dividend).
 
 ## Key Patterns
 

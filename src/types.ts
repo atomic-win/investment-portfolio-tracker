@@ -25,6 +25,7 @@ export enum AssetType {
 	PPF = "PPF",
 	MutualFund = "MutualFund",
 	Stock = "Stock",
+	ETF = "ETF",
 	Bond = "Bond",
 }
 
