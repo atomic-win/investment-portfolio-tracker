@@ -205,7 +205,11 @@ export default function AddTransactionForm({
 						/>
 					)}
 					<div className="flex justify-end">
-						<Button type="submit" className="cursor-pointer">
+						<Button
+							type="submit"
+							className="cursor-pointer"
+							disabled={form.formState.isSubmitting}
+						>
 							Add Transaction
 						</Button>
 					</div>
