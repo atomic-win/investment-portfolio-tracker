@@ -94,15 +94,17 @@ export default function AddAssetItemForm() {
 										</SelectValue>
 									</SelectTrigger>
 									<SelectContent className="rounded-xl">
-										{Object.values(AssetType).map((type) => (
-											<SelectItem
-												key={type}
-												value={type}
-												className="rounded-lg"
-											>
-												{displayAssetTypeText(type)}
-											</SelectItem>
-										))}
+										{Object.values(AssetType)
+											.filter((type) => type !== AssetType.ETF)
+											.map((type) => (
+												<SelectItem
+													key={type}
+													value={type}
+													className="rounded-lg"
+												>
+													{displayAssetTypeText(type)}
+												</SelectItem>
+											))}
 									</SelectContent>
 								</Select>
 								{fieldState.invalid && (

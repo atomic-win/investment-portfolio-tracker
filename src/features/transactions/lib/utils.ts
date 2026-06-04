@@ -18,6 +18,7 @@ export function getApplicableTransactionTypes(
 		case AssetType.MutualFund:
 			return [TransactionType.Buy, TransactionType.Sell];
 		case AssetType.Stock:
+		case AssetType.ETF:
 			return [
 				TransactionType.Buy,
 				TransactionType.Sell,
@@ -82,6 +83,7 @@ export function getUnitLabelText(
 		case AssetType.MutualFund:
 			return "Units";
 		case AssetType.Stock:
+		case AssetType.ETF:
 			return transactionType === TransactionType.Dividend
 				? getAmountLabelText(assetItem)
 				: "Shares";

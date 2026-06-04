@@ -48,6 +48,8 @@ export function displayAssetTypeText(assetType: AssetType) {
 			return "Mutual Fund";
 		case AssetType.Stock:
 			return "Stock";
+		case AssetType.ETF:
+			return "ETF";
 		case AssetType.Bond:
 			return "Bond";
 		default:
