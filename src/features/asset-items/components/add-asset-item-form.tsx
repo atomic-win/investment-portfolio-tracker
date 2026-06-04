@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "@tanstack/react-router";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import type { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -48,8 +49,15 @@ export default function AddAssetItemForm() {
 	});
 
 	async function onSubmit(data: AddAssetItemRequest) {
-		await addAssetItemAsync(data);
-		router.history.back();
+		try {
+			await addAssetItemAsync(data);
+			toast.success("Asset item added successfully");
+			router.history.back();
+		} catch (error) {
+			toast.error(
+				error instanceof Error ? error.message : "Failed to add asset item",
+			);
+		}
 	}
 
 	const assetType = form.watch("assetType");
@@ -148,7 +156,6 @@ export default function AddAssetItemForm() {
 											)}
 										</SelectContent>
 									</Select>
-									{}
 								</Field>
 							)}
 						/>
@@ -240,7 +247,11 @@ export default function AddAssetItemForm() {
 						/>
 					)}
 					<div className="flex justify-end">
-						<Button type="submit" className="cursor-pointer">
+						<Button
+							type="submit"
+							className="cursor-pointer"
+							disabled={form.formState.isSubmitting}
+						>
 							Add Asset Item
 						</Button>
 					</div>

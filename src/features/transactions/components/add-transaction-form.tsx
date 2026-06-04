@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "@tanstack/react-router";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import type { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -54,12 +55,18 @@ export default function AddTransactionForm({
 	});
 
 	async function onSubmit(data: Omit<AddTransactionRequest, "assetItemId">) {
-		await addTransactionAsync({
-			...data,
-			assetItemId: assetItem.id,
-		});
-
-		router.invalidate();
+		try {
+			await addTransactionAsync({
+				...data,
+				assetItemId: assetItem.id,
+			});
+			toast.success("Transaction added successfully");
+			router.history.back();
+		} catch (error) {
+			toast.error(
+				error instanceof Error ? error.message : "Failed to add transaction",
+			);
+		}
 	}
 
 	return (
@@ -205,7 +212,11 @@ export default function AddTransactionForm({
 						/>
 					)}
 					<div className="flex justify-end">
-						<Button type="submit" className="cursor-pointer">
+						<Button
+							type="submit"
+							className="cursor-pointer"
+							disabled={form.formState.isSubmitting}
+						>
 							Add Transaction
 						</Button>
 					</div>

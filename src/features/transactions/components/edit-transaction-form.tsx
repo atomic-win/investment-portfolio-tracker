@@ -3,6 +3,7 @@ import { useRouter } from "@tanstack/react-router";
 import _ from "lodash";
 import { DateTime } from "luxon";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import type { z } from "zod";
 import ErrorComponent from "@/components/error-component";
 import LoadingComponent from "@/components/loading-component";
@@ -88,17 +89,23 @@ function Form({
 	async function onSubmit(
 		data: Omit<EditTransactionRequest, "assetItemId" | "transactionId">,
 	) {
-		await editTransactionAsync({
-			..._.pickBy(
-				data,
-				(value, key) =>
-					value !== form.formState.defaultValues?.[key as keyof typeof data],
-			),
-			assetItemId: assetItem.id,
-			transactionId: transaction.id,
-		} as EditTransactionRequest);
-
-		router.invalidate();
+		try {
+			await editTransactionAsync({
+				..._.pickBy(
+					data,
+					(value, key) =>
+						value !== form.formState.defaultValues?.[key as keyof typeof data],
+				),
+				assetItemId: assetItem.id,
+				transactionId: transaction.id,
+			} as EditTransactionRequest);
+			toast.success("Transaction updated successfully");
+			router.history.back();
+		} catch (error) {
+			toast.error(
+				error instanceof Error ? error.message : "Failed to update transaction",
+			);
+		}
 	}
 
 	return (
@@ -135,7 +142,7 @@ function Form({
 						render={({ field: { onChange, ...field }, fieldState }) => (
 							<Field data-invalid={fieldState.invalid}>
 								<FieldLabel>Transaction Type</FieldLabel>
-								<Select onValueChange={onChange} value={field.value}>
+								<Select {...field} onValueChange={onChange}>
 									<SelectTrigger
 										className="w-full rounded-lg sm:ml-auto"
 										aria-label="Select a value"
