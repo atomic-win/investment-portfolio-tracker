@@ -98,7 +98,7 @@ function Form({
 			transactionId: transaction.id,
 		} as EditTransactionRequest);
 
-		router.invalidate();
+		router.history.back();
 	}
 
 	return (
