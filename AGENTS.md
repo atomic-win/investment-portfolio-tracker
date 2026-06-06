@@ -10,7 +10,7 @@ Before substantial work:
 
 # Investment Portfolio Tracker
 
-A client-heavy SPA for tracking investment portfolios, built with TanStack Start. Migrated from a Next.js App Router application.
+A client-rendered SPA for tracking investment portfolios, built with Vite + TanStack Router.
 
 ## Quick Reference
 
@@ -28,7 +28,7 @@ npm run format       # Biome format only
 
 | Layer         | Technology                                                |
 | ------------- | --------------------------------------------------------- |
-| Framework     | TanStack Start (`@tanstack/react-start`)                  |
+| Framework     | Vite SPA + TanStack Router                                |
 | Router        | TanStack Router (`@tanstack/react-router`) — file-based   |
 | Data fetching | TanStack Query (`@tanstack/react-query`) + axios          |
 | Tables        | TanStack Table (`@tanstack/react-table`)                  |
@@ -38,22 +38,23 @@ npm run format       # Biome format only
 | Forms         | react-hook-form + zod validation schemas                  |
 | Charts        | Recharts                                                  |
 | Auth          | Google OAuth via `@react-oauth/google`                    |
-| Monitoring    | Sentry (`@sentry/tanstackstart-react`) — DSN not yet set  |
 | Package mgr   | npm                                                      |
 
 ## Architecture
 
-- **Client-rendered SPA** — no server components or server functions. All data fetching via React Query + axios.
+- **Client-rendered SPA** — standard Vite SPA with `index.html` entry point. No server components, no SSR. All data fetching via React Query + axios.
 - **External API** at `http://localhost:5185/api` — a separate .NET backend, not part of this repo.
 - **Auth flow**: Google OAuth token → stored in `localStorage` → sent as `Bearer` token via axios interceptor (`src/hooks/use-primal-api-client.ts`). On 401, token is cleared and user is redirected to `/`.
-- **React Query persistence**: query cache persisted to `localStorage` via `@tanstack/query-async-storage-persister` (configured in `src/components/providers.tsx`).
+- **React Query persistence**: query cache persisted to `localStorage` via `@tanstack/query-async-storage-persister` (configured in `src/router.tsx`).
 
 ## Project Structure
 
 ```
+index.html                         # Vite SPA entry point
 src/
-├── routes/                    # File-based routes (TanStack Router)
-│   ├── __root.tsx             # Root layout: HTML shell, sidebar, providers, devtools
+├── main.tsx                       # React DOM mount point
+├── routes/                        # File-based routes (TanStack Router)
+│   ├── __root.tsx             # Root layout: sidebar, providers, devtools
 │   ├── index.tsx              # / — home/login page
 │   ├── asset-items/           # /asset-items/* routes
 │   ├── portfolio/             # /portfolio route
@@ -78,7 +79,6 @@ src/
 ├── components/
 │   ├── hoc/                   # Shared HOCs (withCurrency)
 │   ├── ui/                    # shadcn/ui primitives
-│   ├── providers.tsx          # GoogleOAuthProvider + query persistence setup
 │   ├── app-sidebar.tsx        # Navigation sidebar
 │   └── ...                    # Other shared components
 ├── hooks/                     # Shared hooks
@@ -87,12 +87,10 @@ src/
 │   ├── use-log-in-mutation.ts
 │   ├── use-log-out-mutation.ts
 │   └── users.ts               # useUserQuery, useUpdateUserMutation
-├── integrations/
-│   └── tanstack-query/        # Query client setup + devtools
 ├── lib/
 │   └── utils.ts               # cn() and shared utilities
 ├── types.ts                   # Domain enums and types
-├── router.tsx                 # Router factory
+├── router.tsx                 # Router factory + query client setup
 └── routeTree.gen.ts           # Auto-generated — do NOT edit
 ```
 
@@ -184,13 +182,12 @@ Set in `.env.local` (gitignored). The `.env` file contains an empty placeholder.
 
 ## Gotchas
 
-1. **`verbatimModuleSyntax`** — enabled in tsconfig. Use `import type` for type-only imports or builds will fail / leak server code to client.
-2. **Vite plugin order** — `tanstackStart()` MUST come before `viteReact()` in `vite.config.ts`.
-3. **`<Scripts />` required** — the `<Scripts />` component must stay in the root route `<body>` or hydration breaks.
-4. **Route path strings** — managed by the TanStack Router Vite plugin. Don't manually edit the path string in `createFileRoute('/...')`.
-5. **Build = type-check + build** — `npm run build` runs `tsc --noEmit` before `vite build`.
-6. **`routeTree.gen.ts`** — auto-generated, do not edit. It regenerates on dev server start and during build.
-7. **External API dependency** — the app requires the .NET API running at `http://localhost:5185` for full functionality.
+1. **`verbatimModuleSyntax`** — enabled in tsconfig. Use `import type` for type-only imports or builds will fail.
+2. **Vite plugin order** — `TanStackRouterVite()` MUST come before `viteReact()` in `vite.config.ts`.
+3. **Route path strings** — managed by the TanStack Router Vite plugin. Don't manually edit the path string in `createFileRoute('/...')`.
+4. **Build = type-check + build** — `npm run build` runs `tsc --noEmit` before `vite build`.
+5. **`routeTree.gen.ts`** — auto-generated, do not edit. It regenerates on dev server start and during build.
+6. **External API dependency** — the app requires the .NET API running at `http://localhost:5185` for full functionality.
 
 ## Maintaining This File
 

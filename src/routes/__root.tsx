@@ -1,49 +1,34 @@
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import type { QueryClient } from "@tanstack/react-query";
-import {
-	createRootRouteWithContext,
-	HeadContent,
-	Scripts,
-} from "@tanstack/react-router";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
+import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { AppSidebar } from "@/components/app-sidebar";
-import Providers from "@/components/providers";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
-import appCss from "@/globals.css?url";
-import TanStackQueryDevtools from "@/integrations/tanstack-query/devtools";
 
 interface MyRouterContext {
 	queryClient: QueryClient;
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
-	head: () => ({
-		meta: [
-			{ charSet: "utf-8" },
-			{ name: "viewport", content: "width=device-width, initial-scale=1" },
-			{ title: "Investment Portfolio Tracker" },
-		],
-		links: [{ rel: "stylesheet", href: appCss }],
-	}),
-	shellComponent: RootDocument,
+	component: RootComponent,
 });
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+function RootComponent() {
+	const { queryClient } = Route.useRouteContext();
+
 	return (
-		<html lang="en">
-			<head>
-				<HeadContent />
-			</head>
-			<body className="antialiased">
-				<Providers>
-					<SidebarProvider>
-						<AppSidebar />
-						<main className="flex flex-1 flex-col gap-4 p-4 pt-0">
-							{children}
-						</main>
-					</SidebarProvider>
-				</Providers>
+		<QueryClientProvider client={queryClient}>
+			<GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+				<SidebarProvider>
+					<AppSidebar />
+					<main className="flex flex-1 flex-col gap-4 p-4 pt-0">
+						<Outlet />
+					</main>
+				</SidebarProvider>
 				<Toaster position="bottom-right" richColors />
 				<TanStackDevtools
 					config={{ position: "bottom-right" }}
@@ -52,11 +37,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 							name: "Tanstack Router",
 							render: <TanStackRouterDevtoolsPanel />,
 						},
-						TanStackQueryDevtools,
+						{
+							name: "Tanstack Query",
+							render: <ReactQueryDevtoolsPanel />,
+						},
 					]}
 				/>
-				<Scripts />
-			</body>
-		</html>
+			</GoogleOAuthProvider>
+		</QueryClientProvider>
 	);
 }
