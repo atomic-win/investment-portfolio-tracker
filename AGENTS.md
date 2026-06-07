@@ -162,6 +162,19 @@ Two aliases are configured (tsconfig `paths` + package.json `imports`):
 
 The codebase exclusively uses `@/` — always use `@/` for imports.
 
+### DataTable
+
+The shared `DataTable` component (`src/components/ui/data-table.tsx`) supports sorting, pagination, column visibility, and **column filtering** (text and faceted).
+
+- **`createColumnDef`** — helper to build column definitions with optional `sortingFnCompare`, `filterFn`, `linkFn`, and alignment.
+- **Filter config** — pass a `filters` array of `DataTableFilterConfig` to `DataTable`:
+  - `{ type: "text", columnId, placeholder }` — text input filter (uses built-in `includesString`)
+  - `{ type: "faceted", columnId, title, options }` — multi-select popover filter (requires a custom `filterFn` on the column that checks array inclusion)
+- **`DataTableToolbar`** (`src/components/ui/data-table-toolbar.tsx`) — renders filter inputs and the `DataTableViewOptions` column toggle.
+- **`DataTableFacetedFilter`** — internal component in `data-table-toolbar.tsx` using `Command` (cmdk) inside a `Popover` for searchable multi-select.
+- **Important**: when `filterFn` is not needed (text filters), do **not** set it — omitting it lets TanStack Table use its default `includesString` filter. Explicitly setting `filterFn: undefined` disables filtering.
+- **`accessorKey`** must match the actual data property name for filtering to work (e.g., use `"name"` not `"transactionName"` when the data field is `name`).
+
 ## Code Style & Conventions
 
 - **Formatter**: Biome — tabs for indentation, double quotes for strings
@@ -188,6 +201,8 @@ Set in `.env.local` (gitignored). The `.env` file contains an empty placeholder.
 4. **Build = type-check + build** — `npm run build` runs `tsc --noEmit` before `vite build`.
 5. **`routeTree.gen.ts`** — auto-generated, do not edit. It regenerates on dev server start and during build.
 6. **External API dependency** — the app requires the .NET API running at `http://localhost:5185` for full functionality.
+7. **No `"use client"` directives** — this is a Vite SPA with no RSC/SSR. Do not add `"use client"` directives to any files. When adding new shadcn components, remove any `"use client"` directives they include.
+8. **shadcn/ui uses Base UI** — this project uses `@base-ui/react`, not Radix. Components use `render` prop for composition (not `asChild`). When adding shadcn components, ensure they are compatible with the Base UI primitives used in this project.
 
 ## Maintaining This File
 
