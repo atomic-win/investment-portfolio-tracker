@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import type { TooltipValueType } from "recharts";
 import * as RechartsPrimitive from "recharts";
