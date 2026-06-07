@@ -146,7 +146,7 @@ export function createColumnDef<TData>({
 		},
 		enableSorting: !!sortingFnCompare,
 		enableHiding: enableHiding,
-		filterFn: filterFn,
+		...(filterFn ? { filterFn } : {}),
 	};
 }
 
