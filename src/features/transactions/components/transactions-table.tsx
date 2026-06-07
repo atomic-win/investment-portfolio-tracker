@@ -72,7 +72,7 @@ export default function TransactionsTable({
 		{
 			type: "faceted",
 			columnId: "Transaction Type",
-			title: "Type",
+			title: "Transaction Type",
 			options: presentTransactionTypes.map((type) => ({
 				label: displayTransactionTypeText(type),
 				value: type,
