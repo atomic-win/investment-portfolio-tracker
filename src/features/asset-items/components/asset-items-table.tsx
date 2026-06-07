@@ -5,6 +5,7 @@ import { EditIcon } from "lucide-react";
 import CurrencyAmount from "@/components/currency-amount";
 import { Button } from "@/components/ui/button";
 import { createColumnDef, DataTable } from "@/components/ui/data-table";
+import type { DataTableFilterConfig } from "@/components/ui/data-table-toolbar";
 import DeleteAssetItemDialog from "@/features/asset-items/components/delete-asset-item-dialog";
 import {
 	displayAssetClassText,
@@ -15,7 +16,8 @@ import type { AssetItemPortfolio } from "@/types";
 
 const columns: ColumnDef<AssetItemPortfolio>[] = [
 	createColumnDef({
-		accessorKey: "id",
+		accessorKey: "name",
+		id: "Asset Item",
 		headerText: "Asset Item",
 		linkFn: (data) => `/asset-items/${data.id}`,
 		cellTextFn: (data) => data.name,
@@ -29,6 +31,9 @@ const columns: ColumnDef<AssetItemPortfolio>[] = [
 		cellTextFn: (data) => displayAssetTypeText(data.assetType),
 		sortingFnCompare: (data) => displayAssetTypeText(data.assetType),
 		align: "left",
+		filterFn: (row, columnId, filterValues: string[]) => {
+			return filterValues.includes(row.getValue<string>(columnId));
+		},
 	}),
 	createColumnDef({
 		accessorKey: "assetClass",
@@ -36,6 +41,9 @@ const columns: ColumnDef<AssetItemPortfolio>[] = [
 		headerText: "Asset Class",
 		cellTextFn: (data) => displayAssetClassText(data.assetClass),
 		align: "left",
+		filterFn: (row, columnId, filterValues: string[]) => {
+			return filterValues.includes(row.getValue<string>(columnId));
+		},
 	}),
 	createColumnDef({
 		accessorKey: "investedValue",
@@ -101,12 +109,42 @@ export default function AssetItemsTable({
 }: {
 	portfolios: AssetItemPortfolio[];
 }) {
+	const presentAssetTypes = [...new Set(portfolios.map((p) => p.assetType))];
+	const presentAssetClasses = [...new Set(portfolios.map((p) => p.assetClass))];
+
+	const filters: DataTableFilterConfig[] = [
+		{
+			type: "text",
+			columnId: "Asset Item",
+			placeholder: "Filter by name...",
+		},
+		{
+			type: "faceted",
+			columnId: "Asset Type",
+			title: "Asset Type",
+			options: presentAssetTypes.map((type) => ({
+				label: displayAssetTypeText(type),
+				value: type,
+			})),
+		},
+		{
+			type: "faceted",
+			columnId: "Asset Class",
+			title: "Asset Class",
+			options: presentAssetClasses.map((cls) => ({
+				label: displayAssetClassText(cls),
+				value: cls,
+			})),
+		},
+	];
+
 	return (
 		<div className="mx-auto">
 			<DataTable
 				id="asset-items"
 				columns={columns}
 				data={portfolios}
+				filters={filters}
 				initialSorting={[
 					{
 						id: "investedValuePercent",
