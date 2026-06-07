@@ -1,8 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import {
 	type ColumnDef,
+	type ColumnFiltersState,
 	flexRender,
 	getCoreRowModel,
+	getFacetedRowModel,
+	getFacetedUniqueValues,
+	getFilteredRowModel,
 	getPaginationRowModel,
 	getSortedRowModel,
 	type SortingState,
@@ -16,7 +20,10 @@ import { useLocalStorage } from "usehooks-ts";
 
 import { Button } from "@/components/ui/button";
 import { DataTablePagination } from "@/components/ui/data-table-pagination";
-import { DataTableToolbar } from "@/components/ui/data-table-toolbar";
+import {
+	type DataTableFilterConfig,
+	DataTableToolbar,
+} from "@/components/ui/data-table-toolbar";
 import {
 	Table,
 	TableBody,
@@ -31,6 +38,7 @@ interface DataTableProps<TData, TValue> {
 	id: string;
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
+	filters?: DataTableFilterConfig[];
 }
 
 export function createColumnDef<TData>({
@@ -42,6 +50,7 @@ export function createColumnDef<TData>({
 	sortingFnCompare,
 	align = "right",
 	enableHiding = true,
+	filterFn,
 }: {
 	accessorKey: (string & {}) | keyof TData;
 	id?: string;
@@ -51,6 +60,12 @@ export function createColumnDef<TData>({
 	sortingFnCompare?: (data: TData) => string | number;
 	align?: "left" | "right";
 	enableHiding?: boolean;
+	filterFn?: (
+		row: import("@tanstack/react-table").Row<TData>,
+		columnId: string,
+		// biome-ignore lint/suspicious/noExplicitAny: filter values can be any type depending on filter type
+		filterValue: any,
+	) => boolean;
 }): ColumnDef<TData> {
 	return {
 		accessorKey,
@@ -131,6 +146,7 @@ export function createColumnDef<TData>({
 		},
 		enableSorting: !!sortingFnCompare,
 		enableHiding: enableHiding,
+		filterFn: filterFn,
 	};
 }
 
@@ -138,6 +154,7 @@ export function DataTable<TData, TValue>({
 	id,
 	columns,
 	data,
+	filters,
 	initialSorting,
 	initialColumnVisibility,
 	doPagination = false,
@@ -147,6 +164,7 @@ export function DataTable<TData, TValue>({
 	doPagination?: boolean;
 }) {
 	const [sorting, setSorting] = useState<SortingState>(initialSorting || []);
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
 		initialColumnVisibility || {},
 	);
@@ -187,12 +205,17 @@ export function DataTable<TData, TValue>({
 		columns,
 		getCoreRowModel: getCoreRowModel(),
 		getSortedRowModel: getSortedRowModel(),
+		getFilteredRowModel: getFilteredRowModel(),
+		getFacetedRowModel: getFacetedRowModel(),
+		getFacetedUniqueValues: getFacetedUniqueValues(),
 		onSortingChange: setSorting,
+		onColumnFiltersChange: setColumnFilters,
 		onColumnVisibilityChange: setColumnVisibility,
 		getPaginationRowModel: getPaginationRowModel(),
 		onPaginationChange: setPagination,
 		state: {
 			sorting,
+			columnFilters,
 			columnVisibility,
 			pagination,
 		},
@@ -200,7 +223,7 @@ export function DataTable<TData, TValue>({
 
 	return (
 		<div className="space-y-2">
-			<DataTableToolbar table={table} />
+			<DataTableToolbar table={table} filters={filters} />
 
 			<div className="rounded-md border">
 				<Table>

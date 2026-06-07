@@ -8,6 +8,7 @@ import ErrorComponent from "@/components/error-component";
 import LoadingComponent from "@/components/loading-component";
 import { Button } from "@/components/ui/button";
 import { createColumnDef, DataTable } from "@/components/ui/data-table";
+import type { DataTableFilterConfig } from "@/components/ui/data-table-toolbar";
 import { refreshAssetItem } from "@/features/asset-items/hooks/asset-items";
 import DeleteTransactionDialog from "@/features/transactions/components/delete-transaction-dialog";
 import { useAssetItemTransactionsQuery } from "@/features/transactions/hooks/transactions";
@@ -58,6 +59,27 @@ export default function TransactionsTable({
 		assetItem,
 	}));
 
+	const presentTransactionTypes = [
+		...new Set(sortedTransactions.map((t) => t.transactionType)),
+	];
+
+	const filters: DataTableFilterConfig[] = [
+		{
+			type: "text",
+			columnId: "Transaction Name",
+			placeholder: "Filter by name...",
+		},
+		{
+			type: "faceted",
+			columnId: "Transaction Type",
+			title: "Type",
+			options: presentTransactionTypes.map((type) => ({
+				label: displayTransactionTypeText(type),
+				value: type,
+			})),
+		},
+	];
+
 	return (
 		<div className="mx-auto">
 			<div className="flex justify-end text-xl font-semibold items-center gap-x-2">
@@ -87,6 +109,7 @@ export default function TransactionsTable({
 				id="transactions"
 				columns={getColumns(assetItem)}
 				data={items}
+				filters={filters}
 				initialSorting={[
 					{
 						id: "date",
@@ -114,7 +137,7 @@ function getColumns(assetItem: AssetItemPortfolio): ColumnDef<TableItem>[] {
 
 	columns.push(
 		createColumnDef({
-			accessorKey: "transactionName",
+			accessorKey: "name",
 			id: "Transaction Name",
 			headerText: "Transaction Name",
 			cellTextFn: (item) => item.name,
@@ -131,6 +154,10 @@ function getColumns(assetItem: AssetItemPortfolio): ColumnDef<TableItem>[] {
 			cellTextFn: (item) => displayTransactionTypeText(item.transactionType),
 			align: "left",
 			enableHiding: false,
+			filterFn: (row, columnId, filterValues: string[]) => {
+				const value = row.getValue<string>(columnId);
+				return filterValues.includes(value);
+			},
 		}),
 	);
 
