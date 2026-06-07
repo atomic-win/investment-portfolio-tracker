@@ -19,7 +19,6 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
 export type DataTableFilterConfig =
@@ -119,7 +118,7 @@ function DataTableFacetedFilter<TData, TValue>({
 				{title}
 				{selectedValues.size > 0 && (
 					<>
-						<Separator orientation="vertical" className="mx-2 h-4" />
+						<div className="mx-2 h-4 w-px shrink-0 bg-border" />
 						<Badge
 							variant="secondary"
 							className="rounded-sm px-1 font-normal lg:hidden"
