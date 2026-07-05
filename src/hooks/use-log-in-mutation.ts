@@ -21,7 +21,11 @@ export const useLogInMutation = () => {
 			queryClient.removeQueries();
 			queryClient.clear();
 
-			router.history.back();
+			if (router.history.canGoBack()) {
+				router.history.back();
+			} else {
+				await router.navigate({ to: "/" });
+			}
 		},
 	});
 };
